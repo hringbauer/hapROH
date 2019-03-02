@@ -274,7 +274,7 @@ class BinomSimRefNoLD(SimRef):
 sim = BinomSim()
 sim.ref_sim.set_params(h=2)
 sim.simulate_full()
-sim.save_data(folder="../Simulated/Test0/")
+sim.save_data(folder="./Simulated/Test0/")
 
 # Attach the copied Haplotype
 #plot_hap = np.array([sim.ob_stat for _ in range(1)])
