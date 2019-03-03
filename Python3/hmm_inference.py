@@ -11,7 +11,7 @@ class HMM_Analyze(object):
     This is the main Class, all specific Inference schemes inherit from it
     and overwrite functions.
     Contains Parameters"""
-    folder = "" # The working folder
+    folder = ""  # The working folder
     l = 1000  # Nr of the Observations
     n_ref = 20  # The Size of the Reference Panel
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
@@ -27,7 +27,7 @@ class HMM_Analyze(object):
         self.load_data(folder=folder)
         self.load_transition_model(t_model=t_model)
         self.load_emission_model(e_model=e_model)
-        self.folder = folder # Save the working folder
+        self.folder = folder  # Save the working folder
 
     def load_data(self, folder="./Simulated/Example0/"):
         """Loads the Data"""
@@ -68,8 +68,9 @@ class HMM_Analyze(object):
         # 1) Get the emission and transition probabilities.
         e_mat = self.e_obj.give_emission_matrix()
         t_mat = self.t_obj.give_transitions()
-        ob_stat = self.ob_stat
+        ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
 
+        e_mat[e_mat == 0] = 1e-20  # Tiny probability of emission
 
         e_mat0 = np.log(e_mat)  # Do the Transformation to Log Space
         t_mat0 = np.log(t_mat)
@@ -80,42 +81,45 @@ class HMM_Analyze(object):
         print("Loaded Observations:")
         print(np.shape(ob_stat))
 
-        e_prob0 = e_mat0[:,range(len(ob_stat)), ob_stat] # The observing probabilities of the States
+        # The observing probabilities of the States
+        e_prob0 = e_mat0[:, range(len(ob_stat)), ob_stat]
 
-        n_states = np.shape(t_mat)[0]
-        n_loci = np.shape(t_mat)[1]
+        n_states = np.shape(e_mat)[0]
+        n_loci = np.shape(e_mat)[1]
 
         # Do the actual optimization (with back-tracking)
         # Initialize
         mp = np.zeros((n_states, n_loci), dtype="float")
         pt = np.zeros((n_states, n_loci), dtype="int")  # Previous State Pinter
 
-        mp[:, 0] = np.log(0.01)  # The initial states
+        mp[:, 0] = np.log(0.001)  # The initial states
         mp[0, 0] = np.log(1)    # Start with no-ROH state
 
         for i in range(1, n_loci):  # Do the Viterbi-Iteration
             for j in range(n_states):
-                new_p = mp[:, i - 1] + t_mat0[:, j] + e_prob0[j,i]
+                new_p = mp[:, i - 1] + t_mat0[:, j] + e_prob0[j, i]
                 m = np.argmax(new_p)  # Find the Maximum Probability
                 mp[j, i] = new_p[m]
                 pt[j, i] = m  # Set the pointer to previous path
 
         # Do the trace back
+        path = -np.ones(n_loci, dtype="int")  # Initialize
         path[-1] = np.argmax(mp[:, -1])  # The highest probability
 
-        path = np.zeros(n_loci, dtype="int")
-        for i in range(n_loci - 1, 0):
-            path[i - 1] = pt[path[i]]  # Always th pointer to the previous path
+        for i in range(n_loci - 1, 0,-1):
+            # Always th pointer to the previous path
+            path[i - 1] = pt[path[i], i]
 
+        # assert(np.min(path)>=0) #Sanity check if everything was filled up
         self.vpath = path
 
         print("Finished Calculation Viterbi Path:")
         print(path)
-        print(f"Total log Probability: {mp[path[-1]]}")
+        print(f"Total log Probability: {mp[path[-1],-1]:.3f}")
 
-        ## Save the Path
-        if save==True:
-            np.savetxt(folder + "viterbi_path.csv", path,
+        # Save the Path
+        if save == True:
+            np.savetxt(self.folder + "viterbi_path.csv", path,
                        delimiter=",",  fmt='%i')  # Save the Viterbi Path
 
         ###############################
@@ -238,4 +242,4 @@ print(np.shape(hmm.e_obj.ref_haps))
 # print(np.shape(hmm.e_obj.e_mat))
 # print(hmm.e_obj.e_mat[0,:,1])
 
-hmm.calc_viterbi_path()
+hmm.calc_viterbi_path(save=True)
