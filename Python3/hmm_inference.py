@@ -106,7 +106,7 @@ class HMM_Analyze(object):
         path = -np.ones(n_loci, dtype="int")  # Initialize
         path[-1] = np.argmax(mp[:, -1])  # The highest probability
 
-        for i in range(n_loci - 1, 0,-1):
+        for i in range(n_loci - 1, 0, -1):
             # Always th pointer to the previous path
             path[i - 1] = pt[path[i], i]
 
@@ -234,12 +234,7 @@ class Model_Emissions(Emissions):
 ###############################
 ###############################
 # Do some Testing
-hmm = HMM_Analyze()
-# hmm.load_data(folder="./Simulated/Example0/")
+hmm = HMM_Analyze(folder="./Simulated/Test20ref/")
 print(np.shape(hmm.e_obj.ref_haps))
-# print(hmm.e_obj.p)
-# hmm.e_obj.give_emission_matrix()
-# print(np.shape(hmm.e_obj.e_mat))
-# print(hmm.e_obj.e_mat[0,:,1])
 
 hmm.calc_viterbi_path(save=True)

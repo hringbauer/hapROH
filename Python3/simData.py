@@ -14,7 +14,7 @@ class Simulator(object):
     and overwrite functions.
     Contains Parameters"""
     l = 1000  # Nr of the Observations
-    k = 20  # Nr of Reference Haplotypes
+    k, h = 20, 20  # Nr of reference Haplotypes, Nr of diff. ones
     lats = []  # The l latent States [l]
     pure_stat = []  # The pure, unnoisy States [l]
     ob_stat = []  # The observed State [l]
@@ -31,7 +31,7 @@ class Simulator(object):
             refsim = BinomSimRefNoLD()
 
         self.set_ref_sim(sim=refsim)   # Set the Reference Simulator
-        self.ref_sim.set_params(k=self.k, l=self.l)
+        self.ref_sim.set_params(k=self.k, l=self.l, h=self.h)
 
     def set_ref_sim(self, sim):
         """Set the Reference Simulator to sim"""
@@ -237,15 +237,6 @@ class BinomSimRefNoLD(SimRef):
     l = 1000  # Length of the Haplotypes
     p = 0.5   # Mean Allele Frequency
 
-    # def set_params(self, h=5, k=100, l=1000, p=0.5):
-    #    """Set Parameters for reference"""
-    #    self.h=h
-    #    self.k=k
-    #    self.l=l
-    #    self.p=p
-    #    print("k set")
-    #    print(self.k)
-
     def set_params(self, **kwargs):
         """Set Attributes with keyworded Arguments"""
         for key, value in kwargs.items():
@@ -272,7 +263,7 @@ class BinomSimRefNoLD(SimRef):
 
 # Plot Binomial Sampling
 sim = BinomSim()
-sim.ref_sim.set_params(h=2)
+#sim.ref_sim.set_params(h=2)
 sim.simulate_full()
 sim.save_data(folder="./Simulated/Test0/")
 
