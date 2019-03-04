@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os  # For Saving to Folder
 
+from scipy.special import logsumexp
+
 
 #################################
 #################################
@@ -13,11 +15,12 @@ class HMM_Analyze(object):
     Contains Parameters"""
     folder = ""  # The working folder
     l = 1000  # Nr of the Observations
-    n_ref = 20  # The Size of the Reference Panel
+    n_ref = 20  # The Size of the Reference Panel [k-1]
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
     ob_stat = []  # The observed State [l]
 
-    v_path = []  # The inferred Viterbi Path
+    v_path = []  # The inferred Viterbi Path [l]
+    posterior = []  # The inferred Posterior Matrix [kxl] Log Space
 
     t_obj, e_obj = 0, 0  # Objects for the transitions and Emission probabilities
 
@@ -122,7 +125,75 @@ class HMM_Analyze(object):
             np.savetxt(self.folder + "viterbi_path.csv", path,
                        delimiter=",",  fmt='%i')  # Save the Viterbi Path
 
-        ###############################
+    def calc_posterior(self, save=True):
+        """Calculate the poserior for each path"""
+        e_mat = self.e_obj.give_emission_matrix()
+        t_mat = self.t_obj.give_transitions()
+        ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
+
+        e_mat[e_mat == 0] = 1e-20  # Tiny probability of emission
+
+        # Do the Transformation to Log Space (Computational Feasibility)
+        e_mat0 = np.log(e_mat)
+        t_mat0 = np.log(t_mat)
+
+        n_states = np.shape(e_mat)[0]
+        n_loci = np.shape(e_mat)[1]
+
+        # The observing probabilities of the States [k,l]
+        e_prob0 = e_mat0[:, range(len(ob_stat)), ob_stat]
+
+        print("Loaded Transition and Emission Matrix:")
+        print(np.shape(t_mat))
+        print(np.shape(e_mat))
+        print("Loaded Observations:")
+        print(np.shape(ob_stat))
+
+        # Do the inference for every Path
+        # Interested in posterior for 0:
+
+        # Forward Log Posteriors
+        fwd = np.ones((n_states, n_loci), dtype="float")
+        # Backward Log Posteriors
+        bwd = np.ones((n_states, n_loci), dtype="float")
+        # Total Log Posteriors
+        post = np.zeros((n_states, n_loci), dtype="float")
+
+        # Do the forward step
+        fwd[:, 0] = 1e-4  # Initial Probabilities not in HW
+        fwd[0, 0] = 1 - np.sum(fwd[1:, 0])  # The initial HW prob.
+        fwd = np.log(fwd)  # Change to log space
+
+        for i in range(1, n_loci):  # Do the forward recursion
+            for j in range(n_states):
+                trans_ll = fwd[:, i - 1] + t_mat0[:, j]
+                fwd[j, i] = e_prob0[j, i] + logsumexp(trans_ll)
+
+        # Do the backward step
+        bwd[:, -1] = 1e-4  # Initial Probabilities
+        bwd[0, -1] = 1 - np.sum(bwd[1:, -1])
+        bwd = np.log(bwd)  # Change to log space
+
+        for i in range(n_loci - 1, 0, -1):  # Do the backward recursion
+            for j in range(n_states):
+                trans_ll = t_mat0[j, :] + e_prob0[:, i] + bwd[:, i]
+                bwd[j, i - 1] = logsumexp(trans_ll)
+
+        tot_ll = logsumexp(fwd[:, -1] + bwd[:, -1])  # Get total log likelihood
+        #tot_llb = logsumexp(fwd[:, 0] + bwd[:, 0])
+
+        print(f"Total Log likelihood fwd: {tot_ll: .3f}")
+        # print(f"Total Log likelihood bwd: {tot_llb: .3f})
+
+        # COmbine the forward and backward calculations
+        post = fwd + bwd - tot_ll  # The formulat is f*b/tot_l
+
+        # Save the Data
+        if save == True:
+            np.savetxt(self.folder + "posterior.csv", post,
+                       delimiter=",",  fmt='%f')
+        self.poterior = post
+        print("Finished Calculation State Posteriors")
 
 
 class Transitions(object):
@@ -180,6 +251,7 @@ class Model_Transitions(Transitions):
         return self.trans_mat
 
 ###############################
+###############################
 
 
 class Emissions(object):
@@ -226,15 +298,16 @@ class Model_Emissions(Emissions):
 
         return e_mat
 
-    def give_emission(self, pos=0, state=0):
-        """Give Emission Probability"""
-        raise NotImplementedError("Implement This!")
+    def give_emission_state(self, states, remember=True):
+        """Gives the emission matrix of path of states"""
+        raise NotImplementedError("Implement this future Harald.")
 
 
 ###############################
 ###############################
 # Do some Testing
-hmm = HMM_Analyze(folder="./Simulated/Test20ref/")
+hmm = HMM_Analyze(folder="./Simulated/Test20r/")
 print(np.shape(hmm.e_obj.ref_haps))
 
-hmm.calc_viterbi_path(save=True)
+# hmm.calc_viterbi_path(save=True)
+hmm.calc_posterior(save=True)
