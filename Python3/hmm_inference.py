@@ -10,12 +10,11 @@ import os                     # For Saving to Folder
 import cProfile               # For Profiling
 from scipy.special import logsumexp
 #from func import fwd_bkwd    # Import the Python Function
-import cfunc
-
+from cfunc import fwd_bkwd, viterbi_path # The Cython Functions
+from func import fwd_bkwd_p, viterbi_path_p   # The Python Functions
 
 #################################
 #################################
-
 
 class HMM_Analyze(object):
     """Analyze Class for HMMs.
@@ -23,6 +22,7 @@ class HMM_Analyze(object):
     and overwrite functions.
     Contains Parameters"""
     folder = ""  # The working folder
+    output = True
     l = 1000  # Nr of the Observations
     n_ref = 20  # The Size of the Reference Panel [k-1]
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
@@ -32,14 +32,25 @@ class HMM_Analyze(object):
     posterior = []  # The inferred Posterior Matrix [kxl] Log Space
 
     t_obj, e_obj = 0, 0  # Objects for the transitions and Emission probabilities
+    fwd_bkwd, viterbi_path = 0, 0 # Function for the fwd-bkwd Algorithm
 
     def __init__(self, folder="./Simulated/Example0/",
-                 t_model="model", e_model="haploid"):
-        """Initialize Class"""
+                 t_model="model", e_model="haploid", output=True, cython=True):
+        """Initialize Class. output: Boolean whether to print
+        Cython: Whether to use Cython"""
         self.load_data(folder=folder)
         self.load_transition_model(t_model=t_model)
         self.load_emission_model(e_model=e_model)
         self.folder = folder  # Save the working folder
+        self.output = output
+
+        if cython == True:
+            self.fwd_bkwd = fwd_bkwd
+            self.viterbi_path = viterbi_path
+
+        else:
+            self.fwd_bkwd = fwd_bkwd_p
+            self.viterbi_path = viterbi_path_p
 
     def load_data(self, folder="./Simulated/Example0/"):
         """Loads the Data"""
@@ -51,14 +62,17 @@ class HMM_Analyze(object):
         # Do some Post-Processing of the Loading
         self.n_ref = np.shape(self.ref_states)[0]
 
-        print(f"Successfully loaded Data from: {folder}")
+        if self.output:
+            print(f"Successfully loaded Data from: {folder}")
+
 
     def load_transition_model(self, t_model="model"):
         """Load the Transition Model"""
         if t_model == "model":
             self.t_obj = Model_Transitions()
 
-        print(f"Loaded Transition Model: {t_model}")
+        if self.output:
+            print(f"Loaded Transition Model: {t_model}")
 
     def load_emission_model(self, e_model="haploid"):
         """Load the Emission Model"""
@@ -67,8 +81,8 @@ class HMM_Analyze(object):
 
         if e_model == "diploid":
             self.e_obj = 0
-
-        print(f"Loaded Emission Model: {e_model}")
+        if self.output:
+            print(f"Loaded Emission Model: {e_model}")
 
     ###############################
     # The actual Inference Part
@@ -82,59 +96,34 @@ class HMM_Analyze(object):
         t_mat = self.t_obj.give_transitions()
         ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
 
-        e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat)
+        e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
         e_prob[e_prob == 0] = 1e-20  # Tiny probability of emission
         e_prob0 = np.log(e_prob)
 
-        e_mat0 = np.log(e_mat)  # Do the Transformation to Log Space
         t_mat0 = np.log(t_mat)
 
-        print("Loaded Transition and Emission Matrix:")
-        print(np.shape(t_mat))
-        print(np.shape(e_mat))
-        print("Loaded Observations:")
-        print(np.shape(ob_stat))
+        end_p = np.empty(np.shape(e_prob0)[0], dtype=np.float)
+        end_p[1:] = 0.001       # Low Probability
+        end_p[0] = 1 - np.sum(end_p[1:])
+        end_p0 = np.log(end_p)  # Go to Log Space
 
-        # The observing probabilities of the States
-        #e_prob0 = e_mat0[:, range(len(ob_stat)), ob_stat]
+        if self.output==True:
+            print("Loaded Transition and Emission Matrix:")
+            print(np.shape(t_mat))
+            print(np.shape(e_mat))
+            print("Loaded Observations:")
+            print(np.shape(ob_stat))
 
-        n_states = np.shape(e_mat)[0]
-        n_loci = np.shape(e_mat)[1]
-
-        # Do the actual optimization (with back-tracking)
-        # Initialize
-        mp = np.zeros((n_states, n_loci), dtype="float")
-        pt = np.zeros((n_states, n_loci), dtype="int")  # Previous State Pinter
-
-        mp[:, 0] = np.log(0.001)  # The initial states
-        mp[0, 0] = np.log(1)    # Start with no-ROH state
-
-        for i in range(1, n_loci):  # Do the Viterbi-Iteration
-            for j in range(n_states):
-                new_p = mp[:, i - 1] + t_mat0[:, j] + e_prob0[j, i]
-                m = np.argmax(new_p)  # Find the Maximum Probability
-                mp[j, i] = new_p[m]
-                pt[j, i] = m  # Set the pointer to previous path
-
-        # Do the trace back
-        path = -np.ones(n_loci, dtype="int")  # Initialize
-        path[-1] = np.argmax(mp[:, -1])  # The highest probability
-
-        for i in range(n_loci - 1, 0, -1):
-            # Always th pointer to the previous path
-            path[i - 1] = pt[path[i], i]
-
-        # assert(np.min(path)>=0) #Sanity check if everything was filled up
-        self.vpath = path
-
-        print("Finished Calculation Viterbi Path:")
-        print(path)
-        print(f"Total log Probability: {mp[path[-1],-1]:.3f}")
+        path = self.viterbi_path(e_prob0, t_mat0, end_p0)
 
         # Save the Path
+        self.vpath = path
         if save == True:
             np.savetxt(self.folder + "viterbi_path.csv", path,
                        delimiter=",",  fmt='%i')  # Save the Viterbi Path
+
+        if self.output:
+            print(f"Finished Calculation Viterbi Path: {path}")
 
     def calc_posterior(self, save=True):
         """Calculate the poserior for each path"""
@@ -151,11 +140,12 @@ class HMM_Analyze(object):
         n_states = np.shape(e_mat)[0]
         n_loci = np.shape(e_mat)[1]
 
-        print("Loaded Transition and Emission Matrix:")
-        print(np.shape(t_mat))
-        print(np.shape(e_mat))
-        print("Loaded Observations:")
-        print(np.shape(ob_stat))
+        if self.output:
+            print("Loaded Transition and Emission Matrix:")
+            print(np.shape(t_mat))
+            print(np.shape(e_mat))
+            print("Loaded Observations:")
+            print(np.shape(ob_stat))
 
         # The observing probabilities of the States [k,l]
         e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
@@ -174,17 +164,19 @@ class HMM_Analyze(object):
         bwd = np.log(bwd)  # Change to log space
 
         # Do the forward-backward Algorithm:
-        post = cfunc.fwd_bkwd(e_prob0, t_mat0, fwd, bwd)
+        post = self.fwd_bkwd(e_prob0, t_mat0, fwd, bwd)
+        if self.output:
+            print("Finished Calculation State Posteriors")
+            print(post)
 
-        print("Finished Calculation State Posteriors")
-        # Save the Data
+        ### Save the Data
         if save == True:
             np.savetxt(self.folder + "posterior.csv", post,
                        delimiter=",",  fmt='%f')
-        self.poterior = post
+            print(f"Saved Results to {self.folder}")
 
-        print(f"Saved Results to {self.folder}")
 
+        self.posterior = post
 
 class Transitions(object):
     """Class for transition probabilities.
@@ -305,17 +297,13 @@ class Model_Emissions(Emissions):
 ###############################
 # Do some Testing
 # hmm.calc_viterbi_path(save=True)
-
-
 def profiling_run():
     """Short FUnction for profiling"""
     hmm = HMM_Analyze(folder="./Simulated/Test2r/")
     print(np.shape(hmm.e_obj.ref_haps))
     hmm.calc_posterior(save=True)
 
-
-cProfile.run("profiling_run()")
-
-#hmm = HMM_Analyze(folder="./Simulated/Test20r/")
-#print(np.shape(hmm.e_obj.ref_haps))
-#hmm.calc_posterior(save=True)
+if __name__ == "__main__":
+    hmm = HMM_Analyze(folder="./Simulated/Test2_rep/")
+    hmm.calc_viterbi_path(save=True)
+    #hmm.calc_posterior(save=True)

@@ -259,42 +259,43 @@ class BinomSimRefNoLD(SimRef):
 
 #################################################
 #################################################
+#  Individual Run:
+
+if __name__ == "__main__":
+    # Plot Binomial Sampling
+    sim = BinomSim()
+    #sim.ref_sim.set_params(h=2)
+    sim.simulate_full()
+    sim.save_data(folder="./Simulated/Test0/")
+
+    # Attach the copied Haplotype
+    #plot_hap = np.array([sim.ob_stat for _ in range(1)])
+
+    fs = 12
+
+    plt.figure(figsize=(14, 2))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[10, 1])
+    gs.update(hspace=0.3)  # set the spacing between axes.
+
+    ax = plt.subplot(gs[0])  # The left subplot
+    ax1 = plt.subplot(gs[1])  # The middle one
+
+    ax.imshow(sim.ref_states, cmap='Greys',  aspect='auto')
+    ax.plot(sim.lats - 1.5, linewidth=2, color="red")  # Plot upper Boarder
+    ax.plot(sim.lats - 0.5, linewidth=2, color="red")  # Plot lower boarder
+
+    ax.set_ylabel("Ref. Hapotype", fontsize=fs)
+    # ax.axhline(-.3)
+    ax.set_xticks([])
+
+    # Do the Reference SNP
+    ax1.imshow(sim.ob_stat, cmap='Greys',  aspect='auto')
+    ax1.set_xlabel("SNP", fontsize=fs)
+    ax1.set_yticks([])
+    ax1.set_ylabel("Copy")
+
+    plt.savefig("./figures_test/haplotypes.pdf", bbox_inches = 'tight', pad_inches = 0)
+    plt.show()
 
 
-# Plot Binomial Sampling
-sim = BinomSim()
-#sim.ref_sim.set_params(h=2)
-sim.simulate_full()
-sim.save_data(folder="./Simulated/Test0/")
-
-# Attach the copied Haplotype
-#plot_hap = np.array([sim.ob_stat for _ in range(1)])
-
-fs = 12
-
-plt.figure(figsize=(14, 2))
-gs = gridspec.GridSpec(2, 1, height_ratios=[10, 1])
-gs.update(hspace=0.3)  # set the spacing between axes.
-
-ax = plt.subplot(gs[0])  # The left subplot
-ax1 = plt.subplot(gs[1])  # The middle one
-
-ax.imshow(sim.ref_states, cmap='Greys',  aspect='auto')
-ax.plot(sim.lats - 1.5, linewidth=2, color="red")  # Plot upper Boarder
-ax.plot(sim.lats - 0.5, linewidth=2, color="red")  # Plot lower boarder
-
-ax.set_ylabel("Ref. Hapotype", fontsize=fs)
-# ax.axhline(-.3)
-ax.set_xticks([])
-
-# Do the Reference SNP
-ax1.imshow(sim.ob_stat, cmap='Greys',  aspect='auto')
-ax1.set_xlabel("SNP", fontsize=fs)
-ax1.set_yticks([])
-ax1.set_ylabel("Copy")
-
-plt.savefig("./figures_test/haplotypes.pdf", bbox_inches = 'tight', pad_inches = 0)
-plt.show()
-
-
-# sim.ref_sim.plot_ld_r2()
+    # sim.ref_sim.plot_ld_r2()
