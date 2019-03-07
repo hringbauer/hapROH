@@ -56,6 +56,7 @@ class HMM_Analyze(object):
         """Loads the Data"""
         self.ref_states = np.loadtxt(
             folder + "refs.csv", dtype="int", delimiter=",")
+
         self.ob_stat = np.loadtxt(
             folder + "hap.csv", dtype="int", delimiter=",")
 
@@ -83,6 +84,15 @@ class HMM_Analyze(object):
             self.e_obj = 0
         if self.output:
             print(f"Loaded Emission Model: {e_model}")
+
+    def set_diploid_observations(self):
+        """Simulate random Diploid Observations"""
+        obs = self.ob_stat
+        n_loci = np.shape(obs)[1]
+        phases = np.random.randint(2, size=n_loci)
+        obs[0,:] = obs[phases, np.arange(n_loci)]
+        self.ob_stat = obs
+
 
     ###############################
     # The actual Inference Part
@@ -198,8 +208,8 @@ class Transitions(object):
 class Model_Transitions(Transitions):
     """Implements the Model Transitions"""
     roh_in = 0.002      # The rate of jumping to another Haplotype
-    roh_out = 0.01     # The rate of jumping out
-    roh_jump = 0.05    # The rate of jumping within ROH
+    roh_out = 0.002     # The rate of jumping out
+    roh_jump = 0.1    # The rate of jumping within ROH
     n_ref = 20         # The Nr of reference Samples
 
     trans_mat = []    # The basic transition Matrix
@@ -304,6 +314,7 @@ def profiling_run():
     hmm.calc_posterior(save=True)
 
 if __name__ == "__main__":
-    hmm = HMM_Analyze(folder="./Simulated/Test2_rep/")
+    hmm = HMM_Analyze(folder="./Simulated/TestMVN2Copy/", cython=True)
+    hmm.set_diploid_observations()  # Set random observation per locus
     hmm.calc_viterbi_path(save=True)
-    #hmm.calc_posterior(save=True)
+    hmm.calc_posterior(save=True)
