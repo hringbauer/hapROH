@@ -314,7 +314,7 @@ def profiling_run():
     hmm.calc_posterior(save=True)
 
 if __name__ == "__main__":
-    hmm = HMM_Analyze(folder="./Simulated/TestMVN2Copy/", cython=True)
+    hmm = HMM_Analyze(folder="./Simulated/Test2r/", cython=True)
     hmm.set_diploid_observations()  # Set random observation per locus
     hmm.calc_viterbi_path(save=True)
     hmm.calc_posterior(save=True)
