@@ -93,7 +93,7 @@ class HMM_Analyze(object):
         obs[0,:] = obs[phases, np.arange(n_loci)]
         self.ob_stat = obs
 
-
+    ###############################
     ###############################
     # The actual Inference Part
 
@@ -108,8 +108,8 @@ class HMM_Analyze(object):
 
         e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
         e_prob[e_prob == 0] = 1e-20  # Tiny probability of emission
-        e_prob0 = np.log(e_prob)
 
+        e_prob0 = np.log(e_prob)
         t_mat0 = np.log(t_mat)
 
         end_p = np.empty(np.shape(e_prob0)[0], dtype=np.float)
@@ -135,8 +135,9 @@ class HMM_Analyze(object):
         if self.output:
             print(f"Finished Calculation Viterbi Path: {path}")
 
-    def calc_posterior(self, save=True):
-        """Calculate the poserior for each path"""
+    def calc_posterior(self, save=True, full=False):
+        """Calculate the poserior for each path
+        FULL: Wether to return fwd, bwd as well as tot_ll (Mode for postprocessing)"""
         e_mat = self.e_obj.give_emission_matrix()
         t_mat = self.t_obj.give_transitions()
         ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
@@ -174,7 +175,13 @@ class HMM_Analyze(object):
         bwd = np.log(bwd)  # Change to log space
 
         # Do the forward-backward Algorithm:
-        post = self.fwd_bkwd(e_prob0, t_mat0, fwd, bwd)
+        if full==False:
+            post = self.fwd_bkwd(e_prob0, t_mat0, fwd, bwd)
+
+        elif full==True:  # If FULL Mode: Return results prematurely
+            post, fwd, bwd, tot_ll = self.fwd_bkwd(e_prob0, t_mat0, fwd, bwd, full=True)
+            return post, fwd, bwd, tot_ll
+
         if self.output:
             print("Finished Calculation State Posteriors")
             print(post)
@@ -185,8 +192,22 @@ class HMM_Analyze(object):
                        delimiter=",",  fmt='%f')
             print(f"Saved Results to {self.folder}")
 
+        self.posterior = post  # Remember the Posterior
 
-        self.posterior = post
+    def optimze_ll_transition_param(self, roh_trans_params):
+        """Calculate the log likelihoods for Transitions Parameters
+        roh_trans_params [m]"""
+        m = len(roh_trans_params)
+
+        ll_hoods = []  # The Vector for the log likelihoods
+
+        for p in roh_trans_params:
+            # Set the transition Parameters
+            self.t_obj.set_params(roh_jump=p)
+            _, _, _, tot_ll = self.calc_posterior(save=False, full=True)
+            ll_hoods.append(tot_ll)
+
+        return np.array(ll_hoods)
 
 class Transitions(object):
     """Class for transition probabilities.
@@ -204,11 +225,16 @@ class Transitions(object):
         """Return Transition Matrix"""
         raise NotImplementedError("Implement This!")
 
+    def set_params(self, **kwargs):
+        """Set the Values."""
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        self.calc_transitions()  # Calculate the new transition Matrix
 
 class Model_Transitions(Transitions):
     """Implements the Model Transitions"""
     roh_in = 0.002      # The rate of jumping to another Haplotype
-    roh_out = 0.002     # The rate of jumping out
+    roh_out = 0.01     # The rate of jumping out
     roh_jump = 0.1    # The rate of jumping within ROH
     n_ref = 20         # The Nr of reference Samples
 
@@ -314,7 +340,8 @@ def profiling_run():
     hmm.calc_posterior(save=True)
 
 if __name__ == "__main__":
-    hmm = HMM_Analyze(folder="./Simulated/Test2r/", cython=True)
+    folder = "./Simulated/Test2r/"
+    hmm = HMM_Analyze(folder=folder, cython=True)
     hmm.set_diploid_observations()  # Set random observation per locus
     hmm.calc_viterbi_path(save=True)
     hmm.calc_posterior(save=True)

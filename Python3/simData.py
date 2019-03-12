@@ -13,7 +13,7 @@ class Simulator(object):
     This is the main Class, all specific Simulators can inherit from it
     and overwrite functions.
     Contains Parameters"""
-    l = 1000  # Nr of the Observations
+    l = 10000  # Nr of the Observations (Loci)
     k, h = 20, 20  # Nr of reference Haplotypes, Nr of diff. ones
     lats = []  # The l latent States [l]
     pure_stat = []  # The pure, unnoisy States [l]
@@ -91,11 +91,16 @@ class Simulator(object):
         np.savetxt(folder + "refs.csv", self.ref_states,
                    delimiter=",",  fmt='%i')  # Save Reference Haplotypes
         np.savetxt(folder + "hap.csv", sim.ob_stat, delimiter=",",
-                   fmt='%i')      # Save Genotype Vector
+                   fmt='%i')        # Save Genotype Vector
         np.savetxt(folder + "lat.csv", self.lats, delimiter=",",
                    fmt='%i')        # Save Hidden Path
+        self.save_parameters(folder = folder)      # Save the Parameters
         print(f"Successfully saved to: {folder}")
 
+    def save_parameters(self, folder="../Simulated/Test0/"):
+        """Save Parameters of Simulation"""
+        raise RuntimeWarning("Please implement saving of Parameters.")
+        pass
 
 #####################################################
 #####################################################
@@ -108,7 +113,7 @@ class BinomSim(Simulator):
 
     roh_in = 0.002      # The rate of jumping to another Haplotype
     roh_out = 0.01     # The rate of jumping out
-    roh_jump = 0.05    # The rate of jumping within ROH
+    roh_jump = 0.1    # The rate of jumping within ROH
 
     def set_cons_spacing(s=0.1):
         """Set the spacing of SNPs"""
@@ -117,6 +122,13 @@ class BinomSim(Simulator):
     def set_params(self):
         """Set the parameters"""
         raise NotImplementedError("Implement this.")
+
+    def save_parameters(self, folder):
+        """Save Parameters to parameter.csv in folder"""
+        path = folder + "parameters.csv"
+        des = ["roh_in", "roh_out", "roh_jump"]
+        vals = [self.roh_in, self.roh_out, self.roh_jump]
+        np.savetxt(path, (des, vals), fmt="%s", delimiter=",")
 
     def first_state(self):
         """Generate the first latent state"""
@@ -194,7 +206,6 @@ class BinomSim(Simulator):
         return np.array([y0, y1])  # Set the observed Status
 
 ####################################################
-
 
 class BinomSimCopyBoth(Simulator):
     """Bimomial Simulator.
@@ -293,7 +304,6 @@ class BinomSimCopyBoth(Simulator):
 #####################################################
 # Reference Simulator
 
-
 class SimRef(object):
     """Class for Simulating the Reference Strings"""
     refs = []
@@ -358,7 +368,6 @@ class BinomSimRefNoLD(SimRef):
         self.haps = haps
         return haps
 
-
 class MultiVariateNormalLD(SimRef):
     """Simulate References under a Multivariate Normal Model.
     Simulate latent variable and push them through a logit function"""
@@ -401,8 +410,8 @@ class MultiVariateNormalLD(SimRef):
 
 if __name__ == "__main__":
     # Plot Binomial Sampling
-    # sim = BinomSim(refsim="MVN_LD")   # refsim = "MVN_LD", "BinomialNoLD"
-    sim = BinomSimCopyBoth(refsim="MVN_LD")
+    sim = BinomSim(refsim="BinomialNoLD")   # refsim = "MVN_LD", "BinomialNoLD"
+    # sim = BinomSimCopyBoth(refsim="MVN_LD")
     # sim.ref_sim.set_params(h=2)
     sim.simulate_full()
     sim.save_data(folder="./Simulated/Test0/")

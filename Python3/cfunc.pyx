@@ -22,10 +22,11 @@ cdef inline double logsumexp(double[:] vec):
 
 
 def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat0,
-    double[:, :] fwd, double[:, :] bwd):
+    double[:, :] fwd, double[:, :] bwd, full=False):
     """Takes emission and transition probabilities, and calculates posteriors.
     Input: kxl matrices of emission, transition
-    and initialized fwd and bwd probabilities. All in log Space"""
+    and initialized fwd and bwd probabilities. All in log Space
+    full: Boolean whether to return everything"""
     cdef int n_states = e_prob0.shape[0]
     cdef int n_loci = e_prob0.shape[1]
     cdef Py_ssize_t i, j, k # The Array Indices
@@ -58,8 +59,15 @@ def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat0,
     print(f"Total Log likelihood: {tot_ll: .3f}")
 
     # Combine the forward and backward calculations
-    post = np.asarray(fwd) + np.asarray(bwd) - tot_ll
-    return post
+    fwd1 = np.asarray(fwd)  # Transform
+    bwd1 = np.asarray(bwd)
+    post = fwd1 + bwd1 - tot_ll
+
+    if full==False:
+      return post
+
+    elif full==True:   # Return everything
+      return post, fwd1, bwd1, tot_ll
 
 
 def viterbi_path(double[:, :] e_prob0, double[:, :] t_mat0, double[:] end_p0):
