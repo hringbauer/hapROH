@@ -23,7 +23,6 @@ class HMM_Analyze(object):
     Contains Parameters"""
     folder = ""  # The working folder
     output = True
-    l = 1000  # Nr of the Observations
     n_ref = 20  # The Size of the Reference Panel [k-1]
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
     ob_stat = []  # The observed State [l]
@@ -70,7 +69,8 @@ class HMM_Analyze(object):
     def load_transition_model(self, t_model="model"):
         """Load the Transition Model"""
         if t_model == "model":
-            self.t_obj = Model_Transitions()
+            self.t_obj = Model_Transitions(n_ref=self.n_ref)
+            #self.t_obj.set_params(n_ref=self.n_ref)
 
         if self.output:
             print(f"Loaded Transition Model: {t_model}")
@@ -212,9 +212,11 @@ class HMM_Analyze(object):
 class Transitions(object):
     """Class for transition probabilities.
     Has methods to return them"""
+    n_ref = 0         # The Nr of reference Samples
 
-    def __init__(self):
+    def __init__(self, n_ref=20):
         """Initialize Class"""
+        self.n_ref = n_ref # Set the Number of Reference Samples
         self.calc_transitions()
 
     def give_transitions(self):
@@ -233,10 +235,9 @@ class Transitions(object):
 
 class Model_Transitions(Transitions):
     """Implements the Model Transitions"""
-    roh_in = 0.002      # The rate of jumping to another Haplotype
-    roh_out = 0.01     # The rate of jumping out
-    roh_jump = 0.1    # The rate of jumping within ROH
-    n_ref = 20         # The Nr of reference Samples
+    roh_in = 0.0005     # The rate of jumping to another Haplotype
+    roh_out = 0.001     # The rate of jumping out
+    roh_jump = 0.02   # The rate of jumping within ROH
 
     trans_mat = []    # The basic transition Matrix
 
@@ -340,8 +341,8 @@ def profiling_run():
     hmm.calc_posterior(save=True)
 
 if __name__ == "__main__":
-    folder = "./Simulated/Test2r/"
+    folder =  "./Empirical/Sard20_0-10kROH/"      # "./Simulated/Test2r/"
     hmm = HMM_Analyze(folder=folder, cython=True)
-    hmm.set_diploid_observations()  # Set random observation per locus
+    hmm.set_diploid_observations()               # Set random observation per locus
     hmm.calc_viterbi_path(save=True)
     hmm.calc_posterior(save=True)
