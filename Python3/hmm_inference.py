@@ -10,7 +10,7 @@ import os                     # For Saving to Folder
 import cProfile               # For Profiling
 from scipy.special import logsumexp
 #from func import fwd_bkwd    # Import the Python Function
-from cfunc import fwd_bkwd, viterbi_path # The Cython Functions
+from cfunc import fwd_bkwd, viterbi_path, fwd_bkwd_fast # The Cython Functions
 from func import fwd_bkwd_p, viterbi_path_p   # The Python Functions
 
 #################################
@@ -45,6 +45,11 @@ class HMM_Analyze(object):
 
         if cython == True:
             self.fwd_bkwd = fwd_bkwd
+            self.viterbi_path = viterbi_path
+
+        elif cython == 2:   # To test the "fast algorithm". Remove later
+            self.fwd_bkwd = fwd_bkwd_fast
+            print("Running the linear speed one.")
             self.viterbi_path = viterbi_path
 
         else:
@@ -335,14 +340,14 @@ class Model_Emissions(Emissions):
 # Do some Testing
 # hmm.calc_viterbi_path(save=True)
 def profiling_run():
-    """Short FUnction for profiling"""
+    """Short Function for profiling"""
     hmm = HMM_Analyze(folder="./Simulated/Test2r/")
     print(np.shape(hmm.e_obj.ref_haps))
     hmm.calc_posterior(save=True)
 
 if __name__ == "__main__":
-    folder =  "./Empirical/Sard20_0-10kROH/"      # "./Simulated/Test2r/"
-    hmm = HMM_Analyze(folder=folder, cython=True)
-    hmm.set_diploid_observations()               # Set random observation per locus
-    hmm.calc_viterbi_path(save=True)
-    hmm.calc_posterior(save=True)
+    folder =  "./Empirical/Sard100_0-10kROH/"        # "./Simulated/Test20r/"
+    hmm = HMM_Analyze(folder=folder, cython=2)
+    hmm.set_diploid_observations()                  # Set random single observation per locus
+    #hmm.calc_viterbi_path(save=True)                # Calculate the Viterbi Path.
+    hmm.calc_posterior(save=True)                     # And the Posterior while we are at it.
