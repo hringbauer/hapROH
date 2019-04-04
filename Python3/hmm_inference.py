@@ -9,12 +9,13 @@ import matplotlib.pyplot as plt
 import os                     # For Saving to Folder
 import cProfile               # For Profiling
 from scipy.special import logsumexp
-#from func import fwd_bkwd    # Import the Python Function
-from cfunc import fwd_bkwd, viterbi_path, fwd_bkwd_fast # The Cython Functions
+# from func import fwd_bkwd    # Import the Python Function
+from cfunc import fwd_bkwd, viterbi_path, fwd_bkwd_fast  # The Cython Functions
 from func import fwd_bkwd_p, viterbi_path_p   # The Python Functions
 
 #################################
 #################################
+
 
 class HMM_Analyze(object):
     """Analyze Class for HMMs.
@@ -25,13 +26,15 @@ class HMM_Analyze(object):
     output = True
     n_ref = 20  # The Size of the Reference Panel [k-1]
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
-    ob_stat = []  # The observed State [l]
+    ob_stat = []     # The observed State [l]
+
+    r_map = []     # The Map position of every marker [l]
 
     v_path = []  # The inferred Viterbi Path [l]
     posterior = []  # The inferred Posterior Matrix [kxl] Log Space
 
     t_obj, e_obj = 0, 0  # Objects for the transitions and Emission probabilities
-    fwd_bkwd, viterbi_path = 0, 0 # Function for the fwd-bkwd Algorithm
+    fwd_bkwd, viterbi_path = 0, 0  # Function for the fwd-bkwd Algorithm
 
     def __init__(self, folder="./Simulated/Example0/",
                  t_model="model", e_model="haploid", output=True, cython=True):
@@ -64,18 +67,32 @@ class HMM_Analyze(object):
         self.ob_stat = np.loadtxt(
             folder + "hap.csv", dtype="int", delimiter=",")
 
+        map_path = folder + "map.csv"
+        if os.path.exists(map_path):
+            r_map = np.loadtxt(
+                map_path, dtype="float", delimiter=",")
+        else:
+            print("No Genetic Map found. Defaulting...")  # Eventually: Runtime Warning
+            r_map = np.arange(np.shape(self.ob_stat)[1])
+
+        self.r_map = r_map
+
+        print(f"Minimum Genetic Map: {np.min(self.r_map)}")
+        print(f"Maximum Genetic Map: {np.max(self.r_map)}")
+
+        assert(len(self.r_map) == np.shape(self.ob_stat)[1])  # Sanity Check
+
         # Do some Post-Processing of the Loading
         self.n_ref = np.shape(self.ref_states)[0]
 
         if self.output:
             print(f"Successfully loaded Data from: {folder}")
 
-
     def load_transition_model(self, t_model="model"):
         """Load the Transition Model"""
         if t_model == "model":
-            self.t_obj = Model_Transitions(n_ref=self.n_ref)
-            #self.t_obj.set_params(n_ref=self.n_ref)
+            self.t_obj = Model_Transitions(n_ref=self.n_ref, r_map=self.r_map)
+            # self.t_obj.set_params(n_ref=self.n_ref)
 
         if self.output:
             print(f"Loaded Transition Model: {t_model}")
@@ -95,7 +112,7 @@ class HMM_Analyze(object):
         obs = self.ob_stat
         n_loci = np.shape(obs)[1]
         phases = np.random.randint(2, size=n_loci)
-        obs[0,:] = obs[phases, np.arange(n_loci)]
+        obs[0, :] = obs[phases, np.arange(n_loci)]
         self.ob_stat = obs
 
     ###############################
@@ -122,7 +139,7 @@ class HMM_Analyze(object):
         end_p[0] = 1 - np.sum(end_p[1:])
         end_p0 = np.log(end_p)  # Go to Log Space
 
-        if self.output==True:
+        if self.output == True:
             print("Loaded Transition and Emission Matrix:")
             print(np.shape(t_mat))
             print(np.shape(e_mat))
@@ -145,6 +162,7 @@ class HMM_Analyze(object):
         FULL: Wether to return fwd, bwd as well as tot_ll (Mode for postprocessing)"""
         e_mat = self.e_obj.give_emission_matrix()
         t_mat = self.t_obj.give_transitions()
+
         ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
 
         e_mat[e_mat == 0] = 1e-20  # Tiny probability of emission
@@ -152,6 +170,12 @@ class HMM_Analyze(object):
         # Do the Transformation to Log Space (Computational Feasibility)
         e_mat0 = np.log(e_mat)
         t_mat0 = np.log(t_mat)
+
+        ### Prepare the Recombination Map
+        r_map = np.zeros(len(self.r_map))  # Make new array
+        r_map[1:] = self.r_map[1:] - self.r_map[:-1] # Do differences
+        assert(np.min(r_map)>=0)
+        r_map0 = np.log(r_map + 1e-20)  # Load Recombination Map
 
         n_states = np.shape(e_mat)[0]
         n_loci = np.shape(e_mat)[1]
@@ -180,18 +204,19 @@ class HMM_Analyze(object):
         bwd = np.log(bwd)  # Change to log space
 
         # Do the forward-backward Algorithm:
-        if full==False:
-            post = self.fwd_bkwd(e_prob0, t_mat0, fwd, bwd)
+        if full == False:
+            post = self.fwd_bkwd(e_prob0, t_mat0, fwd, bwd, r_map0)
 
-        elif full==True:  # If FULL Mode: Return results prematurely
-            post, fwd, bwd, tot_ll = self.fwd_bkwd(e_prob0, t_mat0, fwd, bwd, full=True)
+        elif full == True:  # If FULL Mode: Return results prematurely
+            post, fwd, bwd, tot_ll = self.fwd_bkwd(
+                e_prob0, t_mat0, fwd, bwd, r_map0, full=True)
             return post, fwd, bwd, tot_ll
 
         if self.output:
             print("Finished Calculation State Posteriors")
-            print(post)
+            # print(post)  # For debugging
 
-        ### Save the Data
+        # Save the Data
         if save == True:
             np.savetxt(self.folder + "posterior.csv", post,
                        delimiter=",",  fmt='%f')
@@ -214,14 +239,21 @@ class HMM_Analyze(object):
 
         return np.array(ll_hoods)
 
+
 class Transitions(object):
     """Class for transition probabilities.
     Has methods to return them"""
     n_ref = 0         # The Nr of reference Samples
+    map = []          # The Genetic Map
 
-    def __init__(self, n_ref=20):
+    trans_mat = []    # The full transition Matrix
+
+
+    def __init__(self, n_ref=20, r_map=[]):
         """Initialize Class"""
-        self.n_ref = n_ref # Set the Number of Reference Samples
+        self.n_ref = n_ref  # Set the Number of Reference Samples
+        self.r_map = r_map  # Set the Recombination Map
+
         self.calc_transitions()
 
     def give_transitions(self):
@@ -238,18 +270,17 @@ class Transitions(object):
             setattr(self, key, value)
         self.calc_transitions()  # Calculate the new transition Matrix
 
+
 class Model_Transitions(Transitions):
     """Implements the Model Transitions"""
     roh_in = 0.0005     # The rate of jumping to another Haplotype
     roh_out = 0.001     # The rate of jumping out
     roh_jump = 0.02   # The rate of jumping within ROH
 
-    trans_mat = []    # The basic transition Matrix
-
     def calc_transitions(self, n=0):
         """Return Transition Matrix to exponate.
         n: Nr of Reference Haplotypes"""
-        if n == 0:
+        if n == 0:     # Default to Nr of References as set in Class
             n = self.n_ref
 
         t_mat = -np.ones((n + 1, n + 1))  # Initialize Transition Matrix
@@ -258,17 +289,20 @@ class Model_Transitions(Transitions):
         t_mat[0, 1:] = self.roh_in / n  # Jumping into any ROH State
         t_mat[1:, 1:] = self.roh_jump / n  # Jumping between ROH State
 
+        ### Do the Diagonal (do the usual model - for inf. substract 1)
         di = np.diag_indices(n + 1)
         t_mat[di] = 1 - self.roh_out - self.roh_jump + \
             self.roh_jump / (n)  # Don't forget the self jump
         t_mat[0, 0] = 1 - self.roh_in   # The rate of staying in diploid
 
-        # Sanity Check if everything was filled
+        # Sanity Check if everything was filled correctly
         assert np.min(t_mat) >= 0
         # Sanity check if jumping out rates sum to 1
         assert(np.all(np.sum(t_mat, axis=1) > 0.9999))
         assert(np.all(np.sum(t_mat, axis=1) < 1.0001))
-        self.trans_mat = t_mat    # Set the Transition Matrix
+        self.trans_mat = t_mat
+        # self.trans_mat = t_mat    # Set the Transition Matrix
+        return t_mat
 
     def give_transitions(self):
         """Give the transition_matrix"""
@@ -276,7 +310,6 @@ class Model_Transitions(Transitions):
 
 ###############################
 ###############################
-
 
 class Emissions(object):
     """Class for emission probabilities
@@ -321,6 +354,7 @@ class Model_Emissions(Emissions):
         e_mat[:, :, 0] = 1 - e_mat[:, :, 1]
 
         assert(np.min(e_mat) >= 0)  # Assert all
+
         if remember == True:
             self.e_mat = e_mat  # Remember it.
 
@@ -339,15 +373,20 @@ class Model_Emissions(Emissions):
 ###############################
 # Do some Testing
 # hmm.calc_viterbi_path(save=True)
+
+
 def profiling_run():
     """Short Function for profiling"""
     hmm = HMM_Analyze(folder="./Simulated/Test2r/")
     print(np.shape(hmm.e_obj.ref_haps))
     hmm.calc_posterior(save=True)
 
+
 if __name__ == "__main__":
-    folder =  "./Empirical/Sard100_0-10kROH/"        # "./Simulated/Test20r/"
+    folder = "./Empirical/Sard100_0-10kROH/"        # "./Simulated/Test20r/"
     hmm = HMM_Analyze(folder=folder, cython=2)
-    hmm.set_diploid_observations()                  # Set random single observation per locus
-    #hmm.calc_viterbi_path(save=True)                # Calculate the Viterbi Path.
-    hmm.calc_posterior(save=True)                     # And the Posterior while we are at it.
+    # Set random single observation per locus
+    hmm.set_diploid_observations()
+    # hmm.calc_viterbi_path(save=True)                # Calculate the Viterbi Path.
+    # Calculate the Posterior.
+    hmm.calc_posterior(save=True)

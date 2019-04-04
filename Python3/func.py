@@ -2,7 +2,7 @@ import numpy as np
 from scipy.special import logsumexp
 
 
-def fwd_bkwd_p(e_prob0, t_mat0, fwd, bwd):
+def fwd_bkwd_p(e_prob0, t_mat0, fwd, bwd, r_map):
     """Takes emission and transition probabilities, and calculates posteriors.
     Input: [kxl] matrices of emission, transition
     and initialized fwd and bwd probabilities. All in log Space"""
@@ -30,7 +30,7 @@ def fwd_bkwd_p(e_prob0, t_mat0, fwd, bwd):
     return post
 
 
-def viterbi_path_p(e_prob0, t_mat0, end_p0):
+def viterbi_path_p(e_prob0, t_mat0, end_p0, r_map):
     """Implementation of a Viterbi Path.
     e_prob0 and t_mat0 [k,l] Matrices with Emission and Transition Probabilities.
     end_p: probability to begin/end in states [k]"""
