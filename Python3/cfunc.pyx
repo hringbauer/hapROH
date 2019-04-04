@@ -21,7 +21,7 @@ cdef inline double logsumexp(double[:] vec):
   return largest + log(result)
 
 
-def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat0,
+def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,
     double[:, :] fwd, double[:, :] bwd, double[:] r_map, full=False):
     """Takes emission and transition probabilities, and calculates posteriors.
     Input: kxl matrices of emission, transition
@@ -37,6 +37,10 @@ def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat0,
 
     trans_ll = np.empty(n_states, dtype=DTYPE)
     cdef double[:] trans_ll_view = trans_ll
+
+    ### Transform to Log space
+    #cdef double[:] r_map0 = np.log(r_map)         # Do log of recombination Map
+    cdef double[:, :] t_mat0 = np.log(np.eye(n_states) + t_mat[:,:])  # Do log of (relevant) transition Matrix
 
     for i in range(1, n_loci):  # Do the forward recursion
         for j in range(n_states):
@@ -70,20 +74,21 @@ def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat0,
       return post, fwd1, bwd1, tot_ll
 
 
-def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat0,
+def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,
     double[:, :] fwd, double[:, :] bwd, double[:] r_map, full=False):
     """Takes emission and transition probabilities, and calculates posteriors.
     Uses speed-up specific for Genotype data (pooling same transition rates)
-    Input (All but full given in log Space!!)
-    Emission probabilities [k x l]
-    Transition probabilities (infinitesimal) [k x k]
-    Initialized fwd and bwd probabilities [k x l]
-    Recombination map r_map;: [l]
+    Input:
+    Emission probabilities [k x l] (log space)       (log space)
+    Transition probabilities (infinitesimal) [k x k] (normal space)
+    Initialized fwd and bwd probabilities [k x l]    (log space)
+    Recombination map r_map: [l]                     (normal space)
     full: Boolean whether to return everything"""
     cdef int n_states = e_prob0.shape[0]
     cdef int n_loci = e_prob0.shape[1]
     cdef Py_ssize_t i, j, k    # The Array Indices
     cdef double stay           # The Probablility of Staying
+    cdef double t11, t00, r       # Place Holders for Calculations
 
     # Initialize Posterior and Transition Probabilities
     post = np.empty([n_states, n_loci], dtype=DTYPE)
@@ -97,25 +102,31 @@ def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat0,
     two_v = np.empty(2, dtype=DTYPE)       # Array of size two
     cdef double[:] two_v_view = two_v
 
-    # Preprocess Transition Probabilities
+    # Do transform to Log Space:
+    cdef double[:] r_map0 = np.log(r_map)         # Do log of recombination Map
+    cdef double[:, :] t_mat0 = np.log(1e6 * np.eye(3) + t_mat[:3,:3])  # Do log of (relevant) transition Matrix
 
-    # Precalculate "stay" term
-    for i in range(1, n_loci):  # Do the forward recursion
-        stay = log(exp(t_mat0[1, 1]) - exp(t_mat0[1, 2])) + r_map[i]
+
+    #############################
+    ### Do the Forward Algorithm
+    for i in range(1, n_loci):  # Run forward recursion
+        t11 = 1 + t_mat[1, 1] * r_map[i]
+        t00 = 1 + t_mat[0, 0] * r_map[i]
+        stay = log(t11 - t_mat[1, 2] * r_map[i])  # Do the log of the Stay term
 
         for k in range(1, n_states): # Calculate logsum of ROH states:
             trans_ll_view[k-1] = fwd[k, i - 1]
         f_l = logsumexp(trans_ll_view) # Logsum of ROH States
 
         # Do the 0 State:
-        two_v_view[0] = fwd[0, i - 1] + t_mat0[0, 0] + r_map[i]   # Staying in 0 State
-        two_v_view[1] = f_l + t_mat0[1, 0] + r_map[i]             # Going into 0 State
+        two_v_view[0] = fwd[0, i - 1] + log(t00)                   # Staying in 0 State
+        two_v_view[1] = f_l + t_mat0[1, 0] + r_map0[i]             # Going into 0 State
         fwd[0, i] = e_prob0[0, i] + logsumexp(two_v_view)
 
         ### Do the other states
         # Preprocessing:
-        three_v_view[0] = fwd[0, i - 1] + t_mat0[0, 1] + r_map[i]   # Coming from 0 State
-        three_v_view[1] = f_l + t_mat0[1, 2] + r_map[i]             # Coming from other ROH State
+        three_v_view[0] = fwd[0, i - 1] + t_mat0[0, 1] + r_map0[i]   # Coming from 0 State
+        three_v_view[1] = f_l + t_mat0[1, 2] + r_map0[i]             # Coming from other ROH State
 
         for j in range(1, n_states):  # Do the final run over all states
           three_v_view[2] = fwd[j, i-1] +  stay
@@ -123,22 +134,24 @@ def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat0,
 
     #############################
     ### Do the Backward Algorithm
-    for i in range(n_loci-1, 0, -1):  # Do the backward recursion
-      stay = log(exp(t_mat0[1, 1]) - exp(t_mat0[1, 2])) + r_map[i]
+    for i in range(n_loci-1, 0, -1):  # Run backward recursion
+      t11 = 1 + t_mat[1, 1] * r_map[i]
+      t00 = 1 + t_mat[0, 0] * r_map[i]
+      stay = log(t11 - t_mat[1, 2] * r_map[i])
 
       for k in range(1, n_states): # Calculate logsum of ROH states:
           trans_ll_view[k-1] = bwd[k, i] + e_prob0[k, i]
       f_l = logsumexp(trans_ll_view) # Logsum of ROH States
 
       # Do the 0 State:
-      two_v_view[0] = bwd[0, i] + t_mat0[0, 0] + r_map[i] + e_prob0[0, i]   # Staying in 0 State
-      two_v_view[1] = f_l + t_mat0[0, 1] + r_map[i]             # Going into 0 State
+      two_v_view[0] = bwd[0, i] + log(t00) + e_prob0[0, i]      # Staying in 0 State
+      two_v_view[1] = f_l + t_mat0[0, 1] + r_map0[i]             # Going into 0 State
       bwd[0, i - 1] = logsumexp(two_v_view)
 
       ### Do the other states
       # Preprocessing:
-      three_v_view[0] = e_prob0[0, i] + bwd[0, i] + t_mat0[1, 0] + r_map[i]  # Coming from 0 State
-      three_v_view[1] = f_l + t_mat0[1, 2] + r_map[i]             # Coming from other ROH State
+      three_v_view[0] = e_prob0[0, i] + bwd[0, i] + t_mat0[1, 0] + r_map0[i]  # Coming from 0 State
+      three_v_view[1] = f_l + t_mat0[1, 2] + r_map0[i]             # Coming from other ROH State
 
       for j in range(1, n_states):  # Do the final run over all states
         three_v_view[2] = e_prob0[j, i] + bwd[j, i] +  stay

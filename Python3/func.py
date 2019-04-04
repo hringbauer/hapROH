@@ -2,7 +2,7 @@ import numpy as np
 from scipy.special import logsumexp
 
 
-def fwd_bkwd_p(e_prob0, t_mat0, fwd, bwd, r_map):
+def fwd_bkwd_p(e_prob0, t_mat, fwd, bwd, r_map):
     """Takes emission and transition probabilities, and calculates posteriors.
     Input: [kxl] matrices of emission, transition
     and initialized fwd and bwd probabilities. All in log Space"""
@@ -10,6 +10,8 @@ def fwd_bkwd_p(e_prob0, t_mat0, fwd, bwd, r_map):
 
     # Initialize Posterior Probabilities
     post = np.zeros((n_states, n_loci), dtype="float")
+
+    t_mat0 = np.log(np.eye(n_states) + t_mat[:,:]) # Transformation to log space
 
     for i in range(1, n_loci):  # Do the forward recursion
         for j in range(n_states):
