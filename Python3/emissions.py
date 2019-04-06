@@ -27,7 +27,7 @@ class Model_Emissions(Emissions):
     ref_haps = []
     e_mat = []  # Full Emission Matrix
 
-    e_rate = 0.01  # The Probability of an error
+    e_rate = 1e-3 # The Probability of an error (e-10: Default)
 
     def __init__(self, ref_haps=[]):
         """Initialize Class"""

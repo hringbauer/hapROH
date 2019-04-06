@@ -80,7 +80,8 @@ class HMM_Analyze(object):
             r_map = np.loadtxt(
                 map_path, dtype="float", delimiter=",")
         else:
-            print("No Genetic Map found. Defaulting...")  # Eventually: Runtime Warning
+            # Eventually: Runtime Warning
+            print("No Genetic Map found. Defaulting...")
             r_map = np.arange(np.shape(self.ob_stat)[1])
 
         self.r_map = r_map
@@ -102,7 +103,7 @@ class HMM_Analyze(object):
 
     def load_transition_model(self):
         """Load the Transition Model"""
-        self.t_obj = load_transition_model(self.t_model, n_ref = self.n_ref)
+        self.t_obj = load_transition_model(self.t_model, n_ref=self.n_ref)
 
         if self.output:
             print(f"Loaded Transition Model: {self.t_model}")
@@ -115,26 +116,45 @@ class HMM_Analyze(object):
         obs[0, :] = obs[phases, np.arange(n_loci)]
         self.ob_stat = obs
 
-    def prepare_rmap(self, cm=False, min_gap = 1e-10):
+    def prepare_rmap(self, cm=False, min_gap=1e-10):
         """Return the recombination map
         Input: Map Positions [l]
         Return: Rec. Distance Array [l]
         cm: Whether input is in centimorgan or morgan
         min_cap: Minimum Gap between Loci"""
         r_map = np.zeros(len(self.r_map))  # Make new array
-        r_map[1:] = self.r_map[1:] - self.r_map[:-1] # Calculate Differences
-        assert(np.min(r_map)>=0)
+        r_map[1:] = self.r_map[1:] - self.r_map[:-1]  # Calculate Differences
+        assert(np.min(r_map) >= 0)
         if cm == True:
             r_map = r_map / 100     # Normalize to CentiMorgan.
-        r_map = np.maximum(r_map, min_gap) # Extend the minimum gap where needed
+        # Extend the minimum gap where needed
+        r_map = np.maximum(r_map, min_gap)
 
-        if self.output==True:
+        if self.output == True:
             print(f"Minimum Genetic Map: {np.min(self.r_map):.4f}")
             print(f"Maximum Genetic Map: {np.max(self.r_map):.4f}")
             print(f"Gaps bigger than 0.1 cM: {np.sum(r_map > 0.001)}")
             print(f"Maximum Gap: {np.max(r_map) * 100:.4f} cM")
 
         return r_map
+
+    def pre_compute_transition_matrix(self, t, r_vec):
+        """Precompute and return the full transition Matrix
+        t full Transition Matrix [k,k]
+        r_vec Map Length of Jumps [l] """
+        n = np.shape(t)[0] - 1 # Nr of Reference States
+        t_simple = prep_3x3matrix(t)
+        t_mat = exponentiate_r(t_simple, r_vec)
+
+        # Normalize to transition rate for non-collapsed state
+        #print(np.sum(t_mat, axis=2))   # Should be one: Sanity Check!
+        t_mat[:,:2,2] = t_mat[:,:2,2] / (n - 1)
+
+        #print(t[:3,:3])
+        #print(t_simple)
+        #print(t_mat[1])
+        #print(t_mat[-1])
+        return t_mat
 
     ###############################
     ###############################
@@ -147,6 +167,7 @@ class HMM_Analyze(object):
         # 1) Get the emission and transition probabilities.
         e_mat = self.e_obj.give_emission_matrix()
         t_mat = self.t_obj.give_transitions()
+        t_mat = np.eye(len(t_mat)) + t_mat
         ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
 
         e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
@@ -155,7 +176,7 @@ class HMM_Analyze(object):
         e_prob0 = np.log(e_prob)
         t_mat0 = np.log(t_mat)
 
-        end_p = np.empty(np.shape(e_prob0)[0], dtype=np.float)
+        end_p = np.empty(np.shape(e_prob)[0], dtype=np.float)
         end_p[1:] = 0.001       # Low Probability
         end_p[0] = 1 - np.sum(end_p[1:])
         end_p0 = np.log(end_p)  # Go to Log Space
@@ -183,16 +204,13 @@ class HMM_Analyze(object):
         FULL: Wether to return fwd, bwd as well as tot_ll (Mode for postprocessing)"""
         e_mat = self.e_obj.give_emission_matrix()
         t_mat = self.t_obj.give_transitions()
-
         ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
-
-        e_mat[e_mat == 0] = 1e-20  # Tiny probability of emission
+        # e_mat[e_mat == 0] = 1e-20  # Tiny probability of emission. LEGACY
 
         # Do the Transformation to Log Space (Computational Feasibility)
-        e_mat0 = np.log(e_mat)
-        #t_mat0 = np.log(t_mat)
+        # e_mat0 = np.log(e_mat) Never used
 
-        r_map = self.prepare_rmap() # Get the Recombination Map
+        r_map = self.prepare_rmap()  # Get the Recombination Map
 
         n_states = np.shape(e_mat)[0]
         n_loci = np.shape(e_mat)[1]
@@ -219,19 +237,24 @@ class HMM_Analyze(object):
         bwd[0, -1] = 1 - np.sum(bwd[1:, -1])
         bwd0 = np.log(bwd)  # Change to log space
 
+        # Precompute the 3x3 Transition Matrix
+        t_mat_full = self.pre_compute_transition_matrix(t_mat, r_map)
+        #print("Shape Simplified Transition Matrix:")
+        #print(np.shape(t_mat_full))
+
         # Do the forward-backward Algorithm:
         if full == False:
-            post = self.fwd_bkwd(e_prob0, t_mat, fwd0, bwd0, r_map)
+            post = self.fwd_bkwd(e_prob0, t_mat, fwd0, bwd0, t_mat_full)
 
         elif full == True:  # If FULL Mode: Return results prematurely
             post, fwd, bwd, tot_ll = self.fwd_bkwd(
-                e_prob0, t_mat, fwd0, bwd0, r_map, full=True)
+                e_prob0, t_mat, fwd0, bwd0, t_mat_full, full=True)
             return post, fwd, bwd, tot_ll
 
         if self.output:
             print("Finished Calculation State Posteriors")
 
-        ### Save the Data
+        # Save the Data
         self.posterior = post  # Remember the Posterior
 
         if save == True:
@@ -254,10 +277,43 @@ class HMM_Analyze(object):
 
         return np.array(ll_hoods)
 
+
+###############################
+# Some Helper functions
+
+def prep_3x3matrix(t):
+    """Prepares the grouped 3x3 Matrix (3rd State: Everything in OTHER ROH State)"""
+    n = np.shape(t)[0] - 1  # Infer the Number of reference States
+    # Initiate to -1 (for later Sanity Check if everything is filled)
+    t_simple = -np.ones((3, 3))
+    t_simple[:2, :2] = t[:2, :2]
+    # The probability of staying when in diff. ROH State:
+    t_simple[2, 2] = np.sum(t[2, 2:])
+    # Jumping into 3rd state: Sum over all reference states
+    t_simple[:2, 2] = t[:2, 2] * (n - 1)
+    t_simple[2, :2] = t[2, :2]  # The jumping out probability is the same
+    return t_simple
+
+
+def exponentiate_r(rates, rec_v):
+    """Calculates exponentiation of the rates matrix with rec_v
+    rates: 2D Matrix.
+    rec_v: Array of length l"""
+    eva, evec = np.linalg.eig(rates)  # Do the Eigenvalue Decomposition
+    # Sanity Check whether Matrix is valid rate Matrix
+    assert(np.max(eva) <= 1)
+    evec_r = np.linalg.inv(evec)    # Do the Inversion
+    # Create vector of the exponentiated diagonals
+    d = np.exp(rec_v[:, None] * eva)
+    # Use some Einstein Sum Convention Fun (C Speed):
+    res = np.einsum('...ik, ...k, ...kj ->...ij', evec, d, evec_r)
+    # Make sure that all transition rates are valuable
+    assert(0 <= np.min(res) <= 1)
+    return res
+
 ###############################
 ###############################
-# Do some Testing
-# hmm.calc_viterbi_path(save=True)
+
 
 def profiling_run():
     """Short Function for profiling"""
@@ -265,16 +321,17 @@ def profiling_run():
     print(np.shape(hmm.e_obj.ref_haps))
     hmm.calc_posterior(save=True)
 
+
 if __name__ == "__main__":
-    #folder = "./Empirical/Sard100_0-10kROH/"        # "./Simulated/Test20r/"
-    folder = "./Empirical/Sard100_0-10kROH2/"
+    # folder = "./Simulated/Test20r/"        # "./Simulated/Test20r/"
+    folder = "./Empirical/Sard100_0-10kROH/" # d05e e: Error Introduced. d05: Downsampled
     #folder = "./Simulated/Test2r/"        # For Testing: Without diploid: LL: -258,596
     hmm = HMM_Analyze(folder=folder, cython=2)
     hmm.set_diploid_observations()             # Set random single observation per locus.
-    # hmm.calc_viterbi_path(save=True)         # Calculate the Viterbi Path.
-    hmm.t_obj.set_params(roh_in = 1, roh_out = 10, roh_jump = 200)
+    hmm.calc_viterbi_path(save=True)         # Calculate the Viterbi Path.
+    hmm.t_obj.set_params(roh_in = 1, roh_out = 20, roh_jump = 500)
     hmm.calc_posterior(save=True)              # Calculate the Posterior.
 
-#roh_in = 0.0005     # The rate of jumping to another Haplotype
-#roh_out = 0.001     # The rate of jumping out
-#roh_jump = 0.02   # The rate of jumping within ROH
+# roh_in = 0.0005     # The rate of jumping to another Haplotype
+# roh_out = 0.001     # The rate of jumping out
+# roh_jump = 0.02   # The rate of jumping within ROH

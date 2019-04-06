@@ -39,7 +39,7 @@ class Model_Transitions(Transitions):
     """Implements the Model Transitions"""
     roh_in = 0.0005     # The rate of jumping to another Haplotype
     roh_out = 0.001     # The rate of jumping out
-    roh_jump = 0.02   # The rate of jumping within ROH
+    roh_jump = 0.02     # The rate of jumping within ROH
 
     def calc_transitions(self, n=0, rate=True):
         """Return Transition Matrix to exponate.
@@ -87,9 +87,3 @@ def load_transition_model(t_model="model", n_ref = 20):
         raise NotImplementedError("Transition Model not found!")
 
     return t_obj
-
-
-
-
-    if self.output:
-        print(f"Loaded Transition Model: {t_model}")
