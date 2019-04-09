@@ -14,6 +14,7 @@ from cfunc import fwd_bkwd, viterbi_path, fwd_bkwd_fast  # The Cython Functions
 from func import fwd_bkwd_p, viterbi_path_p   # The Python Functions
 from emissions import load_emission_model     # Factory Method
 from transitions import load_transition_model
+from postprocessing import give_Postprocessing
 
 #################################
 #################################
@@ -142,18 +143,18 @@ class HMM_Analyze(object):
         """Precompute and return the full transition Matrix
         t full Transition Matrix [k,k]
         r_vec Map Length of Jumps [l] """
-        n = np.shape(t)[0] - 1 # Nr of Reference States
+        n = np.shape(t)[0] - 1  # Nr of Reference States
         t_simple = prep_3x3matrix(t)
         t_mat = exponentiate_r(t_simple, r_vec)
 
         # Normalize to transition rate for non-collapsed state
-        #print(np.sum(t_mat, axis=2))   # Should be one: Sanity Check!
-        t_mat[:,:2,2] = t_mat[:,:2,2] / (n - 1)
+        # print(np.sum(t_mat, axis=2))   # Should be one: Sanity Check!
+        t_mat[:, :2, 2] = t_mat[:, :2, 2] / (n - 1)
 
-        #print(t[:3,:3])
-        #print(t_simple)
-        #print(t_mat[1])
-        #print(t_mat[-1])
+        # print(t[:3,:3])
+        # print(t_simple)
+        # print(t_mat[1])
+        # print(t_mat[-1])
         return t_mat
 
     ###############################
@@ -240,7 +241,7 @@ class HMM_Analyze(object):
         # Precompute the 3x3 Transition Matrix
         t_mat_full = self.pre_compute_transition_matrix(t_mat, r_map)
         #print("Shape Simplified Transition Matrix:")
-        #print(np.shape(t_mat_full))
+        # print(np.shape(t_mat_full))
 
         # Do the forward-backward Algorithm:
         if full == False:
@@ -276,6 +277,14 @@ class HMM_Analyze(object):
             ll_hoods.append(tot_ll)
 
         return np.array(ll_hoods)
+
+    def post_processing(self, method="standard", save=True):
+        """Do the Postprocessing of ROH Blocks
+        Parameters: See in Postprocessing"""
+        pp = give_Postprocessing(folder=self.folder, method=method,
+                                 output=self.output, save=save)
+        pp.call_roh()
+        return
 
 
 ###############################
@@ -323,15 +332,13 @@ def profiling_run():
 
 
 if __name__ == "__main__":
-    # folder = "./Simulated/Test20r/"        # "./Simulated/Test20r/"
-    folder = "./Empirical/Sard100_0-10kROH/" # d05e e: Error Introduced. d05: Downsampled
-    #folder = "./Simulated/Test2r/"        # For Testing: Without diploid: LL: -258,596
+    # folder = "./Simulated/Test20r/"          # "./Simulated/Test20r/"
+    # d05e e: Error Introduced. d05: Downsampled
+    folder = "./Empirical/Sard100_0-10kROH6e/"
+    # folder = "./Simulated/Test2r/"           # For Testing: Without diploid: LL: -258,596
     hmm = HMM_Analyze(folder=folder, cython=2)
-    hmm.set_diploid_observations()             # Set random single observation per locus.
-    hmm.calc_viterbi_path(save=True)         # Calculate the Viterbi Path.
-    hmm.t_obj.set_params(roh_in = 1, roh_out = 20, roh_jump = 500)
+    hmm.set_diploid_observations()       # Set single observation per locus.
+    hmm.calc_viterbi_path(save=True)           # Calculate the Viterbi Path.
+    hmm.t_obj.set_params(roh_in=1, roh_out=20, roh_jump=500)
     hmm.calc_posterior(save=True)              # Calculate the Posterior.
-
-# roh_in = 0.0005     # The rate of jumping to another Haplotype
-# roh_out = 0.001     # The rate of jumping out
-# roh_jump = 0.02   # The rate of jumping within ROH
+    hmm.post_processing(save=True)             # Do the Post-Processing

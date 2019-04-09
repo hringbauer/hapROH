@@ -47,7 +47,7 @@ class PostProcessing(object):
         else:
             # Eventually: Runtime Warning
             print("No Genetic Map found. Defaulting...")
-            self.r_map = np.arange(np.shape(self.ob_stat)[1])
+            self.r_map = np.arange(np.shape(self.posterior)[1])
 
         # Load Posterior
         post_path = folder + "posterior.csv"
@@ -55,7 +55,7 @@ class PostProcessing(object):
 
         assert(len(self.r_map) == np.shape(self.posterior)[1])  # Sanity Check
 
-        print(f"Successfully loaded from {folder}")
+        print(f"Successfully loaded for PP. from {folder}")
 
     def call_roh(self):
         """Call ROH of Homozygosity from Posterior Data"""
@@ -98,6 +98,14 @@ class PostProcessing(object):
 
         return df
 
+#######################################################
+#######################################################
+
+
+def give_Postprocessing(folder="", method="Standard", output=True, save=True):
+    """Factory Method for PostProcessing class"""
+    pp = PostProcessing(folder, output=output, save=save)
+    return pp
 
 # Do testing
 if __name__ == "__main__":
