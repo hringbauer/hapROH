@@ -80,6 +80,12 @@ class HMM_Analyze(object):
         if os.path.exists(map_path):
             r_map = np.loadtxt(
                 map_path, dtype="float", delimiter=",")
+
+            #print("RMap Stats:")
+            #print(len(r_map))
+            #print(len(set(r_map)))
+
+
         else:
             # Eventually: Runtime Warning
             print("No Genetic Map found. Defaulting...")
@@ -335,11 +341,12 @@ if __name__ == "__main__":
     # folder = "./Simulated/Test20r/"          # "./Simulated/Test20r/"
     # d05e e: Error Introduced. d05: Downsampled
     # folder = "./Empirical/Sard100_0-10kROH8/"
-    folder = "./Empirical/1kEUR_ROH10/"
+    #folder = "./Empirical/1kEUR_ROH/"
+    folder = "./Empirical/Sard_Chr20_1000G_ROH2/"
     # folder = "./Simulated/Test2r/"           # For Testing: Without diploid: LL: -258,596
     hmm = HMM_Analyze(folder=folder, cython=2)
     hmm.set_diploid_observations()       # Set single observation per locus.
     hmm.calc_viterbi_path(save=True)           # Calculate the Viterbi Path.
-    hmm.t_obj.set_params(roh_in=1, roh_out=20, roh_jump=200)
+    hmm.t_obj.set_params(roh_in=1, roh_out=10, roh_jump=100)
     hmm.calc_posterior(save=True)              # Calculate the Posterior.
     hmm.post_processing(save=True)             # Do the Post-Processing
