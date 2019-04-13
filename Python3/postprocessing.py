@@ -86,7 +86,7 @@ class PostProcessing(object):
         if self.output == True:
             print(f"Called n={len(df)} ROH Blocks > {self.l_cutoff * 100} cM")
             l = np.max(df["lengthM"])
-            print(f"Longest Block: {l *100}")
+            print(f"Longest Block: {l *100:.3f}")
 
         self.df = df
         if self.save == True:

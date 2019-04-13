@@ -342,7 +342,7 @@ if __name__ == "__main__":
     # d05e e: Error Introduced. d05: Downsampled
     # folder = "./Empirical/Sard100_0-10kROH8/"
     #folder = "./Empirical/1kEUR_ROH/"
-    folder = "./Empirical/Sard_Chr20_1000G_ROH2/"
+    folder = "./Empirical/ORC005_Chr20_1000G_ROH/"
     # folder = "./Simulated/Test2r/"           # For Testing: Without diploid: LL: -258,596
     hmm = HMM_Analyze(folder=folder, cython=2)
     hmm.set_diploid_observations()       # Set single observation per locus.
