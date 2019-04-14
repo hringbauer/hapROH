@@ -60,8 +60,10 @@ class HMM_Analyze(object):
             self.viterbi_path = viterbi_path
 
         elif cython == 2:   # To test the "fast algorithm". Remove later
+            if self.output==True:
+                print("Using Linear-State Speed-Up")
+                
             self.fwd_bkwd = fwd_bkwd_fast
-            print("Running the linear speed one.")
             self.viterbi_path = viterbi_path
 
         else:
@@ -342,7 +344,7 @@ if __name__ == "__main__":
     # d05e e: Error Introduced. d05: Downsampled
     # folder = "./Empirical/Sard100_0-10kROH8/"
     #folder = "./Empirical/1kEUR_ROH/"
-    folder = "./Empirical/ORC005_Chr20_1000G_ROH/"
+    folder = "./Empirical/I0413_I0413_1000G_ROH/"
     # folder = "./Simulated/Test2r/"           # For Testing: Without diploid: LL: -258,596
     hmm = HMM_Analyze(folder=folder, cython=2)
     hmm.set_diploid_observations()       # Set single observation per locus.
