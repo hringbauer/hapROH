@@ -1,4 +1,4 @@
-# cython: language_level=3, boundscheck=False, wraparound=False
+# cython: language_level=3, boundscheck=True, wraparound=False
 import numpy as np
 cimport cython
 
@@ -20,6 +20,16 @@ cdef inline double logsumexp(double[:] vec):
       result += exp(vec[i] - largest)
   return largest + log(result)
 
+cdef inline long argmax(double[:] vec):
+  """Return Max and ArgMax"""
+  cdef Py_ssize_t i  # The iterator Variable.
+  cdef int m = 0     # Position of the Maximum.
+  cdef double v = vec[0]
+
+  for k in range(1, vec.shape[0]):   # Find Maximum
+    if (vec[k] > v):
+      m, v = k, vec[k]
+  return m  # Return Argmax
 
 def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,
     double[:, :] fwd, double[:, :] bwd, double[:,:,:] t, full=False):
@@ -30,7 +40,6 @@ def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,
     cdef int n_states = e_prob0.shape[0]
     cdef int n_loci = e_prob0.shape[1]
     cdef Py_ssize_t i, j, k # The Array Indices
-
 
     # Initialize Posterior and Transition Probabilities
     post = np.empty([n_states, n_loci], dtype=DTYPE)
@@ -56,7 +65,7 @@ def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,
 
     # Get total log likelihood
     for k in range(n_states):  # Simply sum the two 1D arrays
-      trans_ll_view[k] = fwd[k, n_states-1] + bwd[k, n_states-1]
+      trans_ll_view[k] = fwd[k, n_loci-1] + bwd[k, n_loci-1]
     tot_ll = logsumexp(trans_ll_view)
 
     print(f"Total Log likelihood: {tot_ll: .3f}")
@@ -81,7 +90,7 @@ def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,
     Emission probabilities [k x l] (log space)       (log space)
     Transition probabilities (infinitesimal) [k x k] (normal space)
     Initialized fwd and bwd probabilities [k x l]    (log space)
-    Transition Matrix: [l x 3 x 3]                     (normal space)
+    t: Transition Matrix: [l x 3 x 3]                     (normal space)
     full: Boolean whether to return everything"""
     cdef int n_states = e_prob0.shape[0]
     cdef int n_loci = e_prob0.shape[1]
@@ -93,6 +102,9 @@ def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,
 
     trans_ll = np.empty(n_states-1, dtype=DTYPE) # Array for pre-calculations
     cdef double[:] trans_ll_view = trans_ll
+
+    trans_ll1 = np.empty(n_states, dtype=DTYPE) # Array for calculations
+    cdef double[:] trans_ll_view1 = trans_ll1
 
     three_v = np.empty(3, dtype=DTYPE)     # Array of size three
     cdef double[:] three_v_view = three_v
@@ -151,15 +163,15 @@ def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,
 
     # Get total log likelihood
     for k in range(n_states):  # Simply sum the two 1D arrays
-      trans_ll_view[k] = fwd[k, n_states-1] + bwd[k, n_states-1]
-    tot_ll = logsumexp(trans_ll_view)
+      trans_ll_view1[k] = fwd[k, n_loci - 1] + bwd[k, n_loci - 1]
+    tot_ll = logsumexp(trans_ll_view1)
 
     print(f"Total Log likelihood: {tot_ll: .3f}")
 
     # Combine the forward and backward calculations
-    fwd1 = np.asarray(fwd)  # Transform
-    bwd1 = np.asarray(bwd)
-    post = fwd1 + bwd1 - tot_ll
+    fwd1 = np.asarray(fwd, dtype=np.float)  # Transform
+    bwd1 = np.asarray(bwd, dtype=np.float)
+    post = fwd1 + bwd1 - np.float(tot_ll)
 
     if full==False:
       return post
@@ -168,9 +180,10 @@ def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,
       return post, fwd1, bwd1, tot_ll
 
 
-def viterbi_path(double[:, :] e_prob0, double[:, :] t_mat0, double[:] end_p0):
+def viterbi_path(double[:, :] e_prob0, double[:, :, :] t_mat0, double[:] end_p0):
     """Implementation of a Viterbi Path.
-    e_prob0 and t_mat0 [k,l] Matrices with Emission and Transition Probabilities.
+    e_prob0  Matrices with Emission Probabilities, [k,l] (log space)
+    t_mat: Transition Matrix: [l x 3 x 3]  (normal space)
     end_p: probability to begin/end in states [k]"""
     cdef int n_states = e_prob0.shape[0]
     cdef int n_loci = e_prob0.shape[1]
@@ -184,23 +197,62 @@ def viterbi_path(double[:, :] e_prob0, double[:, :] t_mat0, double[:] end_p0):
     cdef double[:] new_p = np.empty(n_states, dtype = np.float) # Temporary Array
     cdef long[:,:] pt = np.empty((n_states, n_loci), dtype = np.int)  # Previous State Pointer
 
+    trans_ll = np.empty(n_states-1, dtype=DTYPE) # Array for pre-calculations
+    cdef double[:] trans_ll_view = trans_ll
+
+    three_v = np.empty(3, dtype=DTYPE)     # Array of size three
+    cdef double[:] three_v_view = three_v
+
+    three_vi = np.empty(3, dtype=int)       # Int Array of size three
+    cdef long[:] three_vi_view = three_vi
+
+    two_v = np.empty(2, dtype=DTYPE)       # Array of size two
+    cdef double[:] two_v_view = two_v
+
+    two_vi = np.empty(2, dtype=int)       # Int Array of size two
+    cdef long[:] two_vi_view = two_vi
+
     for k in range(n_states):
-      mp[k, 0] = end_p0[k]
+      mp[k, 0] = end_p0[k]  # Initialize with Ending Probabilities
+
+      two_vi_view[0] = 0
+      three_vi_view[0] = 0
 
     for i in range(1, n_loci):  # Do the Viterbi-Iteration
-        for j in range(n_states):
-          for k in range(n_states):
-              new_p[k] = mp[k, i - 1] + t_mat0[k, j] + e_prob0[j, i]
+        ### Precomputation:
+        # Do the maximal log probability of 1, ...k State:
+        m = argmax(mp[1:, i - 1])
+        v = mp[m+1, i - 1]
 
-          m, v = 0, new_p[0]    # Own Implementation of Argmax
-          for k in range(1,n_states):   # Find Maximum
-            if (new_p[k] > v):
-              m, v = k, new_p[k]
+        # Do the States from collapsed states
+        two_vi_view[1] = m+1   # Set the Pointers
+        three_vi_view[1] = m+1
 
-          mp[j, i] = new_p[m]
-          pt[j, i] = m          # Set the pointer to previous path
+        two_v_view[1] = v + t_mat0[i, 1, 0]
+        three_v_view[1] = v + t_mat0[i, 1, 2] # Move in from other ROH
 
-    # Do the trace back
+        ### Do the zero State
+        two_v_view[0] = mp[0, i - 1] + t_mat0[i, 0, 0]
+
+        m = argmax(two_v_view)      ### Do a Maximum
+        v = two_v_view[m]
+        mp[0, i] = v + e_prob0[0, i]   ### Set Max. Probability
+        pt[0, i] = two_vi_view[m]      ### Set Pointer for Backtrace
+
+        ### Do the other States
+        three_v_view[0] = mp[0, i - 1] + t_mat0[i, 0, 1] # Move from 0 State
+
+        for k in range(1, n_states):   # Find Maximum
+          three_v_view[2] = mp[k, i - 1] + t_mat0[i, 1, 1] # The Stay State
+          three_vi_view[2] = k
+
+          m = argmax(three_v_view)      ### Do a Maximum
+          v = three_v_view[m]
+
+          mp[k, i] = v + e_prob0[k, i]   ### Set Max. Probability
+          pt[k, i] = three_vi_view[m]      ### Set Pointer for Backtrace
+
+    ### Do the trace back
     cdef long[:] path = -np.ones(n_loci, dtype=np.int)  # Initialize
 
     x = np.argmax(mp[:, n_loci-1])  # The highest probability

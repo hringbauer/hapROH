@@ -19,7 +19,6 @@ from postprocessing import give_Postprocessing
 #################################
 #################################
 
-
 class HMM_Analyze(object):
     """Analyze Class for HMMs.
     This is the main Class, all specific Inference schemes inherit from it
@@ -62,7 +61,7 @@ class HMM_Analyze(object):
         elif cython == 2:   # To test the "fast algorithm". Remove later
             if self.output==True:
                 print("Using Linear-State Speed-Up")
-                
+
             self.fwd_bkwd = fwd_bkwd_fast
             self.viterbi_path = viterbi_path
 
@@ -86,7 +85,6 @@ class HMM_Analyze(object):
             #print("RMap Stats:")
             #print(len(r_map))
             #print(len(set(r_map)))
-
 
         else:
             # Eventually: Runtime Warning
@@ -149,7 +147,7 @@ class HMM_Analyze(object):
 
     def pre_compute_transition_matrix(self, t, r_vec):
         """Precompute and return the full transition Matrix
-        t full Transition Matrix [k,k]
+        t full Transition Matrix [k,k]. NO LOG STATE
         r_vec Map Length of Jumps [l] """
         n = np.shape(t)[0] - 1  # Nr of Reference States
         t_simple = prep_3x3matrix(t)
@@ -158,11 +156,6 @@ class HMM_Analyze(object):
         # Normalize to transition rate for non-collapsed state
         # print(np.sum(t_mat, axis=2))   # Should be one: Sanity Check!
         t_mat[:, :2, 2] = t_mat[:, :2, 2] / (n - 1)
-
-        # print(t[:3,:3])
-        # print(t_simple)
-        # print(t_mat[1])
-        # print(t_mat[-1])
         return t_mat
 
     ###############################
@@ -176,14 +169,18 @@ class HMM_Analyze(object):
         # 1) Get the emission and transition probabilities.
         e_mat = self.e_obj.give_emission_matrix()
         t_mat = self.t_obj.give_transitions()
-        t_mat = np.eye(len(t_mat)) + t_mat
+        #t_mat = np.eye(len(t_mat)) + t_mat LEGACY
+        ### Precompute the 3x3 Transition Matrix
+        r_map = self.prepare_rmap()  # Get the Recombination Map
+        t_mat_full = self.pre_compute_transition_matrix(t_mat, r_map) # [l, k, k]
+
         ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
 
         e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
         e_prob[e_prob == 0] = 1e-20  # Tiny probability of emission
 
         e_prob0 = np.log(e_prob)
-        t_mat0 = np.log(t_mat)
+        t_mat_full0 = np.log(t_mat_full)
 
         end_p = np.empty(np.shape(e_prob)[0], dtype=np.float)
         end_p[1:] = 0.001       # Low Probability
@@ -197,13 +194,16 @@ class HMM_Analyze(object):
             print("Loaded Observations:")
             print(np.shape(ob_stat))
 
-        path = self.viterbi_path(e_prob0, t_mat0, end_p0)
+        path = self.viterbi_path(e_prob0, t_mat_full0, end_p0)
 
         # Save the Path
         self.vpath = path
         if save == True:
-            np.savetxt(self.folder + "viterbi_path.csv", path,
+            save_path = self.folder + "viterbi_path.csv"
+            np.savetxt(save_path, path,
                        delimiter=",",  fmt='%i')  # Save the Viterbi Path
+            if self.output:
+                print(f"Saved to: {save_path}")
 
         if self.output:
             print(f"Finished Calculation Viterbi Path: {path}")
@@ -215,9 +215,6 @@ class HMM_Analyze(object):
         t_mat = self.t_obj.give_transitions()
         ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
         # e_mat[e_mat == 0] = 1e-20  # Tiny probability of emission. LEGACY
-
-        # Do the Transformation to Log Space (Computational Feasibility)
-        # e_mat0 = np.log(e_mat) Never used
 
         r_map = self.prepare_rmap()  # Get the Recombination Map
 
@@ -248,8 +245,6 @@ class HMM_Analyze(object):
 
         # Precompute the 3x3 Transition Matrix
         t_mat_full = self.pre_compute_transition_matrix(t_mat, r_map)
-        #print("Shape Simplified Transition Matrix:")
-        # print(np.shape(t_mat_full))
 
         # Do the forward-backward Algorithm:
         if full == False:
@@ -272,7 +267,7 @@ class HMM_Analyze(object):
             print(f"Saved Results to {self.folder}")
 
     def optimze_ll_transition_param(self, roh_trans_params):
-        """Calculate the log likelihoods for Transitions Parameters
+        """Calculate and return the log likelihoods for Transitions Parameters
         roh_trans_params [m]"""
         m = len(roh_trans_params)
 
@@ -344,11 +339,11 @@ if __name__ == "__main__":
     # d05e e: Error Introduced. d05: Downsampled
     # folder = "./Empirical/Sard100_0-10kROH8/"
     #folder = "./Empirical/1kEUR_ROH/"
-    folder = "./Empirical/I0413_I0413_1000G_ROH/"
-    # folder = "./Simulated/Test2r/"           # For Testing: Without diploid: LL: -258,596
+    folder = "./Empirical/MA89_chr3_1000G_ROH/"
+    # folder = "./Simulated/Test20r/"           # For Testing: Without diploid: LL: -258,596
     hmm = HMM_Analyze(folder=folder, cython=2)
-    hmm.set_diploid_observations()       # Set single observation per locus.
+    #hmm.set_diploid_observations()       # Set single observation per locus.
     hmm.calc_viterbi_path(save=True)           # Calculate the Viterbi Path.
     hmm.t_obj.set_params(roh_in=1, roh_out=10, roh_jump=100)
     hmm.calc_posterior(save=True)              # Calculate the Posterior.
-    hmm.post_processing(save=True)             # Do the Post-Processing
+    hmm.post_processing(save=True)             # Do the Post-Processing.

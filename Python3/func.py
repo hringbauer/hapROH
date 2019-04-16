@@ -32,7 +32,7 @@ def fwd_bkwd_p(e_prob0, t_mat, fwd, bwd, r_map):
     return post
 
 
-def viterbi_path_p(e_prob0, t_mat0, end_p0, r_map):
+def viterbi_path_p(e_prob0, t_mat0, end_p0):
     """Implementation of a Viterbi Path.
     e_prob0 and t_mat0 [k,l] Matrices with Emission and Transition Probabilities.
     end_p: probability to begin/end in states [k]"""
@@ -48,7 +48,7 @@ def viterbi_path_p(e_prob0, t_mat0, end_p0, r_map):
 
     for i in range(1, n_loci):  # Do the Viterbi-Iteration
         for j in range(n_states):
-            new_p = mp[:, i - 1] + t_mat0[:, j] + e_prob0[j, i]
+            new_p = mp[:, i - 1] + t_mat0[i, :, j] + e_prob0[j, i]
             m = np.argmax(new_p)  # Find the Maximum Probability
             mp[j, i] = new_p[m]
             pt[j, i] = m          # Set the pointer to previous path
