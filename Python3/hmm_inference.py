@@ -19,6 +19,7 @@ from postprocessing import give_Postprocessing
 #################################
 #################################
 
+
 class HMM_Analyze(object):
     """Analyze Class for HMMs.
     This is the main Class, all specific Inference schemes inherit from it
@@ -59,7 +60,7 @@ class HMM_Analyze(object):
             self.viterbi_path = viterbi_path
 
         elif cython == 2:   # To test the "fast algorithm". Remove later
-            if self.output==True:
+            if self.output == True:
                 print("Using Linear-State Speed-Up")
 
             self.fwd_bkwd = fwd_bkwd_fast
@@ -83,8 +84,8 @@ class HMM_Analyze(object):
                 map_path, dtype="float", delimiter=",")
 
             #print("RMap Stats:")
-            #print(len(r_map))
-            #print(len(set(r_map)))
+            # print(len(r_map))
+            # print(len(set(r_map)))
 
         else:
             # Eventually: Runtime Warning
@@ -145,17 +146,20 @@ class HMM_Analyze(object):
 
         return r_map
 
-    def pre_compute_transition_matrix(self, t, r_vec):
+    def pre_compute_transition_matrix(self, t, r_vec, n_ref):
         """Precompute and return the full transition Matrix
         t full Transition Matrix [k,k]. NO LOG STATE
         r_vec Map Length of Jumps [l] """
-        n = np.shape(t)[0] - 1  # Nr of Reference States
-        t_simple = prep_3x3matrix(t)
+        # n = np.shape(t)[0] - 1  # Nr of Reference States
+        t_simple = prep_3x3matrix(t, n_ref)
         t_mat = exponentiate_r(t_simple, r_vec)
 
         # Normalize to transition rate for non-collapsed state
         # print(np.sum(t_mat, axis=2))   # Should be one: Sanity Check!
-        t_mat[:, :2, 2] = t_mat[:, :2, 2] / (n - 1)
+
+        t_mat[:, :2, 2] = t_mat[:, :2, 2] / (n_ref - 1)
+        # t_mat[:, 2, 2] = t_mat[:, 1, 1]  # By Symmetr, not needed
+
         return t_mat
 
     ###############################
@@ -169,10 +173,11 @@ class HMM_Analyze(object):
         # 1) Get the emission and transition probabilities.
         e_mat = self.e_obj.give_emission_matrix()
         t_mat = self.t_obj.give_transitions()
-        #t_mat = np.eye(len(t_mat)) + t_mat LEGACY
-        ### Precompute the 3x3 Transition Matrix
+        # t_mat = np.eye(len(t_mat)) + t_mat LEGACY
+        # Precompute the 3x3 Transition Matrix
         r_map = self.prepare_rmap()  # Get the Recombination Map
-        t_mat_full = self.pre_compute_transition_matrix(t_mat, r_map) # [l, k, k]
+        t_mat_full = self.pre_compute_transition_matrix(
+            t_mat, r_map, self.n_ref)  # [l, k, k]
 
         ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
 
@@ -244,7 +249,8 @@ class HMM_Analyze(object):
         bwd0 = np.log(bwd)  # Change to log space
 
         # Precompute the 3x3 Transition Matrix
-        t_mat_full = self.pre_compute_transition_matrix(t_mat, r_map)
+        t_mat_full = self.pre_compute_transition_matrix(
+            t_mat, r_map, self.n_ref)
 
         # Do the forward-backward Algorithm:
         if full == False:
@@ -293,17 +299,24 @@ class HMM_Analyze(object):
 ###############################
 # Some Helper functions
 
-def prep_3x3matrix(t):
+def prep_3x3matrix(t, n_ref):
     """Prepares the grouped 3x3 Matrix (3rd State: Everything in OTHER ROH State)"""
-    n = np.shape(t)[0] - 1  # Infer the Number of reference States
+    # n = np.shape(t)[0] - 1  # Infer the Number of reference States
+    n = n_ref
+    print(f"Reference Number: {n}")
     # Initiate to -1 (for later Sanity Check if everything is filled)
     t_simple = -np.ones((3, 3))
     t_simple[:2, :2] = t[:2, :2]
     # The probability of staying when in diff. ROH State:
-    t_simple[2, 2] = np.sum(t[2, 2:])
+    # t_simple[2, 2] = np.sum(t[2, 2:])   # Legacy
+    t_simple[2, 2] = -np.sum(t[2, :2])  # Minus the rates of Jumping
+    #print("Target Value:")
+    #print(t_simple[2, 2])
     # Jumping into 3rd state: Sum over all reference states
     t_simple[:2, 2] = t[:2, 2] * (n - 1)
     t_simple[2, :2] = t[2, :2]  # The jumping out probability is the same
+    #print("Total Jumping Probabilities:")
+    #print(np.sum(t_simple, axis=1))
     return t_simple
 
 
@@ -320,7 +333,7 @@ def exponentiate_r(rates, rec_v):
     # Use some Einstein Sum Convention Fun (C Speed):
     res = np.einsum('...ik, ...k, ...kj ->...ij', evec, d, evec_r)
     # Make sure that all transition rates are valuable
-    assert(0 <= np.min(res) <= 1)
+    assert(0 <= np.min(res))
     return res
 
 ###############################
@@ -329,9 +342,10 @@ def exponentiate_r(rates, rec_v):
 
 def profiling_run():
     """Short Function for profiling"""
-    hmm = HMM_Analyze(folder="./Simulated/Test2r/")
-    print(np.shape(hmm.e_obj.ref_haps))
-    hmm.calc_posterior(save=True)
+    hmm = HMM_Analyze(folder="./Empirical/MA89_chr3_1000G_ROH/", cython=2)
+    hmm.t_obj.set_params(roh_in=1, roh_out=10, roh_jump=100)
+    # print(np.shape(hmm.e_obj.ref_haps))
+    hmm.calc_posterior(save=False)
 
 
 if __name__ == "__main__":
@@ -340,10 +354,13 @@ if __name__ == "__main__":
     # folder = "./Empirical/Sard100_0-10kROH8/"
     #folder = "./Empirical/1kEUR_ROH/"
     folder = "./Empirical/MA89_chr3_1000G_ROH/"
-    # folder = "./Simulated/Test20r/"           # For Testing: Without diploid: LL: -258,596
+    # folder = "./Simulated/Test20r/"
+
     hmm = HMM_Analyze(folder=folder, cython=2)
-    #hmm.set_diploid_observations()       # Set single observation per locus.
-    hmm.calc_viterbi_path(save=True)           # Calculate the Viterbi Path.
+    hmm.set_diploid_observations()       # Set single observation per locus.
     hmm.t_obj.set_params(roh_in=1, roh_out=10, roh_jump=100)
+    hmm.calc_viterbi_path(save=True)           # Calculate the Viterbi Path.
     hmm.calc_posterior(save=True)              # Calculate the Posterior.
     hmm.post_processing(save=True)             # Do the Post-Processing.
+
+# cProfile.run('profiling_run()')
