@@ -15,6 +15,7 @@ from func import fwd_bkwd_p, viterbi_path_p   # The Python Functions
 from emissions import load_emission_model     # Factory Method
 from transitions import load_transition_model
 from postprocessing import give_Postprocessing
+from preprocessing import load_preprocessing
 
 #################################
 #################################
@@ -27,6 +28,7 @@ class HMM_Analyze(object):
     Contains Parameters"""
     folder = ""  # The working folder
     output = True
+    save = True # Whether to save output data to disk
     n_ref = 20  # The Size of the Reference Panel [k-1]
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
     ob_stat = []     # The observed State [l]
@@ -36,25 +38,33 @@ class HMM_Analyze(object):
     v_path = []  # The inferred Viterbi Path [l]
     posterior = []  # The inferred Posterior Matrix [kxl] Log Space
 
-    t_obj, e_obj = 0, 0  # Objects for the transitions and Emission probabilities
+    t_obj, e_obj = 0, 0  # Objects for Transition & Emission probabilities
+    p_obj = 0          # Object that does preprocessing
+
     fwd_bkwd, viterbi_path = 0, 0  # Function for the fwd-bkwd Algorithm
 
     e_model = "haploid"
     t_model = "model"
+    p_model = "SardHDF5"
 
     def __init__(self, folder="./Simulated/Example0/",
-                 t_model="model", e_model="haploid", output=True, cython=True):
+                 t_model="model", e_model="haploid", p_model="SardHDF5",
+                 output=True, save=True, cython=True):
         """Initialize Class. output: Boolean whether to print
         Cython: Whether to use Cython"""
         self.t_model = t_model
         self.e_model = e_model
+        self.p_model = p_model
         self.folder = folder  # Save the working folder
         self.output = output
+        self.save = save
 
-        self.load_data(folder=folder)
+        self.load_preprocessing_model()
+        self.load_data()
         self.load_emission_model()
         self.load_transition_model()
 
+        # Load the Heavy Lifting Functions
         if cython == True:
             self.fwd_bkwd = fwd_bkwd
             self.viterbi_path = viterbi_path
@@ -70,8 +80,29 @@ class HMM_Analyze(object):
             self.fwd_bkwd = fwd_bkwd_p
             self.viterbi_path = viterbi_path_p
 
-    def load_data(self, folder="./Simulated/Example0/"):
-        """Loads the Data"""
+    def load_data(self, folder=""):
+        """Load the Data"""
+        gts_ind, gts, r_map, out_folder = self.p_obj.load_data(
+            iid="MA89", ch=5, n_ref=503)
+
+        self.ref_states = gts
+        self.r_map = r_map
+        self.ob_stat = gts_ind
+        self.folder = out_folder
+
+        # Do some Post-Processing of the Loading
+        self.n_ref = np.shape(self.ref_states)[0]
+
+        # Sanity Checks for loading
+        assert(len(self.r_map) == np.shape(self.ob_stat)[1])  # Sanity Check
+        assert(len(self.r_map) == np.shape(self.ref_states)[1])
+
+        if self.output:
+            print(f"Successfully loaded Data from: {self.folder}")
+
+    def load_data_old(self):
+        """Load the Data when all in one Folder"""
+        folder = self.folder
         self.ref_states = np.loadtxt(
             folder + "refs.csv", dtype="int", delimiter=",")
 
@@ -115,6 +146,13 @@ class HMM_Analyze(object):
 
         if self.output:
             print(f"Loaded Transition Model: {self.t_model}")
+
+    def load_preprocessing_model(self):
+        self.p_obj = load_preprocessing(
+            p_model=self.p_model, save=self.save, output=self.output)
+
+        if self.output:
+            print(f"Loaded Pre Processing Model: {self.p_model}")
 
     def set_diploid_observations(self):
         """Simulate random Diploid Observations"""
@@ -364,3 +402,5 @@ if __name__ == "__main__":
     hmm.post_processing(save=True)             # Do the Post-Processing.
 
 # cProfile.run('profiling_run()')
+# -24816.477
+# LL with correct Linkage Map: -24512.558

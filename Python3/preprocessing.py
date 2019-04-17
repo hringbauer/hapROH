@@ -115,8 +115,8 @@ class PreProcessingHDF5(PreProcessing):
         f = h5py.File(path, "r")  # Load for Sanity Check. See below!
         print("\nLoaded %i variants" % np.shape(f["calldata/GT"])[0])
         print("Loaded %i individuals" % np.shape(f["calldata/GT"])[1])
-        print(list(f["calldata"].keys()))
-        print(list(f["variants"].keys()))
+        #print(list(f["calldata"].keys()))
+        #print(list(f["variants"].keys()))
         print(f"HDF5 loaded from {path}")
         return f
 
@@ -203,8 +203,8 @@ class PreProcessingHDF5(PreProcessing):
         read_counts = read_counts[marker_obs, :].T
 
         # Extract Linkage map
-        r_map = np.array(obs_hdf5["variants/MAP"]
-                         )[marker_obs]  # Load the LD Map
+        r_map = np.array(ref_hdf5["variants/MAP"]
+                         )[marker_ref]  # Load the LD Map
 
         if only_calls == True:
             called = (gts_ind[0, :] > -1)  # Only Markers with calls
@@ -234,26 +234,26 @@ class PreProcessingHDF5(PreProcessing):
 # Do a Factory Method that can be imported.
 
 
-def load_preprocessing(p_model="SardHDF5", iid="MA89", ch=6, save=True, output=True):
+def load_preprocessing(p_model = "SardHDF5", save=True, output=True):
     """Load the Transition Model"""
 
     if p_model == "SardHDF5":
-        p_obj = PreProcessingHDF5(iid="MA89", ch=6, save=True, output=True)
+        p_obj = PreProcessingHDF5(save=save, output=output)
 
     else:
         raise NotImplementedError("Transition Model not found!")
 
-    return t_obj
+    return p_obj
 
 
 # For testing the Module
 if __name__ == "__main__":
-    pp = PreProcessingHDF5(save=False, output=True)
+    pp = load_preprocessing(p_model = "SardHDF5", save=False, output=True)
     gts_ind, gts, r_map, out_folder = pp.load_data(iid="MA89", ch=3, n_ref=503)
-    print(gts_ind[:2, :4])
-    print(np.shape(gts_ind))
-    print(r_map[:5])
-    print(np.shape(r_map))
-    print(gts[:10, :2])
-    print(np.shape(gts))
-    print(out_folder)
+    #print(gts_ind[:2, :4])
+    #print(np.shape(gts_ind))
+    #print(r_map[:5])
+    #print(np.shape(r_map))
+    #print(gts[:10, :2])
+    #print(np.shape(gts))
+    #print(out_folder)
