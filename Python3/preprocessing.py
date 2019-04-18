@@ -12,9 +12,8 @@ import pandas as pd
 import os   # For creating folders
 
 # Write General PreProcessing Class:
-# Inherits one for real HDF5 Dataset: PreProcessingHDF5
-# Inherits one for simulated Data.
-
+# Inherit one for real HDF5 Dataset: PreProcessingHDF5
+# Inherit one for simulated Data.
 
 class PreProcessing(object):
     """Class for PreProcessing the Data.
@@ -24,8 +23,8 @@ class PreProcessing(object):
     ref_folder = ""
     ind_folder = ""
 
-    iid = "MA89"             # Which Individual to Analyze
-    ch = 3                   # Which Chromosome to analyze
+    iid = ""     # Which Individual to Analyze
+    ch = 0       # Which Chromosome to analyze
 
     error_rate = 0.0  # The error rate for the SNPs
 
@@ -33,7 +32,7 @@ class PreProcessing(object):
         """Initialize Class"""
         raise NotImplementedError()
 
-    def load_data(self):
+    def load_data(self, iid="MA89", ch=6, n_ref=503):
         """Return Refererence Matrix [k,l], Genotype/Readcount Matrix [2,l]
         as well as linkage map [l] """
         raise NotImplementedError()
@@ -44,7 +43,6 @@ class PreProcessingHDF5(PreProcessing):
     Standard: Intersect Reference Data with Individual Data
     Return the Intersection Dataset
     """
-
     out_folder = ""    # Where to Save  to
     h5_path1000g = ""  # Path of the 1000 Genome Data (For right chromosome)
     meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
@@ -62,13 +60,20 @@ class PreProcessingHDF5(PreProcessing):
         self.save = save
         self.output = output
 
-    def load_data(self, iid="MA89", ch=6, n_ref=503):
+    def set_output_folder(self, iid, ch):
+        """Set the output folder."""
+        out_folder = "./Empirical/" + \
+            str(iid) + "_1000G_ROH/chr" + str(ch) + "/"
+        return out_folder
+
+    def load_data(self, iid="MA89", ch=6, n_ref=503, folder=""):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l]"""
         h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr" + \
             str(ch) + ".hdf5"
-        out_folder = "./Empirical/" + \
-            str(iid) + "_chr" + str(ch) + "_1000G_ROH/"
+
+        # Def Set the output folder:
+        out_folder = self.set_output_folder(iid, ch)
 
         # Set important "Steady Paths":
         h5_path_sard = self.h5_path_sard
@@ -115,8 +120,8 @@ class PreProcessingHDF5(PreProcessing):
         f = h5py.File(path, "r")  # Load for Sanity Check. See below!
         print("\nLoaded %i variants" % np.shape(f["calldata/GT"])[0])
         print("Loaded %i individuals" % np.shape(f["calldata/GT"])[1])
-        #print(list(f["calldata"].keys()))
-        #print(list(f["variants"].keys()))
+        # print(list(f["calldata"].keys()))
+        # print(list(f["variants"].keys()))
         print(f"HDF5 loaded from {path}")
         return f
 
@@ -211,9 +216,9 @@ class PreProcessingHDF5(PreProcessing):
             gts_ind = gts_ind[:, called]
             gts = gts[:, called]
             r_map = r_map[called]
+            read_counts = read_counts[:, called]
 
             if self.output == True:
-
                 print(f"Markers called {np.sum(called)} / {len(called)}")
 
         if self.error_rate > 0:  # Do some Error Shennenigans if needed
@@ -224,21 +229,76 @@ class PreProcessingHDF5(PreProcessing):
             if self.output == True:
                 print(f"Introducing {np.sum(e_ids)} Random Genotype Errors")
 
-        # Save which Individuals were used
         # np.savetxt(folder + "ind.csv", [id_obs], delimiter=",",  fmt='%i')
         # Return Genotypes/Readcounts Individual, Genotypes Reference and Recombination Map
         return gts_ind, gts, read_counts, r_map
+
+
+############################################
+class PreProcessingFolder(PreProcessing):
+    """Preprocessing if data has been saved into a folder
+    (such as in a Simulation)
+    """
+    save = True
+    output = True
+    readcounts = False   # Whether to return Readcounts
+
+    def __init__(self, save=True, output=True):
+        """Initialize Class.
+        Ind_Folder: Where to find individual
+        iid & chr: Individual and Chromosome.
+        save: """
+        self.save = save
+        self.output = output
+
+    def load_data(self, iid="MA89", ch=6, n_ref=503, folder=""):
+        """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
+        as well as linkage Map [l]"""
+
+        gts = np.loadtxt(
+            folder + "refs.csv", dtype="int", delimiter=",")
+
+        gts_ind = np.loadtxt(
+            folder + "hap.csv", dtype="int", delimiter=",")
+
+        n_snps = np.shape(gts_ind)[1]
+        r_map = self.load_linkage_map(folder, n_snps)
+
+        if self.output:
+            print(f"Successfully loaded Data from: {folder}")
+
+        return gts_ind, gts, r_map, folder
+
+    def load_linkage_map(self, folder, nr_snps):
+        """Load and Return the Linkage Map"""
+        map_path = folder + "map.csv"
+
+        if os.path.exists(map_path):
+            r_map = np.loadtxt(
+                map_path, dtype="float", delimiter=",")
+
+        else:
+            # Eventually: Runtime Warning
+            print("No Genetic Map found. Defaulting...")
+            r_map = np.arange(nr_snps)
+
+        assert(len(r_map) == nr_snps)  # Sanity Check
+
+        return r_map
 
 ############################################
 ############################################
 # Do a Factory Method that can be imported.
 
 
-def load_preprocessing(p_model = "SardHDF5", save=True, output=True):
+def load_preprocessing(p_model="SardHDF5", save=True, output=True):
     """Load the Transition Model"""
 
     if p_model == "SardHDF5":
         p_obj = PreProcessingHDF5(save=save, output=output)
+
+    elif p_model == "Folder":
+        p_obj = PreProcessingFolder(save=save, output=output)
 
     else:
         raise NotImplementedError("Transition Model not found!")
@@ -248,12 +308,13 @@ def load_preprocessing(p_model = "SardHDF5", save=True, output=True):
 
 # For testing the Module
 if __name__ == "__main__":
-    pp = load_preprocessing(p_model = "SardHDF5", save=False, output=True)
-    gts_ind, gts, r_map, out_folder = pp.load_data(iid="MA89", ch=3, n_ref=503)
-    #print(gts_ind[:2, :4])
-    #print(np.shape(gts_ind))
-    #print(r_map[:5])
-    #print(np.shape(r_map))
-    #print(gts[:10, :2])
-    #print(np.shape(gts))
-    #print(out_folder)
+    pp = load_preprocessing(p_model="Folder", save=False, output=True)
+    gts_ind, gts, r_map, out_folder = pp.load_data(
+        iid="MA89", ch=3, n_ref=503, folder="./Simulated/Test20r/")
+    print(gts_ind[:2, :4])
+    print(np.shape(gts_ind))
+    print(r_map[:5])
+    print(np.shape(r_map))
+    print(gts[:10, :2])
+    print(np.shape(gts))
+    print(out_folder)

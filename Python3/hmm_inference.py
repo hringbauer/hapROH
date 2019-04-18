@@ -28,7 +28,8 @@ class HMM_Analyze(object):
     Contains Parameters"""
     folder = ""  # The working folder
     output = True
-    save = True # Whether to save output data to disk
+    save = True  # Whether to save output data to disk
+    save_fp = True  # Whether to save the full Posterior
     n_ref = 20  # The Size of the Reference Panel [k-1]
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
     ob_stat = []     # The observed State [l]
@@ -41,6 +42,9 @@ class HMM_Analyze(object):
     t_obj, e_obj = 0, 0  # Objects for Transition & Emission probabilities
     p_obj = 0          # Object that does preprocessing
 
+    iid = ""  # Remember the Individual
+    ch = 0    # Which Chromosome
+
     fwd_bkwd, viterbi_path = 0, 0  # Function for the fwd-bkwd Algorithm
 
     e_model = "haploid"
@@ -49,20 +53,21 @@ class HMM_Analyze(object):
 
     def __init__(self, folder="./Simulated/Example0/",
                  t_model="model", e_model="haploid", p_model="SardHDF5",
-                 output=True, save=True, cython=True):
+                 output=True, save=True, cython=True, manual_load=False,
+                 save_fp=True):
         """Initialize Class. output: Boolean whether to print
-        Cython: Whether to use Cython"""
+        Cython: Whether to use Cython.
+        Manual_Load: Whether to skip automatic loading of data"""
         self.t_model = t_model
         self.e_model = e_model
         self.p_model = p_model
         self.folder = folder  # Save the working folder
         self.output = output
         self.save = save
+        self.save_fp = save_fp
 
-        self.load_preprocessing_model()
-        self.load_data()
-        self.load_emission_model()
-        self.load_transition_model()
+        if manual_load == False:
+            self.load_objects()
 
         # Load the Heavy Lifting Functions
         if cython == True:
@@ -80,17 +85,26 @@ class HMM_Analyze(object):
             self.fwd_bkwd = fwd_bkwd_p
             self.viterbi_path = viterbi_path_p
 
-    def load_data(self, folder=""):
-        """Load the Data"""
-        gts_ind, gts, r_map, out_folder = self.p_obj.load_data(
-            iid="MA89", ch=5, n_ref=503)
+    def load_objects(self, iid="", ch=0, n_ref=503):
+        """Load all the required Objects in right order"""
+        self.load_preprocessing_model()
+        self.load_data(iid, ch, n_ref)
+        self.load_emission_model()
+        self.load_transition_model()
 
+    def load_data(self, iid="", ch=0, n_ref=503):
+        """Load the External Data"""
+        gts_ind, gts, r_map, out_folder = self.p_obj.load_data(
+            iid=iid, ch=ch, n_ref=n_ref, folder=self.folder)
+
+        self.ch = ch
+        self.iid = iid
         self.ref_states = gts
         self.r_map = r_map
         self.ob_stat = gts_ind
         self.folder = out_folder
 
-        # Do some Post-Processing of the Loading
+        # Do some Post-Processing for summary Parameters
         self.n_ref = np.shape(self.ref_states)[0]
 
         # Sanity Checks for loading
@@ -99,39 +113,6 @@ class HMM_Analyze(object):
 
         if self.output:
             print(f"Successfully loaded Data from: {self.folder}")
-
-    def load_data_old(self):
-        """Load the Data when all in one Folder"""
-        folder = self.folder
-        self.ref_states = np.loadtxt(
-            folder + "refs.csv", dtype="int", delimiter=",")
-
-        self.ob_stat = np.loadtxt(
-            folder + "hap.csv", dtype="int", delimiter=",")
-
-        map_path = folder + "map.csv"
-        if os.path.exists(map_path):
-            r_map = np.loadtxt(
-                map_path, dtype="float", delimiter=",")
-
-            #print("RMap Stats:")
-            # print(len(r_map))
-            # print(len(set(r_map)))
-
-        else:
-            # Eventually: Runtime Warning
-            print("No Genetic Map found. Defaulting...")
-            r_map = np.arange(np.shape(self.ob_stat)[1])
-
-        self.r_map = r_map
-
-        assert(len(self.r_map) == np.shape(self.ob_stat)[1])  # Sanity Check
-
-        # Do some Post-Processing of the Loading
-        self.n_ref = np.shape(self.ref_states)[0]
-
-        if self.output:
-            print(f"Successfully loaded Data from: {folder}")
 
     def load_emission_model(self):
         """Method to load an Emission Model"""
@@ -258,7 +239,6 @@ class HMM_Analyze(object):
         t_mat = self.t_obj.give_transitions()
         ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
         # e_mat[e_mat == 0] = 1e-20  # Tiny probability of emission. LEGACY
-
         r_map = self.prepare_rmap()  # Get the Recombination Map
 
         n_states = np.shape(e_mat)[0]
@@ -305,10 +285,17 @@ class HMM_Analyze(object):
         # Save the Data
         self.posterior = post  # Remember the Posterior
 
-        if save == True:
-            np.savetxt(self.folder + "posterior.csv", post,
+        if self.save_fp == True:
+            path = self.folder + "posterior.csv"
+            np.savetxt(path, post,
                        delimiter=",",  fmt='%f')
-            print(f"Saved Results to {self.folder}")
+            print(f"Saved Full Posterior to to {self.folder}")
+
+        if save == True:
+            path = self.folder + "posterior0.csv"
+            np.savetxt(path, post[0, :],
+                       delimiter=",",  fmt='%f')
+            print(f"Saved Zero State Posterior to {self.folder}.")
 
     def optimze_ll_transition_param(self, roh_trans_params):
         """Calculate and return the log likelihoods for Transitions Parameters
@@ -330,7 +317,7 @@ class HMM_Analyze(object):
         Parameters: See in Postprocessing"""
         pp = give_Postprocessing(folder=self.folder, method=method,
                                  output=self.output, save=save)
-        pp.call_roh()
+        pp.call_roh(ch=self.ch, iid=self.iid)
         return
 
 
@@ -348,13 +335,13 @@ def prep_3x3matrix(t, n_ref):
     # The probability of staying when in diff. ROH State:
     # t_simple[2, 2] = np.sum(t[2, 2:])   # Legacy
     t_simple[2, 2] = -np.sum(t[2, :2])  # Minus the rates of Jumping
-    #print("Target Value:")
-    #print(t_simple[2, 2])
+    # print("Target Value:")
+    # print(t_simple[2, 2])
     # Jumping into 3rd state: Sum over all reference states
     t_simple[:2, 2] = t[:2, 2] * (n - 1)
     t_simple[2, :2] = t[2, :2]  # The jumping out probability is the same
-    #print("Total Jumping Probabilities:")
-    #print(np.sum(t_simple, axis=1))
+    # print("Total Jumping Probabilities:")
+    # print(np.sum(t_simple, axis=1))
     return t_simple
 
 
@@ -374,8 +361,24 @@ def exponentiate_r(rates, rec_v):
     assert(0 <= np.min(res))
     return res
 
-###############################
-###############################
+####################################
+####################################
+
+# Joint Run for a Sardinian Sample
+
+
+def analyze_individual(iid, ch, n_ref=503, save=True, save_fp=False):
+    """Run the analysis for one individual and chromosome"""
+    hmm = HMM_Analyze(folder=folder, cython=2,
+                      p_model="SardHDF5", manual_load=True, save=save, save_fp=save_fp)
+
+    hmm.load_objects(iid=iid, ch=ch, n_ref=n_ref)
+    hmm.set_diploid_observations()
+    hmm.t_obj.set_params(roh_in=1, roh_out=10, roh_jump=100)
+    hmm.calc_viterbi_path(save=save)           # Calculate the Viterbi Path.
+    hmm.calc_posterior(save=save)              # Calculate the Posterior.
+    hmm.post_processing(save=save)             # Do the Post-Processing.
+    print(f"Analysis of {iid} and Chr. {ch} successfully concluded!")
 
 
 def profiling_run():
@@ -390,17 +393,25 @@ if __name__ == "__main__":
     # folder = "./Simulated/Test20r/"          # "./Simulated/Test20r/"
     # d05e e: Error Introduced. d05: Downsampled
     # folder = "./Empirical/Sard100_0-10kROH8/"
-    #folder = "./Empirical/1kEUR_ROH/"
-    folder = "./Empirical/MA89_chr3_1000G_ROH/"
-    # folder = "./Simulated/Test20r/"
+    # folder = "./Empirical/1kEUR_ROH/"
+    # folder = "./Empirical/MA89_chr3_1000G_ROH/"
+    folder = "./Simulated/Test20r/"
+    p_model = "Folder"  # "SardHDF5" or "Folder"
 
-    hmm = HMM_Analyze(folder=folder, cython=2)
-    hmm.set_diploid_observations()       # Set single observation per locus.
-    hmm.t_obj.set_params(roh_in=1, roh_out=10, roh_jump=100)
-    hmm.calc_viterbi_path(save=True)           # Calculate the Viterbi Path.
-    hmm.calc_posterior(save=True)              # Calculate the Posterior.
-    hmm.post_processing(save=True)             # Do the Post-Processing.
+    # hmm = HMM_Analyze(folder=folder, cython=2, p_model=p_model)
+    # hmm.set_diploid_observations()       # Set single observation per locus.
+    # hmm.t_obj.set_params(roh_in=1, roh_out=10, roh_jump=100)
+    # hmm.calc_viterbi_path(save=True)           # Calculate the Viterbi Path.
+    # hmm.calc_posterior(save=True)              # Calculate the Posterior.
+    # hmm.post_processing(save=True)             # Do the Post-Processing.
+
+#ch_list = [3]   # range(1, 23)
+ch_list = range(1,23)
+
+for ch in ch_list:
+    print(f"Doing Chromosome: {ch}")
+    analyze_individual(iid="SEC006", ch=ch, save=True)
 
 # cProfile.run('profiling_run()')
 # -24816.477
-# LL with correct Linkage Map: -24512.558
+# LL with correct Linkage Map: -24512.563

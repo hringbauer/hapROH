@@ -15,8 +15,9 @@ class PostProcessing(object):
     Has methods to return them"""
     folder = ""         # The Folder to operate in
     r_map = []          # The Genetic Map
-    posterior = []      # The Posterior
+    posterior0 = []      # The Posterior
     roh_df = []        # Dataframe for Runs of Homozygosity
+    ch = 0
 
     cutoff = 0.8  # Cutoff Probability for ROH State
     l_cutoff = 0.01  # Cutoff in Morgan
@@ -38,7 +39,11 @@ class PostProcessing(object):
         if len(folder) == 0:
             folder = self.folder  # Use the Folder of the Class
 
-        # Linkage Map
+        # Load Posterior
+        post_path = folder + "posterior0.csv"
+        self.posterior0 = np.loadtxt(post_path, dtype="float", delimiter=",")
+
+        # Load Linkage Map
         map_path = folder + "map.csv"
 
         if os.path.exists(map_path):
@@ -47,20 +52,15 @@ class PostProcessing(object):
         else:
             # Eventually: Runtime Warning
             print("No Genetic Map found. Defaulting...")
-            self.r_map = np.arange(np.shape(self.posterior)[1])
+            self.r_map = np.arange(len(self.posterior0))
 
-        # Load Posterior
-        post_path = folder + "posterior.csv"
-        self.posterior = np.loadtxt(post_path, dtype="float", delimiter=",")
-
-        assert(len(self.r_map) == np.shape(self.posterior)[1])  # Sanity Check
-
+        assert(len(self.r_map) == len(self.posterior0))  # Sanity Check
         print(f"Successfully loaded for PP. from {folder}")
 
-    def call_roh(self):
+    def call_roh(self, ch=0, iid=""):
         """Call ROH of Homozygosity from Posterior Data"""
         roh_post = 1 - \
-            np.exp(self.posterior[0, :])  # Calculate the ROH Posterior
+            np.exp(self.posterior0)  # Calculate the ROH Posterior
 
         roh = roh_post > self.cutoff
 
@@ -75,12 +75,13 @@ class PostProcessing(object):
         ends = np.where(d == -1)[0]
         l = ends - starts
 
-        ends_map = self.r_map[ends]  # Transform to Map Lengths
+        ends_map = self.r_map[ends - 1]  # -1 to stay within bounds
         starts_map = self.r_map[starts]
         l_map = ends_map - starts_map
 
         full_df = pd.DataFrame({'Start': starts, 'End': ends,
-                                'StartM': starts_map, 'EndM': ends_map, 'length': l, 'lengthM': l_map})
+                                'StartM': starts_map, 'EndM': ends_map, 'length': l,
+                                'lengthM': l_map, 'iid': iid, "ch": ch})
         df = full_df[full_df["lengthM"] > self.l_cutoff]
 
         if self.output == True:
@@ -93,7 +94,7 @@ class PostProcessing(object):
             save_folder = self.folder + "roh.csv"
             df.to_csv(save_folder, index=False)
 
-            if self.output==True:
+            if self.output == True:
                 print(f"Successfully saved to {save_folder}")
 
         return df
@@ -106,6 +107,7 @@ def give_Postprocessing(folder="", method="Standard", output=True, save=True):
     """Factory Method for PostProcessing class"""
     pp = PostProcessing(folder, output=output, save=save)
     return pp
+
 
 # Do testing
 if __name__ == "__main__":
