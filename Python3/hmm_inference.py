@@ -369,8 +369,8 @@ def exponentiate_r(rates, rec_v):
 
 def analyze_individual(iid, ch, n_ref=503, save=True, save_fp=False):
     """Run the analysis for one individual and chromosome"""
-    hmm = HMM_Analyze(folder=folder, cython=2,
-                      p_model="SardHDF5", manual_load=True, save=save, save_fp=save_fp)
+    hmm = HMM_Analyze(cython=2, p_model="SardHDF5",
+                      manual_load=True, save=save, save_fp=save_fp)
 
     hmm.load_objects(iid=iid, ch=ch, n_ref=n_ref)
     hmm.set_diploid_observations()
@@ -405,12 +405,12 @@ if __name__ == "__main__":
     # hmm.calc_posterior(save=True)              # Calculate the Posterior.
     # hmm.post_processing(save=True)             # Do the Post-Processing.
 
-#ch_list = [3]   # range(1, 23)
-ch_list = range(1,23)
+    # ch_list = [3]   # range(1, 23)
+    ch_list = range(1, 23)
 
-for ch in ch_list:
-    print(f"Doing Chromosome: {ch}")
-    analyze_individual(iid="SEC006", ch=ch, save=True)
+    for ch in ch_list:
+        print(f"Doing Chromosome: {ch}")
+        analyze_individual(iid="SEC006", ch=ch, save=True)
 
 # cProfile.run('profiling_run()')
 # -24816.477
