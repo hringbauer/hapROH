@@ -6,8 +6,6 @@ meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
 anc_ind = 1029  # Up to which individual there are ancestrals
 anc_sardind = 57  # Nr of ancient Sarinian individuals
 
-# RU
-
 def run_full_individual(iid):
     """Run a Full Individual (all Chromosom)"""
     ch_list = range(1, 23)

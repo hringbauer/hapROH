@@ -410,7 +410,7 @@ if __name__ == "__main__":
 
     for ch in ch_list:
         print(f"Doing Chromosome: {ch}")
-        analyze_individual(iid="SEC006", ch=ch, save=True)
+        analyze_individual(iid="I1563", ch=ch, save=True)
 
 # cProfile.run('profiling_run()')
 # -24816.477
