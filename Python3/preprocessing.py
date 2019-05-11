@@ -44,9 +44,9 @@ class PreProcessingHDF5(PreProcessing):
     Return the Intersection Dataset
     """
     out_folder = ""    # Where to Save  to
-    h5_path1000g = ""  # Path of the 1000 Genome Data (For right chromosome)
     meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
     h5_path_sard = "./../ancient-sardinia/output/h5/mod_reich_sardinia_ancients_mrg_dedup_3trm_anno.h5"
+    h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"  # Path of 1000G (without chromosome part)
 
     save = True
     output = True
@@ -69,8 +69,8 @@ class PreProcessingHDF5(PreProcessing):
     def load_data(self, iid="MA89", ch=6, n_ref=503, folder=""):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l]"""
-        h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr" + \
-            str(ch) + ".hdf5"
+
+        h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"   # Attach Part for the right Chromosome
 
         # Def Set the output folder:
         out_folder = self.set_output_folder(iid, ch)
