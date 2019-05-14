@@ -193,7 +193,7 @@ class PreProcessingHDF5(PreProcessing):
                )  # If reference and observe dataset are the same
 
         # Extract Reference Individuals (first haplo)
-        gts = ref_hdf5["calldata/GT"][:, ids_ref, 0]
+        gts = ref_hdf5["calldata/GT"][:, ids_ref, 0] # Onlyh first IID
         gts = gts[marker_ref, :].T       # Important: Swap of Dimensions!!
 
         if self.output == True:
@@ -232,6 +232,27 @@ class PreProcessingHDF5(PreProcessing):
         # np.savetxt(folder + "ind.csv", [id_obs], delimiter=",",  fmt='%i')
         # Return Genotypes/Readcounts Individual, Genotypes Reference and Recombination Map
         return gts_ind, gts, read_counts, r_map
+
+
+###########################################
+###
+
+class PreProcessingHDF5Sim(PreProcessingHDF5):
+    """Class for PreProcessing simulated 1000 Genome Data (Mosaic).
+    Same as PreProcessingHDF5 but with the right Folder Structure
+    MODIFY
+    """
+
+    out_folder = ""    # Where to Save  to
+    meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
+    h5_path_sard = "./../ancient-sardinia/output/h5/mod_reich_sardinia_ancients_mrg_dedup_3trm_anno.h5"
+    h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"  # Path of 1000G (without chromosome part)
+
+    def set_output_folder(self, iid, ch):
+        """Set the output folder."""
+        out_folder = "./Empirical/" + \
+            str(iid) + "_1000G_ROH/chr" + str(ch) + "/"
+        return out_folder
 
 
 ############################################
