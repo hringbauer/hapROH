@@ -406,11 +406,14 @@ if __name__ == "__main__":
     # hmm.post_processing(save=True)             # Do the Post-Processing.
 
     # ch_list = [3]   # range(1, 23)
-    ch_list = range(1, 23)
+    #ch_list = range(1, 23)
 
-    for ch in ch_list:
-        print(f"Doing Chromosome: {ch}")
-        analyze_individual(iid="I1563", ch=ch, save=True)
+    # for ch in ch_list:
+    #    print(f"Doing Chromosome: {ch}")
+    #    analyze_individual(iid="I1563", ch=ch, save=True)
+
+    analyze_individual(iid="MA89", ch=4, save=True, save_fp=True)
+    #analyze_individual(iid="SEC006", ch=3, save=True, save_fp=True)
 
 # cProfile.run('profiling_run()')
 # -24816.477

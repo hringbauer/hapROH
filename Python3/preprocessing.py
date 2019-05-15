@@ -193,7 +193,7 @@ class PreProcessingHDF5(PreProcessing):
                )  # If reference and observe dataset are the same
 
         # Extract Reference Individuals (first haplo)
-        gts = ref_hdf5["calldata/GT"][:, ids_ref, 0] # Onlyh first IID
+        gts = ref_hdf5["calldata/GT"][:, ids_ref, 0] # Only first IID
         gts = gts[marker_ref, :].T       # Important: Swap of Dimensions!!
 
         if self.output == True:
