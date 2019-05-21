@@ -15,6 +15,7 @@ import os   # For creating folders
 # Inherit one for real HDF5 Dataset: PreProcessingHDF5
 # Inherit one for simulated Data.
 
+
 class PreProcessing(object):
     """Class for PreProcessing the Data.
     Standard: Intersect Reference Data with Individual Data
@@ -46,7 +47,8 @@ class PreProcessingHDF5(PreProcessing):
     out_folder = ""    # Where to Save  to
     meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
     h5_path_sard = "./../ancient-sardinia/output/h5/mod_reich_sardinia_ancients_mrg_dedup_3trm_anno.h5"
-    h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"  # Path of 1000G (without chromosome part)
+    # Path of 1000G (without chromosome part)
+    h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
 
     save = True
     output = True
@@ -66,18 +68,33 @@ class PreProcessingHDF5(PreProcessing):
             str(iid) + "_1000G_ROH/chr" + str(ch) + "/"
         return out_folder
 
+    def get_index_iid(self, iid, fs=0):
+        """Get the Index of IID in fs
+        iid to extract. fs reference HDF5"""
+        meta_df = pd.read_csv(self.meta_path)
+        assert(len(meta_df) == np.shape(fs["calldata/GT"])[1])  # Sanity Check
+
+        id_obs = np.where(meta_df["iid"] == iid)[0][0]
+        return id_obs
+
+    def get_ref_ids(self, f, n_ref=503):
+        """Get the IDs for the reference file
+        Default here is all"""
+        ids_ref = np.arange(n_ref)
+        return ids_ref
+
     def load_data(self, iid="MA89", ch=6, n_ref=503, folder=""):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l]"""
 
-        h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"   # Attach Part for the right Chromosome
+        # Attach Part for the right Chromosome
+        h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"
 
         # Def Set the output folder:
         out_folder = self.set_output_folder(iid, ch)
 
         # Set important "Steady Paths":
         h5_path_sard = self.h5_path_sard
-        meta_path = self.meta_path
 
         # Create Output Folder if needed
         if not os.path.exists(out_folder):
@@ -88,13 +105,10 @@ class PreProcessingHDF5(PreProcessing):
         f1000 = self.load_h5(h5_path1000g)
         i1, i2 = self.merge_2hdf(fs, f1000)
 
-        meta_df = pd.read_csv(meta_path)
-        assert(len(meta_df) == np.shape(fs["calldata/GT"])[1])  # Sanity Check
-
-        id_obs = np.where(meta_df["iid"] == iid)[0][0]
+        id_obs = self.get_index_iid(iid, fs)
+        ids_ref = self.get_ref_ids(f1000, n_ref)
 
         # All 503 EUR Samples as Reference (first Chromosome)
-        ids_ref = np.arange(n_ref)
         markers = np.arange(0, len(i1))  # Which Markers to Slice out
 
         # Do Downsampling if needed
@@ -193,7 +207,7 @@ class PreProcessingHDF5(PreProcessing):
                )  # If reference and observe dataset are the same
 
         # Extract Reference Individuals (first haplo)
-        gts = ref_hdf5["calldata/GT"][:, ids_ref, 0] # Only first IID
+        gts = ref_hdf5["calldata/GT"][:, ids_ref, 0]  # Only first IID
         gts = gts[marker_ref, :].T       # Important: Swap of Dimensions!!
 
         if self.output == True:
@@ -235,27 +249,63 @@ class PreProcessingHDF5(PreProcessing):
 
 
 ###########################################
-###
 
 class PreProcessingHDF5Sim(PreProcessingHDF5):
-    """Class for PreProcessing simulated 1000 Genome Data (Mosaic).
+    """Class for PreProcessing simulated 1000 Genome Data (Mosaic Simulations).
     Same as PreProcessingHDF5 but with the right Folder Structure
     MODIFY
     """
 
-    out_folder = ""    # Where to Save  to
+    out_folder = ""    # Where to save to
     meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
-    h5_path_sard = "./../ancient-sardinia/output/h5/mod_reich_sardinia_ancients_mrg_dedup_3trm_anno.h5"
-    h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"  # Path of 1000G (without chromosome part)
+    h5_folder = ""    # The H5 Folder
+    h5_path_sard = ""
+    pop_path = ""  # Path of which Populations to use
+    # Path of 1000G (without chromosome part):
+    h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
+    meta_path_ref = "./Data/1000Genomes/Individuals/meta_df.csv"
+    excluded = ["TSI", ]  # List of excluded Populations in Meta
 
     def set_output_folder(self, iid, ch):
-        """Set the output folder."""
-        out_folder = "./Empirical/" + \
-            str(iid) + "_1000G_ROH/chr" + str(ch) + "/"
+        """Set the output folder of where to save the result to."""
+
+        out_folder = self.h5_folder + "output/" + \
+            str(iid) + "/chr" + str(ch) + "/"
+
         return out_folder
 
+    def get_index_iid(self, iid, fs=0):
+        """OVERWRITE: Get the Index of IID in fs
+        iid to extract. fs reference HDF5"""
+
+        iids = np.array(fs['samples'])
+        assert(len(iids) == np.shape(fs["calldata/GT"])[1])  # Sanity Check
+
+        id_obs = np.where(iids == iid)[0][0]
+        return id_obs
+
+    def get_ref_ids(self, f, n_ref):
+        """OVERWRITE: Get the Indices of the individuals
+        in the HDF5 to extract. Here: Allow to subset for Individuals from
+        different 100G Populations"""
+
+        # Load Meta Population File
+        meta_df = pd.read_csv(self.meta_path_ref, sep="\t")
+
+        iids = np.where(~meta_df["pop"].isin(self.excluded))[0]
+        print(f"{len(iids)} / {len(meta_df)} Individuals included in Reference")
+        return iids
+
+    def set_folder(self, folder_path):
+        """Method to manually set the Input and Output Folder"""
+        self.h5_folder = folder_path
+        self.h5_path_sard = folder_path + "data.h5"
+        self.pop_path = folder_path + "pops_ref.csv" # Currently not needed
 
 ############################################
+############################################
+
+
 class PreProcessingFolder(PreProcessing):
     """Preprocessing if data has been saved into a folder
     (such as in a Simulation)
@@ -317,6 +367,9 @@ def load_preprocessing(p_model="SardHDF5", save=True, output=True):
 
     if p_model == "SardHDF5":
         p_obj = PreProcessingHDF5(save=save, output=output)
+
+    elif p_model == "MosaicHDF5":
+        p_obj = PreProcessingHDF5Sim(save=save, output=output)
 
     elif p_model == "Folder":
         p_obj = PreProcessingFolder(save=save, output=output)

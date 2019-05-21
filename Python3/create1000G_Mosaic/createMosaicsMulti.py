@@ -1,7 +1,7 @@
 """
 Class for preparing 1000 Genome Mosaic Data
-Loads 1000 Genome data. Creates Mosaic with copyied in ROH
-Is a class that can load and save the data.
+Wrapper for createMosaic - to simulate several indiviuals with several ROH
+Save the created Data to HDF 5, and the ROH block info to a csv in the same folder.
 @ Author: Harald Ringbauer, 2019, All rights reserved
 """
 
@@ -20,7 +20,7 @@ class Mosaic_1000G_Multi(object):
     # Important Parameters:
     ch = 3  # Which Chromosome to analyze
     pop_list = ["TSI"]                  # Which Populations to copy from
-    chunk_length = 0.005                # Chunk Length of Chromosomes
+    chunk_length = 0.005                  # Chunk Length of Chromosomes 0.005
     roh_lengths = np.ones(5) * 0.05     # ROH Lengths per Individual
     iid = "iid"                         # Prefix of Artificial Individual Names
     n = 3       # Nr of individuals to simulate
@@ -39,12 +39,14 @@ class Mosaic_1000G_Multi(object):
 
         self.load_m_object()
 
+    def load_m_object(self):
+        """Load the Mosaic Object"""
         # Create Save folder if needed
+        print(self.save_path)  # DEBUg
+
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
 
-    def load_m_object(self):
-        """Load the Mosaic Object"""
         self.m_object = Mosaic_1000G(ch=self.ch, path1000G=self.path1000G,
                                      pop_path=self.pop_path, save_path=self.save_path)
 
@@ -71,7 +73,7 @@ class Mosaic_1000G_Multi(object):
             f_ad = f0.create_dataset("calldata/AD", (l, k, 2), dtype='i')
             f_ref = f0.create_dataset("variants/REF", (l,), dtype=dt)
             f_alt = f0.create_dataset("variants/ALT", (l,), dtype=dt)
-            f_pos = f0.create_dataset("variants/POS", (l,), dtype='f')
+            f_pos = f0.create_dataset("variants/POS", (l,), dtype='i')
             f_gt = f0.create_dataset("calldata/GT", (l, k, 2), dtype='i')
             f_samples = f0.create_dataset("samples", (k,), dtype=dt)
 
@@ -167,12 +169,12 @@ class Mosaic_1000G_Multi(object):
         if len(path) == 0:
             path = self.save_path
 
-        path = self.save_path + "data.hdf5"
+        path = self.save_path + "data.h5"
 
         gt = gts
         ad = gts
 
-        ref, alt = f["variants/REF"], f["variants/ALT"]
+        ref, alt = f["variants/REF"][:], f["variants/ALT"][:, 0]
         pos = f["variants/POS"]
         rec = f["variants/MAP"]
 
@@ -200,8 +202,43 @@ class Mosaic_1000G_Multi(object):
         if self.output == True:
             print(f"Successfully saved to {path}")
 
+    def save_metafile(self, path=""):
+        """Save the population File"""
+        # if len(path)==0:
+        #    path = self.path
+
+        save_df = self.m_object.meta_df
+        save_df.to_csv(path, sep="\t", index=False)
+        print(f"Successfully saved to {path}")
+
+
+def multi_run_lengths():
+    """Create Multiple ROH runs"""
+    # save_path = "./Simulated/1000G_Mosaic/TSI/ch3_5cm/"  # Where to save the new HDF5 to
+    base_path = "./Simulated/1000G_Mosaic/TSI/"  # Start of SavePaths
+
+    t = Mosaic_1000G_Multi()  # Create the Object
+    t.pop_list = ["TSI"]
+    t.n = 20  # Nr of Individuals to simulate
+    t.chunk_length = 0.005
+    t.ch = 3
+
+    lengths = [1.0, 3.0, 5.0, 10.0]  # Lengths to Simulate (in cM)
+
+    for l in lengths:
+        t.roh_lengths = np.ones(5) * 0.01 * l  # Set the Lengths
+        # Where to save the new HDF5 to
+        t.save_path = base_path + "ch" + str(t.ch) + "_" + str(int(l)) + "cm/"
+
+        t.load_m_object()
+        t.create_individuals()
+
 
 #########################################
 if __name__ == "__main__":
-    t = Mosaic_1000G_Multi()
-    t.create_individuals()
+    #t = Mosaic_1000G_Multi()
+    # t.create_individuals()
+
+    # t.save_metafile(path="./Data/1000Genomes/Individuals/meta_df.csv")
+
+    multi_run_lengths()

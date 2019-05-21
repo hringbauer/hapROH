@@ -25,7 +25,10 @@ class HMM_Analyze(object):
     """Analyze Class for HMMs.
     This is the main Class, all specific Inference schemes inherit from it
     and overwrite functions.
-    Contains Parameters"""
+    Contains objects as field for pre-processing, transition as well as
+    emission probabilities.
+    Contains most Parameters (but some of them like the output folders are decided
+    by pre-processing subclass)"""
     folder = ""  # The working folder
     output = True
     save = True  # Whether to save output data to disk
