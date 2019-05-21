@@ -4,19 +4,21 @@ Contains Functions to run multiple Chromosomes and Individuals
 """
 
 import sys
-sys.path.append("./Python3/") # Since now we are in the Root Directory
-
-from hmm_inference import HMM_Analyze
-import numpy as np
+sys.path.append("./Python3/")  # Since now we are in the Root Directory
 import pandas as pd
+import numpy as np
+from hmm_inference import HMM_Analyze
 
-############## Useful Parameters
+# Useful Parameters
 
-meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
-anc_ind = 1029  # Up to which individual there are ancestrals
-anc_sardind = 57  # Nr of ancient Sarinian individuals
+#meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
+meta_path = "./../ancient-sardinia/output/meta/meta_rev_final.csv"
 
-############# The Functions
+anc_ind = 1087  # Up to which individual there are ancestrals
+anc_sardind = 85  # Nr of ancient Sarinian individuals
+
+# The Functions
+
 
 def analyze_individual(iid, ch, n_ref=503, save=True, save_fp=False):
     """Run the analysis for one individual and chromosome.
@@ -56,5 +58,6 @@ def run_all_sardinians(min_cov=0.5):
 
 
 if __name__ == "__main__":
-    analyze_individual(iid="MA89", ch=6, save=True, save_fp=False)
-    #run_all_sardinians()
+    #analyze_individual(iid="MA89", ch=6, save=True, save_fp=False)
+    run_full_individual(iid="MA89")
+    # run_all_sardinians()

@@ -45,8 +45,10 @@ class PreProcessingHDF5(PreProcessing):
     Return the Intersection Dataset
     """
     out_folder = ""    # Where to Save  to
-    meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
-    h5_path_sard = "./../ancient-sardinia/output/h5/mod_reich_sardinia_ancients_mrg_dedup_3trm_anno.h5"
+    #meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
+    meta_path = "./../ancient-sardinia/output/meta/meta_rev_final.csv"
+    #h5_path_sard = "./../ancient-sardinia/output/h5/mod_reich_sardinia_ancients_mrg_dedup_3trm_anno.h5"
+    h5_path_sard = "./../ancient-sardinia/output/h5_rev/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5"
     # Path of 1000G (without chromosome part)
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
 
@@ -300,7 +302,7 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
         """Method to manually set the Input and Output Folder"""
         self.h5_folder = folder_path
         self.h5_path_sard = folder_path + "data.h5"
-        self.pop_path = folder_path + "pops_ref.csv" # Currently not needed
+        self.pop_path = folder_path + "pops_ref.csv"  # Currently not needed
 
 ############################################
 ############################################
