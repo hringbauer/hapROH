@@ -415,7 +415,7 @@ if __name__ == "__main__":
     #    print(f"Doing Chromosome: {ch}")
     #    analyze_individual(iid="I1563", ch=ch, save=True)
 
-    analyze_individual(iid="MA89", ch=4, save=True, save_fp=True)
+    analyze_individual(iid="SEC002", ch=15, save=True, save_fp=True)
     #analyze_individual(iid="SEC006", ch=3, save=True, save_fp=True)
 
 # cProfile.run('profiling_run()')

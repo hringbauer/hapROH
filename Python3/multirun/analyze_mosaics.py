@@ -30,7 +30,7 @@ def analyze_individual(iid, ch=3, n_ref=503, save=True, save_fp=False, path_mosa
 
 
 def run_full_individual(iid):
-    """Run a Full Individual (all Chromosom). REWRITE"""
+    """Run a Full Individual (all Chromosom).  NEEDS REWRITING"""
     ch_list = range(1, 23)
     for ch in ch_list:
         print(f"Doing Chromosome: {ch}")
