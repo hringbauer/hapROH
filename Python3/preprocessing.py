@@ -304,6 +304,10 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
         self.h5_path_sard = folder_path + "data.h5"
         self.pop_path = folder_path + "pops_ref.csv"  # Currently not needed
 
+    def set_exclude_pops(self, pops=["TSI", ]):
+        """Method to manually set the excluded populations"""
+        self.excluded = pops
+
 ############################################
 ############################################
 

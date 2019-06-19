@@ -18,9 +18,9 @@ class Mosaic_1000G_Multi(object):
     A wrapper for createMosaic"""
 
     # Important Parameters:
-    ch = 3  # Which Chromosome to analyze
+    ch = 3                              # Which Chromosome to analyze
     pop_list = ["TSI"]                  # Which Populations to copy from
-    chunk_length = 0.005                  # Chunk Length of Chromosomes 0.005
+    chunk_length = 0.005                # Chunk Length of Chromosomes 0.005
     roh_lengths = np.ones(5) * 0.05     # ROH Lengths per Individual
     iid = "iid"                         # Prefix of Artificial Individual Names
     n = 3       # Nr of individuals to simulate
@@ -148,6 +148,9 @@ class Mosaic_1000G_Multi(object):
         max_ch: Maximum Max Position"""
         k = len(roh_lengths)
 
+        if k == 0:   # If no blocks, return empty list
+            return np.array([[], []]).T
+
         l = (max_ch - min_ch) / k  # Length Batch
 
         # Factor 2: Make sure that there is some gap
@@ -212,21 +215,26 @@ class Mosaic_1000G_Multi(object):
         print(f"Successfully saved to {path}")
 
 
-def multi_run_lengths():
-    """Create Multiple ROH runs"""
+def multi_run_lengths(base_path="./Simulated/1000G_Mosaic/TSI/", pop_list=["TSI"], n=20,
+                      ch=3, chunk_length=0.005, lengths=[1.0, 3.0, 5.0, 10.0], n_blocks=5):
+    """Create Multiple ROH runs and saves combined data into base_path hdf5 and roh_info df
+    base_path:  Start of SavePaths
+    pop_list: The Reference Populations for Mosaic
+    n: Number of Individuals to simulate
+    chunk_length: Lenths of the Chunks to mosaic
+    ch: Chromosome to use
+    lengths: The Length of the Blocks to copy in
+    n_blocks: The NR of the Blocks to copy in"""
     # save_path = "./Simulated/1000G_Mosaic/TSI/ch3_5cm/"  # Where to save the new HDF5 to
-    base_path = "./Simulated/1000G_Mosaic/TSI/"  # Start of SavePaths
 
-    t = Mosaic_1000G_Multi()  # Create the Object
-    t.pop_list = ["TSI"]
-    t.n = 20  # Nr of Individuals to simulate
-    t.chunk_length = 0.005
-    t.ch = 3
-
-    lengths = [1.0, 3.0, 5.0, 10.0]  # Lengths to Simulate (in cM)
+    t = Mosaic_1000G_Multi()  # Create the MultiRUn Object
+    t.pop_list = pop_list
+    t.n = n
+    t.chunk_length = chunk_length
+    t.ch = ch  # The Chromosome
 
     for l in lengths:
-        t.roh_lengths = np.ones(5) * 0.01 * l  # Set the Lengths
+        t.roh_lengths = np.ones(n_blocks) * 0.01 * l  # Set the Lengths
         # Where to save the new HDF5 to
         t.save_path = base_path + "ch" + str(t.ch) + "_" + str(int(l)) + "cm/"
 
@@ -239,6 +247,8 @@ if __name__ == "__main__":
     #t = Mosaic_1000G_Multi()
     # t.create_individuals()
 
-    # t.save_metafile(path="./Data/1000Genomes/Individuals/meta_df.csv")
+    # Do the Multi_Run of Lengths
+    # multi_run_lengths()
 
-    multi_run_lengths()
+    # Test Running FP Individuals without copied blocks:
+    multi_run_lengths(lengths=[0, ], n_blocks=0, n=3, chunk_length=0.0025)
