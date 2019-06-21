@@ -251,4 +251,4 @@ if __name__ == "__main__":
     # multi_run_lengths()
 
     # Test Running FP Individuals without copied blocks:
-    multi_run_lengths(lengths=[0, ], n_blocks=0, n=3, chunk_length=0.0025)
+    multi_run_lengths(lengths=[0, ], n_blocks=0, n=100, chunk_length=0.0025)

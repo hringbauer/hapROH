@@ -88,4 +88,4 @@ if __name__ == "__main__":
     #multi_run_individuals(n=20, ch=3, base_path="./Simulated/1000G_Mosaic/TSI/",
     #                      lengths=[1, 3, 5, 10])
 
-    multi_run_individuals(n=3, ch=3, base_path="./Simulated/1000G_Mosaic/TSI/", lengths=[0,])
+    multi_run_individuals(n=100, ch=3, base_path="./Simulated/1000G_Mosaic/TSI/", lengths=[0,])
