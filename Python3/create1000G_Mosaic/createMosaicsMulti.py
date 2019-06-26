@@ -121,7 +121,7 @@ class Mosaic_1000G_Multi(object):
 
             gts[:, i, :] = gts_roh
 
-            # Append ROH information to save
+            ### Append ROH information to save
             roh_begins += list(roh_list[:, 0])
             roh_ends += list(roh_list[:, 1])
             iid_list += [iids[i], ] * len(roh_list)
@@ -137,6 +137,7 @@ class Mosaic_1000G_Multi(object):
         # Save the Data:
         self.save_rohlist(roh_begins, roh_ends, iid_list,
                           copy_iids, ch=self.ch)
+
         self.save_genotypes(m.f, gts, iids)
 
     def create_roh_list(self, roh_lengths, min_ch, max_ch):
