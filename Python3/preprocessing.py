@@ -44,7 +44,7 @@ class PreProcessingHDF5(PreProcessing):
     Standard: Intersect Reference Data with Individual Data
     Return the Intersection Dataset
     """
-    out_folder = ""    # Where to Save  to
+    out_folder = ""    # Where to Save to (Returned to main program)
     #meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
     meta_path = "./../ancient-sardinia/output/meta/meta_rev_final.csv"
     #h5_path_sard = "./../ancient-sardinia/output/h5/mod_reich_sardinia_ancients_mrg_dedup_3trm_anno.h5"
@@ -55,6 +55,7 @@ class PreProcessingHDF5(PreProcessing):
     save = True
     output = True
     readcounts = False   # Whether to return Readcounts
+    diploid_ref = True   # Whether to use diploid Reference Individuals
 
     def __init__(self, save=True, output=True):
         """Initialize Class.
@@ -63,6 +64,7 @@ class PreProcessingHDF5(PreProcessing):
         save: """
         self.save = save
         self.output = output
+        #print(os.getcwd()) # Show the current working directory
 
     def set_output_folder(self, iid, ch):
         """Set the output folder."""
@@ -95,12 +97,12 @@ class PreProcessingHDF5(PreProcessing):
         # Def Set the output folder:
         out_folder = self.set_output_folder(iid, ch)
 
-        # Set important "Steady Paths":
-        h5_path_sard = self.h5_path_sard
-
         # Create Output Folder if needed
         if not os.path.exists(out_folder):
             os.makedirs(out_folder)
+
+        # Set important "Steady Paths":
+        h5_path_sard = self.h5_path_sard
 
         # Load and Merge the Data
         fs = self.load_h5(h5_path_sard)
@@ -212,8 +214,13 @@ class PreProcessingHDF5(PreProcessing):
         gts = ref_hdf5["calldata/GT"][:, ids_ref, 0]  # Only first IID
         gts = gts[marker_ref, :].T       # Important: Swap of Dimensions!!
 
+        if self.diploid_ref == True:   # In case diploid reference Samples
+            gts1 = ref_hdf5["calldata/GT"][:, ids_ref, 1]  # The second allele
+            gts1 = gts1[marker_ref, :].T       # Important: Swap of Dimensions!!
+            gts = np.concatenate((gts, gts1), axis=0)  # Add two dataframes
+
         if self.output == True:
-            print(f"Extraction of {len(gts)} Individuals Complete!")
+            print(f"Extraction of {len(gts)} Haplotypes Complete!")
 
         # Extract target individual Genotypes
         gts_ind = obs_hdf5["calldata/GT"][:, id_obs, :]
@@ -259,6 +266,7 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
     """
 
     out_folder = ""    # Where to save to
+    prefix_out_data = "" # Prefix of the Outdata
     meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
     h5_folder = ""    # The H5 Folder
     h5_path_sard = ""
@@ -272,7 +280,7 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
         """Set the output folder of where to save the result to."""
 
         out_folder = self.h5_folder + "output/" + \
-            str(iid) + "/chr" + str(ch) + "/"
+            str(iid) + "/chr" + str(ch) + "/" + self.prefix_out_data
 
         return out_folder
 
@@ -303,6 +311,10 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
         self.h5_folder = folder_path
         self.h5_path_sard = folder_path + "data.h5"
         self.pop_path = folder_path + "pops_ref.csv"  # Currently not needed
+
+    def set_prefix_out_data(self, prefix):
+        """Modify the Prefix of the Output-File"""
+        self.prefix_out_data = prefix
 
     def set_exclude_pops(self, pops=["TSI", ]):
         """Method to manually set the excluded populations"""

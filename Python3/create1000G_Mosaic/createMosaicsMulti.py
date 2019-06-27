@@ -226,7 +226,6 @@ def multi_run_lengths(base_path="./Simulated/1000G_Mosaic/TSI/", pop_list=["TSI"
     ch: Chromosome to use
     lengths: The Length of the Blocks to copy in
     n_blocks: The NR of the Blocks to copy in"""
-    # save_path = "./Simulated/1000G_Mosaic/TSI/ch3_5cm/"  # Where to save the new HDF5 to
 
     t = Mosaic_1000G_Multi()  # Create the MultiRUn Object
     t.pop_list = pop_list
@@ -252,4 +251,4 @@ if __name__ == "__main__":
     # multi_run_lengths()
 
     # Test Running FP Individuals without copied blocks:
-    multi_run_lengths(lengths=[0, ], n_blocks=0, n=100, chunk_length=0.0025)
+    multi_run_lengths(base_path="./Simulated/1000G_Mosaic/TSI1/", lengths=[1, ], n_blocks=5, n=2, chunk_length=0.0025)
