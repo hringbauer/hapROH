@@ -19,7 +19,7 @@ class Mosaic_1000G_Multi(object):
 
     # Important Parameters:
     ch = 3                              # Which Chromosome to analyze
-    pop_list = ["TSI"]                  # Which Populations to copy from
+    pop_list = ["TSI"]                  # Which pop to copy from ["TSI"]
     chunk_length = 0.005                # Chunk Length of Chromosomes 0.005
     roh_lengths = np.ones(5) * 0.05     # ROH Lengths per Individual
     iid = "iid"                         # Prefix of Artificial Individual Names
@@ -27,17 +27,14 @@ class Mosaic_1000G_Multi(object):
 
     path1000G = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
     pop_path = "./Data/1000Genomes/integrated_call_samples_v3.20130502.ALL.panel"
-    save_path = "./Simulated/1000G_Mosaic/TSI/ch3_5cm/"  # Where to save the new HDF5 to
+    save_path = "./Simulated/1000G_Mosaic/TSI/ch3_5cm/"  # Where to save the new HDF5 to by default
 
     output = True  # whether to Print Output
     m_object = 0  # The Mosaic object
 
     def __init__(self):
-        """ch: Which chromosome to loadself.
-        pop_path: Where to load from
-        save_path: Where to save the new HDF5 to"""
-
-        self.load_m_object()
+        """Initialize"""
+        pass  # Just go on
 
     def load_m_object(self):
         """Load the Mosaic Object"""
