@@ -35,7 +35,7 @@ Contains one column lists of individuals to use
 Contains 1240k Eigenstrat .snp, that specifies genomic position and map position of every SNP
 
 ### Autosome VCF
-Contains the input VCFs, downloaded from 100 Genomes
+Contains the input VCFs, downloaded from 1000 Genomes
 
 ### Autosome VCF/Subset
 Contains also the processed VCFs, downsampled to 
@@ -46,3 +46,23 @@ Contains the full HDF5s.
 
 ### \1240kHDF5
 Contains the final product. Downsampled hdf5s to individuals as well 
+
+
+### Run Notebooks on cluster:
+sbatch ./jupyter.sbatch
+
+and then collect the URL from the .err file of the job. Afterwards: Do not forget to scancel the job!!
+
+
+This allows one to run memory or cpu-intense tasks via a notebook on the cluster.
+
+For debugging/info: Show job account information for a specific job:
+sacct -j jobid --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
+
+
+
+
+
+
+
+
