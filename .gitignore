@@ -1,3 +1,9 @@
 Data/*
 Empirical/*
 Simulated/*
+Python3/__pycache__/*
+Python3/create1000G_Mosaic/__pycache__/*
+Python3/cfunc.c
+Python3/cfunc.html
+Python3/cfunc.cpython-37m-x86_64-linux-gnu.so
+nb-log*
