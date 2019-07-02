@@ -248,4 +248,4 @@ if __name__ == "__main__":
     # multi_run_lengths()
 
     # Test Running FP Individuals without copied blocks:
-    multi_run_lengths(base_path="./Simulated/1000G_Mosaic/TSI1/", lengths=[1, ], n_blocks=5, n=2, chunk_length=0.0025)
+    multi_run_lengths(base_path="./Simulated/1000G_Mosaic/TSI4/", lengths=[1, ], n_blocks=5, n=2, chunk_length=0.0025)
