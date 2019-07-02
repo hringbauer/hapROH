@@ -3,7 +3,7 @@ Software to call ROHs
 Author: Harald Ringbauer
 @all rights reserved
 
-### To create C Extension from .c run command line:
+### To create C Extension from .c run command line (within Python3/):
 cythonize -a -i cfunc.pyx
 
 Produces some text - what's important that there is no "compile error".

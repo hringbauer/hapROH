@@ -74,7 +74,7 @@ class Mosaic_1000G(object):
             iid_df, meta_df[["sample", "pop", "super_pop"]], how="left", on="sample")
 
         assert(len(meta_df) == len(iids))  # Sanity Cehck
-        print(f"Loaded {np.shape(meta_df)[0]} Population Data.")
+        print(f"Loaded {np.shape(meta_df)[0]} individual meta file.")
 
         return meta_df
 
