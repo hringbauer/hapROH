@@ -3,12 +3,24 @@ Software to call ROHs
 Author: Harald Ringbauer
 @all rights reserved
 
+## Installation:
+The HMM Python code needs compiling of the C functions:
+
 ### To create C Extension from .c run command line (within Python3/):
 cythonize -a -i cfunc.pyx
 
-Produces some text - what's important that there is no "compile error".
+Produces some text - what's important: That there is no "compile error".
 
+## Data Preparation:
+For 1240k reference data:
+There is a notebook prepare_1000genomes. It downloads 1000 Genomes to local machine and prepares
+downsampled and clean 1240k data, and saves it to hdf5 (for the moment)
 
+Goal: 
+Have a vcf - and specifiy which indivdiuals to test
+And have a reference vcf - and specifiy which individual to use from there 
+
+## Running the HMM
 
 ### Running Modes:
 cython=
@@ -48,7 +60,9 @@ Contains the full HDF5s.
 Contains the final product. Downsampled hdf5s to individuals as well 
 
 
-### Run Notebooks on cluster:
+# Diverse
+
+## Run Notebooks on cluster:
 sbatch ./jupyter.sbatch
 
 and then collect the URL from the .err file of the job. Afterwards: Do not forget to scancel the job!!
