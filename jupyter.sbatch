@@ -10,6 +10,8 @@
 #SBATCH --output=nb-log-%J.out
 #SBATCH --error=nb-log-%J.err
 
+module load python/3.7.0
+
 ip=$(/sbin/ip route get 8.8.8.8 | awk '{print $NF;exit}')
 port=$((10000+ $RANDOM % 20000))
 
