@@ -128,7 +128,8 @@ class Mosaic_1000G(object):
         len_bins = np.arange(ch_min, ch_max, chunk_length)
         len_bins = np.append(len_bins, ch_max)  # Append the last Value
 
-        print("Setting new Genotypes...")
+        if self.output == True:
+            print("Setting new Genotypes...")
 
         # Initialize with invalid Value
         gts_new = -np.ones((nr_loci, 2), dtype="int")
@@ -176,11 +177,32 @@ class Mosaic_1000G(object):
 
         return gts
 
-    def give_iids(self, meta_df, pop_list=["TSI"]):
+    def give_iids(self, meta_df="", pop_list=["TSI"]):
         """Return list of Indices in pop_list"""
+        if len(meta_df)==0:
+            meta_df = self.meta_df
+
         iids = np.where(meta_df["pop"].isin(pop_list))[0]
-        print(f"Found {len(iids)} Individuals in {pop_list}")
+        if self.output == True:
+            print(f"Found {len(iids)} Individuals in {pop_list}")
         return iids
+
+    def get_gts_pop(self, pop_list, meta_df=""):
+        """Find all Individuals from a Population.
+        Return their genotypes and iids"""
+        f = self.f
+        if len(meta_df)==0:
+            meta_df = self.meta_df
+
+        iids = np.where(meta_df["pop"].isin(pop_list))[0] # Find individuals
+
+        if self.output == True:
+            print(f"Found {len(iids)} Individuals in {pop_list}")
+
+        gts =  f["calldata/GT"][:, iids, :] # Extract the genotypes
+        iids = np.array(f["samples"])[iids]
+        return gts, iids
+
 
     def produce_allele_counts(self):
         """Creates Allele Counts"""

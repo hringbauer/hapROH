@@ -27,7 +27,8 @@ class Mosaic_1000G_Multi(object):
 
     path1000G = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
     pop_path = "./Data/1000Genomes/integrated_call_samples_v3.20130502.ALL.panel"
-    save_path = "./Simulated/1000G_Mosaic/TSI/ch3_5cm/"  # Where to save the new HDF5 to by default
+    # Where to save the new HDF5 to by default
+    save_path = "./Simulated/1000G_Mosaic/TSI/ch3_5cm/"
 
     output = True  # whether to Print Output
     m_object = 0  # The Mosaic object
@@ -84,7 +85,7 @@ class Mosaic_1000G_Multi(object):
             f_samples[:] = np.array(samples).astype("S10")
 
         if self.output == True:
-            print(f"Successfully saved to: {path}")
+            print(f"Successfully saved {k} individuals to: {path}")
 
     def create_individuals(self):
         """Creates and saves Genotypes of a number of Individuals.
@@ -118,7 +119,7 @@ class Mosaic_1000G_Multi(object):
 
             gts[:, i, :] = gts_roh
 
-            ### Append ROH information to save
+            # Append ROH information to save
             roh_begins += list(roh_list[:, 0])
             roh_ends += list(roh_list[:, 1])
             iid_list += [iids[i], ] * len(roh_list)
@@ -136,6 +137,18 @@ class Mosaic_1000G_Multi(object):
                           copy_iids, ch=self.ch)
 
         self.save_genotypes(m.f, gts, iids)
+
+    def extract_individuals(self):
+        """Extracts and saves Genotypes as new hdf5 of a number of Individuals,
+        with exactly the same genotypes
+        identical state
+        """
+        m = self.m_object
+        pop_list = self.pop_list
+
+        gts, iids = m.get_gts_pop(pop_list)
+
+        self.save_genotypes(m.f, gts, iids)  # Save the genotypes
 
     def create_roh_list(self, roh_lengths, min_ch, max_ch):
         """Create List of ROH.
@@ -162,7 +175,7 @@ class Mosaic_1000G_Multi(object):
 
     def save_genotypes(self, f, gts, samples, path=""):
         """Save the full genotype Matrix
-        f: HDF5 File with Matching entries
+        f: HDF5 File with Matching entries for Meta Data per Locus
         gts: Genotype Matrix [l,k,2]
         samples: List of sample IIDs [k]
         Path: Where to save to"""
@@ -239,6 +252,18 @@ def multi_run_lengths(base_path="./Simulated/1000G_Mosaic/TSI/", pop_list=["TSI"
         t.create_individuals()
 
 
+def copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
+                    pop_list=["TSI", ], ch=3):
+    """Extract one or more population(s)
+    pop_list: The copied Populations"""
+    t = Mosaic_1000G_Multi()  # Create the MultiRUn Object
+    t.pop_list = pop_list
+    t.ch = ch
+    t.save_path = base_path + "ch" + str(t.ch) + "/"
+    t.load_m_object()
+    t.extract_individuals()
+
+
 #########################################
 if __name__ == "__main__":
     #t = Mosaic_1000G_Multi()
@@ -247,5 +272,10 @@ if __name__ == "__main__":
     # Do the Multi_Run of Lengths
     # multi_run_lengths()
 
-    # Test Running FP Individuals without copied blocks:
-    multi_run_lengths(base_path="./Simulated/1000G_Mosaic/TSI4/", lengths=[1, ], n_blocks=5, n=2, chunk_length=0.0025)
+    ### Test Running FP Individuals without copied blocks:
+    #multi_run_lengths(base_path="./Simulated/1000G_Mosaic/TSI4/",
+    #                  lengths=[1, ], n_blocks=5, n=2, chunk_length=0.0025)
+
+    ### Test Creating Copy True Individuals
+    copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
+                    pop_list=["TSI", ], ch=3)
