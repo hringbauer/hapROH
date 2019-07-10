@@ -28,7 +28,8 @@ def analyze_individual(iid, ch=3, n_ref=503, save=True, save_fp=False,
     hmm.load_transition_model()
 
     hmm.set_diploid_observations()             # To diploidize Individuals
-    hmm.t_obj.set_params(roh_in=1, roh_out=10, roh_jump=100)
+    #hmm.t_obj.set_params(roh_in=2760, roh_out=2640, roh_jump=204)  # 1 10 100
+    hmm.t_obj.set_params(roh_in=1, roh_out=10, roh_jump=100)  # 1 10 100
     hmm.calc_viterbi_path(save=save)           # Calculate the Viterbi Path.
     hmm.calc_posterior(save=save)              # Calculate the Posterior.
     hmm.post_processing(save=save)             # Do the Post-Processing.
@@ -79,10 +80,10 @@ def multi_run_individuals(n=20, ch=3, base_path="./Simulated/1000G_Mosaic/TSI/",
     for f in folders:
         for iid in iids:
             analyze_individual(iid=iid, path_mosaic=f,
-                               exclude_pops=["TSI", ], prefix_out=prefix_out)
+                              exclude_pops=["TSI", ], prefix_out=prefix_out)
 
         # Could do before for full parallelization
-        #split_up_df_roh_gt(base_path=f, n=n, ch=ch, prefix_out=prefix_out)
+        split_up_df_roh_gt(base_path=f, n=n, ch=ch, prefix_out=prefix_out)
 
 
 if __name__ == "__main__":
@@ -92,7 +93,7 @@ if __name__ == "__main__":
     # multi_run_individuals(n=20, ch=3, base_path="./Simulated/1000G_Mosaic/TSI/",
     #                      lengths=[1, 3, 5, 10])
 
-    multi_run_individuals(n=20, ch=3, base_path="./Simulated/1000G_Mosaic/TSI/",
-                          lengths=[1, 3, 5, 10, ], prefix_out= "baseline/")
+    multi_run_individuals(n=2, ch=3, base_path="./Simulated/1000G_Mosaic/TSI5/",
+                          lengths=[2, 4, 6, 8, 10], prefix_out= "maxll/")
 
     #multi_run_individuals(n=100, ch=3, base_path="./Simulated/1000G_Mosaic/TSI/", lengths=[0,])
