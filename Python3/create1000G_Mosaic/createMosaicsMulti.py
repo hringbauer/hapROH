@@ -277,5 +277,5 @@ if __name__ == "__main__":
     #                  lengths=[1, ], n_blocks=5, n=2, chunk_length=0.0025)
 
     ### Test Creating Copy True Individuals
-    copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
-                    pop_list=["TSI", ], ch=3)
+    copy_population(base_path="./Simulated/1000G_Mosaic/CHB0/",
+                    pop_list=["CHB", ], ch=3)
