@@ -253,14 +253,18 @@ def multi_run_lengths(base_path="./Simulated/1000G_Mosaic/TSI/", pop_list=["TSI"
 
 
 def copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
+                    path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
                     pop_list=["TSI", ], ch=3):
     """Extract one or more population(s)
+    base_path: Where to save extracted data to
+    path1000G: Where to take the reference hdf5 from
     pop_list: The copied Populations"""
     t = Mosaic_1000G_Multi()  # Create the MultiRUn Object
     t.pop_list = pop_list
+    t.path1000G = path1000G
     t.ch = ch
     t.save_path = base_path + "ch" + str(t.ch) + "/"
-    t.load_m_object()
+    t.load_m_object()  # Load the inner Mosaic Object
     t.extract_individuals()
 
 
@@ -276,6 +280,15 @@ if __name__ == "__main__":
     #multi_run_lengths(base_path="./Simulated/1000G_Mosaic/TSI4/",
     #                  lengths=[1, ], n_blocks=5, n=2, chunk_length=0.0025)
 
-    ### Test Creating Copy True Individuals
+    ### Creating copies of full individuals
     copy_population(base_path="./Simulated/1000G_Mosaic/CHB0/",
+                    path1000G="./Data/1000Genomes/HDF5/1240kHDF5/NonEur1240chr",
                     pop_list=["CHB", ], ch=3)
+
+    copy_population(base_path="./Simulated/1000G_Mosaic/CLM0/",
+                    path1000G="./Data/1000Genomes/HDF5/1240kHDF5/NonEur1240chr",
+                    pop_list=["CLM", ], ch=3)
+
+    copy_population(base_path="./Simulated/1000G_Mosaic/YRI0/",
+                    path1000G="./Data/1000Genomes/HDF5/1240kHDF5/NonEur1240chr",
+                    pop_list=["YRI", ], ch=3)

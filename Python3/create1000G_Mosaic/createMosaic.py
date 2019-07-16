@@ -199,6 +199,9 @@ class Mosaic_1000G(object):
         if self.output == True:
             print(f"Found {len(iids)} Individuals in {pop_list}")
 
+        if len(iids)==0:
+            raise RuntimeError(f"No Individuals of {pop_list} Found in Reference")
+
         gts =  f["calldata/GT"][:, iids, :] # Extract the genotypes
         iids = np.array(f["samples"])[iids]
         return gts, iids
