@@ -279,16 +279,20 @@ if __name__ == "__main__":
     ### Test Running FP Individuals without copied blocks:
     #multi_run_lengths(base_path="./Simulated/1000G_Mosaic/TSI4/",
     #                  lengths=[1, ], n_blocks=5, n=2, chunk_length=0.0025)
+    
+    ### Simulate 100 CHB Mosaic Individuals without copied Blocks
+    multi_run_lengths(base_path="./Simulated/1000G_Mosaic/CHB/",
+                      lengths=[0], n_blocks=0, n=100, chunk_length=0.0025)
 
     ### Creating copies of full individuals
-    copy_population(base_path="./Simulated/1000G_Mosaic/CHB0/",
-                    path1000G="./Data/1000Genomes/HDF5/1240kHDF5/NonEur1240chr",
-                    pop_list=["CHB", ], ch=3)
+    #copy_population(base_path="./Simulated/1000G_Mosaic/CHB0/",
+    #                path1000G="./Data/1000Genomes/HDF5/1240kHDF5/NonEur1240chr",
+    #                pop_list=["CHB", ], ch=3)
 
-    copy_population(base_path="./Simulated/1000G_Mosaic/CLM0/",
-                    path1000G="./Data/1000Genomes/HDF5/1240kHDF5/NonEur1240chr",
-                    pop_list=["CLM", ], ch=3)
+    #copy_population(base_path="./Simulated/1000G_Mosaic/CLM0/",
+    #                path1000G="./Data/1000Genomes/HDF5/1240kHDF5/NonEur1240chr",
+    #                pop_list=["CLM", ], ch=3)
 
-    copy_population(base_path="./Simulated/1000G_Mosaic/YRI0/",
-                    path1000G="./Data/1000Genomes/HDF5/1240kHDF5/NonEur1240chr",
-                    pop_list=["YRI", ], ch=3)
+    #copy_population(base_path="./Simulated/1000G_Mosaic/YRI0/",
+    #                path1000G="./Data/1000Genomes/HDF5/1240kHDF5/NonEur1240chr",
+    #                pop_list=["YRI", ], ch=3)
