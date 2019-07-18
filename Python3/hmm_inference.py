@@ -204,7 +204,8 @@ class HMM_Analyze(object):
         ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
 
         e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
-        e_prob[e_prob == 0] = 1e-20  # Tiny probability of emission
+        assert(np.min(e_prop)>0) # So LOG can be calculated (Assume Error Model)
+        #e_prob[e_prob == 0] = 1e-20  # Tiny probability of emission LEGACY
 
         e_prob0 = np.log(e_prob)
         t_mat_full0 = np.log(t_mat_full)
@@ -241,7 +242,6 @@ class HMM_Analyze(object):
         e_mat = self.e_obj.give_emission_matrix()
         t_mat = self.t_obj.give_transitions()
         ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
-        # e_mat[e_mat == 0] = 1e-20  # Tiny probability of emission. LEGACY
         r_map = self.prepare_rmap()  # Get the Recombination Map
 
         n_states = np.shape(e_mat)[0]

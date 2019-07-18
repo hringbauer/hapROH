@@ -5,9 +5,11 @@ Contains Sub-Classes, as well as factory Method.
 """
 
 import numpy as np
+from scipy.stats import binom  # Binomial Likelihood
 
 ###############################
 ###############################
+
 
 class Emissions(object):
     """Class for emission probabilities
@@ -21,13 +23,14 @@ class Emissions(object):
         """Gives the emission matrix of path of states"""
         raise NotImplementedError("Implement This in specific subclass.")
 
+
 class Model_Emissions(Emissions):
     """Implements the haploid model Emission probabilities"""
-    p = []  # Vector of alle frequencies
-    ref_haps = []
-    e_mat = []  # Full Emission Matrix
+    p = []  # Vector of alle frequencies [n_loci]
+    ref_haps = []  # Reference Haplotypes [n_ref, n_loci]
+    e_mat = []  # Full Emission Matrix [n_ref+1, n_loci, 2]
 
-    e_rate = 1e-3 # The Probability of an error (e-10: Default)
+    e_rate = 1e-3  # The Probability of an error (e-10: Default)
 
     def __init__(self, ref_haps=[]):
         """Initialize Class"""
@@ -71,16 +74,104 @@ class Model_Emissions(Emissions):
         return e_prob
 
 
-##################################
-#### Factory method
+###############################
+###############################
+
+class RC_Model_Emissions(Model_Emissions):
+    """Implements the Read Count model Emission probabilities.
+    Inherits from Model_Emission, in particular the constructor (Calculation
+    of Mean Allele Frequency from the Reference and ref_haps)"""
+    p = []  # Vector of mean alle frequencies in Reference [l]
+    ref_haps = []  # Array of Haplotypes in Reference [n_ref, l]
+    e_mat = []  # # Full Emission Matrix [n_ref+1, n_loci, 2]
+
+    e_rate = 1e-2   # The error rate per read
+    e_rate_ref = 1e-3  # The error rate for the reference genome states
+    # (to not run into trouble for high coverage SNPs)
+
+    def give_emission_matrix(self, remember=True):
+        """Return Emission Matrix, which describes
+        probabilities in Genotypes [n_ref+1, n_loci, 3]"""
+        p = self.p
+        ref_haps = self.ref_haps
+        e_rate_ref = self.e_rate_ref
+
+        n_loci = np.shape(ref_haps)[1]
+        n_ref = np.shape(ref_haps)[0]
+        p_hgeno = -np.ones((n_ref + 1, n_loci, 3))
+
+        # Do the HW State 0
+        p_hgeno[0, :, 0] = (1 - p) ** 2
+        p_hgeno[0, :, 1] = 2 * p * (1 - p)
+        p_hgeno[0, :, 2] = p ** 2
+
+        # Do the copying states (add some error)
+        p_hgeno[1:, :, 1] = e_rate_ref / 2
+        p_hgeno[1:, :, 0] = (ref_haps == 0) * (1 - e_rate_ref) + \
+            (ref_haps == 1) * e_rate_ref / 2
+        p_hgeno[1:, :, 2] = (ref_haps == 1) * (1 - e_rate_ref) + \
+            (ref_haps == 0) * e_rate_ref / 2
+
+        # Sanity Check if genotype probabilities sum up to (approx.) 1
+        assert(np.all(np.isclose(np.sum(p_hgeno, axis=2), 1)))
+        assert((np.min(p_hgeno) >= 0) & (
+            np.max(p_hgeno) <= 1))   # Sanity Check
+
+        if remember == True:
+            self.e_mat = p_hgeno
+        return p_hgeno
+
+    def give_emission_state(self, ob_stat, e_mat):
+        """Gives the emission matrix of observed states
+        Return emission matrix [n_ref+1, n_loci] of each
+        ob_stat: [2, n_loci] Matrix with Nr Ref/Alt Reads in Row0/Row1 (!)
+        e_mat: Probabilities of genotypes [n_ref+1, n_loci, 3]"""
+
+        e_rate = self.e_rate  # Load the error rate per read
+
+        # What's the probability of observing a dervided read given hidden genotypes 00 01 11
+        p_read = np.array([e_rate, 0.5, 1 - e_rate])
+
+        # Calculate the Binomial Likelihoods of RC Data
+        rc_tot = np.sum(ob_stat, axis=0)
+        rc_der = ob_stat[1, :]
+
+        prob_binom = binom.pmf(
+            rc_der[:, None], rc_tot[:, None], p_read[None, :])
+
+        # Sum over each of the 3 possible genotypes
+        p_full = np.sum(e_mat * prob_binom[None, :, :], axis=2)
+
+        return p_full
+
+###############################
+###############################
+# Factory method
+
 
 def load_emission_model(ref_states, e_model="haploid"):
     """Load the Emission Model"""
     if e_model == "haploid":
         e_obj = Model_Emissions(ref_states)
-    elif e_model == "diploid":
-        e_obj = 0  # Implement this.
+    elif e_model == "readcount":
+        e_obj = RC_Model_Emissions(ref_states)
     else:
         raise NotImplementedError("Emission Model not found!")
 
     return e_obj
+
+
+#################################
+# Do some testing with explicit values
+
+if __name__ == "__main__":
+    ob_stat = np.array([[1, 5], [3, 3], [0, 2], [1, 0], [1, 1]]).T
+    print(ob_stat)
+
+    ref_haps = np.array([[1, 1, 1, 1, 1], [0, 0, 0, 0, 0], [1, 1, 1, 0, 0]])
+    print(ref_haps)
+
+    e_obj = load_emission_model(ref_haps, e_model="readcount")
+    e_mat = e_obj.give_emission_matrix()
+    e_prob = e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
+    print(e_prob)

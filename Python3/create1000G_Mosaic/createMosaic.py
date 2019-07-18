@@ -30,7 +30,7 @@ class Mosaic_1000G(object):
         """ch: Which chromosome to loadself.
         pop_path: Where to load from
         save_path: Where to save the new HDF5 to"""
-        print("Heyho I started running. Working Directory:")
+        print("\nStarted Mosaic Object. Working Directory:")
         print(os.getcwd()) # Show the current working directory)
 
         # Set Path of 1000G (without chromosome part)
