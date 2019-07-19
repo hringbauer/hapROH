@@ -23,6 +23,12 @@ class Emissions(object):
         """Gives the emission matrix of path of states"""
         raise NotImplementedError("Implement This in specific subclass.")
 
+    def set_params(self, **kwargs):
+        """Set the Parameters.
+        Takes keyworded arguments"""
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
 
 class Model_Emissions(Emissions):
     """Implements the haploid model Emission probabilities"""

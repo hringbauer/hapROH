@@ -36,6 +36,11 @@ class PreProcessing(object):
         as well as linkage map [l] """
         raise NotImplementedError()
 
+    def set_params(self, **kwargs):
+        """Set the Parameters.
+        Takes keyworded arguments"""
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
 class PreProcessingHDF5(PreProcessing):
     """Class for PreProcessing the Data.
