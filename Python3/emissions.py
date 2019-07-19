@@ -66,13 +66,13 @@ class Model_Emissions(Emissions):
     def give_emission_state(self, ob_stat, e_mat):
         """Gives the emission matrix of observed states
         Return emission matrix [k,l]"""
+        ob_stat = ob_stat[0, :]  # Do ONLY first observed Haplotype
         assert(len(ob_stat) == np.shape(e_mat)[1])  # Sanity Check
 
         e_prob = e_mat[:, range(len(ob_stat)), ob_stat]
         e_prob[e_prob == 0] = self.e_rate  # Tiny probability of emission
         e_prob[e_prob == 1] = 1 - self.e_rate
         return e_prob
-
 
 ###############################
 ###############################

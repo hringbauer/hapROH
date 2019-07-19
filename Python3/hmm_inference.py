@@ -3,7 +3,6 @@ Main Inference Class for HMM. Wrapper for Inerence of Posterior.
 @ Author: Harald Ringbauer, 2019, All rights reserved
 """
 
-
 import numpy as np
 import matplotlib.pyplot as plt
 import os                     # For Saving to Folder
@@ -138,14 +137,6 @@ class HMM_Analyze(object):
         if self.output:
             print(f"Loaded Pre Processing Model: {self.p_model}")
 
-    def set_diploid_observations(self):
-        """Simulate random Diploid Observations"""
-        obs = self.ob_stat
-        n_loci = np.shape(obs)[1]
-        phases = np.random.randint(2, size=n_loci)
-        obs[0, :] = obs[phases, np.arange(n_loci)]
-        self.ob_stat = obs
-
     def prepare_rmap(self, cm=False, min_gap=1e-10):
         """Return the recombination map
         Input: Map Positions [l]
@@ -201,11 +192,10 @@ class HMM_Analyze(object):
         t_mat_full = self.pre_compute_transition_matrix(
             t_mat, r_map, self.n_ref)  # [l, k, k]
 
-        ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
+        ob_stat = self.ob_stat
 
         e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
-        assert(np.min(e_prop)>0) # So LOG can be calculated (Assume Error Model)
-        #e_prob[e_prob == 0] = 1e-20  # Tiny probability of emission LEGACY
+        assert(np.min(e_prob) > 0) # For LOG calculation (Assume Error Model)
 
         e_prob0 = np.log(e_prob)
         t_mat_full0 = np.log(t_mat_full)
@@ -241,7 +231,7 @@ class HMM_Analyze(object):
         FULL: Wether to return fwd, bwd as well as tot_ll (Mode for postprocessing)"""
         e_mat = self.e_obj.give_emission_matrix()
         t_mat = self.t_obj.give_transitions()
-        ob_stat = self.ob_stat[0, :]  # Do the first observed Haplotype
+        ob_stat = self.ob_stat
         r_map = self.prepare_rmap()  # Get the Recombination Map
 
         n_states = np.shape(e_mat)[0]
@@ -256,6 +246,7 @@ class HMM_Analyze(object):
 
         # The observing probabilities of the States [k,l]
         e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
+        assert(np.min(e_prob) > 0) # For LOG calculation (Assume Error Model)
         e_prob0 = np.log(e_prob)
 
         # Initialize  the fwd and bwd probabilities

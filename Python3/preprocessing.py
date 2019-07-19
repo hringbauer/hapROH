@@ -27,8 +27,6 @@ class PreProcessing(object):
     iid = ""     # Which Individual to Analyze
     ch = 0       # Which Chromosome to analyze
 
-    error_rate = 0.0  # The error rate for the SNPs
-
     def __init__(self):
         """Initialize Class"""
         raise NotImplementedError()
@@ -56,6 +54,8 @@ class PreProcessingHDF5(PreProcessing):
     output = True
     readcounts = False   # Whether to return Readcounts
     diploid_ref = True   # Whether to use diploid Reference Individuals
+    destroy_phase = True  # Whether to destroy Phase of Target Individual
+    only_calls = True    # Whether to downsample to markers with no missing data
 
     def __init__(self, save=True, output=True):
         """Initialize Class.
@@ -64,7 +64,7 @@ class PreProcessingHDF5(PreProcessing):
         save: """
         self.save = save
         self.output = output
-        #print(os.getcwd()) # Show the current working directory
+        # print(os.getcwd()) # Show the current working directory
 
     def set_output_folder(self, iid, ch):
         """Set the output folder."""
@@ -114,24 +114,63 @@ class PreProcessingHDF5(PreProcessing):
 
         # All 503 EUR Samples as Reference (first Chromosome)
         markers = np.arange(0, len(i1))  # Which Markers to Slice out
-
-        # Do Downsampling if needed
-        # sample = np.random.binomial(1, 0.5, size=len(markers)).astype("bool") # Boolean Sample Vector
-        #markers = markers[sample]
-
         markers_obs = i1[markers]
         markers_ref = i2[markers]
 
         gts_ind, gts, read_counts, r_map = self.extract_snps(out_folder, f1000, fs, ids_ref, id_obs,
                                                              markers_ref, markers_obs)
+
+        if self.only_calls == True:
+            called = self.markers_called(gts_ind, read_counts)
+            gts_ind = gts_ind[:, called]
+            gts = gts[:, called]
+            r_map = r_map[called]
+            read_counts = read_counts[:, called]
+            if self.output == True:
+                print(f"Markers called {np.sum(called)} / {len(called)}")
+
         if self.save == True:
             self.save_info(out_folder, r_map,
                            gt_individual=gts_ind, read_counts=read_counts)
+
+        if self.readcounts == True:   # Switch to Readcount
+            if self.output == True:
+                print(f"Loading Readcounts...")
+            gts_ind = read_counts
+
+        if self.destroy_phase == True:     # Destroy Phase
+            if self.output==True:
+                print("Shuffling phase of target...")
+            gts_ind = self.destroy_phase(gts_ind)
 
         return gts_ind, gts, r_map, out_folder
 
      ################################################
      # Some Helper Functions
+
+    def destroy_phase(self, gts_ind):
+        """Randomly shuffles phase for gts [2,n_loci]"""
+        assert(np.shape(gts_inds)[0] == 2)
+
+        n_loci = np.shape(gts_ind)[1]
+        phases = np.random.randint(2, size=n_loci)  # Do the random shuffling
+
+        gts_ind_new = np.zeros(np.shape(gts_inds), dtype="int")
+        gts_ind_new[0, :] = gts_ind[phases, np.arange(n_loci)]
+        gts_ind_new[1, :] = gts_ind[1 - phases, np.arange(n_loci)]
+        return gts_ind_new
+
+    def markers_called(self, gts_ind, read_counts):
+        """Return boolean array of markers which are called"""
+        called = []
+        if self.readcounts == False:
+            called = (gts_ind[0, :] > -1)  # Only Markers with calls
+        elif self.readcounts == True:
+            read_depth = np.sum(read_counts, axis=0)
+            called = read_depth > 0
+        else:
+            raise RuntimeError("Invalid Mode")
+        return called
 
     def load_h5(self, path):
         """Load and return the HDF5 File from Path"""
@@ -191,12 +230,12 @@ class PreProcessingHDF5(PreProcessing):
                        delimiter=",",  fmt='%i')
 
         if self.output == True:
-            print(f"Successfully saved to {folder}")
+            print(f"Successfully saved to: {folder}")
 
     #######################################
     # Code for saving Haplotype
     def extract_snps(self, folder, ref_hdf5, obs_hdf5, ids_ref, id_obs,
-                     marker_ref, marker_obs, only_calls=True):
+                     marker_ref, marker_obs):
         """Save Folder with all relevant Information.
         Folder: Where to save to
         ref_hdf5: Reference HDF5
@@ -205,7 +244,6 @@ class PreProcessingHDF5(PreProcessing):
         ids_obs: Indices of observed Individuals
         marker_ref: Indices of reference Markers
         marker_obs: Indices of observed Markers
-        error_rate: Whether to Include an Error Rate
         only_calls: Whether to Only Include Markers with Calls"""
         assert(len(marker_ref) == len(marker_obs)
                )  # If reference and observe dataset are the same
@@ -216,7 +254,8 @@ class PreProcessingHDF5(PreProcessing):
 
         if self.diploid_ref == True:   # In case diploid reference Samples
             gts1 = ref_hdf5["calldata/GT"][:, ids_ref, 1]  # The second allele
-            gts1 = gts1[marker_ref, :].T       # Important: Swap of Dimensions!!
+            # Important: Swap of Dimensions!!
+            gts1 = gts1[marker_ref, :].T
             gts = np.concatenate((gts, gts1), axis=0)  # Add two dataframes
 
         if self.output == True:
@@ -234,24 +273,6 @@ class PreProcessingHDF5(PreProcessing):
         r_map = np.array(ref_hdf5["variants/MAP"]
                          )[marker_ref]  # Load the LD Map
 
-        if only_calls == True:
-            called = (gts_ind[0, :] > -1)  # Only Markers with calls
-            gts_ind = gts_ind[:, called]
-            gts = gts[:, called]
-            r_map = r_map[called]
-            read_counts = read_counts[:, called]
-
-            if self.output == True:
-                print(f"Markers called {np.sum(called)} / {len(called)}")
-
-        if self.error_rate > 0:  # Do some Error Shennenigans if needed
-            e_ids = np.random.binomial(1, error_rate,
-                                       size=np.shape(gts_ind)).astype("bool")  # Boolean Sample Vector
-            gts_ind[e_ids] = 1 - gts_ind[e_ids]  # Do a Flip
-
-            if self.output == True:
-                print(f"Introducing {np.sum(e_ids)} Random Genotype Errors")
-
         # np.savetxt(folder + "ind.csv", [id_obs], delimiter=",",  fmt='%i')
         # Return Genotypes/Readcounts Individual, Genotypes Reference and Recombination Map
         return gts_ind, gts, read_counts, r_map
@@ -266,7 +287,7 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
     """
 
     out_folder = ""    # Where to save to
-    prefix_out_data = "" # Prefix of the Outdata
+    prefix_out_data = ""  # Prefix of the Outdata
     meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
     h5_folder = ""    # The H5 Folder
     h5_path_sard = ""
@@ -374,6 +395,11 @@ class PreProcessingFolder(PreProcessing):
         assert(len(r_map) == nr_snps)  # Sanity Check
 
         return r_map
+
+
+############################################
+############################################
+
 
 ############################################
 ############################################
