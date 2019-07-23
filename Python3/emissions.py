@@ -35,7 +35,6 @@ class Model_Emissions(Emissions):
     p = []  # Vector of alle frequencies [n_loci]
     ref_haps = []  # Reference Haplotypes [n_ref, n_loci]
     e_mat = []  # Full Emission Matrix [n_ref+1, n_loci, 2]
-
     e_rate = 1e-3  # The Probability of an error (e-10: Default)
 
     def __init__(self, ref_haps=[]):

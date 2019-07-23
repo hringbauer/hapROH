@@ -22,10 +22,9 @@ def analyze_individual(iid, ch=3, n_ref=503, save=True, save_fp=False,
 
     # Load and prepare the pre-processing Model
     hmm.load_preprocessing_model()              # Load the preprocessing Model
-    hmm.p_obj.set_folder(path_mosaic)
     hmm.p_obj.set_params(destroy_phase=True, prefix_out_data=prefix_out,
-                        excluded=eclude_pops)
-
+                        excluded=exclude_pops)
+    hmm.p_obj.set_folder(path_mosaic)
     #hmm.p_obj.destroy_phase = True  # So that Phase is destroyed when loading
     # Set the Folder
     #hmm.p_obj.set_prefix_out_data(prefix_out)
@@ -54,12 +53,15 @@ def analyze_individual_rc(iid, ch=3, n_ref=503, save=True, save_fp=False,
 
     # Load and prepare the pre-processing Model
     hmm.load_preprocessing_model()              # Load the preprocessing Model
-    hmm.p_obj.readcounts = True  # Set Readcount loading Modus
-    hmm.p_obj.destroy_phase = False  # Set Readcount loading Modus
+    hmm.p_obj.set_params(readcounts = True, destroy_phase=False,
+                prefix_out_data=prefix_out, excluded=exclude_pops)
     hmm.p_obj.set_folder(path_mosaic)         # Set the Folder
-    hmm.p_obj.set_prefix_out_data(prefix_out)
-    hmm.p_obj.set_exclude_pops(pops=exclude_pops)
 
+    #hmm.p_obj.readcounts = True  # Set Readcount loading Modus
+    #hmm.p_obj.destroy_phase = False  # Set Readcount loading Modus
+
+    #hmm.p_obj.set_prefix_out_data(prefix_out)
+    #hmm.p_obj.set_exclude_pops(pops=exclude_pops)
     hmm.load_data(iid=iid, ch=ch, n_ref=n_ref)  # Load the actual Data
     hmm.load_emission_model()
     hmm.load_transition_model()
@@ -135,7 +137,7 @@ if __name__ == "__main__":
     #multi_run_individuals(n=100, ch=3, base_path="./Simulated/1000G_Mosaic/TSI/", lengths=[0,])
 
     # Do a Testrun for Readcount Data
-    analyze_individual_rc(iid="iid5", ch=3, n_ref=503, save=True, save_fp=False,
+    analyze_individual_rc(iid="iid7", ch=3, n_ref=503, save=True, save_fp=False,
                           path_mosaic="./Simulated/1000G_Mosaic/TSI5/rc/ch3_4cm/",
                           exclude_pops=["TSI", ], prefix_out="",
                           roh_in=100, roh_out=100, roh_jump=300)
