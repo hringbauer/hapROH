@@ -49,8 +49,9 @@ class PreProcessingHDF5(PreProcessing):
     Return the Intersection Dataset
     """
     out_folder = ""    # Where to Save to (Returned to main program)
-    meta_path = "./../ancient-sardinia/output/meta/meta_rev_final.csv"
-    h5_path_sard = "./../ancient-sardinia/output/h5_rev/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5"
+    h5_path_targets = "./../ancient-sardinia/output/h5_rev/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5"
+    meta_path_targets = "./../ancient-sardinia/output/meta/meta_rev_final.csv"
+
     # Path of 1000G (without chromosome part)
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
     meta_path_ref = "./Data/1000Genomes/Individuals/meta_df.csv"
@@ -83,12 +84,12 @@ class PreProcessingHDF5(PreProcessing):
     def get_index_iid(self, iid, fs=0):
         """Get the Index of IID in fs
         iid to extract. fs reference HDF5"""
-        meta_df = pd.read_csv(self.meta_path)
+        meta_df = pd.read_csv(self.meta_path_targets)
         assert(len(meta_df) == np.shape(fs["calldata/GT"])[1])  # Sanity Check
 
         id_obs = np.where(meta_df["iid"] == iid)[0]
         if len(id_obs) == 0:
-            raise RuntimeError(f"Individual {iid} not found in {self.meta_path}!")
+            raise RuntimeError(f"Individual {iid} not found in {self.meta_path_targets}!")
         return id_obs[0]
 
     def get_ref_ids(self, f, n_ref):
@@ -118,10 +119,10 @@ class PreProcessingHDF5(PreProcessing):
             os.makedirs(out_folder)
 
         # Set important "Steady Paths":
-        h5_path_sard = self.h5_path_sard
+        h5_path_targets = self.h5_path_targets
 
         # Load and Merge the Data
-        fs = self.load_h5(h5_path_sard)
+        fs = self.load_h5(h5_path_targets)
         f1000 = self.load_h5(h5_path1000g)
         i1, i2 = self.merge_2hdf(fs, f1000)
 
@@ -304,10 +305,9 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
 
     out_folder = ""    # Where to save to
     prefix_out_data = ""  # Prefix of the Outdata
-    meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
+    meta_path_targets = "./../ancient-sardinia/output/meta/meta_final.csv"
     h5_folder = ""    # The H5 Folder
-    h5_path_sard = ""
-    pop_path = ""  # Path of which Populations to use
+    h5_path_targets = ""
     # Path of 1000G (without chromosome part):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
 
@@ -321,7 +321,8 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
 
     def get_index_iid(self, iid, fs=0):
         """OVERWRITE: Get the Index of IID in fs
-        iid to extract. fs reference HDF5"""
+        iid to extract. fs reference HDF5.
+        Difference: Here found directly in HDF Samples"""
 
         iids = np.array(fs['samples'])
         assert(len(iids) == np.shape(fs["calldata/GT"])[1])  # Sanity Check
@@ -329,14 +330,13 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
         id_obs = np.where(iids == iid)[0]
 
         if len(id_obs) == 0:
-            raise RuntimeError(f"Individual {iid} not found in {self.meta_path}!")
+            raise RuntimeError(f"Individual {iid} not found in {self.meta_path_targets}!")
         return id_obs[0]
 
     def set_folder(self, folder_path):
         """Method to manually set the Input and Output Folder"""
         self.h5_folder = folder_path
-        self.h5_path_sard = folder_path + "data.h5"
-        self.pop_path = folder_path + "pops_ref.csv"  # Currently not needed
+        self.h5_path_targets = folder_path + "data.h5"
 
     def set_prefix_out_data(self, prefix):
         """Modify the Prefix of the Output-File
