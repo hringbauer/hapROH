@@ -169,6 +169,7 @@ class HMM_Analyze(object):
 
         # Normalize to transition rate for non-collapsed state
         # print(np.sum(t_mat, axis=2))   # Should be one: Sanity Check!
+
         t_mat[:, :2, 2] = t_mat[:, :2, 2] / (n_ref - 1)
         # t_mat[:, 2, 2] = t_mat[:, 1, 1]  # By Symmetr, not needed
 
@@ -319,17 +320,13 @@ class HMM_Analyze(object):
 
 def prep_3x3matrix(t, n_ref):
     """Prepares the grouped 3x3 Matrix (3rd State: Everything in OTHER ROH State)"""
-    # n = np.shape(t)[0] - 1  # Infer the Number of reference States
     n = n_ref
     print(f"Reference Number: {n}")
     # Initiate to -1 (for later Sanity Check if everything is filled)
     t_simple = -np.ones((3, 3))
     t_simple[:2, :2] = t[:2, :2]
     # The probability of staying when in diff. ROH State:
-    # t_simple[2, 2] = np.sum(t[2, 2:])   # Legacy
     t_simple[2, 2] = -np.sum(t[2, :2])  # Minus the rates of Jumping
-    # print("Target Value:")
-    # print(t_simple[2, 2])
     # Jumping into 3rd state: Sum over all reference states
     t_simple[:2, 2] = t[:2, 2] * (n - 1)
     t_simple[2, :2] = t[2, :2]  # The jumping out probability is the same
@@ -349,7 +346,7 @@ def exponentiate_r(rates, rec_v):
     # Create vector of the exponentiated diagonals
     d = np.exp(rec_v[:, None] * eva)
     # Use some Einstein Sum Convention Fun (C Speed):
-    res = np.yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyh('...ik, ...k, ...kj ->...ij', evec, d, evec_r)
+    res = np.einsum('...ik, ...k, ...kj ->...ij', evec, d, evec_r)
     # Make sure that all transition rates are valuable
     assert(0 <= np.min(res))
     return res
@@ -358,7 +355,6 @@ def exponentiate_r(rates, rec_v):
 ####################################
 
 # Joint Run for a Sardinian Sample
-
 
 def analyze_individual(iid, ch, n_ref=503, save=True, save_fp=False):
     """Run the analysis for one individual and chromosome"""
@@ -398,16 +394,7 @@ if __name__ == "__main__":
     # hmm.calc_posterior(save=True)              # Calculate the Posterior.
     # hmm.post_processing(save=True)             # Do the Post-Processing.
 
-    # ch_list = [3]   # range(1, 23)
-    #ch_list = range(1, 23)
-
-    # for ch in ch_list:
-    #    print(f"Doing Chromosome: {ch}")
-    #    analyze_individual(iid="I1563", ch=ch, save=True)
-
     analyze_individual(iid="SEC002", ch=15, save=True, save_fp=True)
     #analyze_individual(iid="SEC006", ch=3, save=True, save_fp=True)
 
 # cProfile.run('profiling_run()')
-# -24816.477
-# LL with correct Linkage Map: -24512.563
