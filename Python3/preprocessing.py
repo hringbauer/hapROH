@@ -108,6 +108,9 @@ class PreProcessingHDF5(PreProcessing):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l]"""
 
+        if self.output==True:
+            print("Loading Individual: {iid}")
+
         # Attach Part for the right Chromosome
         h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"
 
@@ -153,6 +156,7 @@ class PreProcessingHDF5(PreProcessing):
         if self.readcounts == True:   # Switch to Readcount
             if self.output == True:
                 print(f"Loading Readcounts...")
+                print(f"Mean Readcount markers loaded: {np.mean(read_counts) * 2}")
             gts_ind = read_counts
 
         if self.destroy_phase == True:     # Destroy Phase
