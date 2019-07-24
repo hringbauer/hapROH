@@ -42,18 +42,21 @@ class PreProcessing(object):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
+
 class PreProcessingHDF5(PreProcessing):
     """Class for PreProcessing the Data.
     Standard: Intersect Reference Data with Individual Data
     Return the Intersection Dataset
     """
     out_folder = ""    # Where to Save to (Returned to main program)
-    #meta_path = "./../ancient-sardinia/output/meta/meta_final.csv"
     meta_path = "./../ancient-sardinia/output/meta/meta_rev_final.csv"
-    #h5_path_sard = "./../ancient-sardinia/output/h5/mod_reich_sardinia_ancients_mrg_dedup_3trm_anno.h5"
     h5_path_sard = "./../ancient-sardinia/output/h5_rev/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5"
     # Path of 1000G (without chromosome part)
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
+    meta_path_ref = "./Data/1000Genomes/Individuals/meta_df.csv"
+    excluded = ["TSI", ]  # List of excluded Populations in Meta
+
+    prefix_out_data = ""  # Prefix of the Outdata (should be of form "path/")
 
     save = True
     output = True
@@ -73,8 +76,8 @@ class PreProcessingHDF5(PreProcessing):
 
     def set_output_folder(self, iid, ch):
         """Set the output folder."""
-        out_folder = "./Empirical/" + \
-            str(iid) + "_1000G_ROH/chr" + str(ch) + "/"
+        out_folder = "./Empirical/1240k/" + \
+            str(iid) + "/chr" + str(ch) + "/" + self.prefix_out_data
         return out_folder
 
     def get_index_iid(self, iid, fs=0):
@@ -83,14 +86,22 @@ class PreProcessingHDF5(PreProcessing):
         meta_df = pd.read_csv(self.meta_path)
         assert(len(meta_df) == np.shape(fs["calldata/GT"])[1])  # Sanity Check
 
-        id_obs = np.where(meta_df["iid"] == iid)[0][0]
-        return id_obs
+        id_obs = np.where(meta_df["iid"] == iid)[0]
+        if len(id_obs) == 0:
+            raise RuntimeError(f"Individual {iid} not found in {self.meta_path}!")
+        return id_obs[0]
 
-    def get_ref_ids(self, f, n_ref=503):
-        """Get the IDs for the reference file
-        Default here is all"""
-        ids_ref = np.arange(n_ref)
-        return ids_ref
+    def get_ref_ids(self, f, n_ref):
+        """OVERWRITE: Get the Indices of the individuals
+        in the HDF5 to extract. Here: Allow to subset for Individuals from
+        different 100G Populations"""
+
+        # Load Meta Population File
+        meta_df = pd.read_csv(self.meta_path_ref, sep="\t")
+
+        iids = np.where(~meta_df["pop"].isin(self.excluded))[0]
+        print(f"{len(iids)} / {len(meta_df)} Individuals included in Reference")
+        return iids[:n_ref]   # Return # n_ref Individual Indices
 
     def load_data(self, iid="MA89", ch=6, n_ref=503, folder=""):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
@@ -144,7 +155,7 @@ class PreProcessingHDF5(PreProcessing):
             gts_ind = read_counts
 
         if self.destroy_phase == True:     # Destroy Phase
-            if self.output==True:
+            if self.output == True:
                 print("Shuffling phase of target...")
             gts_ind = self.destroy_phase(gts_ind)
 
@@ -299,8 +310,6 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
     pop_path = ""  # Path of which Populations to use
     # Path of 1000G (without chromosome part):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
-    meta_path_ref = "./Data/1000Genomes/Individuals/meta_df.csv"
-    excluded = ["TSI", ]  # List of excluded Populations in Meta
 
     def set_output_folder(self, iid, ch):
         """Set the output folder of where to save the result to."""
@@ -317,20 +326,11 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
         iids = np.array(fs['samples'])
         assert(len(iids) == np.shape(fs["calldata/GT"])[1])  # Sanity Check
 
-        id_obs = np.where(iids == iid)[0][0]
-        return id_obs
+        id_obs = np.where(iids == iid)[0]
 
-    def get_ref_ids(self, f, n_ref):
-        """OVERWRITE: Get the Indices of the individuals
-        in the HDF5 to extract. Here: Allow to subset for Individuals from
-        different 100G Populations"""
-
-        # Load Meta Population File
-        meta_df = pd.read_csv(self.meta_path_ref, sep="\t")
-
-        iids = np.where(~meta_df["pop"].isin(self.excluded))[0]
-        print(f"{len(iids)} / {len(meta_df)} Individuals included in Reference")
-        return iids
+        if len(id_obs) == 0:
+            raise RuntimeError(f"Individual {iid} not found in {self.meta_path}!")
+        return id_obs[0]
 
     def set_folder(self, folder_path):
         """Method to manually set the Input and Output Folder"""
@@ -339,11 +339,13 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
         self.pop_path = folder_path + "pops_ref.csv"  # Currently not needed
 
     def set_prefix_out_data(self, prefix):
-        """Modify the Prefix of the Output-File"""
+        """Modify the Prefix of the Output-File
+        LEGACY: Should be done via set_params()"""
         self.prefix_out_data = prefix
 
     def set_exclude_pops(self, pops=["TSI", ]):
-        """Method to manually set the excluded populations"""
+        """Method to manually set the excluded populations.
+        LEGACY: Should be done via set_params()"""
         self.excluded = pops
 
 ############################################

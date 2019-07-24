@@ -169,7 +169,6 @@ class HMM_Analyze(object):
 
         # Normalize to transition rate for non-collapsed state
         # print(np.sum(t_mat, axis=2))   # Should be one: Sanity Check!
-
         t_mat[:, :2, 2] = t_mat[:, :2, 2] / (n_ref - 1)
         # t_mat[:, 2, 2] = t_mat[:, 1, 1]  # By Symmetr, not needed
 
@@ -350,7 +349,7 @@ def exponentiate_r(rates, rec_v):
     # Create vector of the exponentiated diagonals
     d = np.exp(rec_v[:, None] * eva)
     # Use some Einstein Sum Convention Fun (C Speed):
-    res = np.einsum('...ik, ...k, ...kj ->...ij', evec, d, evec_r)
+    res = np.yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyh('...ik, ...k, ...kj ->...ij', evec, d, evec_r)
     # Make sure that all transition rates are valuable
     assert(0 <= np.min(res))
     return res
