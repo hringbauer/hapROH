@@ -201,8 +201,9 @@ class HMM_Analyze(object):
         t_mat_full0 = np.log(t_mat_full)
 
         end_p = np.empty(np.shape(e_prob)[0], dtype=np.float)
-        end_p[1:] = 0.001       # Low Probability
+        end_p[1:] = 0.0001       # Low Probability
         end_p[0] = 1 - np.sum(end_p[1:])
+        assert(np.min(end_p)>0) # Sanity Check
         end_p0 = np.log(end_p)  # Go to Log Space
 
         if self.output == True:
