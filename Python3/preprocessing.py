@@ -162,21 +162,21 @@ class PreProcessingHDF5(PreProcessing):
         if self.destroy_phase == True:     # Destroy Phase
             if self.output == True:
                 print("Shuffling phase of target...")
-            gts_ind = self.destroy_phase(gts_ind)
+            gts_ind = self.destroy_phase_func(gts_ind)
 
         return gts_ind, gts, r_map, out_folder
 
      ################################################
      # Some Helper Functions
 
-    def destroy_phase(self, gts_ind):
+    def destroy_phase_func(self, gts_ind):
         """Randomly shuffles phase for gts [2,n_loci]"""
-        assert(np.shape(gts_inds)[0] == 2)
+        assert(np.shape(gts_ind)[0] == 2)
 
         n_loci = np.shape(gts_ind)[1]
         phases = np.random.randint(2, size=n_loci)  # Do the random shuffling
 
-        gts_ind_new = np.zeros(np.shape(gts_inds), dtype="int")
+        gts_ind_new = np.zeros(np.shape(gts_ind), dtype="int")
         gts_ind_new[0, :] = gts_ind[phases, np.arange(n_loci)]
         gts_ind_new[1, :] = gts_ind[1 - phases, np.arange(n_loci)]
         return gts_ind_new
