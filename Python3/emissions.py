@@ -82,6 +82,7 @@ class Model_Emissions(Emissions):
 ###############################
 ###############################
 
+
 class RC_Model_Emissions(Model_Emissions):
     """Implements the Read Count model Emission probabilities.
     Inherits from Model_Emission, in particular the constructor (Calculation
@@ -146,7 +147,47 @@ class RC_Model_Emissions(Model_Emissions):
 
         # Sum over each of the 3 possible genotypes
         p_full = np.sum(e_mat * prob_binom[None, :, :], axis=2)
+        return p_full
 
+
+###############################
+###############################
+
+class Diploid_GT_Emissions(RC_Model_Emissions):
+    """Implements the Emission probabilities for Diploid Genotype calls.
+    Inherits top level Model_Emission, in particular the constructor (Calculation
+    of Mean Allele Frequency from the Reference and ref_haps) and from
+    RC_Model_Emission, in particular the calculation of probabilities of the
+    [n_ref+1, n_loci, 3] genotype probability matrix give_emission_matrix"""
+    p = []  # Vector of mean alle frequencies in Reference [l]
+    ref_haps = []  # Array of Haplotypes in Reference [n_ref, l]
+    e_mat = []  # # Full Emission Matrix [n_ref+1, n_loci, 2]
+
+    e_rate = 1e-3
+    e_rate_ref = 0  # The error rate for the reference genome states
+
+    def give_emission_state(self, ob_stat, e_mat):
+        """Gives the emission matrix of observed states
+        Return emission matrix [n_ref+1, n_loci] of each
+        ob_stat: [2, n_loci] Matrix with 0 or 1 for Ref or Alt
+        e_mat: Probabilities of genotypes [n_ref+1, n_loci, 3]"""
+
+        e_rate = self.e_rate  # Load the error rate per read
+        nr_loci = np.shape(e_mat)[1]
+
+        derived_gt = np.sum(ob_stat, axis=0)  # The Nr of of derived GT (0/1/2)
+        assert(len(derived_gt) == nr_loci)
+
+        # What's the probability of observing a dervided read given hidden genotypes 00 01 11
+        p_read = np.array([e_rate, 0.5, 1 - e_rate])
+
+        # Calculate probability of ob. Genotypes Given 3 lat. genotypes [nr_loci, 3]
+        # Initialise with "background error"
+        prob_gt = np.ones((nr_loci, 3)) * e_rate / 2
+        prob_gt[range(nr_loci), derived_gt] = 1 - e_rate
+
+        # Sum over each of the 3 possible genotypes
+        p_full = np.sum(e_mat * prob_gt[None, :, :], axis=2)
         return p_full
 
 ###############################
@@ -160,9 +201,10 @@ def load_emission_model(ref_states, e_model="haploid"):
         e_obj = Model_Emissions(ref_states)
     elif e_model == "readcount":
         e_obj = RC_Model_Emissions(ref_states)
+    elif e_model == "diploid_gt":
+        e_obj = Diploid_GT_Emissions(ref_states)
     else:
         raise NotImplementedError("Emission Model not found!")
-
     return e_obj
 
 
@@ -170,13 +212,14 @@ def load_emission_model(ref_states, e_model="haploid"):
 # Do some testing with explicit values
 
 if __name__ == "__main__":
-    ob_stat = np.array([[1, 5], [3, 3], [0, 2], [1, 0], [1, 1]]).T
+    # ob_stat = np.array([[1, 5], [3, 3], [0, 2], [1, 0], [1, 1]]).T  ### RC Data
+    ob_stat = np.array([[1, 1], [0, 0], [1, 0], [1, 0], [0, 1]]).T  # Diploid
     print(ob_stat)
 
     ref_haps = np.array([[1, 1, 1, 1, 1], [0, 0, 0, 0, 0], [1, 1, 1, 0, 0]])
     print(ref_haps)
 
-    e_obj = load_emission_model(ref_haps, e_model="readcount")
+    e_obj = load_emission_model(ref_haps, e_model="diploid_gt")  # readcount
     e_mat = e_obj.give_emission_matrix()
     e_prob = e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
     print(e_prob)
