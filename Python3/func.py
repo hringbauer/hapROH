@@ -64,3 +64,50 @@ def viterbi_path_p(e_prob0, t_mat0, end_p0):
     print(f"Log likelihood Path: {mp[path[-1],-1]:.3f}")
     assert(np.min(path)>=0) #Sanity check if everything was filled up
     return path
+
+########################################
+##### The MMR Functions
+
+def sloppyROH_cumsum(recoMap, target, refHaps, windowSize = 0.001):
+    """
+    Figure out per snp agreement between references and reads from target
+    Return Max. fraction of reads agreeing with Ref Panel
+    recoMap: Recombination Map [in Morgan] [l]
+    target: Target Readcounts: [2, l]
+    refHaps: Reference Haplotypes: [k, l]
+    windowsize: Extension to each side [in M]
+    """
+    # Calculate total Nr of Mismatches for all ref
+    refAgree = (1 - refHaps) * target[0, :]
+    altAgree = refHaps * target[1, :]
+    totalAgree = refAgree + altAgree
+    
+    ### what are the bounds of the window around the focal SNP
+    firstNeighbor = np.searchsorted(recoMap + windowSize, recoMap)
+    lastNeighbor = np.searchsorted(recoMap - windowSize, recoMap)
+    lastNeighbor = np.clip(lastNeighbor, a_min=None, a_max=len(recoMap)-1) # To avoid the overshooting the last Index
+    
+    countsPerSnp = np.sum(target, axis=0)       # Calculate total counts per snp for normalization
+    
+    totalAgree_cum = np.cumsum(totalAgree, axis=1)
+    pad_zeros = np.zeros((np.shape(totalAgree)[0], 1)) # To add 0s at beginning of first axis
+    totalAgree_cum = np.concatenate([pad_zeros, totalAgree_cum], axis=1) 
+    countsPerSnp_cum = np.r_[0, np.cumsum(countsPerSnp)] # Add 0 in beginning
+    
+    totalAgree_window = totalAgree_cum[:, lastNeighbor] - totalAgree_cum[:, firstNeighbor]
+    countsPerSnp_window = countsPerSnp_cum[lastNeighbor] - countsPerSnp_cum[firstNeighbor]
+    
+    agree_rate_window = totalAgree_window / countsPerSnp_window    # Average Agree Rate per Window
+    max_agree_rate_window = np.max(agree_rate_window, axis=0)   # For the "best" Ref Haplotype
+    return max_agree_rate_window
+
+
+
+
+
+
+
+
+
+
+

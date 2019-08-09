@@ -14,8 +14,6 @@ class PostProcessing(object):
     """Class that does PostProcessing of HAPSBURG output.
     Has Methods to save the output as """
     folder = ""          # The Folder to operate in
-    r_map = []           # The Genetic Map
-    posterior0 = []      # The Posterior in nat. log space (HAPSBURG output)
     roh_df = []          # Dataframe for Runs of Homozygosity
 
     cutoff = 0.8  # Cutoff Probability for ROH State
@@ -26,44 +24,53 @@ class PostProcessing(object):
     output = True
     save = True  # Whether to save output into Folder
 
-    def __init__(self, folder="", load=True, output=True, save=True):
-        """Initialize Class"""
-        if load == True:
-            self.folder = folder
-            self.load_data()
-
+    def __init__(self, folder="", load=False, output=True, save=True):
+        """Initialize Class.
+        Load: Whether to immediately Load the Posterior Data"""
+        self.folder = folder
         self.output = output
         self.save = save
 
-    def set_params(self, cutoff=0.8, l_cutoff=0.01, max_gap=0.01, merge=True):
-        """Set Parameters from outside of Class"""
-        self.cutoff = cutoff
-        self.l_cutoff = l_cutoff
-        self.merge = merge
-        self.max_gap = max_gap
+        if load == True:
+            self.load_data()
+
+    def set_params(self, **kwargs):
+        """Set the Parameters.
+        Takes keyworded arguments"""
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    #def set_params(self, cutoff=0.8, l_cutoff=0.01, max_gap=0.01, merge=True):
+    #    """Set Parameters from outside of Class"""
+    #    self.cutoff = cutoff
+    #    self.l_cutoff = l_cutoff
+    #    self.merge = merge
+    #    self.max_gap = max_gap
 
     def load_data(self, folder=""):
-        """Load and return genetic Map and Posterior"""
+        """Load and return genetic Map and Posterior0"""
         if len(folder) == 0:
             folder = self.folder  # Use the Folder of the Class
 
         # Load Posterior
         post_path = folder + "posterior0.csv"
-        self.posterior0 = np.loadtxt(post_path, dtype="float", delimiter=",")
+        posterior0 = np.loadtxt(post_path, dtype="float", delimiter=",")
 
         # Load Linkage Map
         map_path = folder + "map.csv"
 
         if os.path.exists(map_path):
-            self.r_map = np.loadtxt(
+            r_map = np.loadtxt(
                 map_path, dtype="float", delimiter=",")
         else:
             # Eventually: Runtime Warning
             print("No Genetic Map found!!! Defaulting...")
-            self.r_map = np.arange(len(self.posterior0))
+            r_map = np.arange(len(self.posterior0))
 
-        assert(len(self.r_map) == len(self.posterior0))  # Sanity Check
+        assert(len(r_map) == len(posterior0))  # Sanity Check
         print(f"Successfully loaded for PP. from {folder}")
+
+        return r_map, posterior0
 
     def merge_called_blocks(self, df, max_gap=0):
         """Merge Blocks in Dataframe df and return merged Dataframe"""
@@ -94,11 +101,17 @@ class PostProcessing(object):
             print(f"Merged n={len(df) - len(df_n)} gaps < {max_gap} M")
         return df_n
 
-    def call_roh(self, ch=0, iid=""):
-        """Call ROH of Homozygosity from Posterior Data"""
-        roh_post = 1 - \
-            np.exp(self.posterior0)  # Calculate the ROH Posterior
+    def modify_posterior0(self, posterior0):
+        """Load and return the posterior."""
+        roh_post = 1 - np.exp(posterior0)  # Go to non-logspace probability
+        return roh_post
 
+    def call_roh(self, ch=0, iid=""):
+        """Call ROH of Homozygosity from Posterior Data
+        bigger than cutoff
+        log: Whether Posterior is given in log space"""
+        r_map, posterior0 = self.load_data()
+        roh_post = self.modify_posterior0(posterior0)
         roh = roh_post > self.cutoff
 
         if self.output == True:
@@ -112,8 +125,8 @@ class PostProcessing(object):
         ends = np.where(d == -1)[0]
         l = ends - starts
 
-        ends_map = self.r_map[ends - 1]  # -1 to stay within bounds
-        starts_map = self.r_map[starts]
+        ends_map = r_map[ends - 1]  # -1 to stay within bounds
+        starts_map = r_map[starts]
         l_map = ends_map - starts_map
 
         full_df = pd.DataFrame({'Start': starts, 'End': ends,
@@ -141,13 +154,32 @@ class PostProcessing(object):
         return df
 
 #######################################################
+
+
+class MMR_PostProcessing(PostProcessing):
+    """Class that does PostProcessing of HAPSBURG output.
+    Same as PostProcessing but load Posterior differently"""
+
+    def modify_posterior0(self, posterior0):
+        """Load and return the posterior. Don't do anything"""
+        roh_post = posterior0
+        return roh_post
+
+#######################################################
 #######################################################
 
 
-def give_Postprocessing(folder="", method="Standard", output=True, save=True):
+def load_Postprocessing(folder="", method="Standard", output=True, save=True):
     """Factory Method for PostProcessing class"""
-    pp = PostProcessing(folder, output=output, save=save)
+    if method == "Standard":
+        pp = PostProcessing(folder, output=output, save=save)
+    elif method == "MMR":
+        pp = MMR_PostProcessing(folder, output=output, save=save)
+    else:
+        raise RuntimeError(f"Postprocessing method {method} not available!")
+
     return pp
+
 
 #######################################################
 # Do testing

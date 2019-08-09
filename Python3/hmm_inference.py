@@ -9,11 +9,11 @@ import os                     # For Saving to Folder
 import cProfile               # For Profiling
 from scipy.special import logsumexp
 # from func import fwd_bkwd    # Import the Python Function
-from cfunc import fwd_bkwd, viterbi_path, fwd_bkwd_fast  # The Cython Functions
-from func import fwd_bkwd_p, viterbi_path_p   # The Python Functions
-from emissions import load_emission_model     # Factory Method
+from cfunc import fwd_bkwd, viterbi_path, fwd_bkwd_fast        # Cython Functions
+from func import fwd_bkwd_p, viterbi_path_p, sloppyROH_cumsum  # Python Functions
+from emissions import load_emission_model     # Factory Methods
 from transitions import load_transition_model
-from postprocessing import give_Postprocessing
+from postprocessing import load_Postprocessing
 from preprocessing import load_preprocessing
 
 #################################
@@ -42,7 +42,7 @@ class HMM_Analyze(object):
     posterior = []  # The inferred Posterior Matrix [kxl] Log Space
 
     t_obj, e_obj = 0, 0  # Objects for Transition & Emission probabilities
-    p_obj = 0          # Object that does preprocessing
+    p_obj, post_obj = 0, 0  # Objects for pre and post-processing
 
     iid = ""  # Remember the Individual
     ch = 0    # Which Chromosome
@@ -52,9 +52,10 @@ class HMM_Analyze(object):
     e_model = "haploid"
     t_model = "model"
     p_model = "SardHDF5"
+    post_model = "Standard"
 
     def __init__(self, folder="./Simulated/Example0/",
-                 t_model="model", e_model="haploid", p_model="SardHDF5",
+                 t_model="model", e_model="haploid", p_model="SardHDF5", post_model="Standard",
                  output=True, save=True, cython=True, manual_load=False,
                  save_fp=True):
         """Initialize Class. output: Boolean whether to print
@@ -63,6 +64,7 @@ class HMM_Analyze(object):
         self.t_model = t_model
         self.e_model = e_model
         self.p_model = p_model
+        self.post_model = post_model
         self.folder = folder  # Save the working folder
         self.output = output
         self.save = save
@@ -91,8 +93,14 @@ class HMM_Analyze(object):
         """Load all the required Objects in right order"""
         self.load_preprocessing_model()
         self.load_data(iid, ch, n_ref)
+        self.load_secondary_objects()
+
+    def load_secondary_objects(self):
+        """Load all secondary objects
+        (but not the pre-processing one)"""
         self.load_emission_model()
         self.load_transition_model()
+        self.load_postprocessing_model()
 
     def load_data(self, iid="", ch=0, n_ref=503):
         """Load the External Data"""
@@ -137,8 +145,14 @@ class HMM_Analyze(object):
         if self.output:
             print(f"Loaded Pre Processing Model: {self.p_model}")
 
+    def load_postprocessing_model(self):
+        self.post_obj = load_Postprocessing(folder=self.folder, method=self.post_model,
+                                            output=self.output, save=self.save)
+        if self.output:
+            print(f"Loaded Post Processing Model: {self.post_model}")
+
     def prepare_rmap(self, cm=False, min_gap=1e-10):
-        """Return the recombination map
+        """Return the recombination map [in Morgan]
         Input: Map Positions [l]
         Return: Rec. Distance Array [l]
         cm: Whether input is in centimorgan or morgan
@@ -195,7 +209,7 @@ class HMM_Analyze(object):
         ob_stat = self.ob_stat
 
         e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
-        assert(np.min(e_prob) > 0) # For LOG calculation (Assume Error Model)
+        assert(np.min(e_prob) > 0)  # For LOG calculation (Assume Error Model)
 
         e_prob0 = np.log(e_prob)
         t_mat_full0 = np.log(t_mat_full)
@@ -203,7 +217,7 @@ class HMM_Analyze(object):
         end_p = np.empty(np.shape(e_prob)[0], dtype=np.float)
         end_p[1:] = 0.0001       # Low Probability
         end_p[0] = 1 - np.sum(end_p[1:])
-        assert(np.min(end_p)>0) # Sanity Check
+        assert(np.min(end_p) > 0)  # Sanity Check
         end_p0 = np.log(end_p)  # Go to Log Space
 
         if self.output == True:
@@ -247,7 +261,7 @@ class HMM_Analyze(object):
 
         # The observing probabilities of the States [k,l]
         e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
-        assert(np.min(e_prob) > 0) # For LOG calculation (Assume Error Model)
+        assert(np.min(e_prob) > 0)  # For LOG calculation (Assume Error Model)
         e_prob0 = np.log(e_prob)
 
         # Initialize  the fwd and bwd probabilities
@@ -310,17 +324,31 @@ class HMM_Analyze(object):
 
         return np.array(ll_hoods)
 
-    def post_processing(self, method="standard", save=True):
+    def post_processing(self, save=True):
         """Do the Postprocessing of ROH Blocks
         Parameters: See in Postprocessing"""
-        pp = give_Postprocessing(folder=self.folder, method=method,
-                                 output=self.output, save=save)
-        pp.call_roh(ch=self.ch, iid=self.iid)
+        self.post_obj.call_roh(ch=self.ch, iid=self.iid)
         return
 
+    def mmr_call(self, windowSize=0.001, save=True):
+        """Calculate Maximal Match Rate"""
+        ob_stat = self.ob_stat
+        r_map = self.r_map
+        ref_states = self.ref_states  # Get Reference
+
+        max_agree_rate_window = sloppyROH_cumsum(
+            r_map, ob_stat, ref_states, windowSize=windowSize)
+
+        if save == True:
+            path = self.folder + "posterior0.csv"
+            np.savetxt(path, max_agree_rate_window,
+                       delimiter=",",  fmt='%f')
+            print(f"Saved Zero State Posterior to {path}.")
 
 ###############################
+###############################
 # Some Helper functions
+
 
 def prep_3x3matrix(t, n_ref):
     """Prepares the grouped 3x3 Matrix (3rd State: Everything in OTHER ROH State)"""
@@ -359,6 +387,7 @@ def exponentiate_r(rates, rec_v):
 ####################################
 
 # Joint Run for a Sardinian Sample
+
 
 def analyze_individual(iid, ch, n_ref=503, save=True, save_fp=False):
     """Run the analysis for one individual and chromosome"""
