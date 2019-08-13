@@ -57,6 +57,7 @@ class PreProcessingHDF5(PreProcessing):
     meta_path_ref = "./Data/1000Genomes/Individuals/meta_df.csv"
     excluded = ["TSI", ]  # List of excluded Populations in Meta
 
+    base_out_folder = "./Empirical/1240k/" # Base Path of the Output Folder
     prefix_out_data = ""  # Prefix of the Outdata (should be of form "path/")
 
     save = True
@@ -77,7 +78,7 @@ class PreProcessingHDF5(PreProcessing):
 
     def set_output_folder(self, iid, ch):
         """Set the output folder."""
-        out_folder = "./Empirical/1240k/" + \
+        out_folder = base_out_folder + \
             str(iid) + "/chr" + str(ch) + "/" + self.prefix_out_data
         return out_folder
 
