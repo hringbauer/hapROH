@@ -1,5 +1,7 @@
-# cython: language_level=3, boundscheck=True, wraparound=False
+# cython: language_level=3, boundscheck=False, wraparound=False
 import numpy as np
+import psutil      # For Memory Profiling
+import os
 cimport cython
 
 #from scipy.special import logsumexp
@@ -30,6 +32,14 @@ cdef inline long argmax(double[:] vec):
     if (vec[k] > v):
       m, v = k, vec[k]
   return m  # Return Argmax
+
+
+def print_memory_usage():
+    """Print the current Memory Usage in mB"""
+    process = psutil.Process(os.getpid())
+    mb_usage = process.memory_info().rss / 1e6
+    print(f"Memory Usage: {mb_usage} mB")
+
 
 def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,
     double[:, :] fwd, double[:, :] bwd, double[:,:,:] t, full=False):
@@ -83,7 +93,7 @@ def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,
 
 
 def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,
-    double[:, :] fwd, double[:, :] bwd, double[:, :, :] t, full=False):
+    double[:, :, :] t, double in_val = 1e-4, full=False):
     """Takes emission and transition probabilities, and calculates posteriors.
     Uses speed-up specific for Genotype data (pooling same transition rates)
     Input:
@@ -114,6 +124,17 @@ def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,
 
     # Do transform to Log Space:
     cdef double[:,:,:] t0 = np.log(t)         # Do log of recombination Map
+
+    ### Initialize FWD BWD matrices
+    fwd0 = np.zeros((n_states, n_loci), dtype="float")
+    fwd0[:, 0] = np.log(in_val)  # Initial Probabilities
+    fwd0[0, 0] = np.log(1 - (n_states - 1) * in_val)
+    cdef double[:,:] fwd = fwd0
+
+    bwd0 = np.zeros((n_states, n_loci), dtype="float")
+    bwd0[:, -1] = np.log(in_val)
+    bwd0[0, -1] = np.log(1 - (n_states - 1) * in_val)
+    cdef double[:,:] bwd = bwd0
 
     #############################
     ### Do the Forward Algorithm
@@ -172,6 +193,9 @@ def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,
     fwd1 = np.asarray(fwd, dtype=np.float)  # Transform
     bwd1 = np.asarray(bwd, dtype=np.float)
     post = fwd1 + bwd1 - np.float(tot_ll)
+
+    print("Memory Usage Full:")
+    print_memory_usage()   ## For MEMORY_BENCH
 
     if full==False:
       return post

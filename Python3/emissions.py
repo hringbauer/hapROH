@@ -15,7 +15,7 @@ class Emissions(object):
     """Class for emission probabilities
     Has methods to return emission probabilities"""
 
-    def give_emission_matrix(self):
+    def give_emission_matrix(self, remember=False):
         """Return Emission Matrix"""
         raise NotImplementedError("Implement This in specific subclass.")
 
@@ -45,7 +45,7 @@ class Model_Emissions(Emissions):
         # Calculate the allele frequencies
         self.p = np.mean(self.ref_haps, axis=0)
 
-    def give_emission_matrix(self, remember=True):
+    def give_emission_matrix(self, remember=False):
         """Return full Emission Matrix"""
         n_loci = np.shape(self.ref_haps)[1]
         n_ref = np.shape(self.ref_haps)[0]
@@ -95,7 +95,7 @@ class RC_Model_Emissions(Model_Emissions):
     e_rate_ref = 1e-3  # The error rate for the reference genome states
     # (to not run into trouble for high coverage SNPs)
 
-    def give_emission_matrix(self, remember=True):
+    def give_emission_matrix(self, remember=False):
         """Return Emission Matrix, which describes
         probabilities in Genotypes [n_ref+1, n_loci, 3]"""
         p = self.p

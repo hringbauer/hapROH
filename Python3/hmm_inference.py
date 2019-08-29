@@ -6,8 +6,8 @@ Main Inference Class for HMM. Wrapper for Inerence of Posterior.
 import numpy as np
 import matplotlib.pyplot as plt
 import os                     # For Saving to Folder
+import psutil                 # For Memory Profiling
 import cProfile               # For Profiling
-from scipy.special import logsumexp
 # from func import fwd_bkwd    # Import the Python Function
 from cfunc import fwd_bkwd, viterbi_path, fwd_bkwd_fast        # Cython Functions
 from func import fwd_bkwd_p, viterbi_path_p, sloppyROH_cumsum  # Python Functions
@@ -241,9 +241,10 @@ class HMM_Analyze(object):
         if self.output:
             print(f"Finished Calculation Viterbi Path: {path}")
 
-    def calc_posterior(self, save=True, full=False):
+    def calc_posterior(self, save=True, full=False, in_val = 1e-4):
         """Calculate the poserior for each path
-        FULL: Wether to return fwd, bwd as well as tot_ll (Mode for postprocessing)"""
+        FULL: Wether to return fwd, bwd as well as tot_ll (Mode for postprocessing)
+        in_val: The Initial Probability to copy from one Ind."""
         e_mat = self.e_obj.give_emission_matrix()
         t_mat = self.t_obj.give_transitions()
         ob_stat = self.ob_stat
@@ -260,20 +261,12 @@ class HMM_Analyze(object):
             print(np.shape(ob_stat))
 
         # The observing probabilities of the States [k,l]
-        e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
-        assert(np.min(e_prob) > 0)  # For LOG calculation (Assume Error Model)
-        e_prob0 = np.log(e_prob)
+        e_prob0 = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
+        e_mat = None   # To eventually free up Memory
+        assert(np.min(e_prob0) > 0)  # For LOG calculation (Assume Error Model)
+        e_prob0 = np.log(e_prob0)
 
-        # Initialize  the fwd and bwd probabilities
-        fwd = np.ones((n_states, n_loci), dtype="float")
-        fwd[:, 0] = 1e-4  # Initial Probabilities not in HW
-        fwd[0, 0] = 1 - np.sum(fwd[1:, 0])  # The initial HW prob.
-        fwd0 = np.log(fwd)  # Change to log space
-
-        bwd = np.ones((n_states, n_loci), dtype="float")
-        bwd[:, -1] = 1e-4  # Initial Probabilities
-        bwd[0, -1] = 1 - np.sum(bwd[1:, -1])
-        bwd0 = np.log(bwd)  # Change to log space
+        print_memory_usage()   ## For MEMORY_BENCH
 
         # Precompute the 3x3 Transition Matrix
         t_mat_full = self.pre_compute_transition_matrix(
@@ -281,18 +274,23 @@ class HMM_Analyze(object):
 
         # Do the forward-backward Algorithm:
         if full == False:
-            post = self.fwd_bkwd(e_prob0, t_mat, fwd0, bwd0, t_mat_full)
+            post = self.fwd_bkwd(e_prob0, t_mat, t_mat_full, in_val)
 
         elif full == True:  # If FULL Mode: Return results prematurely
             post, fwd, bwd, tot_ll = self.fwd_bkwd(
-                e_prob0, t_mat, fwd0, bwd0, t_mat_full, full=True)
+                e_prob0, t_mat, t_mat_full, in_val, full=True)
             return post, fwd, bwd, tot_ll
 
         if self.output:
             print("Finished Calculation State Posteriors")
 
         # Save the Data
-        self.posterior = post  # Remember the Posterior
+        #self.posterior = post  # Remember the Posterior
+
+        print_memory_usage()  ## For MEMORY_BENCH
+        e_prob0 = None  # Free the Memory
+
+        print_memory_usage()  ## For MEMORY_BENCH
 
         if self.save_fp == True:
             path = self.folder + "posterior.csv"
@@ -382,6 +380,12 @@ def exponentiate_r(rates, rec_v):
     # Make sure that all transition rates are valuable
     assert(0 <= np.min(res))
     return res
+
+def print_memory_usage():
+    """Print the current Memory Usage in mB"""
+    process = psutil.Process(os.getpid())
+    mb_usage = process.memory_info().rss / 1e6
+    print(f"Memory Usage: {mb_usage} mB")
 
 ####################################
 ####################################
