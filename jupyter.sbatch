@@ -4,8 +4,8 @@
 #SBATCH --partition=jnovembre
 #SBATCH --account=pi-jnovembre
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=12
-#SBATCH --mem-per-cpu=3g
+#SBATCH --ntasks-per-node=10
+#SBATCH --mem-per-cpu=5g
 #SBATCH --job-name=HAPSBURG_Parallel
 #SBATCH --output=nb-log-%J.out
 #SBATCH --error=nb-log-%J.err
