@@ -9,7 +9,7 @@ import os                     # For Saving to Folder
 import psutil                 # For Memory Profiling
 import cProfile               # For Profiling
 # from func import fwd_bkwd    # Import the Python Function
-from cfunc import fwd_bkwd, viterbi_path, fwd_bkwd_fast        # Cython Functions
+from cfunc import viterbi_path, fwd_bkwd_fast, fwd_bkwd_lowmem  # Cython Functions
 from func import fwd_bkwd_p, viterbi_path_p, sloppyROH_cumsum  # Python Functions
 from emissions import load_emission_model     # Factory Methods
 from transitions import load_transition_model
@@ -75,14 +75,16 @@ class HMM_Analyze(object):
 
         # Load the Heavy Lifting Functions
         if cython == True:
-            self.fwd_bkwd = fwd_bkwd
+            self.fwd_bkwd = fwd_bkwd_fast
             self.viterbi_path = viterbi_path
+            if self.output == True:
+                print("Using Linear-State Cython Speed-Up")
 
         elif cython == 2:   # To test the "fast algorithm". Remove later
             if self.output == True:
-                print("Using Linear-State Speed-Up")
+                print("Using Low-Mem Cython Linear Speed Up.")
 
-            self.fwd_bkwd = fwd_bkwd_fast
+            self.fwd_bkwd = fwd_bkwd_lowmem
             self.viterbi_path = viterbi_path
 
         else:
@@ -241,7 +243,7 @@ class HMM_Analyze(object):
         if self.output:
             print(f"Finished Calculation Viterbi Path: {path}")
 
-    def calc_posterior(self, save=True, full=False, in_val = 1e-4):
+    def calc_posterior(self, save=True, full=False, in_val=1e-4):
         """Calculate the poserior for each path
         FULL: Wether to return fwd, bwd as well as tot_ll (Mode for postprocessing)
         in_val: The Initial Probability to copy from one Ind."""
@@ -261,12 +263,11 @@ class HMM_Analyze(object):
             print(np.shape(ob_stat))
 
         # The observing probabilities of the States [k,l]
-        e_prob0 = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
-        e_mat = None   # To eventually free up Memory
-        assert(np.min(e_prob0) > 0)  # For LOG calculation (Assume Error Model)
-        e_prob0 = np.log(e_prob0)
+        e_mat = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
+        assert(np.min(e_mat) > 0)  # For LOG calculation (Assume Error Model)
+        e_mat = np.log(e_mat)
 
-        print_memory_usage()   ## For MEMORY_BENCH
+        print_memory_usage()  # For MEMORY_BENCH
 
         # Precompute the 3x3 Transition Matrix
         t_mat_full = self.pre_compute_transition_matrix(
@@ -274,23 +275,18 @@ class HMM_Analyze(object):
 
         # Do the forward-backward Algorithm:
         if full == False:
-            post = self.fwd_bkwd(e_prob0, t_mat, t_mat_full, in_val)
+            post = self.fwd_bkwd(e_mat, t_mat, t_mat_full, in_val)
 
         elif full == True:  # If FULL Mode: Return results prematurely
             post, fwd, bwd, tot_ll = self.fwd_bkwd(
-                e_prob0, t_mat, t_mat_full, in_val, full=True)
+                e_mat, t_mat, t_mat_full, in_val, full=True)
             return post, fwd, bwd, tot_ll
 
         if self.output:
             print("Finished Calculation State Posteriors")
 
         # Save the Data
-        #self.posterior = post  # Remember the Posterior
-
-        print_memory_usage()  ## For MEMORY_BENCH
-        e_prob0 = None  # Free the Memory
-
-        print_memory_usage()  ## For MEMORY_BENCH
+        # self.posterior = post  # Remember the Posterior
 
         if self.save_fp == True:
             path = self.folder + "posterior.csv"
@@ -380,6 +376,7 @@ def exponentiate_r(rates, rec_v):
     # Make sure that all transition rates are valuable
     assert(0 <= np.min(res))
     return res
+
 
 def print_memory_usage():
     """Print the current Memory Usage in mB"""

@@ -45,11 +45,12 @@ class Model_Emissions(Emissions):
         # Calculate the allele frequencies
         self.p = np.mean(self.ref_haps, axis=0)
 
-    def give_emission_matrix(self, remember=False):
-        """Return full Emission Matrix"""
+    def give_emission_matrix(self, remember=False, dtype=np.float):
+        """Return full Emission Matrix.
+        dtype: Precision of the returned Matrix"""
         n_loci = np.shape(self.ref_haps)[1]
         n_ref = np.shape(self.ref_haps)[0]
-        e_mat = -np.ones((n_ref + 1, n_loci, 2))
+        e_mat = -np.ones((n_ref + 1, n_loci, 2), dtype=dtype)
 
         # Calculate Hardy-Weinberg Emissions
         e_mat[0, :, 1] = self.p  # Calculate the Emission Matrix
@@ -74,10 +75,10 @@ class Model_Emissions(Emissions):
         ob_stat = ob_stat[0, :]  # Do ONLY first observed Haplotype
         assert(len(ob_stat) == np.shape(e_mat)[1])  # Sanity Check
 
-        e_prob = e_mat[:, range(len(ob_stat)), ob_stat]
-        e_prob[e_prob == 0] = self.e_rate  # Tiny probability of emission
-        e_prob[e_prob == 1] = 1 - self.e_rate
-        return e_prob
+        e_mat = e_mat[:, range(len(ob_stat)), ob_stat]
+        e_mat[e_mat == 0] = self.e_rate  # Error probabilities
+        e_mat[e_mat == 1] = 1 - self.e_rate
+        return e_mat
 
 ###############################
 ###############################
