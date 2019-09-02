@@ -271,24 +271,24 @@ class PreProcessingHDF5(PreProcessing):
                )  # If reference and observe dataset are the same
 
         # Extract Reference Individuals (first haplo)
-        gts = ref_hdf5["calldata/GT"][:, ids_ref, 0]  # Only first IID
+        gts = ref_hdf5["calldata/GT"][:, ids_ref, 0].astype(np.int8)  # Only first IID
         gts = gts[marker_ref, :].T       # Important: Swap of Dimensions!!
 
         if self.diploid_ref == True:   # In case diploid reference Samples
-            gts1 = ref_hdf5["calldata/GT"][:, ids_ref, 1]  # The second allele
+            gts1 = ref_hdf5["calldata/GT"][:, ids_ref, 1].astype(np.int8)  # The second allele
             # Important: Swap of Dimensions!!
             gts1 = gts1[marker_ref, :].T
-            gts = np.concatenate((gts, gts1), axis=0)  # Add two dataframes
+            gts = np.concatenate((gts, gts1), axis=0)  # Combine dataframes
 
         if self.output == True:
             print(f"Extraction of {len(gts)} Haplotypes Complete!")
 
         # Extract target individual Genotypes
-        gts_ind = obs_hdf5["calldata/GT"][:, id_obs, :]
+        gts_ind = obs_hdf5["calldata/GT"][:, id_obs, :].astype(np.int8)
         gts_ind = gts_ind[marker_obs, :].T
 
         # Extract Readcounts
-        read_counts = obs_hdf5["calldata/AD"][:, id_obs, :]
+        read_counts = obs_hdf5["calldata/AD"][:, id_obs, :].astype(np.int16)
         read_counts = read_counts[marker_obs, :].T
 
         # Extract Linkage map
@@ -335,7 +335,7 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
         id_obs = np.where(iids == iid)[0]
 
         if len(id_obs) == 0:
-            raise RuntimeError(f"Individual {iid} not found in {self.meta_path_targets}!")
+            raise RuntimeError(f"Individual {iid} not found in samples!")
         return id_obs[0]
 
     def set_folder(self, folder_path):

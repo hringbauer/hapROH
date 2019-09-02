@@ -45,12 +45,12 @@ class Model_Emissions(Emissions):
         # Calculate the allele frequencies
         self.p = np.mean(self.ref_haps, axis=0)
 
-    def give_emission_matrix(self, remember=False, dtype=np.float):
+    def give_emission_matrix(self, remember=False):
         """Return full Emission Matrix.
         dtype: Precision of the returned Matrix"""
         n_loci = np.shape(self.ref_haps)[1]
         n_ref = np.shape(self.ref_haps)[0]
-        e_mat = -np.ones((n_ref + 1, n_loci, 2), dtype=dtype)
+        e_mat = -np.ones((n_ref + 1, n_loci, 2))
 
         # Calculate Hardy-Weinberg Emissions
         e_mat[0, :, 1] = self.p  # Calculate the Emission Matrix
@@ -79,6 +79,25 @@ class Model_Emissions(Emissions):
         e_mat[e_mat == 0] = self.e_rate  # Error probabilities
         e_mat[e_mat == 1] = 1 - self.e_rate
         return e_mat
+
+    def give_emission_log(self, ob_stat):
+        """Return the full emission Probability directly in Log Space.
+        ob_stat: Observed Genotypes [2,l] (only use 1st row)"""
+        ob_stat = ob_stat[0, :]  # Do ONLY first observed Haplotype
+        assert(len(ob_stat) == np.shape(self.ref_haps)[1])  # Sanity Check
+
+        n_loci = np.shape(self.ref_haps)[1]
+        n_ref = np.shape(self.ref_haps)[0]
+        e_mat0 = np.zeros((n_ref + 1, n_loci), dtype=np.float)
+
+        # Do the HW
+        e_mat0[0, :] = np.log(self.p * (1 - self.e_rate) + (1 - self.p) * self.e_rate) * (
+            ob_stat == 1) + np.log((1 - self.p) * (1 - self.e_rate) + self.p * self.e_rate) * (ob_stat == 0)
+        e_mat0[1:, :] = np.log(self.e_rate) * (self.ref_haps != ob_stat[None, :]) + \
+            np.log(1 - self.e_rate) * (self.ref_haps == ob_stat[None, :])
+        assert(np.max(e_mat0) < 0)  # Sanity Check (In Log Space Pr. <0)
+
+        return e_mat0
 
 ###############################
 ###############################
@@ -150,9 +169,17 @@ class RC_Model_Emissions(Model_Emissions):
         p_full = np.sum(e_mat * prob_binom[None, :, :], axis=2)
         return p_full
 
+    def give_emission_log(self, ob_stat):
+        """Return the full emission Probability directly in Log Space.
+        ob_stat: Observed Readcounts [2,l] array of 0/1 """
+        e_mat = self.give_emission_matrix()
+        e_mat = np.log(self.give_emission_state(ob_stat=ob_stat, e_mat=e_mat))
+        assert(np.max(e_mat) < 0)  # In LOG Space (Assume Error Model)
+        return e_mat
 
 ###############################
 ###############################
+
 
 class Diploid_GT_Emissions(RC_Model_Emissions):
     """Implements the Emission probabilities for Diploid Genotype calls.

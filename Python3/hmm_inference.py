@@ -200,7 +200,8 @@ class HMM_Analyze(object):
         save: Boolean whether to save the Viterbi Path"""
 
         # 1) Get the emission and transition probabilities.
-        e_mat = self.e_obj.give_emission_matrix()
+        #e_mat = self.e_obj.give_emission_matrix()
+        e_prob0 = self.e_obj.give_emission_log(ob_stat=ob_stat)
         t_mat = self.t_obj.give_transitions()
         # t_mat = np.eye(len(t_mat)) + t_mat LEGACY
         # Precompute the 3x3 Transition Matrix
@@ -210,14 +211,13 @@ class HMM_Analyze(object):
 
         ob_stat = self.ob_stat
 
-        e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
-        assert(np.min(e_prob) > 0)  # For LOG calculation (Assume Error Model)
-
-        e_prob0 = np.log(e_prob)
+        #assert(np.min(e_prob) > 0)  # For LOG calculation (Assume Error Model)
+        #e_prob = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
+        #e_prob0 = np.log(e_prob)
         t_mat_full0 = np.log(t_mat_full)
 
-        end_p = np.empty(np.shape(e_prob)[0], dtype=np.float)
-        end_p[1:] = 0.0001       # Low Probability
+        end_p = np.empty(np.shape(e_prob0)[0], dtype=np.float)
+        end_p[1:] = 1e-4       # Low Probability to be in ROH states
         end_p[0] = 1 - np.sum(end_p[1:])
         assert(np.min(end_p) > 0)  # Sanity Check
         end_p0 = np.log(end_p)  # Go to Log Space
@@ -225,7 +225,7 @@ class HMM_Analyze(object):
         if self.output == True:
             print("Loaded Transition and Emission Matrix:")
             print(np.shape(t_mat))
-            print(np.shape(e_mat))
+            print(np.shape(e_prob0))
             print("Loaded Observations:")
             print(np.shape(ob_stat))
 
@@ -247,11 +247,12 @@ class HMM_Analyze(object):
         """Calculate the poserior for each path
         FULL: Wether to return fwd, bwd as well as tot_ll (Mode for postprocessing)
         in_val: The Initial Probability to copy from one Ind."""
-        e_mat = self.e_obj.give_emission_matrix()
         t_mat = self.t_obj.give_transitions()
         ob_stat = self.ob_stat
         r_map = self.prepare_rmap()  # Get the Recombination Map
 
+        #e_mat = self.e_obj.give_emission_matrix()
+        e_mat = self.e_obj.give_emission_log(ob_stat=ob_stat)
         n_states = np.shape(e_mat)[0]
         n_loci = np.shape(e_mat)[1]
 
@@ -263,9 +264,9 @@ class HMM_Analyze(object):
             print(np.shape(ob_stat))
 
         # The observing probabilities of the States [k,l]
-        e_mat = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
-        assert(np.min(e_mat) > 0)  # For LOG calculation (Assume Error Model)
-        e_mat = np.log(e_mat)
+        #e_mat = self.e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
+        #assert(np.min(e_mat) > 0)  # For LOG calculation (Assume Error Model)
+        #e_mat = np.log(e_mat)
 
         print_memory_usage()  # For MEMORY_BENCH
 

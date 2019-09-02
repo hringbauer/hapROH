@@ -145,13 +145,27 @@ class PostProcessing(object):
 
         self.df = df
         if self.save == True:
-            save_folder = self.folder + "roh.csv"
+            #save_folder = self.folder + "roh.csv"
+            save_folder = os.path.join(self.folder, "roh.csv")
             df.to_csv(save_folder, index=False)
 
             if self.output == True:
                 print(f"Successfully saved to {save_folder}")
 
         return df
+
+    def clean_up(self, full=True):
+        """Removes all additional Data other than the
+        ROH Calls and the ROH Ground Truth (To save space)"""
+        keep_files = ["roh.csv", "roh_gt.csv"]
+        folder = self.folder
+
+        for the_file in os.listdir(folder):   # Walk through the Files
+            file_path = os.path.join(folder, the_file)
+
+            if os.path.isfile(file_path) and (the_file not in keep_files):
+                os.unlink(file_path)   # Delete the File
+
 
 #######################################################
 
