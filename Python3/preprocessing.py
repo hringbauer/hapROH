@@ -310,7 +310,7 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
 
     out_folder = ""    # Where to save to
     prefix_out_data = ""  # Prefix of the Outdata
-    meta_path_targets = "./../ancient-sardinia/output/meta/meta_final.csv"
+    meta_path_targets = ""
     h5_folder = ""    # The H5 Folder
     h5_path_targets = ""
     # Path of 1000G (without chromosome part):
@@ -325,9 +325,9 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
         return out_folder
 
     def get_index_iid(self, iid, fs=0):
-        """OVERWRITE: Get the Index of IID in fs
-        iid to extract. fs reference HDF5.
-        Difference: Here found directly in HDF Samples"""
+        """OVERWRITE: Get the Index of IID in fs (target HDF5)
+        iid to extract.
+        Difference: Here looked up directly in HDF Samples array"""
 
         iids = np.array(fs['samples'])
         assert(len(iids) == np.shape(fs["calldata/GT"])[1])  # Sanity Check
