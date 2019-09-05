@@ -192,7 +192,7 @@ class Diploid_GT_Emissions(RC_Model_Emissions):
     e_mat = []  # # Full Emission Matrix [n_ref+1, n_loci, 2]
 
     e_rate = 1e-3
-    e_rate_ref = 0  # The error rate for the reference genome states
+    e_rate_ref = 0.0  # The error rate for the reference genome states
 
     def give_emission_state(self, ob_stat, e_mat):
         """Gives the emission matrix of observed states
@@ -206,9 +206,6 @@ class Diploid_GT_Emissions(RC_Model_Emissions):
         derived_gt = np.sum(ob_stat, axis=0)  # The Nr of of derived GT (0/1/2)
         assert(len(derived_gt) == nr_loci)
 
-        # What's the probability of observing a dervided read given hidden genotypes 00 01 11
-        p_read = np.array([e_rate, 0.5, 1 - e_rate])
-
         # Calculate probability of ob. Genotypes Given 3 lat. genotypes [nr_loci, 3]
         # Initialise with "background error"
         prob_gt = np.ones((nr_loci, 3)) * e_rate / 2
@@ -217,6 +214,33 @@ class Diploid_GT_Emissions(RC_Model_Emissions):
         # Sum over each of the 3 possible genotypes
         p_full = np.sum(e_mat * prob_gt[None, :, :], axis=2)
         return p_full
+
+    def give_emission_log(self, ob_stat, dtype=np.float):
+        """Return the full emission Probability directly in Log Space.
+        ob_stat: Observed Readcounts [2,l] array of 0/1 """
+        ref_haps = self.ref_haps
+        derived_gt = np.sum(ob_stat, axis=0)  # The Nr of of derived GT (0/1/2)
+        e_rate = self.e_rate  # Error Rate (Here FLIP error)
+
+        n_loci = np.shape(self.ref_haps)[1]
+        n_ref = np.shape(self.ref_haps)[0]
+        assert(len(derived_gt) == n_loci)  # Sanity Check
+
+        e_mat0 = np.zeros((n_ref + 1, n_loci), dtype=dtype)
+
+        ### HW State
+        e_mat0[0, :] = (1 - self.p) * (1 - self.p) * (derived_gt == 0) + \
+            (1 - self.p) * self.p * 2 * (derived_gt == 1) + \
+            self.p * self.p * (derived_gt == 2)
+        ### Copying States
+        e_mat0[1:, :] = (derived_gt == 0) * (ref_haps == 0) + \
+                       (derived_gt == 2) * (ref_haps == 1)
+
+        ### Do the bleeding from other states:
+        e_mat0 = e_mat0 * (1 - e_rate) + (1 - e_mat0) * e_rate / 2.0
+        e_mat0 = np.log(e_mat0)  # Go to Log Space
+
+        return e_mat0
 
 ###############################
 ###############################
@@ -251,3 +275,9 @@ if __name__ == "__main__":
     e_mat = e_obj.give_emission_matrix()
     e_prob = e_obj.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
     print(e_prob)
+    e_prob0 = e_obj.give_emission_log(ob_stat=ob_stat)
+    #e_prob1 = e_obj.give_emission_log_temp(ob_stat=ob_stat)
+
+    print("Comparison:")
+    #print(np.exp(e_prob1) - e_prob)
+    #print(np.exp(e_prob1) - np.exp(e_prob0))
