@@ -1,0 +1,953 @@
+Doing Individual Hazara_5...
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 89147 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr1.hdf5
+
+Intersection on Positions: 89143
+Nr of Matching Refs: 89143 / 89143
+Full Intersection Ref/Alt Identical: 89079 / 89143
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 47525 / 89079
+Successfully saved to: ./Empirical/HO/Hazara_5/chr1/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr1/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0201
+Maximum Genetic Map: 2.8623
+Gaps bigger than 0.1 cM: 425
+Maximum Gap: 3.9814 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 47525)
+Loaded Observations:
+(2, 47525)
+Memory Usage: 2327.863296 mB
+Reference Number: 5008
+Total Log likelihood: -24251.613
+Memory Usage: 2328.322048 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr1/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr1/
+Fraction Markers in ROH: 0.2540
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr1/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 94239 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr2.hdf5
+
+Intersection on Positions: 94237
+Nr of Matching Refs: 94205 / 94237
+Full Intersection Ref/Alt Identical: 94137 / 94237
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 49060 / 94137
+Successfully saved to: ./Empirical/HO/Hazara_5/chr2/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr2/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 2.6883
+Gaps bigger than 0.1 cM: 396
+Maximum Gap: 2.0159 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 49060)
+Loaded Observations:
+(2, 49060)
+Memory Usage: 2399.428608 mB
+Reference Number: 5008
+Total Log likelihood: -24770.060
+Memory Usage: 2399.428608 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr2/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr2/
+Fraction Markers in ROH: 0.2687
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr2/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 77652 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr3.hdf5
+
+Intersection on Positions: 77650
+Nr of Matching Refs: 77606 / 77650
+Full Intersection Ref/Alt Identical: 77553 / 77650
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 40697 / 77553
+Successfully saved to: ./Empirical/HO/Hazara_5/chr3/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr3/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 2.2326
+Gaps bigger than 0.1 cM: 341
+Maximum Gap: 0.4179 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 40697)
+Loaded Observations:
+(2, 40697)
+Memory Usage: 2022.703104 mB
+Reference Number: 5008
+Total Log likelihood: -20558.734
+Memory Usage: 2022.703104 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr3/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr3/
+Fraction Markers in ROH: 0.2679
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 1.724
+Successfully saved to ./Empirical/HO/Hazara_5/chr3/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 68759 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr4.hdf5
+
+Intersection on Positions: 68759
+Nr of Matching Refs: 68709 / 68759
+Full Intersection Ref/Alt Identical: 68663 / 68759
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 34123 / 68663
+Successfully saved to: ./Empirical/HO/Hazara_5/chr4/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr4/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0034
+Maximum Genetic Map: 2.1454
+Gaps bigger than 0.1 cM: 333
+Maximum Gap: 2.1375 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34123)
+Loaded Observations:
+(2, 34123)
+Memory Usage: 1726.541824 mB
+Reference Number: 5008
+Total Log likelihood: -16928.502
+Memory Usage: 1726.541824 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr4/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr4/
+Fraction Markers in ROH: 0.2951
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 1.599
+Successfully saved to ./Empirical/HO/Hazara_5/chr4/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 69399 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr5.hdf5
+
+Intersection on Positions: 69394
+Nr of Matching Refs: 69307 / 69394
+Full Intersection Ref/Alt Identical: 69252 / 69394
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 34234 / 69252
+Successfully saved to: ./Empirical/HO/Hazara_5/chr5/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr5/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0004
+Maximum Genetic Map: 2.0409
+Gaps bigger than 0.1 cM: 338
+Maximum Gap: 1.0498 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34234)
+Loaded Observations:
+(2, 34234)
+Memory Usage: 1731.579904 mB
+Reference Number: 5008
+Total Log likelihood: -17460.063
+Memory Usage: 1731.579904 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr5/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr5/
+Fraction Markers in ROH: 0.2483
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr5/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 75870 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr6.hdf5
+
+Intersection on Positions: 75866
+Nr of Matching Refs: 75743 / 75866
+Full Intersection Ref/Alt Identical: 75675 / 75866
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 34076 / 75675
+Successfully saved to: ./Empirical/HO/Hazara_5/chr6/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr6/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0035
+Maximum Genetic Map: 1.9203
+Gaps bigger than 0.1 cM: 287
+Maximum Gap: 0.5072 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34076)
+Loaded Observations:
+(2, 34076)
+Memory Usage: 1724.469248 mB
+Reference Number: 5008
+Total Log likelihood: -17433.801
+Memory Usage: 1724.469248 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr6/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr6/
+Fraction Markers in ROH: 0.2558
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr6/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 59890 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr7.hdf5
+
+Intersection on Positions: 59889
+Nr of Matching Refs: 59781 / 59889
+Full Intersection Ref/Alt Identical: 59715 / 59889
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28751 / 59715
+Successfully saved to: ./Empirical/HO/Hazara_5/chr7/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr7/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.8715
+Gaps bigger than 0.1 cM: 325
+Maximum Gap: 1.0884 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28751)
+Loaded Observations:
+(2, 28751)
+Memory Usage: 1497.604096 mB
+Reference Number: 5008
+Total Log likelihood: -14744.650
+Memory Usage: 1497.604096 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr7/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr7/
+Fraction Markers in ROH: 0.2556
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 2.002
+Successfully saved to ./Empirical/HO/Hazara_5/chr7/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 61133 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr8.hdf5
+
+Intersection on Positions: 61130
+Nr of Matching Refs: 61022 / 61130
+Full Intersection Ref/Alt Identical: 60960 / 61130
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28538 / 60960
+Successfully saved to: ./Empirical/HO/Hazara_5/chr8/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr8/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.6800
+Gaps bigger than 0.1 cM: 252
+Maximum Gap: 3.5052 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28538)
+Loaded Observations:
+(2, 28538)
+Memory Usage: 1488.027648 mB
+Reference Number: 5008
+Total Log likelihood: -14200.062
+Memory Usage: 1488.027648 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr8/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr8/
+Fraction Markers in ROH: 0.2956
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr8/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 50668 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr9.hdf5
+
+Intersection on Positions: 50668
+Nr of Matching Refs: 50539 / 50668
+Full Intersection Ref/Alt Identical: 50493 / 50668
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 23701 / 50493
+Successfully saved to: ./Empirical/HO/Hazara_5/chr9/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr9/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.6630
+Gaps bigger than 0.1 cM: 300
+Maximum Gap: 2.3454 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 23701)
+Loaded Observations:
+(2, 23701)
+Memory Usage: 1269.972992 mB
+Reference Number: 5008
+Total Log likelihood: -11881.797
+Memory Usage: 1269.972992 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr9/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr9/
+Fraction Markers in ROH: 0.2799
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr9/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 58804 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr10.hdf5
+
+Intersection on Positions: 58803
+Nr of Matching Refs: 58657 / 58803
+Full Intersection Ref/Alt Identical: 58591 / 58803
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 30573 / 58591
+Successfully saved to: ./Empirical/HO/Hazara_5/chr10/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr10/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.8089
+Gaps bigger than 0.1 cM: 263
+Maximum Gap: 2.0338 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 30573)
+Loaded Observations:
+(2, 30573)
+Memory Usage: 1579.761664 mB
+Reference Number: 5008
+Total Log likelihood: -15421.975
+Memory Usage: 1579.761664 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr10/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr10/
+Fraction Markers in ROH: 0.2663
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr10/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 54833 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr11.hdf5
+
+Intersection on Positions: 54831
+Nr of Matching Refs: 54669 / 54831
+Full Intersection Ref/Alt Identical: 54616 / 54831
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28127 / 54616
+Successfully saved to: ./Empirical/HO/Hazara_5/chr11/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr11/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.5822
+Gaps bigger than 0.1 cM: 247
+Maximum Gap: 0.5683 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28127)
+Loaded Observations:
+(2, 28127)
+Memory Usage: 1469.497344 mB
+Reference Number: 5008
+Total Log likelihood: -14590.355
+Memory Usage: 1469.497344 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr11/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr11/
+Fraction Markers in ROH: 0.2422
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr11/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 53911 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr12.hdf5
+
+Intersection on Positions: 53911
+Nr of Matching Refs: 53713 / 53911
+Full Intersection Ref/Alt Identical: 53672 / 53911
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 27341 / 53672
+Successfully saved to: ./Empirical/HO/Hazara_5/chr12/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr12/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0009
+Maximum Genetic Map: 1.7468
+Gaps bigger than 0.1 cM: 285
+Maximum Gap: 0.8015 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 27341)
+Loaded Observations:
+(2, 27341)
+Memory Usage: 1434.07104 mB
+Reference Number: 5008
+Total Log likelihood: -14123.275
+Memory Usage: 1434.07104 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr12/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr12/
+Fraction Markers in ROH: 0.2680
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.120
+Successfully saved to ./Empirical/HO/Hazara_5/chr12/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 39018 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr13.hdf5
+
+Intersection on Positions: 39015
+Nr of Matching Refs: 38885 / 39015
+Full Intersection Ref/Alt Identical: 38841 / 39015
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 17905 / 38841
+Successfully saved to: ./Empirical/HO/Hazara_5/chr13/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr13/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0028
+Maximum Genetic Map: 1.2570
+Gaps bigger than 0.1 cM: 229
+Maximum Gap: 1.2234 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17905)
+Loaded Observations:
+(2, 17905)
+Memory Usage: 1008.697344 mB
+Reference Number: 5008
+Total Log likelihood: -9088.950
+Memory Usage: 1008.697344 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr13/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr13/
+Fraction Markers in ROH: 0.2615
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr13/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 36301 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr14.hdf5
+
+Intersection on Positions: 36301
+Nr of Matching Refs: 36166 / 36301
+Full Intersection Ref/Alt Identical: 36126 / 36301
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18717 / 36126
+Successfully saved to: ./Empirical/HO/Hazara_5/chr14/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr14/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0184
+Maximum Genetic Map: 1.2020
+Gaps bigger than 0.1 cM: 191
+Maximum Gap: 3.5856 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18717)
+Loaded Observations:
+(2, 18717)
+Memory Usage: 1045.303296 mB
+Reference Number: 5008
+Total Log likelihood: -9537.342
+Memory Usage: 1045.303296 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr14/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr14/
+Fraction Markers in ROH: 0.2618
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr14/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34429 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr15.hdf5
+
+Intersection on Positions: 34425
+Nr of Matching Refs: 34285 / 34425
+Full Intersection Ref/Alt Identical: 34249 / 34425
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18092 / 34249
+Successfully saved to: ./Empirical/HO/Hazara_5/chr15/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr15/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 1.4133
+Gaps bigger than 0.1 cM: 202
+Maximum Gap: 13.7876 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18092)
+Loaded Observations:
+(2, 18092)
+Memory Usage: 1017.126912 mB
+Reference Number: 5008
+Total Log likelihood: -9610.347
+Memory Usage: 1017.126912 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr15/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr15/
+Fraction Markers in ROH: 0.2515
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr15/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34402 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr16.hdf5
+
+Intersection on Positions: 34399
+Nr of Matching Refs: 34254 / 34399
+Full Intersection Ref/Alt Identical: 34201 / 34399
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18317 / 34201
+Successfully saved to: ./Empirical/HO/Hazara_5/chr16/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr16/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.3402
+Gaps bigger than 0.1 cM: 228
+Maximum Gap: 0.9354 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18317)
+Loaded Observations:
+(2, 18317)
+Memory Usage: 1027.268608 mB
+Reference Number: 5008
+Total Log likelihood: -9307.709
+Memory Usage: 1027.268608 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr16/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr16/
+Fraction Markers in ROH: 0.2641
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 1.081
+Successfully saved to ./Empirical/HO/Hazara_5/chr16/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29314 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr17.hdf5
+
+Intersection on Positions: 29313
+Nr of Matching Refs: 29159 / 29313
+Full Intersection Ref/Alt Identical: 29124 / 29313
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 15282 / 29124
+Successfully saved to: ./Empirical/HO/Hazara_5/chr17/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr17/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0003
+Maximum Genetic Map: 1.2845
+Gaps bigger than 0.1 cM: 225
+Maximum Gap: 1.2355 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15282)
+Loaded Observations:
+(2, 15282)
+Memory Usage: 890.44992 mB
+Reference Number: 5008
+Total Log likelihood: -7865.102
+Memory Usage: 890.44992 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr17/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr17/
+Fraction Markers in ROH: 0.2543
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr17/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 33917 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr18.hdf5
+
+Intersection on Positions: 33916
+Nr of Matching Refs: 33774 / 33916
+Full Intersection Ref/Alt Identical: 33746 / 33916
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 17190 / 33746
+Successfully saved to: ./Empirical/HO/Hazara_5/chr18/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr18/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0027
+Maximum Genetic Map: 1.1771
+Gaps bigger than 0.1 cM: 195
+Maximum Gap: 0.8037 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17190)
+Loaded Observations:
+(2, 17190)
+Memory Usage: 976.474112 mB
+Reference Number: 5008
+Total Log likelihood: -9066.200
+Memory Usage: 976.474112 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr18/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr18/
+Fraction Markers in ROH: 0.2294
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr18/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 18460 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr19.hdf5
+
+Intersection on Positions: 18459
+Nr of Matching Refs: 18381 / 18459
+Full Intersection Ref/Alt Identical: 18340 / 18459
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 8735 / 18340
+Successfully saved to: ./Empirical/HO/Hazara_5/chr19/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr19/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0773
+Gaps bigger than 0.1 cM: 287
+Maximum Gap: 0.6354 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 8735)
+Loaded Observations:
+(2, 8735)
+Memory Usage: 595.320832 mB
+Reference Number: 5008
+Total Log likelihood: -4910.248
+Memory Usage: 595.320832 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr19/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr19/
+Fraction Markers in ROH: 0.2193
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr19/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29078 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr20.hdf5
+
+Intersection on Positions: 29077
+Nr of Matching Refs: 28908 / 29077
+Full Intersection Ref/Alt Identical: 28864 / 29077
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 15398 / 28864
+Successfully saved to: ./Empirical/HO/Hazara_5/chr20/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr20/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0008
+Maximum Genetic Map: 1.0821
+Gaps bigger than 0.1 cM: 202
+Maximum Gap: 0.4744 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15398)
+Loaded Observations:
+(2, 15398)
+Memory Usage: 895.6928 mB
+Reference Number: 5008
+Total Log likelihood: -8028.720
+Memory Usage: 895.6928 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr20/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr20/
+Fraction Markers in ROH: 0.2574
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr20/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 16038 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr21.hdf5
+
+Intersection on Positions: 16036
+Nr of Matching Refs: 15949 / 16036
+Full Intersection Ref/Alt Identical: 15930 / 16036
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 7923 / 15930
+Successfully saved to: ./Empirical/HO/Hazara_5/chr21/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr21/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0145
+Maximum Genetic Map: 0.6277
+Gaps bigger than 0.1 cM: 119
+Maximum Gap: 0.7121 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7923)
+Loaded Observations:
+(2, 7923)
+Memory Usage: 558.723072 mB
+Reference Number: 5008
+Total Log likelihood: -4176.031
+Memory Usage: 558.723072 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr21/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr21/
+Fraction Markers in ROH: 0.2425
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr21/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Hazara_5
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 15802 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr22.hdf5
+
+Intersection on Positions: 15802
+Nr of Matching Refs: 15704 / 15802
+Full Intersection Ref/Alt Identical: 15684 / 15802
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 7733 / 15684
+Successfully saved to: ./Empirical/HO/Hazara_5/chr22/
+Successfully loaded Data from: ./Empirical/HO/Hazara_5/chr22/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0178
+Maximum Genetic Map: 0.7408
+Gaps bigger than 0.1 cM: 149
+Maximum Gap: 1.7139 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7733)
+Loaded Observations:
+(2, 7733)
+Memory Usage: 550.15424 mB
+Reference Number: 5008
+Total Log likelihood: -3846.468
+Memory Usage: 550.15424 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Hazara_5/chr22/.
+Successfully loaded for PP. from ./Empirical/HO/Hazara_5/chr22/
+Fraction Markers in ROH: 0.2502
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Hazara_5/chr22/roh.csv
+Run for Individual Hazara_5: Complete! Yeah!!

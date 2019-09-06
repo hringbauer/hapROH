@@ -1,0 +1,956 @@
+Doing Individual French_15...
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 89147 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr1.hdf5
+
+Intersection on Positions: 89143
+Nr of Matching Refs: 89143 / 89143
+Full Intersection Ref/Alt Identical: 89079 / 89143
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 47404 / 89079
+Successfully saved to: ./Empirical/HO/French_15/chr1/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr1/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0201
+Maximum Genetic Map: 2.8623
+Gaps bigger than 0.1 cM: 426
+Maximum Gap: 3.9814 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 47404)
+Loaded Observations:
+(2, 47404)
+Memory Usage: 2322.456576 mB
+Reference Number: 5008
+Total Log likelihood: -23200.815
+Memory Usage: 2322.911232 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr1/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr1/
+Fraction Markers in ROH: 0.2815
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.664
+Successfully saved to ./Empirical/HO/French_15/chr1/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 94239 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr2.hdf5
+
+Intersection on Positions: 94237
+Nr of Matching Refs: 94205 / 94237
+Full Intersection Ref/Alt Identical: 94137 / 94237
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 48865 / 94137
+Successfully saved to: ./Empirical/HO/French_15/chr2/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr2/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 2.6883
+Gaps bigger than 0.1 cM: 397
+Maximum Gap: 2.0159 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 48865)
+Loaded Observations:
+(2, 48865)
+Memory Usage: 2390.8352 mB
+Reference Number: 5008
+Total Log likelihood: -24576.151
+Memory Usage: 2390.8352 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr2/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr2/
+Fraction Markers in ROH: 0.2858
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 1.292
+Successfully saved to ./Empirical/HO/French_15/chr2/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 77652 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr3.hdf5
+
+Intersection on Positions: 77650
+Nr of Matching Refs: 77606 / 77650
+Full Intersection Ref/Alt Identical: 77553 / 77650
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 40533 / 77553
+Successfully saved to: ./Empirical/HO/French_15/chr3/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr3/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 2.2326
+Gaps bigger than 0.1 cM: 342
+Maximum Gap: 0.4179 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 40533)
+Loaded Observations:
+(2, 40533)
+Memory Usage: 2029.289472 mB
+Reference Number: 5008
+Total Log likelihood: -20814.922
+Memory Usage: 2029.289472 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr3/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr3/
+Fraction Markers in ROH: 0.2764
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr3/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 68759 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr4.hdf5
+
+Intersection on Positions: 68759
+Nr of Matching Refs: 68709 / 68759
+Full Intersection Ref/Alt Identical: 68663 / 68759
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 33977 / 68663
+Successfully saved to: ./Empirical/HO/French_15/chr4/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr4/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0034
+Maximum Genetic Map: 2.1454
+Gaps bigger than 0.1 cM: 335
+Maximum Gap: 2.1375 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 33977)
+Loaded Observations:
+(2, 33977)
+Memory Usage: 1733.69344 mB
+Reference Number: 5008
+Total Log likelihood: -17434.988
+Memory Usage: 1733.69344 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr4/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr4/
+Fraction Markers in ROH: 0.2639
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.619
+Successfully saved to ./Empirical/HO/French_15/chr4/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 69399 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr5.hdf5
+
+Intersection on Positions: 69394
+Nr of Matching Refs: 69307 / 69394
+Full Intersection Ref/Alt Identical: 69252 / 69394
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 34138 / 69252
+Successfully saved to: ./Empirical/HO/French_15/chr5/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr5/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0004
+Maximum Genetic Map: 2.0409
+Gaps bigger than 0.1 cM: 340
+Maximum Gap: 1.0498 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34138)
+Loaded Observations:
+(2, 34138)
+Memory Usage: 1740.98432 mB
+Reference Number: 5008
+Total Log likelihood: -17026.854
+Memory Usage: 1740.98432 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr5/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr5/
+Fraction Markers in ROH: 0.2976
+Merged n=0 gaps < 0.0 M
+Called n=4 ROH Blocks > 1.0 cM
+Longest Block: 1.622
+Successfully saved to ./Empirical/HO/French_15/chr5/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 75870 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr6.hdf5
+
+Intersection on Positions: 75866
+Nr of Matching Refs: 75743 / 75866
+Full Intersection Ref/Alt Identical: 75675 / 75866
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 33933 / 75675
+Successfully saved to: ./Empirical/HO/French_15/chr6/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr6/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0035
+Maximum Genetic Map: 1.9203
+Gaps bigger than 0.1 cM: 289
+Maximum Gap: 0.5072 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 33933)
+Loaded Observations:
+(2, 33933)
+Memory Usage: 1731.76832 mB
+Reference Number: 5008
+Total Log likelihood: -17899.112
+Memory Usage: 1731.76832 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr6/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr6/
+Fraction Markers in ROH: 0.2297
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr6/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 59890 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr7.hdf5
+
+Intersection on Positions: 59889
+Nr of Matching Refs: 59781 / 59889
+Full Intersection Ref/Alt Identical: 59715 / 59889
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28648 / 59715
+Successfully saved to: ./Empirical/HO/French_15/chr7/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr7/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.8715
+Gaps bigger than 0.1 cM: 325
+Maximum Gap: 1.0884 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28648)
+Loaded Observations:
+(2, 28648)
+Memory Usage: 1493.528576 mB
+Reference Number: 5008
+Total Log likelihood: -14469.751
+Memory Usage: 1493.528576 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr7/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr7/
+Fraction Markers in ROH: 0.2841
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr7/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 61133 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr8.hdf5
+
+Intersection on Positions: 61130
+Nr of Matching Refs: 61022 / 61130
+Full Intersection Ref/Alt Identical: 60960 / 61130
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28421 / 60960
+Successfully saved to: ./Empirical/HO/French_15/chr8/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr8/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.6800
+Gaps bigger than 0.1 cM: 253
+Maximum Gap: 3.5052 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28421)
+Loaded Observations:
+(2, 28421)
+Memory Usage: 1483.296768 mB
+Reference Number: 5008
+Total Log likelihood: -14269.087
+Memory Usage: 1483.296768 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr8/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr8/
+Fraction Markers in ROH: 0.2782
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 4.030
+Successfully saved to ./Empirical/HO/French_15/chr8/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 50668 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr9.hdf5
+
+Intersection on Positions: 50668
+Nr of Matching Refs: 50539 / 50668
+Full Intersection Ref/Alt Identical: 50493 / 50668
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 23611 / 50493
+Successfully saved to: ./Empirical/HO/French_15/chr9/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr9/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.6630
+Gaps bigger than 0.1 cM: 300
+Maximum Gap: 2.3454 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 23611)
+Loaded Observations:
+(2, 23611)
+Memory Usage: 1266.46272 mB
+Reference Number: 5008
+Total Log likelihood: -12633.300
+Memory Usage: 1266.46272 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr9/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr9/
+Fraction Markers in ROH: 0.2398
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.628
+Successfully saved to ./Empirical/HO/French_15/chr9/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 58804 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr10.hdf5
+
+Intersection on Positions: 58803
+Nr of Matching Refs: 58657 / 58803
+Full Intersection Ref/Alt Identical: 58591 / 58803
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 30452 / 58591
+Successfully saved to: ./Empirical/HO/French_15/chr10/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr10/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.8089
+Gaps bigger than 0.1 cM: 266
+Maximum Gap: 2.0338 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 30452)
+Loaded Observations:
+(2, 30452)
+Memory Usage: 1574.854656 mB
+Reference Number: 5008
+Total Log likelihood: -15602.191
+Memory Usage: 1574.854656 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr10/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr10/
+Fraction Markers in ROH: 0.2924
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr10/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 54833 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr11.hdf5
+
+Intersection on Positions: 54831
+Nr of Matching Refs: 54669 / 54831
+Full Intersection Ref/Alt Identical: 54616 / 54831
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28033 / 54616
+Successfully saved to: ./Empirical/HO/French_15/chr11/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr11/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.5822
+Gaps bigger than 0.1 cM: 248
+Maximum Gap: 0.5683 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28033)
+Loaded Observations:
+(2, 28033)
+Memory Usage: 1465.802752 mB
+Reference Number: 5008
+Total Log likelihood: -14364.576
+Memory Usage: 1465.802752 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr11/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr11/
+Fraction Markers in ROH: 0.2690
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr11/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 53911 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr12.hdf5
+
+Intersection on Positions: 53911
+Nr of Matching Refs: 53713 / 53911
+Full Intersection Ref/Alt Identical: 53672 / 53911
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 27240 / 53672
+Successfully saved to: ./Empirical/HO/French_15/chr12/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr12/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0017
+Maximum Genetic Map: 1.7468
+Gaps bigger than 0.1 cM: 287
+Maximum Gap: 0.8015 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 27240)
+Loaded Observations:
+(2, 27240)
+Memory Usage: 1430.065152 mB
+Reference Number: 5008
+Total Log likelihood: -13986.432
+Memory Usage: 1430.065152 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr12/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr12/
+Fraction Markers in ROH: 0.2767
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr12/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 39018 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr13.hdf5
+
+Intersection on Positions: 39015
+Nr of Matching Refs: 38885 / 39015
+Full Intersection Ref/Alt Identical: 38841 / 39015
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 17822 / 38841
+Successfully saved to: ./Empirical/HO/French_15/chr13/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr13/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0028
+Maximum Genetic Map: 1.2570
+Gaps bigger than 0.1 cM: 230
+Maximum Gap: 1.2234 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17822)
+Loaded Observations:
+(2, 17822)
+Memory Usage: 1005.502464 mB
+Reference Number: 5008
+Total Log likelihood: -9098.419
+Memory Usage: 1005.502464 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr13/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr13/
+Fraction Markers in ROH: 0.2682
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr13/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 36301 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr14.hdf5
+
+Intersection on Positions: 36301
+Nr of Matching Refs: 36166 / 36301
+Full Intersection Ref/Alt Identical: 36126 / 36301
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18660 / 36126
+Successfully saved to: ./Empirical/HO/French_15/chr14/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr14/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0184
+Maximum Genetic Map: 1.2020
+Gaps bigger than 0.1 cM: 191
+Maximum Gap: 3.6556 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18660)
+Loaded Observations:
+(2, 18660)
+Memory Usage: 1043.02592 mB
+Reference Number: 5008
+Total Log likelihood: -9813.233
+Memory Usage: 1043.02592 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr14/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr14/
+Fraction Markers in ROH: 0.2457
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr14/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34429 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr15.hdf5
+
+Intersection on Positions: 34425
+Nr of Matching Refs: 34285 / 34425
+Full Intersection Ref/Alt Identical: 34249 / 34425
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18020 / 34249
+Successfully saved to: ./Empirical/HO/French_15/chr15/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr15/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 1.4133
+Gaps bigger than 0.1 cM: 202
+Maximum Gap: 13.7876 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18020)
+Loaded Observations:
+(2, 18020)
+Memory Usage: 1014.177792 mB
+Reference Number: 5008
+Total Log likelihood: -9647.010
+Memory Usage: 1014.177792 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr15/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr15/
+Fraction Markers in ROH: 0.2396
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.908
+Successfully saved to ./Empirical/HO/French_15/chr15/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34402 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr16.hdf5
+
+Intersection on Positions: 34399
+Nr of Matching Refs: 34254 / 34399
+Full Intersection Ref/Alt Identical: 34201 / 34399
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18226 / 34201
+Successfully saved to: ./Empirical/HO/French_15/chr16/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr16/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.3402
+Gaps bigger than 0.1 cM: 230
+Maximum Gap: 0.9354 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18226)
+Loaded Observations:
+(2, 18226)
+Memory Usage: 1023.463424 mB
+Reference Number: 5008
+Total Log likelihood: -9523.363
+Memory Usage: 1023.463424 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr16/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr16/
+Fraction Markers in ROH: 0.2614
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr16/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29314 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr17.hdf5
+
+Intersection on Positions: 29313
+Nr of Matching Refs: 29159 / 29313
+Full Intersection Ref/Alt Identical: 29124 / 29313
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 15232 / 29124
+Successfully saved to: ./Empirical/HO/French_15/chr17/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr17/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0003
+Maximum Genetic Map: 1.2845
+Gaps bigger than 0.1 cM: 225
+Maximum Gap: 1.2355 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15232)
+Loaded Observations:
+(2, 15232)
+Memory Usage: 888.512512 mB
+Reference Number: 5008
+Total Log likelihood: -8097.361
+Memory Usage: 888.512512 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr17/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr17/
+Fraction Markers in ROH: 0.2386
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr17/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 33917 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr18.hdf5
+
+Intersection on Positions: 33916
+Nr of Matching Refs: 33774 / 33916
+Full Intersection Ref/Alt Identical: 33746 / 33916
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 17123 / 33746
+Successfully saved to: ./Empirical/HO/French_15/chr18/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr18/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0027
+Maximum Genetic Map: 1.1771
+Gaps bigger than 0.1 cM: 196
+Maximum Gap: 0.8037 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17123)
+Loaded Observations:
+(2, 17123)
+Memory Usage: 973.7216 mB
+Reference Number: 5008
+Total Log likelihood: -8709.715
+Memory Usage: 973.7216 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr18/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr18/
+Fraction Markers in ROH: 0.2810
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr18/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 18460 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr19.hdf5
+
+Intersection on Positions: 18459
+Nr of Matching Refs: 18381 / 18459
+Full Intersection Ref/Alt Identical: 18340 / 18459
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 8693 / 18340
+Successfully saved to: ./Empirical/HO/French_15/chr19/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr19/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0773
+Gaps bigger than 0.1 cM: 286
+Maximum Gap: 0.6354 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 8693)
+Loaded Observations:
+(2, 8693)
+Memory Usage: 593.698816 mB
+Reference Number: 5008
+Total Log likelihood: -4704.382
+Memory Usage: 593.698816 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr19/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr19/
+Fraction Markers in ROH: 0.2150
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr19/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29078 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr20.hdf5
+
+Intersection on Positions: 29077
+Nr of Matching Refs: 28908 / 29077
+Full Intersection Ref/Alt Identical: 28864 / 29077
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 15349 / 28864
+Successfully saved to: ./Empirical/HO/French_15/chr20/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr20/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0008
+Maximum Genetic Map: 1.0821
+Gaps bigger than 0.1 cM: 201
+Maximum Gap: 0.4744 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15349)
+Loaded Observations:
+(2, 15349)
+Memory Usage: 893.755392 mB
+Reference Number: 5008
+Total Log likelihood: -7597.881
+Memory Usage: 893.755392 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr20/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr20/
+Fraction Markers in ROH: 0.3105
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.495
+Successfully saved to ./Empirical/HO/French_15/chr20/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 16038 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr21.hdf5
+
+Intersection on Positions: 16036
+Nr of Matching Refs: 15949 / 16036
+Full Intersection Ref/Alt Identical: 15930 / 16036
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 7896 / 15930
+Successfully saved to: ./Empirical/HO/French_15/chr21/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr21/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0145
+Maximum Genetic Map: 0.6277
+Gaps bigger than 0.1 cM: 119
+Maximum Gap: 0.7121 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7896)
+Loaded Observations:
+(2, 7896)
+Memory Usage: 557.776896 mB
+Reference Number: 5008
+Total Log likelihood: -4039.250
+Memory Usage: 557.776896 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr21/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr21/
+Fraction Markers in ROH: 0.2708
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr21/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: French_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 15802 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr22.hdf5
+
+Intersection on Positions: 15802
+Nr of Matching Refs: 15704 / 15802
+Full Intersection Ref/Alt Identical: 15684 / 15802
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 7708 / 15684
+Successfully saved to: ./Empirical/HO/French_15/chr22/
+Successfully loaded Data from: ./Empirical/HO/French_15/chr22/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0178
+Maximum Genetic Map: 0.7408
+Gaps bigger than 0.1 cM: 149
+Maximum Gap: 1.7139 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7708)
+Loaded Observations:
+(2, 7708)
+Memory Usage: 549.298176 mB
+Reference Number: 5008
+Total Log likelihood: -4040.750
+Memory Usage: 549.298176 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/French_15/chr22/.
+Successfully loaded for PP. from ./Empirical/HO/French_15/chr22/
+Fraction Markers in ROH: 0.2274
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/French_15/chr22/roh.csv
+Run for Individual French_15: Complete! Yeah!!

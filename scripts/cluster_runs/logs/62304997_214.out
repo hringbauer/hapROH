@@ -1,0 +1,961 @@
+Doing Individual Pathan_15...
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 89147 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr1.hdf5
+
+Intersection on Positions: 89143
+Nr of Matching Refs: 89143 / 89143
+Full Intersection Ref/Alt Identical: 89079 / 89143
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 47480 / 89079
+Successfully saved to: ./Empirical/HO/Pathan_15/chr1/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr1/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0201
+Maximum Genetic Map: 2.8623
+Gaps bigger than 0.1 cM: 424
+Maximum Gap: 3.9814 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 47480)
+Loaded Observations:
+(2, 47480)
+Memory Usage: 2325.839872 mB
+Reference Number: 5008
+Total Log likelihood: -20998.206
+Memory Usage: 2326.298624 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr1/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr1/
+Fraction Markers in ROH: 0.3865
+Merged n=0 gaps < 0.0 M
+Called n=3 ROH Blocks > 1.0 cM
+Longest Block: 31.444
+Successfully saved to ./Empirical/HO/Pathan_15/chr1/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 94239 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr2.hdf5
+
+Intersection on Positions: 94237
+Nr of Matching Refs: 94205 / 94237
+Full Intersection Ref/Alt Identical: 94137 / 94237
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 49020 / 94137
+Successfully saved to: ./Empirical/HO/Pathan_15/chr2/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr2/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 2.6883
+Gaps bigger than 0.1 cM: 396
+Maximum Gap: 2.0159 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 49020)
+Loaded Observations:
+(2, 49020)
+Memory Usage: 2397.917184 mB
+Reference Number: 5008
+Total Log likelihood: -24550.230
+Memory Usage: 2397.917184 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr2/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr2/
+Fraction Markers in ROH: 0.2853
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 11.844
+Successfully saved to ./Empirical/HO/Pathan_15/chr2/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 77652 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr3.hdf5
+
+Intersection on Positions: 77650
+Nr of Matching Refs: 77606 / 77650
+Full Intersection Ref/Alt Identical: 77553 / 77650
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 40618 / 77553
+Successfully saved to: ./Empirical/HO/Pathan_15/chr3/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr3/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 2.2326
+Gaps bigger than 0.1 cM: 343
+Maximum Gap: 0.4179 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 40618)
+Loaded Observations:
+(2, 40618)
+Memory Usage: 2033.21344 mB
+Reference Number: 5008
+Total Log likelihood: -21139.898
+Memory Usage: 2033.21344 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr3/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr3/
+Fraction Markers in ROH: 0.2585
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Pathan_15/chr3/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 68759 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr4.hdf5
+
+Intersection on Positions: 68759
+Nr of Matching Refs: 68709 / 68759
+Full Intersection Ref/Alt Identical: 68663 / 68759
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 34091 / 68663
+Successfully saved to: ./Empirical/HO/Pathan_15/chr4/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr4/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0034
+Maximum Genetic Map: 2.1454
+Gaps bigger than 0.1 cM: 332
+Maximum Gap: 2.1375 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34091)
+Loaded Observations:
+(2, 34091)
+Memory Usage: 1738.932224 mB
+Reference Number: 5008
+Total Log likelihood: -16220.189
+Memory Usage: 1738.932224 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr4/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr4/
+Fraction Markers in ROH: 0.3156
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 12.422
+Successfully saved to ./Empirical/HO/Pathan_15/chr4/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 69399 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr5.hdf5
+
+Intersection on Positions: 69394
+Nr of Matching Refs: 69307 / 69394
+Full Intersection Ref/Alt Identical: 69252 / 69394
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 34205 / 69252
+Successfully saved to: ./Empirical/HO/Pathan_15/chr5/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr5/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0004
+Maximum Genetic Map: 2.0409
+Gaps bigger than 0.1 cM: 339
+Maximum Gap: 1.0498 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34205)
+Loaded Observations:
+(2, 34205)
+Memory Usage: 1744.093184 mB
+Reference Number: 5008
+Total Log likelihood: -17045.889
+Memory Usage: 1744.093184 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr5/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr5/
+Fraction Markers in ROH: 0.2777
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 7.430
+Successfully saved to ./Empirical/HO/Pathan_15/chr5/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 75870 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr6.hdf5
+
+Intersection on Positions: 75866
+Nr of Matching Refs: 75743 / 75866
+Full Intersection Ref/Alt Identical: 75675 / 75866
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 34040 / 75675
+Successfully saved to: ./Empirical/HO/Pathan_15/chr6/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr6/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0035
+Maximum Genetic Map: 1.9203
+Gaps bigger than 0.1 cM: 287
+Maximum Gap: 0.5072 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34040)
+Loaded Observations:
+(2, 34040)
+Memory Usage: 1736.675328 mB
+Reference Number: 5008
+Total Log likelihood: -17755.003
+Memory Usage: 1736.675328 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr6/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr6/
+Fraction Markers in ROH: 0.2518
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Pathan_15/chr6/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 59890 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr7.hdf5
+
+Intersection on Positions: 59889
+Nr of Matching Refs: 59781 / 59889
+Full Intersection Ref/Alt Identical: 59715 / 59889
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28725 / 59715
+Successfully saved to: ./Empirical/HO/Pathan_15/chr7/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr7/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.8715
+Gaps bigger than 0.1 cM: 327
+Maximum Gap: 1.0884 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28725)
+Loaded Observations:
+(2, 28725)
+Memory Usage: 1497.079808 mB
+Reference Number: 5008
+Total Log likelihood: -14399.460
+Memory Usage: 1497.079808 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr7/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr7/
+Fraction Markers in ROH: 0.2802
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 8.357
+Successfully saved to ./Empirical/HO/Pathan_15/chr7/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 61133 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr8.hdf5
+
+Intersection on Positions: 61130
+Nr of Matching Refs: 61022 / 61130
+Full Intersection Ref/Alt Identical: 60960 / 61130
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28526 / 60960
+Successfully saved to: ./Empirical/HO/Pathan_15/chr8/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr8/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.6800
+Gaps bigger than 0.1 cM: 252
+Maximum Gap: 3.5052 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28526)
+Loaded Observations:
+(2, 28526)
+Memory Usage: 1488.109568 mB
+Reference Number: 5008
+Total Log likelihood: -13734.548
+Memory Usage: 1488.109568 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr8/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr8/
+Fraction Markers in ROH: 0.3275
+Merged n=0 gaps < 0.0 M
+Called n=3 ROH Blocks > 1.0 cM
+Longest Block: 13.506
+Successfully saved to ./Empirical/HO/Pathan_15/chr8/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 50668 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr9.hdf5
+
+Intersection on Positions: 50668
+Nr of Matching Refs: 50539 / 50668
+Full Intersection Ref/Alt Identical: 50493 / 50668
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 23685 / 50493
+Successfully saved to: ./Empirical/HO/Pathan_15/chr9/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr9/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.6630
+Gaps bigger than 0.1 cM: 299
+Maximum Gap: 2.3454 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 23685)
+Loaded Observations:
+(2, 23685)
+Memory Usage: 1269.88288 mB
+Reference Number: 5008
+Total Log likelihood: -12872.083
+Memory Usage: 1269.88288 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr9/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr9/
+Fraction Markers in ROH: 0.1980
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Pathan_15/chr9/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 58804 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr10.hdf5
+
+Intersection on Positions: 58803
+Nr of Matching Refs: 58657 / 58803
+Full Intersection Ref/Alt Identical: 58591 / 58803
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 30541 / 58591
+Successfully saved to: ./Empirical/HO/Pathan_15/chr10/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr10/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.8089
+Gaps bigger than 0.1 cM: 263
+Maximum Gap: 2.0338 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 30541)
+Loaded Observations:
+(2, 30541)
+Memory Usage: 1578.950656 mB
+Reference Number: 5008
+Total Log likelihood: -13505.670
+Memory Usage: 1578.950656 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr10/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr10/
+Fraction Markers in ROH: 0.4102
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 18.615
+Successfully saved to ./Empirical/HO/Pathan_15/chr10/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 54833 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr11.hdf5
+
+Intersection on Positions: 54831
+Nr of Matching Refs: 54669 / 54831
+Full Intersection Ref/Alt Identical: 54616 / 54831
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28093 / 54616
+Successfully saved to: ./Empirical/HO/Pathan_15/chr11/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr11/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.5822
+Gaps bigger than 0.1 cM: 247
+Maximum Gap: 0.5683 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28093)
+Loaded Observations:
+(2, 28093)
+Memory Usage: 1468.596224 mB
+Reference Number: 5008
+Total Log likelihood: -12485.916
+Memory Usage: 1468.596224 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr11/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr11/
+Fraction Markers in ROH: 0.3901
+Merged n=0 gaps < 0.0 M
+Called n=4 ROH Blocks > 1.0 cM
+Longest Block: 15.462
+Successfully saved to ./Empirical/HO/Pathan_15/chr11/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 53911 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr12.hdf5
+
+Intersection on Positions: 53911
+Nr of Matching Refs: 53713 / 53911
+Full Intersection Ref/Alt Identical: 53672 / 53911
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 27330 / 53672
+Successfully saved to: ./Empirical/HO/Pathan_15/chr12/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr12/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0009
+Maximum Genetic Map: 1.7468
+Gaps bigger than 0.1 cM: 285
+Maximum Gap: 0.8015 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 27330)
+Loaded Observations:
+(2, 27330)
+Memory Usage: 1434.210304 mB
+Reference Number: 5008
+Total Log likelihood: -14435.214
+Memory Usage: 1434.210304 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr12/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr12/
+Fraction Markers in ROH: 0.2404
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Pathan_15/chr12/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 39018 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr13.hdf5
+
+Intersection on Positions: 39015
+Nr of Matching Refs: 38885 / 39015
+Full Intersection Ref/Alt Identical: 38841 / 39015
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 17877 / 38841
+Successfully saved to: ./Empirical/HO/Pathan_15/chr13/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr13/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0028
+Maximum Genetic Map: 1.2570
+Gaps bigger than 0.1 cM: 230
+Maximum Gap: 1.2234 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17877)
+Loaded Observations:
+(2, 17877)
+Memory Usage: 1008.070656 mB
+Reference Number: 5008
+Total Log likelihood: -9445.837
+Memory Usage: 1008.070656 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr13/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr13/
+Fraction Markers in ROH: 0.2498
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Pathan_15/chr13/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 36301 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr14.hdf5
+
+Intersection on Positions: 36301
+Nr of Matching Refs: 36166 / 36301
+Full Intersection Ref/Alt Identical: 36126 / 36301
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18709 / 36126
+Successfully saved to: ./Empirical/HO/Pathan_15/chr14/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr14/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0184
+Maximum Genetic Map: 1.2020
+Gaps bigger than 0.1 cM: 191
+Maximum Gap: 3.5856 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18709)
+Loaded Observations:
+(2, 18709)
+Memory Usage: 1045.573632 mB
+Reference Number: 5008
+Total Log likelihood: -9830.080
+Memory Usage: 1045.573632 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr14/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr14/
+Fraction Markers in ROH: 0.2279
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Pathan_15/chr14/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34429 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr15.hdf5
+
+Intersection on Positions: 34425
+Nr of Matching Refs: 34285 / 34425
+Full Intersection Ref/Alt Identical: 34249 / 34425
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18087 / 34249
+Successfully saved to: ./Empirical/HO/Pathan_15/chr15/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr15/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 1.4133
+Gaps bigger than 0.1 cM: 201
+Maximum Gap: 13.7876 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18087)
+Loaded Observations:
+(2, 18087)
+Memory Usage: 1017.536512 mB
+Reference Number: 5008
+Total Log likelihood: -9637.793
+Memory Usage: 1017.536512 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr15/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr15/
+Fraction Markers in ROH: 0.2443
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.039
+Successfully saved to ./Empirical/HO/Pathan_15/chr15/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34402 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr16.hdf5
+
+Intersection on Positions: 34399
+Nr of Matching Refs: 34254 / 34399
+Full Intersection Ref/Alt Identical: 34201 / 34399
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18272 / 34201
+Successfully saved to: ./Empirical/HO/Pathan_15/chr16/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr16/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.3402
+Gaps bigger than 0.1 cM: 230
+Maximum Gap: 0.9354 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18272)
+Loaded Observations:
+(2, 18272)
+Memory Usage: 1025.875968 mB
+Reference Number: 5008
+Total Log likelihood: -7849.352
+Memory Usage: 1025.875968 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr16/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr16/
+Fraction Markers in ROH: 0.4041
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 25.630
+Successfully saved to ./Empirical/HO/Pathan_15/chr16/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29314 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr17.hdf5
+
+Intersection on Positions: 29313
+Nr of Matching Refs: 29159 / 29313
+Full Intersection Ref/Alt Identical: 29124 / 29313
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 15247 / 29124
+Successfully saved to: ./Empirical/HO/Pathan_15/chr17/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr17/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0003
+Maximum Genetic Map: 1.2845
+Gaps bigger than 0.1 cM: 225
+Maximum Gap: 1.2355 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15247)
+Loaded Observations:
+(2, 15247)
+Memory Usage: 889.511936 mB
+Reference Number: 5008
+Total Log likelihood: -7264.882
+Memory Usage: 889.511936 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr17/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr17/
+Fraction Markers in ROH: 0.3247
+Merged n=0 gaps < 0.0 M
+Called n=3 ROH Blocks > 1.0 cM
+Longest Block: 9.771
+Successfully saved to ./Empirical/HO/Pathan_15/chr17/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 33917 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr18.hdf5
+
+Intersection on Positions: 33916
+Nr of Matching Refs: 33774 / 33916
+Full Intersection Ref/Alt Identical: 33746 / 33916
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 17181 / 33746
+Successfully saved to: ./Empirical/HO/Pathan_15/chr18/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr18/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0027
+Maximum Genetic Map: 1.1771
+Gaps bigger than 0.1 cM: 195
+Maximum Gap: 0.8037 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17181)
+Loaded Observations:
+(2, 17181)
+Memory Usage: 976.71168 mB
+Reference Number: 5008
+Total Log likelihood: -9036.784
+Memory Usage: 976.71168 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr18/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr18/
+Fraction Markers in ROH: 0.2264
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Pathan_15/chr18/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 18460 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr19.hdf5
+
+Intersection on Positions: 18459
+Nr of Matching Refs: 18381 / 18459
+Full Intersection Ref/Alt Identical: 18340 / 18459
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 8715 / 18340
+Successfully saved to: ./Empirical/HO/Pathan_15/chr19/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr19/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0773
+Gaps bigger than 0.1 cM: 285
+Maximum Gap: 0.6354 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 8715)
+Loaded Observations:
+(2, 8715)
+Memory Usage: 595.062784 mB
+Reference Number: 5008
+Total Log likelihood: -4643.319
+Memory Usage: 595.062784 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr19/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr19/
+Fraction Markers in ROH: 0.2238
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Pathan_15/chr19/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29078 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr20.hdf5
+
+Intersection on Positions: 29077
+Nr of Matching Refs: 28908 / 29077
+Full Intersection Ref/Alt Identical: 28864 / 29077
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 15383 / 28864
+Successfully saved to: ./Empirical/HO/Pathan_15/chr20/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr20/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0008
+Maximum Genetic Map: 1.0821
+Gaps bigger than 0.1 cM: 204
+Maximum Gap: 0.4744 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15383)
+Loaded Observations:
+(2, 15383)
+Memory Usage: 895.664128 mB
+Reference Number: 5008
+Total Log likelihood: -7994.349
+Memory Usage: 895.664128 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr20/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr20/
+Fraction Markers in ROH: 0.2607
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 4.769
+Successfully saved to ./Empirical/HO/Pathan_15/chr20/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 16038 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr21.hdf5
+
+Intersection on Positions: 16036
+Nr of Matching Refs: 15949 / 16036
+Full Intersection Ref/Alt Identical: 15930 / 16036
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 7922 / 15930
+Successfully saved to: ./Empirical/HO/Pathan_15/chr21/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr21/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0145
+Maximum Genetic Map: 0.6277
+Gaps bigger than 0.1 cM: 121
+Maximum Gap: 0.7121 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7922)
+Loaded Observations:
+(2, 7922)
+Memory Usage: 559.316992 mB
+Reference Number: 5008
+Total Log likelihood: -3937.889
+Memory Usage: 559.316992 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr21/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr21/
+Fraction Markers in ROH: 0.2766
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.373
+Successfully saved to ./Empirical/HO/Pathan_15/chr21/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Pathan_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 15802 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr22.hdf5
+
+Intersection on Positions: 15802
+Nr of Matching Refs: 15704 / 15802
+Full Intersection Ref/Alt Identical: 15684 / 15802
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 7723 / 15684
+Successfully saved to: ./Empirical/HO/Pathan_15/chr22/
+Successfully loaded Data from: ./Empirical/HO/Pathan_15/chr22/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0178
+Maximum Genetic Map: 0.7408
+Gaps bigger than 0.1 cM: 149
+Maximum Gap: 1.7139 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7723)
+Loaded Observations:
+(2, 7723)
+Memory Usage: 550.346752 mB
+Reference Number: 5008
+Total Log likelihood: -4157.846
+Memory Usage: 550.346752 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Pathan_15/chr22/.
+Successfully loaded for PP. from ./Empirical/HO/Pathan_15/chr22/
+Fraction Markers in ROH: 0.1918
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Pathan_15/chr22/roh.csv
+Run for Individual Pathan_15: Complete! Yeah!!

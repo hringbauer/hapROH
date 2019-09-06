@@ -1,0 +1,959 @@
+Doing Individual Sindhi_14...
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 89147 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr1.hdf5
+
+Intersection on Positions: 89143
+Nr of Matching Refs: 89143 / 89143
+Full Intersection Ref/Alt Identical: 89079 / 89143
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 47351 / 89079
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr1/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr1/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0201
+Maximum Genetic Map: 2.8622
+Gaps bigger than 0.1 cM: 427
+Maximum Gap: 3.9814 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 47351)
+Loaded Observations:
+(2, 47351)
+Memory Usage: 2320.023552 mB
+Reference Number: 5008
+Total Log likelihood: -24315.814
+Memory Usage: 2320.478208 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr1/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr1/
+Fraction Markers in ROH: 0.2642
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 1.472
+Successfully saved to ./Empirical/HO/Sindhi_14/chr1/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 94239 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr2.hdf5
+
+Intersection on Positions: 94237
+Nr of Matching Refs: 94205 / 94237
+Full Intersection Ref/Alt Identical: 94137 / 94237
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 48875 / 94137
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr2/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr2/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 2.6883
+Gaps bigger than 0.1 cM: 397
+Maximum Gap: 2.0159 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 48875)
+Loaded Observations:
+(2, 48875)
+Memory Usage: 2391.351296 mB
+Reference Number: 5008
+Total Log likelihood: -24979.267
+Memory Usage: 2391.351296 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr2/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr2/
+Fraction Markers in ROH: 0.2660
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 2.013
+Successfully saved to ./Empirical/HO/Sindhi_14/chr2/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 77652 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr3.hdf5
+
+Intersection on Positions: 77650
+Nr of Matching Refs: 77606 / 77650
+Full Intersection Ref/Alt Identical: 77553 / 77650
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 40538 / 77553
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr3/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr3/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 2.2326
+Gaps bigger than 0.1 cM: 343
+Maximum Gap: 0.4179 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 40538)
+Loaded Observations:
+(2, 40538)
+Memory Usage: 2029.596672 mB
+Reference Number: 5008
+Total Log likelihood: -21047.858
+Memory Usage: 2029.596672 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr3/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr3/
+Fraction Markers in ROH: 0.2553
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Sindhi_14/chr3/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 68759 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr4.hdf5
+
+Intersection on Positions: 68759
+Nr of Matching Refs: 68709 / 68759
+Full Intersection Ref/Alt Identical: 68663 / 68759
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 33962 / 68663
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr4/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr4/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0034
+Maximum Genetic Map: 2.1454
+Gaps bigger than 0.1 cM: 333
+Maximum Gap: 2.1375 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 33962)
+Loaded Observations:
+(2, 33962)
+Memory Usage: 1733.095424 mB
+Reference Number: 5008
+Total Log likelihood: -17819.728
+Memory Usage: 1733.095424 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr4/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr4/
+Fraction Markers in ROH: 0.2374
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Sindhi_14/chr4/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 69399 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr5.hdf5
+
+Intersection on Positions: 69394
+Nr of Matching Refs: 69307 / 69394
+Full Intersection Ref/Alt Identical: 69252 / 69394
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 34086 / 69252
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr5/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr5/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0004
+Maximum Genetic Map: 2.0409
+Gaps bigger than 0.1 cM: 341
+Maximum Gap: 1.0498 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34086)
+Loaded Observations:
+(2, 34086)
+Memory Usage: 1738.715136 mB
+Reference Number: 5008
+Total Log likelihood: -17257.149
+Memory Usage: 1738.715136 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr5/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr5/
+Fraction Markers in ROH: 0.2636
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.056
+Successfully saved to ./Empirical/HO/Sindhi_14/chr5/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 75870 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr6.hdf5
+
+Intersection on Positions: 75866
+Nr of Matching Refs: 75743 / 75866
+Full Intersection Ref/Alt Identical: 75675 / 75866
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 33880 / 75675
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr6/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr6/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0035
+Maximum Genetic Map: 1.9203
+Gaps bigger than 0.1 cM: 289
+Maximum Gap: 0.5072 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 33880)
+Loaded Observations:
+(2, 33880)
+Memory Usage: 1729.441792 mB
+Reference Number: 5008
+Total Log likelihood: -17143.560
+Memory Usage: 1729.441792 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr6/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr6/
+Fraction Markers in ROH: 0.2604
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Sindhi_14/chr6/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 59890 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr7.hdf5
+
+Intersection on Positions: 59889
+Nr of Matching Refs: 59781 / 59889
+Full Intersection Ref/Alt Identical: 59715 / 59889
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28650 / 59715
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr7/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr7/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.8715
+Gaps bigger than 0.1 cM: 325
+Maximum Gap: 1.0884 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28650)
+Loaded Observations:
+(2, 28650)
+Memory Usage: 1493.684224 mB
+Reference Number: 5008
+Total Log likelihood: -14674.359
+Memory Usage: 1493.684224 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr7/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr7/
+Fraction Markers in ROH: 0.2386
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Sindhi_14/chr7/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 61133 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr8.hdf5
+
+Intersection on Positions: 61130
+Nr of Matching Refs: 61022 / 61130
+Full Intersection Ref/Alt Identical: 60960 / 61130
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28405 / 60960
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr8/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr8/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.6800
+Gaps bigger than 0.1 cM: 254
+Maximum Gap: 3.5052 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28405)
+Loaded Observations:
+(2, 28405)
+Memory Usage: 1482.637312 mB
+Reference Number: 5008
+Total Log likelihood: -14458.071
+Memory Usage: 1482.637312 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr8/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr8/
+Fraction Markers in ROH: 0.2604
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.175
+Successfully saved to ./Empirical/HO/Sindhi_14/chr8/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 50668 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr9.hdf5
+
+Intersection on Positions: 50668
+Nr of Matching Refs: 50539 / 50668
+Full Intersection Ref/Alt Identical: 50493 / 50668
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 23623 / 50493
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr9/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr9/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.6630
+Gaps bigger than 0.1 cM: 300
+Maximum Gap: 2.3454 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 23623)
+Loaded Observations:
+(2, 23623)
+Memory Usage: 1267.064832 mB
+Reference Number: 5008
+Total Log likelihood: -12340.164
+Memory Usage: 1267.064832 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr9/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr9/
+Fraction Markers in ROH: 0.2311
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.027
+Successfully saved to ./Empirical/HO/Sindhi_14/chr9/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 58804 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr10.hdf5
+
+Intersection on Positions: 58803
+Nr of Matching Refs: 58657 / 58803
+Full Intersection Ref/Alt Identical: 58591 / 58803
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 30431 / 58591
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr10/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr10/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.8089
+Gaps bigger than 0.1 cM: 265
+Maximum Gap: 2.0338 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 30431)
+Loaded Observations:
+(2, 30431)
+Memory Usage: 1573.96992 mB
+Reference Number: 5008
+Total Log likelihood: -16067.686
+Memory Usage: 1573.96992 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr10/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr10/
+Fraction Markers in ROH: 0.2470
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 2.686
+Successfully saved to ./Empirical/HO/Sindhi_14/chr10/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 54833 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr11.hdf5
+
+Intersection on Positions: 54831
+Nr of Matching Refs: 54669 / 54831
+Full Intersection Ref/Alt Identical: 54616 / 54831
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28007 / 54616
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr11/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr11/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.5822
+Gaps bigger than 0.1 cM: 247
+Maximum Gap: 0.5683 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28007)
+Loaded Observations:
+(2, 28007)
+Memory Usage: 1464.696832 mB
+Reference Number: 5008
+Total Log likelihood: -14539.582
+Memory Usage: 1464.696832 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr11/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr11/
+Fraction Markers in ROH: 0.2489
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Sindhi_14/chr11/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 53911 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr12.hdf5
+
+Intersection on Positions: 53911
+Nr of Matching Refs: 53713 / 53911
+Full Intersection Ref/Alt Identical: 53672 / 53911
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 27216 / 53672
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr12/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr12/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0009
+Maximum Genetic Map: 1.7468
+Gaps bigger than 0.1 cM: 285
+Maximum Gap: 0.8015 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 27216)
+Loaded Observations:
+(2, 27216)
+Memory Usage: 1429.045248 mB
+Reference Number: 5008
+Total Log likelihood: -14404.633
+Memory Usage: 1429.045248 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr12/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr12/
+Fraction Markers in ROH: 0.2471
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.012
+Successfully saved to ./Empirical/HO/Sindhi_14/chr12/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 39018 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr13.hdf5
+
+Intersection on Positions: 39015
+Nr of Matching Refs: 38885 / 39015
+Full Intersection Ref/Alt Identical: 38841 / 39015
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 17830 / 38841
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr13/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr13/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0028
+Maximum Genetic Map: 1.2570
+Gaps bigger than 0.1 cM: 230
+Maximum Gap: 1.2234 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17830)
+Loaded Observations:
+(2, 17830)
+Memory Usage: 1005.924352 mB
+Reference Number: 5008
+Total Log likelihood: -9861.201
+Memory Usage: 1005.924352 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr13/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr13/
+Fraction Markers in ROH: 0.1953
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Sindhi_14/chr13/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 36301 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr14.hdf5
+
+Intersection on Positions: 36301
+Nr of Matching Refs: 36166 / 36301
+Full Intersection Ref/Alt Identical: 36126 / 36301
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18641 / 36126
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr14/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr14/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0184
+Maximum Genetic Map: 1.2020
+Gaps bigger than 0.1 cM: 193
+Maximum Gap: 3.5856 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18641)
+Loaded Observations:
+(2, 18641)
+Memory Usage: 1042.485248 mB
+Reference Number: 5008
+Total Log likelihood: -9855.040
+Memory Usage: 1042.485248 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr14/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr14/
+Fraction Markers in ROH: 0.2491
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 4.154
+Successfully saved to ./Empirical/HO/Sindhi_14/chr14/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34429 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr15.hdf5
+
+Intersection on Positions: 34425
+Nr of Matching Refs: 34285 / 34425
+Full Intersection Ref/Alt Identical: 34249 / 34425
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18024 / 34249
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr15/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr15/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 1.4133
+Gaps bigger than 0.1 cM: 202
+Maximum Gap: 13.7876 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18024)
+Loaded Observations:
+(2, 18024)
+Memory Usage: 1014.673408 mB
+Reference Number: 5008
+Total Log likelihood: -9421.911
+Memory Usage: 1014.673408 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr15/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr15/
+Fraction Markers in ROH: 0.2421
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Sindhi_14/chr15/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34402 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr16.hdf5
+
+Intersection on Positions: 34399
+Nr of Matching Refs: 34254 / 34399
+Full Intersection Ref/Alt Identical: 34201 / 34399
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18232 / 34201
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr16/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr16/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.3402
+Gaps bigger than 0.1 cM: 229
+Maximum Gap: 0.9354 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18232)
+Loaded Observations:
+(2, 18232)
+Memory Usage: 1024.049152 mB
+Reference Number: 5008
+Total Log likelihood: -9428.368
+Memory Usage: 1024.049152 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr16/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr16/
+Fraction Markers in ROH: 0.2600
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Sindhi_14/chr16/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29314 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr17.hdf5
+
+Intersection on Positions: 29313
+Nr of Matching Refs: 29159 / 29313
+Full Intersection Ref/Alt Identical: 29124 / 29313
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 15216 / 29124
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr17/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr17/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0003
+Maximum Genetic Map: 1.2845
+Gaps bigger than 0.1 cM: 228
+Maximum Gap: 1.2355 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15216)
+Loaded Observations:
+(2, 15216)
+Memory Usage: 888.086528 mB
+Reference Number: 5008
+Total Log likelihood: -8139.557
+Memory Usage: 888.086528 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr17/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr17/
+Fraction Markers in ROH: 0.1991
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 2.048
+Successfully saved to ./Empirical/HO/Sindhi_14/chr17/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 33917 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr18.hdf5
+
+Intersection on Positions: 33916
+Nr of Matching Refs: 33774 / 33916
+Full Intersection Ref/Alt Identical: 33746 / 33916
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 17137 / 33746
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr18/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr18/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0027
+Maximum Genetic Map: 1.1771
+Gaps bigger than 0.1 cM: 195
+Maximum Gap: 0.8037 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17137)
+Loaded Observations:
+(2, 17137)
+Memory Usage: 974.696448 mB
+Reference Number: 5008
+Total Log likelihood: -8902.230
+Memory Usage: 974.696448 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr18/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr18/
+Fraction Markers in ROH: 0.2557
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Sindhi_14/chr18/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 18460 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr19.hdf5
+
+Intersection on Positions: 18459
+Nr of Matching Refs: 18381 / 18459
+Full Intersection Ref/Alt Identical: 18340 / 18459
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 8687 / 18340
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr19/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr19/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0773
+Gaps bigger than 0.1 cM: 286
+Maximum Gap: 0.6354 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 8687)
+Loaded Observations:
+(2, 8687)
+Memory Usage: 593.772544 mB
+Reference Number: 5008
+Total Log likelihood: -4851.032
+Memory Usage: 593.772544 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr19/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr19/
+Fraction Markers in ROH: 0.2021
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Sindhi_14/chr19/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29078 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr20.hdf5
+
+Intersection on Positions: 29077
+Nr of Matching Refs: 28908 / 29077
+Full Intersection Ref/Alt Identical: 28864 / 29077
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 15345 / 28864
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr20/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr20/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0008
+Maximum Genetic Map: 1.0821
+Gaps bigger than 0.1 cM: 203
+Maximum Gap: 0.4744 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15345)
+Loaded Observations:
+(2, 15345)
+Memory Usage: 893.919232 mB
+Reference Number: 5008
+Total Log likelihood: -7857.884
+Memory Usage: 893.919232 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr20/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr20/
+Fraction Markers in ROH: 0.2702
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Sindhi_14/chr20/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 16038 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr21.hdf5
+
+Intersection on Positions: 16036
+Nr of Matching Refs: 15949 / 16036
+Full Intersection Ref/Alt Identical: 15930 / 16036
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 7895 / 15930
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr21/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr21/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0145
+Maximum Genetic Map: 0.6277
+Gaps bigger than 0.1 cM: 119
+Maximum Gap: 0.7121 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7895)
+Loaded Observations:
+(2, 7895)
+Memory Usage: 558.071808 mB
+Reference Number: 5008
+Total Log likelihood: -3945.831
+Memory Usage: 558.071808 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr21/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr21/
+Fraction Markers in ROH: 0.3047
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 3.650
+Successfully saved to ./Empirical/HO/Sindhi_14/chr21/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Sindhi_14
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 15802 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr22.hdf5
+
+Intersection on Positions: 15802
+Nr of Matching Refs: 15704 / 15802
+Full Intersection Ref/Alt Identical: 15684 / 15802
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 7692 / 15684
+Successfully saved to: ./Empirical/HO/Sindhi_14/chr22/
+Successfully loaded Data from: ./Empirical/HO/Sindhi_14/chr22/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0178
+Maximum Genetic Map: 0.7408
+Gaps bigger than 0.1 cM: 149
+Maximum Gap: 1.7139 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7692)
+Loaded Observations:
+(2, 7692)
+Memory Usage: 548.92544 mB
+Reference Number: 5008
+Total Log likelihood: -4023.248
+Memory Usage: 548.92544 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Sindhi_14/chr22/.
+Successfully loaded for PP. from ./Empirical/HO/Sindhi_14/chr22/
+Fraction Markers in ROH: 0.2514
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.121
+Successfully saved to ./Empirical/HO/Sindhi_14/chr22/roh.csv
+Run for Individual Sindhi_14: Complete! Yeah!!

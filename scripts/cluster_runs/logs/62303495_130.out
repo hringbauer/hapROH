@@ -1,0 +1,46 @@
+Doing Individual Balochi_3...
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Balochi_3
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 94239 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr2.hdf5
+
+Intersection on Positions: 94237
+Nr of Matching Refs: 94205 / 94237
+Full Intersection Ref/Alt Identical: 94137 / 94237
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 49134 / 94137
+Successfully saved to: ./Empirical/HO/Balochi_3/chr2/
+Successfully loaded Data from: ./Empirical/HO/Balochi_3/chr2/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 2.6883
+Gaps bigger than 0.1 cM: 396
+Maximum Gap: 2.0159 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 49134)
+Loaded Observations:
+(2, 49134)
+Memory Usage: 2380.152832 mB
+Reference Number: 5008
+Total Log likelihood: -25147.366
+Memory Usage: 2381.279232 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Balochi_3/chr2/.
+Successfully loaded for PP. from ./Empirical/HO/Balochi_3/chr2/
+Fraction Markers in ROH: 0.2675
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 1.730
+Successfully saved to ./Empirical/HO/Balochi_3/chr2/roh.csv
+Run for Individual Balochi_3: Complete! Yeah!!

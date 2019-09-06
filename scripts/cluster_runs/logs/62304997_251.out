@@ -1,0 +1,953 @@
+Doing Individual Burusho_15...
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 89147 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr1.hdf5
+
+Intersection on Positions: 89143
+Nr of Matching Refs: 89143 / 89143
+Full Intersection Ref/Alt Identical: 89079 / 89143
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 47188 / 89079
+Successfully saved to: ./Empirical/HO/Burusho_15/chr1/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr1/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0201
+Maximum Genetic Map: 2.8623
+Gaps bigger than 0.1 cM: 426
+Maximum Gap: 3.9814 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 47188)
+Loaded Observations:
+(2, 47188)
+Memory Usage: 2312.802304 mB
+Reference Number: 5008
+Total Log likelihood: -23849.694
+Memory Usage: 2313.187328 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr1/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr1/
+Fraction Markers in ROH: 0.2710
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr1/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 94239 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr2.hdf5
+
+Intersection on Positions: 94237
+Nr of Matching Refs: 94205 / 94237
+Full Intersection Ref/Alt Identical: 94137 / 94237
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 48719 / 94137
+Successfully saved to: ./Empirical/HO/Burusho_15/chr2/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr2/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 2.6883
+Gaps bigger than 0.1 cM: 400
+Maximum Gap: 2.0159 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 48719)
+Loaded Observations:
+(2, 48719)
+Memory Usage: 2383.990784 mB
+Reference Number: 5008
+Total Log likelihood: -24842.261
+Memory Usage: 2383.990784 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr2/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr2/
+Fraction Markers in ROH: 0.2540
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr2/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 77652 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr3.hdf5
+
+Intersection on Positions: 77650
+Nr of Matching Refs: 77606 / 77650
+Full Intersection Ref/Alt Identical: 77553 / 77650
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 40399 / 77553
+Successfully saved to: ./Empirical/HO/Burusho_15/chr3/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr3/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 2.2326
+Gaps bigger than 0.1 cM: 342
+Maximum Gap: 0.4179 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 40399)
+Loaded Observations:
+(2, 40399)
+Memory Usage: 2022.981632 mB
+Reference Number: 5008
+Total Log likelihood: -20708.621
+Memory Usage: 2022.981632 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr3/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr3/
+Fraction Markers in ROH: 0.2635
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr3/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 68759 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr4.hdf5
+
+Intersection on Positions: 68759
+Nr of Matching Refs: 68709 / 68759
+Full Intersection Ref/Alt Identical: 68663 / 68759
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 33905 / 68663
+Successfully saved to: ./Empirical/HO/Burusho_15/chr4/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr4/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0034
+Maximum Genetic Map: 2.1454
+Gaps bigger than 0.1 cM: 335
+Maximum Gap: 2.1375 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 33905)
+Loaded Observations:
+(2, 33905)
+Memory Usage: 1730.113536 mB
+Reference Number: 5008
+Total Log likelihood: -17559.805
+Memory Usage: 1730.113536 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr4/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr4/
+Fraction Markers in ROH: 0.2502
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.649
+Successfully saved to ./Empirical/HO/Burusho_15/chr4/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 69399 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr5.hdf5
+
+Intersection on Positions: 69394
+Nr of Matching Refs: 69307 / 69394
+Full Intersection Ref/Alt Identical: 69252 / 69394
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 34014 / 69252
+Successfully saved to: ./Empirical/HO/Burusho_15/chr5/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr5/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0004
+Maximum Genetic Map: 2.0409
+Gaps bigger than 0.1 cM: 343
+Maximum Gap: 1.0498 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34014)
+Loaded Observations:
+(2, 34014)
+Memory Usage: 1735.368704 mB
+Reference Number: 5008
+Total Log likelihood: -17083.950
+Memory Usage: 1735.368704 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr5/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr5/
+Fraction Markers in ROH: 0.2670
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr5/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 75870 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr6.hdf5
+
+Intersection on Positions: 75866
+Nr of Matching Refs: 75743 / 75866
+Full Intersection Ref/Alt Identical: 75675 / 75866
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 33803 / 75675
+Successfully saved to: ./Empirical/HO/Burusho_15/chr6/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr6/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0035
+Maximum Genetic Map: 1.9203
+Gaps bigger than 0.1 cM: 287
+Maximum Gap: 0.5072 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 33803)
+Loaded Observations:
+(2, 33803)
+Memory Usage: 1725.87008 mB
+Reference Number: 5008
+Total Log likelihood: -17262.827
+Memory Usage: 1725.87008 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr6/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr6/
+Fraction Markers in ROH: 0.2677
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr6/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 59890 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr7.hdf5
+
+Intersection on Positions: 59889
+Nr of Matching Refs: 59781 / 59889
+Full Intersection Ref/Alt Identical: 59715 / 59889
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28552 / 59715
+Successfully saved to: ./Empirical/HO/Burusho_15/chr7/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr7/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.8715
+Gaps bigger than 0.1 cM: 328
+Maximum Gap: 1.0884 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28552)
+Loaded Observations:
+(2, 28552)
+Memory Usage: 1489.170432 mB
+Reference Number: 5008
+Total Log likelihood: -14390.912
+Memory Usage: 1489.170432 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr7/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr7/
+Fraction Markers in ROH: 0.2543
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr7/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 61133 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr8.hdf5
+
+Intersection on Positions: 61130
+Nr of Matching Refs: 61022 / 61130
+Full Intersection Ref/Alt Identical: 60960 / 61130
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 28350 / 60960
+Successfully saved to: ./Empirical/HO/Burusho_15/chr8/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr8/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.6800
+Gaps bigger than 0.1 cM: 254
+Maximum Gap: 3.5052 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28350)
+Loaded Observations:
+(2, 28350)
+Memory Usage: 1480.060928 mB
+Reference Number: 5008
+Total Log likelihood: -14542.635
+Memory Usage: 1480.060928 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr8/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr8/
+Fraction Markers in ROH: 0.2527
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.224
+Successfully saved to ./Empirical/HO/Burusho_15/chr8/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 50668 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr9.hdf5
+
+Intersection on Positions: 50668
+Nr of Matching Refs: 50539 / 50668
+Full Intersection Ref/Alt Identical: 50493 / 50668
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 23518 / 50493
+Successfully saved to: ./Empirical/HO/Burusho_15/chr9/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr9/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.6630
+Gaps bigger than 0.1 cM: 301
+Maximum Gap: 2.3454 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 23518)
+Loaded Observations:
+(2, 23518)
+Memory Usage: 1262.235648 mB
+Reference Number: 5008
+Total Log likelihood: -12512.260
+Memory Usage: 1262.235648 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr9/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr9/
+Fraction Markers in ROH: 0.2168
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr9/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 58804 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr10.hdf5
+
+Intersection on Positions: 58803
+Nr of Matching Refs: 58657 / 58803
+Full Intersection Ref/Alt Identical: 58591 / 58803
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 30360 / 58591
+Successfully saved to: ./Empirical/HO/Burusho_15/chr10/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr10/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.8089
+Gaps bigger than 0.1 cM: 264
+Maximum Gap: 2.0338 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 30360)
+Loaded Observations:
+(2, 30360)
+Memory Usage: 1570.67264 mB
+Reference Number: 5008
+Total Log likelihood: -15951.188
+Memory Usage: 1570.67264 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr10/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr10/
+Fraction Markers in ROH: 0.2372
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr10/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 54833 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr11.hdf5
+
+Intersection on Positions: 54831
+Nr of Matching Refs: 54669 / 54831
+Full Intersection Ref/Alt Identical: 54616 / 54831
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 27915 / 54616
+Successfully saved to: ./Empirical/HO/Burusho_15/chr11/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr11/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.5822
+Gaps bigger than 0.1 cM: 252
+Maximum Gap: 0.5683 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 27915)
+Loaded Observations:
+(2, 27915)
+Memory Usage: 1460.453376 mB
+Reference Number: 5008
+Total Log likelihood: -14610.794
+Memory Usage: 1460.453376 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr11/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr11/
+Fraction Markers in ROH: 0.2337
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.170
+Successfully saved to ./Empirical/HO/Burusho_15/chr11/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 53911 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr12.hdf5
+
+Intersection on Positions: 53911
+Nr of Matching Refs: 53713 / 53911
+Full Intersection Ref/Alt Identical: 53672 / 53911
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 27150 / 53672
+Successfully saved to: ./Empirical/HO/Burusho_15/chr12/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr12/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0009
+Maximum Genetic Map: 1.7468
+Gaps bigger than 0.1 cM: 285
+Maximum Gap: 0.8015 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 27150)
+Loaded Observations:
+(2, 27150)
+Memory Usage: 1425.973248 mB
+Reference Number: 5008
+Total Log likelihood: -14720.940
+Memory Usage: 1425.973248 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr12/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr12/
+Fraction Markers in ROH: 0.2145
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr12/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 39018 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr13.hdf5
+
+Intersection on Positions: 39015
+Nr of Matching Refs: 38885 / 39015
+Full Intersection Ref/Alt Identical: 38841 / 39015
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 17791 / 38841
+Successfully saved to: ./Empirical/HO/Burusho_15/chr13/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr13/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0028
+Maximum Genetic Map: 1.2570
+Gaps bigger than 0.1 cM: 230
+Maximum Gap: 1.2234 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17791)
+Loaded Observations:
+(2, 17791)
+Memory Usage: 1004.068864 mB
+Reference Number: 5008
+Total Log likelihood: -9492.776
+Memory Usage: 1004.068864 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr13/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr13/
+Fraction Markers in ROH: 0.2370
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.636
+Successfully saved to ./Empirical/HO/Burusho_15/chr13/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 36301 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr14.hdf5
+
+Intersection on Positions: 36301
+Nr of Matching Refs: 36166 / 36301
+Full Intersection Ref/Alt Identical: 36126 / 36301
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18595 / 36126
+Successfully saved to: ./Empirical/HO/Burusho_15/chr14/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr14/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0184
+Maximum Genetic Map: 1.2020
+Gaps bigger than 0.1 cM: 193
+Maximum Gap: 3.5856 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18595)
+Loaded Observations:
+(2, 18595)
+Memory Usage: 1040.068608 mB
+Reference Number: 5008
+Total Log likelihood: -9782.956
+Memory Usage: 1040.068608 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr14/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr14/
+Fraction Markers in ROH: 0.2410
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr14/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34429 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr15.hdf5
+
+Intersection on Positions: 34425
+Nr of Matching Refs: 34285 / 34425
+Full Intersection Ref/Alt Identical: 34249 / 34425
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 17970 / 34249
+Successfully saved to: ./Empirical/HO/Burusho_15/chr15/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr15/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 1.4133
+Gaps bigger than 0.1 cM: 201
+Maximum Gap: 13.7876 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17970)
+Loaded Observations:
+(2, 17970)
+Memory Usage: 1011.89632 mB
+Reference Number: 5008
+Total Log likelihood: -9419.722
+Memory Usage: 1011.89632 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr15/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr15/
+Fraction Markers in ROH: 0.2664
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr15/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34402 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr16.hdf5
+
+Intersection on Positions: 34399
+Nr of Matching Refs: 34254 / 34399
+Full Intersection Ref/Alt Identical: 34201 / 34399
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 18165 / 34201
+Successfully saved to: ./Empirical/HO/Burusho_15/chr16/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr16/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.3402
+Gaps bigger than 0.1 cM: 229
+Maximum Gap: 0.9354 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18165)
+Loaded Observations:
+(2, 18165)
+Memory Usage: 1020.68224 mB
+Reference Number: 5008
+Total Log likelihood: -9555.499
+Memory Usage: 1020.68224 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr16/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr16/
+Fraction Markers in ROH: 0.2467
+Merged n=0 gaps < 0.0 M
+Called n=1 ROH Blocks > 1.0 cM
+Longest Block: 1.001
+Successfully saved to ./Empirical/HO/Burusho_15/chr16/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29314 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr17.hdf5
+
+Intersection on Positions: 29313
+Nr of Matching Refs: 29159 / 29313
+Full Intersection Ref/Alt Identical: 29124 / 29313
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 15163 / 29124
+Successfully saved to: ./Empirical/HO/Burusho_15/chr17/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr17/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0003
+Maximum Genetic Map: 1.2845
+Gaps bigger than 0.1 cM: 225
+Maximum Gap: 1.2355 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15163)
+Loaded Observations:
+(2, 15163)
+Memory Usage: 885.354496 mB
+Reference Number: 5008
+Total Log likelihood: -7884.738
+Memory Usage: 885.354496 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr17/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr17/
+Fraction Markers in ROH: 0.2558
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr17/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 33917 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr18.hdf5
+
+Intersection on Positions: 33916
+Nr of Matching Refs: 33774 / 33916
+Full Intersection Ref/Alt Identical: 33746 / 33916
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 17052 / 33746
+Successfully saved to: ./Empirical/HO/Burusho_15/chr18/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr18/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0027
+Maximum Genetic Map: 1.1771
+Gaps bigger than 0.1 cM: 197
+Maximum Gap: 0.8037 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17052)
+Loaded Observations:
+(2, 17052)
+Memory Usage: 970.522624 mB
+Reference Number: 5008
+Total Log likelihood: -8882.374
+Memory Usage: 970.522624 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr18/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr18/
+Fraction Markers in ROH: 0.2396
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr18/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 18460 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr19.hdf5
+
+Intersection on Positions: 18459
+Nr of Matching Refs: 18381 / 18459
+Full Intersection Ref/Alt Identical: 18340 / 18459
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 8647 / 18340
+Successfully saved to: ./Empirical/HO/Burusho_15/chr19/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr19/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0773
+Gaps bigger than 0.1 cM: 285
+Maximum Gap: 0.6354 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 8647)
+Loaded Observations:
+(2, 8647)
+Memory Usage: 591.630336 mB
+Reference Number: 5008
+Total Log likelihood: -4606.187
+Memory Usage: 591.630336 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr19/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr19/
+Fraction Markers in ROH: 0.2146
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr19/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29078 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr20.hdf5
+
+Intersection on Positions: 29077
+Nr of Matching Refs: 28908 / 29077
+Full Intersection Ref/Alt Identical: 28864 / 29077
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 15273 / 28864
+Successfully saved to: ./Empirical/HO/Burusho_15/chr20/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr20/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0008
+Maximum Genetic Map: 1.0821
+Gaps bigger than 0.1 cM: 206
+Maximum Gap: 0.4744 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15273)
+Loaded Observations:
+(2, 15273)
+Memory Usage: 890.302464 mB
+Reference Number: 5008
+Total Log likelihood: -8074.883
+Memory Usage: 890.302464 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr20/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr20/
+Fraction Markers in ROH: 0.2454
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr20/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 16038 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr21.hdf5
+
+Intersection on Positions: 16036
+Nr of Matching Refs: 15949 / 16036
+Full Intersection Ref/Alt Identical: 15930 / 16036
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 7875 / 15930
+Successfully saved to: ./Empirical/HO/Burusho_15/chr21/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr21/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0145
+Maximum Genetic Map: 0.6277
+Gaps bigger than 0.1 cM: 120
+Maximum Gap: 0.7121 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7875)
+Loaded Observations:
+(2, 7875)
+Memory Usage: 556.802048 mB
+Reference Number: 5008
+Total Log likelihood: -4175.325
+Memory Usage: 556.802048 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr21/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr21/
+Fraction Markers in ROH: 0.2250
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr21/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: Burusho_15
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 15802 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr22.hdf5
+
+Intersection on Positions: 15802
+Nr of Matching Refs: 15704 / 15802
+Full Intersection Ref/Alt Identical: 15684 / 15802
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes Complete!
+Markers called 7669 / 15684
+Successfully saved to: ./Empirical/HO/Burusho_15/chr22/
+Successfully loaded Data from: ./Empirical/HO/Burusho_15/chr22/
+Loaded Emission Model: diploid_gt
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0178
+Maximum Genetic Map: 0.7408
+Gaps bigger than 0.1 cM: 148
+Maximum Gap: 1.7139 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7669)
+Loaded Observations:
+(2, 7669)
+Memory Usage: 547.520512 mB
+Reference Number: 5008
+Total Log likelihood: -3921.890
+Memory Usage: 547.520512 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/HO/Burusho_15/chr22/.
+Successfully loaded for PP. from ./Empirical/HO/Burusho_15/chr22/
+Fraction Markers in ROH: 0.2182
+Called n=0 ROH Blocks > 1.0 cM
+Longest Block: nan
+Successfully saved to ./Empirical/HO/Burusho_15/chr22/roh.csv
+Run for Individual Burusho_15: Complete! Yeah!!
