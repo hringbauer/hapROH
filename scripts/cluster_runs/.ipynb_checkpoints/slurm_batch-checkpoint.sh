@@ -2,7 +2,7 @@
 
 #SBATCH --ntasks=1
 #SBATCH --job-name="HO_HAPSBURG"
-#SBATCH --time=1:00:00
+#SBATCH --time=1:20:00
 #SBATCH --mem=7G
 # #SBATCH --mail-user=hringbauer@uchicago.edu
 # #SBATCH --mail-type=ALL
@@ -11,7 +11,7 @@
 #SBATCH --export=NONE
 #SBATCH --output=./logs/%A_%a.out
 #SBATCH --error=./logs/%A_%a.err
-#SBATCH --array=1600-1940
+#SBATCH --array=600-1940
 unset SLURM_EXPORT_ENV
 
 export OMP_NUM_THREADS=1
