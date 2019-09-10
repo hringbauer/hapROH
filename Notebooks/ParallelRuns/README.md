@@ -2,5 +2,3 @@
 
 This folder contains Notebooks that can run MultiRuns (partly parallelized) on the cluster.
 
-### TODO:
-Get this done

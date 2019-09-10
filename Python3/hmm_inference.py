@@ -107,7 +107,7 @@ class HMM_Analyze(object):
     def load_data(self, iid="", ch=0, n_ref=503):
         """Load the External Data"""
         gts_ind, gts, r_map, out_folder = self.p_obj.load_data(
-            iid=iid, ch=ch, n_ref=n_ref, folder=self.folder)
+            iid=iid, ch=ch, n_ref=n_ref)
 
         self.ch = ch
         self.iid = iid

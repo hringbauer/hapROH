@@ -12,13 +12,15 @@ import pandas as pd
 import os   # For creating folders
 import sys
 
-# Assume we are in Root Hapsburg Directory
+### Assume we are in Root Hapsburg Base Directory!!
 sys.path.append("./PackagesSupport/loadEigenstrat/")
 from loadEigenstrat import load_eigenstrat
 
-# Write General PreProcessing Class:
+
+# Write General PreProcessing Class: (PreProcessing)
 # Inherit one for real HDF5 Dataset: PreProcessingHDF5
-# Inherit one for simulated Data.
+# > Inherit one for simulated Data: PreProcessingHDF5Sim
+# > Inherit one for Eigenstrat Data: PreProcessingEigenstrat
 
 
 class PreProcessing(object):
@@ -26,10 +28,8 @@ class PreProcessing(object):
     Standard: Intersect Reference Data with Individual Data
     Return the Intersection Dataset
     """
-    ref_folder = ""
-    ind_folder = ""
-    prefix_out_data = ""
-    base_out_folder = ""
+    save = True
+    output = True
 
     iid = ""     # Which Individual to Analyze
     ch = 0       # Which Chromosome to analyze
@@ -52,12 +52,13 @@ class PreProcessing(object):
             setattr(self, key, value)
 
     def set_output_folder(self, iid, ch):
-        """Set the output folder. General Structure for HAPSBURG"""
+        """Set the output folder after base_out.
+        General Structure for HAPSBURG: base_out/iid/chrX/"""
         out_folder = os.path.join(self.base_out_folder, str(
-            iid),  "/chr" + str(ch), self.prefix_out_data)
+            iid),  "chr" + str(ch), self.prefix_out_data)
 
         if not os.path.exists(out_folder):   # Create Output Folder if needed
-            if self.output==True:
+            if self.output == True:
                 print(f"Creating folder {out_folder}...")
             os.makedirs(out_folder)
 
@@ -69,7 +70,6 @@ class PreProcessingHDF5(PreProcessing):
     Standard: Intersect Reference Data with Individual Data
     Return the Intersection Dataset
     """
-    out_folder = ""    # Where to Save to (Returned to main program)
     h5_path_targets = "./../ancient-sardinia/output/h5_rev/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5"
     meta_path_targets = "./../ancient-sardinia/output/meta/meta_rev_final.csv"
 
@@ -81,8 +81,6 @@ class PreProcessingHDF5(PreProcessing):
     base_out_folder = "./Empirical/1240k/"  # Base Path of the Output Folder
     prefix_out_data = ""  # Prefix of the Outdata (should be of form "path/")
 
-    save = True
-    output = True
     readcounts = False   # Whether to return Readcounts
     diploid_ref = True   # Whether to use diploid Reference Individuals
     destroy_phase = True  # Whether to destroy Phase of Target Individual
@@ -118,9 +116,9 @@ class PreProcessingHDF5(PreProcessing):
 
         iids = np.where(~meta_df["pop"].isin(self.excluded))[0]
         print(f"{len(iids)} / {len(meta_df)} Individuals included in Reference")
-        return iids[:n_ref]   # Return # n_ref Individual Indices
+        return iids[:n_ref]   # Return up to n_ref Individual Indices
 
-    def load_data(self, iid="MA89", ch=6, n_ref=503, folder=""):
+    def load_data(self, iid="MA89", ch=6, n_ref=503):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l]"""
 
@@ -149,15 +147,12 @@ class PreProcessingHDF5(PreProcessing):
         markers_obs = i1[markers]
         markers_ref = i2[markers]
 
-        # Legacy: Remove after testing
-        # gts_ind, gts, read_counts, r_map = self.extract_snps(out_folder, f1000, fs, ids_ref, id_obs,
-        #                                                  markers_ref, markers_obs)
         ### Load Target Dataset
-        gts_ind = self.excract_snps_hdf5(fs, id_obs, markers_obs, diploid=True)
+        gts_ind = self.extract_snps_hdf5(fs, [id_obs], markers_obs, diploid=True)
         read_counts = self.extract_rc_hdf5(fs, id_obs, markers_obs)
 
         ### Load Reference Dataset
-        gts = self.excract_snps_hdf5(
+        gts = self.extract_snps_hdf5(
             f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
 
@@ -166,7 +161,6 @@ class PreProcessingHDF5(PreProcessing):
             gts_ind, gts, r_map, out_folder, read_counts)
 
         return gts_ind, gts, r_map, out_folder
-
 
     def optional_postprocessing(self, gts_ind, gts, r_map, out_folder, read_counts=[]):
         """Postprocessing steps of gts_ind, gts, r_map, and the folder,
@@ -177,9 +171,11 @@ class PreProcessingHDF5(PreProcessing):
             gts_ind = gts_ind[:, called]
             gts = gts[:, called]
             r_map = r_map[called]
-            read_counts = read_counts[:, called]
+            if len(read_counts)>0:
+                read_counts = read_counts[:, called]
             if self.output == True:
-                print(f"Reduced to markers called {np.sum(called)} / {len(called)}")
+                print(f"Reduced to markers called {np.shape(gts)[1]} / {len(called)}")
+                print(f"(Fraction SNP: {np.shape(gts)[1] / len(called)})")
 
         if self.save == True:
             self.save_info(out_folder, r_map,
@@ -216,7 +212,7 @@ class PreProcessingHDF5(PreProcessing):
     def markers_called(self, gts_ind, read_counts):
         """Return boolean array of markers which are called"""
         called = []
-        if (self.readcounts == False) or (len(read_counts)==0):
+        if (self.readcounts == False) or (len(read_counts) == 0):
             called = (gts_ind[0, :] > -1)  # Only Markers with calls
         elif self.readcounts == True:
             read_depth = np.sum(read_counts, axis=0)
@@ -285,7 +281,7 @@ class PreProcessingHDF5(PreProcessing):
         if self.output == True:
             print(f"Successfully saved to: {folder}")
 
-    def excract_snps_hdf5(self, h5, ids, markers, diploid=False, dtype=np.int8):
+    def extract_snps_hdf5(self, h5, ids, markers, diploid=False, dtype=np.int8):
         """Extract from h5 on ids and markers.
         If diploid, concatenate haplotypes"""
         # Extract Reference Individuals (first haplo)
@@ -298,65 +294,19 @@ class PreProcessingHDF5(PreProcessing):
             gts = np.concatenate((gts, gts1), axis=0)  # Combine dataframes
 
         if self.output == True:
-            print(f"Extraction of {len(gts)} Haplotypes Complete!")
+            print(f"Extraction of {len(gts)} Haplotypes complete")
+        return gts
 
     def extract_rc_hdf5(self, h5, ids, markers, dtype=np.int16):
-        """Extract Readcount data from from h5 on ids and markers"""
+        """Extract Readcount data from from h5 on single (!) id and markers"""
         read_counts = h5["calldata/AD"][:, ids, :].astype(dtype)
         read_counts = read_counts[markers, :].T
         return read_counts
 
     def extract_rmap_hdf5(self, h5, markers):
         """Get the Linkage Map from h5"""
-        r_map = np.array(ref_hdf5["variants/MAP"]
-                         )[markers]
+        r_map = np.array(h5["variants/MAP"])[markers]
         return r_map
-
-    #######################################
-    # Code for saving Haplotype
-    def extract_snps(self, folder, ref_hdf5, obs_hdf5, ids_ref, id_obs,
-                     marker_ref, marker_obs):
-        """Save Folder with all relevant Information.
-        Folder: Where to save to
-        ref_hdf5: Reference HDF5
-        obs_hdf5: Observed HDF5
-        ids_ref: Indices of reference Individuals to save
-        ids_obs: Indices of observed Individuals
-        marker_ref: Indices of reference Markers
-        marker_obs: Indices of observed Markers
-        only_calls: Whether to Only Include Markers with Calls"""
-        assert(len(marker_ref) == len(marker_obs)
-               )  # If reference and observe dataset are the same
-
-        # Extract Reference Individuals (first haplo)
-        gts = ref_hdf5["calldata/GT"][:, ids_ref,
-                                      0].astype(np.int8)  # Only first IID
-        gts = gts[marker_ref, :].T       # Important: Swap of Dimensions!!
-
-        if self.diploid_ref == True:   # In case diploid reference Samples
-            gts1 = ref_hdf5["calldata/GT"][:, ids_ref,
-                                           1].astype(np.int8)  # The second allele
-            # Important: Swap of Dimensions!!
-            gts1 = gts1[marker_ref, :].T
-            gts = np.concatenate((gts, gts1), axis=0)  # Combine dataframes
-
-        if self.output == True:
-            print(f"Extraction of {len(gts)} Haplotypes Complete!")
-
-        # Extract target individual Genotypes
-        gts_ind = obs_hdf5["calldata/GT"][:, id_obs, :].astype(np.int8)
-        gts_ind = gts_ind[marker_obs, :].T
-
-        # Extract Readcounts
-        read_counts = obs_hdf5["calldata/AD"][:, id_obs, :].astype(np.int16)
-        read_counts = read_counts[marker_obs, :].T
-
-        # Extract Linkage map
-        r_map = np.array(ref_hdf5["variants/MAP"]
-                         )[marker_ref]  # Load the LD Map
-
-        # Return Genotypes/Readcounts Individual, Genotypes Reference and Recombination Map
-        return gts_ind, gts, read_counts, r_map
 
 ###########################################
 
@@ -366,47 +316,43 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
     Same as PreProcessingHDF5 for reference, but with Eigenstrat coe
     for target
     """
-
-    out_folder = ""    # Where to save to
-    prefix_out_data = ""  # Prefix of the Outdata
     meta_path_targets = ""
-    h5_folder = ""    # The H5 Folder
     es_target_path = ""  # Path of the Eigenstrat Object
     # Path of 1000G (without chromosome part):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
 
-    def load_data(self, iid="MA89", ch=6, n_ref=2504, folder=""):
+    def load_data(self, iid="MA89", ch=6, n_ref=2504):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l] and the output folder.
         Also save the loaded data if self.save=True
         Various modifiers in class fields (check also PreProcessingHDF5)"""
-
+        self.ch = ch  # To remember Chromosome
         if self.output == True:
             print(f"Loading Individual: {iid}")
 
-        # Attach Part for the right Chromosome
-        h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"
-
-        # Def Set the output folder:
         out_folder = self.set_output_folder(iid, ch)
 
-        # Load and Merge the Data
-        es = load_eigenstrat(base_path=self.es_target_path)
+        # Load Reference HDF5 object
+        h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"
         f1000 = self.load_h5(h5_path1000g)
+
+        # Load Eigenstrat object
+        es = load_eigenstrat(base_path=self.es_target_path)
+
         markers_obs, markers_ref = self.merge_es_hdf5(es, f1000)
 
         id_obs = es.get_index_iid(iid)  # Get Index from Eigenstrat
         ids_ref = self.get_ref_ids(f1000, n_ref)
 
         ### Do Extraction for Reference
-        gts = self.excract_snps_hdf5(
+        gts = self.extract_snps_hdf5(
             f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
 
-        ### Do Extraction of Target Genotypes from Eigenstrat
+        ### Extraction for target (no RC here)
         gts_ind = self.extract_snps_es(es, id_obs, markers_obs)
 
-        ### Do optional Processing Steps
+        ### Do optional Processing Steps (only covered, destroy phase, save)
         gts_ind, gts, r_map, out_folder = self.optional_postprocessing(
             gts_ind, gts, r_map, out_folder)
 
@@ -430,18 +376,18 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         # Check if in both Datasets
         b, i1, i2 = np.intersect1d(pos1, pos2, return_indices=True)
 
-        # Sanity Check if Reference/Alt alleles are the same
+        # Load Ref/Alt alleles at intersecting Loci
         ref1, alt1 = es.give_ref_alt(ch=self.ch)
-        ref1, alt1 = ref1[i1], al1[i1]  # Subset to intersection
+        ref1, alt1 = ref1[i1], alt1[i1]  # Subset to intersection
 
-        ref2 = np.array(g["variants/REF"])[i2]
-        alt2 = np.array(g["variants/ALT"])[i2, 0]
+        ref2 = np.array(f_ref["variants/REF"])[i2]
+        alt2 = np.array(f_ref["variants/ALT"])[i2, 0]
 
         # Downsample to Site where both Ref and Alt are identical
         same = (ref1 == ref2)
         both_same = (ref1 == ref2) & (alt1 == alt2)
 
-        i11 = idcs[i1[both_same]]
+        i11 = idcs[i1[both_same]]  # Give the Indices in full array (all ch)
         i22 = i2[both_same]
 
         if self.output == True:
@@ -463,7 +409,6 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
     out_folder = ""    # Where to save to
     prefix_out_data = ""  # Prefix of the Outdata
     meta_path_targets = ""
-    h5_folder = ""    # The H5 Folder
     h5_path_targets = ""
     # Path of 1000G (without chromosome part):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
@@ -481,11 +426,6 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
         if len(id_obs) == 0:
             raise RuntimeError(f"Individual {iid} not found in samples!")
         return id_obs[0]
-
-    def set_folder(self, folder_path):
-        """Method to manually set the Input and Output Folder"""
-        self.h5_folder = folder_path
-        self.h5_path_targets = folder_path + "data.h5"
 
 
 ############################################
@@ -564,20 +504,30 @@ def load_preprocessing(p_model="SardHDF5", save=True, output=True):
 
     return p_obj
 
-
-# For testing the Module
+############################################
+#### For testing the Module
 if __name__ == "__main__":
-    pp = load_preprocessing(p_model="Eigenstrat", save=False, output=True)
+    ### Test Loading Eigenstrat
+    #pp = load_preprocessing(p_model="Eigenstrat", save=False, output=True)
+    #pp.set_params(es_target_path="./Data/ReichLabEigenstrat/Olalde2019/Olalde_et_al_genotypes",
+    #            base_out_folder="./Empirical/ES_Test/", only_calls=True)
+
+    ### Test Loading HDF5
+    pp = load_preprocessing(p_model="MosaicHDF5", save=False, output=True)
+    pp.set_params(h5_path_targets="./Simulated/1000G_Mosaic/TSI5/ch3_4cm/data.h5",
+                  base_out_folder="./Empirical/ES_Test/", only_calls=True,
+                  excluded = ["TSI",])
 
     gts_ind, gts, r_map, out_folder = pp.load_data(
-        iid="MA89", ch=3, n_ref=503, folder="./Simulated/Test20r/")
+        iid="iid5", ch=3, n_ref=100)
 
     # gts_ind, gts, r_map, out_folder = pp.load_data(
     #    iid="MA89", ch=3, n_ref=503, folder="./Simulated/Test20r/")
-    print(gts_ind[:2, :4])
-    print(np.shape(gts_ind))
-    print(r_map[:5])
+    moi=range(1050, 1070)
+    print(r_map[moi])
     print(np.shape(r_map))
-    print(gts[:10, :2])
+    print(gts_ind[:2, moi])
+    print(np.shape(gts_ind))
+    print(gts[:5, moi])
     print(np.shape(gts))
     print(out_folder)

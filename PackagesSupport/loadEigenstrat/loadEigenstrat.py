@@ -117,12 +117,12 @@ class EigenstratLoad(object):
         geno = geno[markers] # Subset to markers
 
         if conversion == True:
-            geno_new = -np.ones((2,len(geno)), dypte=dtype)
-            geno_new[:,geno_sub[geno_sub==0]]=2
-            geno_new[:,geno_sub[geno_sub==2]]=0
+            geno_new = -np.ones((2,len(geno)), dtype=dtype)
+            geno_new[:, geno==0]=1    # 2 Derived Alleles
+            geno_new[:, geno==2]=0    # 2 Ancestral Alleles
             ### Heterozgyotes
-            geno_new[0,geno_sub[geno_sub==1]]=1
-            geno_new[1,geno_sub[geno_sub==1]]=0
+            geno_new[0, geno==1]=1
+            geno_new[1, geno==1]=0
             geno = geno_new
 
         return geno
@@ -138,5 +138,8 @@ def load_eigenstrat(base_path, output=True):
 # Some Testing
 if __name__ == "__main__":
     es = load_eigenstrat(base_path="./Data/ReichLabEigenstrat/Olalde2019/Olalde_et_al_genotypes")
-    i = es.get_index_iid(iid="I4055")
-    print(i)
+    #i = es.get_index_iid(iid="I4055")
+    pos, idcs = es.give_positions(ch=3)
+    print(idcs)
+    print(len(pos))
+    print(len(idcs))
