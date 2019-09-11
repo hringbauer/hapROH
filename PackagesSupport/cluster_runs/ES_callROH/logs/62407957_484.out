@@ -1,0 +1,926 @@
+Loaded 2106 / 5081 ancient Indivdiuals Anno File.
+Doing Individual I2659...
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 89147 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr1.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 89147
+Nr of Matching Refs: 89147 / 89147
+Full Intersection Ref/Alt Identical: 89082 / 89147
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 63127 / 89082
+(Fraction SNP: 0.7086392312700658)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr1/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr1/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0201
+Maximum Genetic Map: 2.8627
+Gaps bigger than 0.1 cM: 319
+Maximum Gap: 2.9229 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 63127)
+Loaded Observations:
+(2, 63127)
+Memory Usage: 3040.74752 mB
+Reference Number: 5008
+Total Log likelihood: -21831.250
+Memory Usage: 3041.206272 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr1/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr1/
+Fraction Markers in ROH: 0.4451
+Merged n=0 gaps < 0.0 M
+Called n=19 ROH Blocks > 1.0 cM
+Longest Block: 2.662
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr1/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 94239 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr2.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 94239
+Nr of Matching Refs: 94239 / 94239
+Full Intersection Ref/Alt Identical: 94173 / 94239
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 63545 / 94173
+(Fraction SNP: 0.6747687766132543)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr2/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr2/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 2.6883
+Gaps bigger than 0.1 cM: 310
+Maximum Gap: 1.8302 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 63545)
+Loaded Observations:
+(2, 63545)
+Memory Usage: 3098.734592 mB
+Reference Number: 5008
+Total Log likelihood: -22491.103
+Memory Usage: 3098.734592 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr2/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr2/
+Fraction Markers in ROH: 0.4370
+Merged n=0 gaps < 0.0 M
+Called n=12 ROH Blocks > 1.0 cM
+Longest Block: 2.524
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr2/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 77652 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr3.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 77652
+Nr of Matching Refs: 77652 / 77652
+Full Intersection Ref/Alt Identical: 77601 / 77652
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 51781 / 77601
+(Fraction SNP: 0.6672723289648329)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr3/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr3/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 2.2326
+Gaps bigger than 0.1 cM: 287
+Maximum Gap: 0.2681 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 51781)
+Loaded Observations:
+(2, 51781)
+Memory Usage: 2568.216576 mB
+Reference Number: 5008
+Total Log likelihood: -18373.769
+Memory Usage: 2568.216576 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr3/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr3/
+Fraction Markers in ROH: 0.4338
+Merged n=0 gaps < 0.0 M
+Called n=11 ROH Blocks > 1.0 cM
+Longest Block: 1.996
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr3/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 68759 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr4.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 68759
+Nr of Matching Refs: 68759 / 68759
+Full Intersection Ref/Alt Identical: 68720 / 68759
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 42614 / 68720
+(Fraction SNP: 0.6201105937136205)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr4/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr4/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0034
+Maximum Genetic Map: 2.1454
+Gaps bigger than 0.1 cM: 285
+Maximum Gap: 2.0422 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 42614)
+Loaded Observations:
+(2, 42614)
+Memory Usage: 2155.507712 mB
+Reference Number: 5008
+Total Log likelihood: -14902.937
+Memory Usage: 2155.610112 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr4/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr4/
+Fraction Markers in ROH: 0.4467
+Merged n=0 gaps < 0.0 M
+Called n=14 ROH Blocks > 1.0 cM
+Longest Block: 4.763
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr4/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 69399 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr5.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 69399
+Nr of Matching Refs: 69399 / 69399
+Full Intersection Ref/Alt Identical: 69354 / 69399
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 46134 / 69354
+(Fraction SNP: 0.6651959512068518)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr5/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr5/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0004
+Maximum Genetic Map: 2.0409
+Gaps bigger than 0.1 cM: 272
+Maximum Gap: 1.1070 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 46134)
+Loaded Observations:
+(2, 46134)
+Memory Usage: 2314.211328 mB
+Reference Number: 5008
+Total Log likelihood: -16009.888
+Memory Usage: 2314.211328 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr5/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr5/
+Fraction Markers in ROH: 0.4333
+Merged n=0 gaps < 0.0 M
+Called n=10 ROH Blocks > 1.0 cM
+Longest Block: 1.837
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr5/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 75870 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr6.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 75870
+Nr of Matching Refs: 75870 / 75870
+Full Intersection Ref/Alt Identical: 75816 / 75870
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 50647 / 75816
+(Fraction SNP: 0.6680252189511449)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr6/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr6/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0032
+Maximum Genetic Map: 1.9203
+Gaps bigger than 0.1 cM: 218
+Maximum Gap: 0.5066 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 50647)
+Loaded Observations:
+(2, 50647)
+Memory Usage: 2517.803008 mB
+Reference Number: 5008
+Total Log likelihood: -16948.713
+Memory Usage: 2517.803008 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr6/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr6/
+Fraction Markers in ROH: 0.4564
+Merged n=0 gaps < 0.0 M
+Called n=13 ROH Blocks > 1.0 cM
+Longest Block: 10.047
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr6/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 59890 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr7.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 59890
+Nr of Matching Refs: 59890 / 59890
+Full Intersection Ref/Alt Identical: 59836 / 59890
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 39674 / 59836
+(Fraction SNP: 0.663045658132228)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr7/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr7/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.8715
+Gaps bigger than 0.1 cM: 252
+Maximum Gap: 0.8416 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 39674)
+Loaded Observations:
+(2, 39674)
+Memory Usage: 2023.153664 mB
+Reference Number: 5008
+Total Log likelihood: -13566.033
+Memory Usage: 2023.153664 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr7/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr7/
+Fraction Markers in ROH: 0.4549
+Merged n=0 gaps < 0.0 M
+Called n=9 ROH Blocks > 1.0 cM
+Longest Block: 9.704
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr7/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 61133 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr8.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 61133
+Nr of Matching Refs: 61133 / 61133
+Full Intersection Ref/Alt Identical: 61091 / 61133
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 41364 / 61091
+(Fraction SNP: 0.6770882781424432)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr8/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr8/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.6800
+Gaps bigger than 0.1 cM: 175
+Maximum Gap: 1.8932 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 41364)
+Loaded Observations:
+(2, 41364)
+Memory Usage: 2099.6096 mB
+Reference Number: 5008
+Total Log likelihood: -14332.587
+Memory Usage: 2099.6096 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr8/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr8/
+Fraction Markers in ROH: 0.4637
+Merged n=0 gaps < 0.0 M
+Called n=11 ROH Blocks > 1.0 cM
+Longest Block: 2.043
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr8/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 50668 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr9.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 50668
+Nr of Matching Refs: 50668 / 50668
+Full Intersection Ref/Alt Identical: 50629 / 50668
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 34952 / 50629
+(Fraction SNP: 0.6903553299492385)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr9/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr9/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.6630
+Gaps bigger than 0.1 cM: 234
+Maximum Gap: 1.8819 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34952)
+Loaded Observations:
+(2, 34952)
+Memory Usage: 1811.181568 mB
+Reference Number: 5008
+Total Log likelihood: -12912.924
+Memory Usage: 1811.181568 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr9/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr9/
+Fraction Markers in ROH: 0.3971
+Merged n=0 gaps < 0.0 M
+Called n=7 ROH Blocks > 1.0 cM
+Longest Block: 2.219
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr9/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 58804 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr10.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 58804
+Nr of Matching Refs: 58804 / 58804
+Full Intersection Ref/Alt Identical: 58763 / 58804
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 41553 / 58763
+(Fraction SNP: 0.7071286353657914)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr10/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr10/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.8092
+Gaps bigger than 0.1 cM: 210
+Maximum Gap: 2.0338 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 41553)
+Loaded Observations:
+(2, 41553)
+Memory Usage: 2109.034496 mB
+Reference Number: 5008
+Total Log likelihood: -15066.718
+Memory Usage: 2109.034496 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr10/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr10/
+Fraction Markers in ROH: 0.3989
+Merged n=0 gaps < 0.0 M
+Called n=11 ROH Blocks > 1.0 cM
+Longest Block: 2.212
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr10/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 54833 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr11.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 54833
+Nr of Matching Refs: 54833 / 54833
+Full Intersection Ref/Alt Identical: 54796 / 54833
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 38243 / 54796
+(Fraction SNP: 0.6979159062705307)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr11/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr11/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.5822
+Gaps bigger than 0.1 cM: 199
+Maximum Gap: 0.5279 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 38243)
+Loaded Observations:
+(2, 38243)
+Memory Usage: 1959.886848 mB
+Reference Number: 5008
+Total Log likelihood: -13519.624
+Memory Usage: 1959.886848 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr11/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr11/
+Fraction Markers in ROH: 0.4336
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 1.502
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr11/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 53911 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr12.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 53911
+Nr of Matching Refs: 53911 / 53911
+Full Intersection Ref/Alt Identical: 53884 / 53911
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 36578 / 53884
+(Fraction SNP: 0.6788285947591122)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr12/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr12/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0009
+Maximum Genetic Map: 1.7468
+Gaps bigger than 0.1 cM: 216
+Maximum Gap: 0.8015 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 36578)
+Loaded Observations:
+(2, 36578)
+Memory Usage: 1884.360704 mB
+Reference Number: 5008
+Total Log likelihood: -13066.958
+Memory Usage: 1884.360704 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr12/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr12/
+Fraction Markers in ROH: 0.4249
+Merged n=0 gaps < 0.0 M
+Called n=14 ROH Blocks > 1.0 cM
+Longest Block: 1.730
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr12/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 39018 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr13.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 39018
+Nr of Matching Refs: 39018 / 39018
+Full Intersection Ref/Alt Identical: 38994 / 39018
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 24839 / 38994
+(Fraction SNP: 0.6369954351951582)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr13/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr13/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0019
+Maximum Genetic Map: 1.2570
+Gaps bigger than 0.1 cM: 174
+Maximum Gap: 1.2216 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 24839)
+Loaded Observations:
+(2, 24839)
+Memory Usage: 1355.30496 mB
+Reference Number: 5008
+Total Log likelihood: -9143.473
+Memory Usage: 1355.30496 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr13/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr13/
+Fraction Markers in ROH: 0.4157
+Merged n=0 gaps < 0.0 M
+Called n=4 ROH Blocks > 1.0 cM
+Longest Block: 1.386
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr13/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 36301 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr14.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 36301
+Nr of Matching Refs: 36301 / 36301
+Full Intersection Ref/Alt Identical: 36280 / 36301
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 24634 / 36280
+(Fraction SNP: 0.6789966923925027)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr14/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr14/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0184
+Maximum Genetic Map: 1.2020
+Gaps bigger than 0.1 cM: 154
+Maximum Gap: 3.0784 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 24634)
+Loaded Observations:
+(2, 24634)
+Memory Usage: 1345.90464 mB
+Reference Number: 5008
+Total Log likelihood: -8295.177
+Memory Usage: 1345.90464 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr14/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr14/
+Fraction Markers in ROH: 0.4470
+Merged n=0 gaps < 0.0 M
+Called n=6 ROH Blocks > 1.0 cM
+Longest Block: 2.745
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr14/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 34429 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr15.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 34429
+Nr of Matching Refs: 34429 / 34429
+Full Intersection Ref/Alt Identical: 34407 / 34429
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 24649 / 34407
+(Fraction SNP: 0.7163949196384457)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr15/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr15/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.4134
+Gaps bigger than 0.1 cM: 157
+Maximum Gap: 13.7349 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 24649)
+Loaded Observations:
+(2, 24649)
+Memory Usage: 1347.170304 mB
+Reference Number: 5008
+Total Log likelihood: -9075.250
+Memory Usage: 1347.170304 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr15/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr15/
+Fraction Markers in ROH: 0.4309
+Merged n=0 gaps < 0.0 M
+Called n=7 ROH Blocks > 1.0 cM
+Longest Block: 3.452
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr15/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 34402 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr16.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 34402
+Nr of Matching Refs: 34402 / 34402
+Full Intersection Ref/Alt Identical: 34375 / 34402
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 25949 / 34375
+(Fraction SNP: 0.75488)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr16/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr16/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0000
+Maximum Genetic Map: 1.3403
+Gaps bigger than 0.1 cM: 170
+Maximum Gap: 0.8458 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 25949)
+Loaded Observations:
+(2, 25949)
+Memory Usage: 1405.82912 mB
+Reference Number: 5008
+Total Log likelihood: -9395.519
+Memory Usage: 1405.82912 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr16/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr16/
+Fraction Markers in ROH: 0.4153
+Merged n=0 gaps < 0.0 M
+Called n=5 ROH Blocks > 1.0 cM
+Longest Block: 1.860
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr16/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 29314 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr17.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 29314
+Nr of Matching Refs: 29314 / 29314
+Full Intersection Ref/Alt Identical: 29292 / 29314
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 22592 / 29292
+(Fraction SNP: 0.7712686057626655)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr17/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr17/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0003
+Maximum Genetic Map: 1.2847
+Gaps bigger than 0.1 cM: 157
+Maximum Gap: 1.2341 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 22592)
+Loaded Observations:
+(2, 22592)
+Memory Usage: 1254.510592 mB
+Reference Number: 5008
+Total Log likelihood: -7681.979
+Memory Usage: 1254.510592 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr17/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr17/
+Fraction Markers in ROH: 0.4614
+Merged n=0 gaps < 0.0 M
+Called n=7 ROH Blocks > 1.0 cM
+Longest Block: 4.716
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr17/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 33917 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr18.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 33917
+Nr of Matching Refs: 33917 / 33917
+Full Intersection Ref/Alt Identical: 33902 / 33917
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 22704 / 33902
+(Fraction SNP: 0.6696950032446464)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr18/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr18/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.1771
+Gaps bigger than 0.1 cM: 164
+Maximum Gap: 0.4827 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 22704)
+Loaded Observations:
+(2, 22704)
+Memory Usage: 1259.589632 mB
+Reference Number: 5008
+Total Log likelihood: -7706.926
+Memory Usage: 1259.589632 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr18/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr18/
+Fraction Markers in ROH: 0.4952
+Merged n=0 gaps < 0.0 M
+Called n=12 ROH Blocks > 1.0 cM
+Longest Block: 1.988
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr18/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 18460 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr19.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 18460
+Nr of Matching Refs: 18460 / 18460
+Full Intersection Ref/Alt Identical: 18441 / 18460
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 14869 / 18441
+(Fraction SNP: 0.8063011767257741)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr19/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr19/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0773
+Gaps bigger than 0.1 cM: 153
+Maximum Gap: 0.5964 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 14869)
+Loaded Observations:
+(2, 14869)
+Memory Usage: 905.990144 mB
+Reference Number: 5008
+Total Log likelihood: -5504.103
+Memory Usage: 905.990144 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr19/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr19/
+Fraction Markers in ROH: 0.4425
+Merged n=0 gaps < 0.0 M
+Called n=11 ROH Blocks > 1.0 cM
+Longest Block: 1.905
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr19/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 29078 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr20.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 29078
+Nr of Matching Refs: 29078 / 29078
+Full Intersection Ref/Alt Identical: 29053 / 29078
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 22074 / 29053
+(Fraction SNP: 0.7597838433208275)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr20/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr20/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0821
+Gaps bigger than 0.1 cM: 146
+Maximum Gap: 0.4744 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 22074)
+Loaded Observations:
+(2, 22074)
+Memory Usage: 1231.323136 mB
+Reference Number: 5008
+Total Log likelihood: -7839.985
+Memory Usage: 1231.323136 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr20/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr20/
+Fraction Markers in ROH: 0.4196
+Merged n=0 gaps < 0.0 M
+Called n=3 ROH Blocks > 1.0 cM
+Longest Block: 1.403
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr20/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 16038 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr21.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 16038
+Nr of Matching Refs: 16038 / 16038
+Full Intersection Ref/Alt Identical: 16031 / 16038
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 10767 / 16031
+(Fraction SNP: 0.6716362048530972)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr21/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr21/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0087
+Maximum Genetic Map: 0.6279
+Gaps bigger than 0.1 cM: 103
+Maximum Gap: 0.5210 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 10767)
+Loaded Observations:
+(2, 10767)
+Memory Usage: 727.404544 mB
+Reference Number: 5008
+Total Log likelihood: -3960.849
+Memory Usage: 727.404544 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr21/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr21/
+Fraction Markers in ROH: 0.3932
+Merged n=0 gaps < 0.0 M
+Called n=2 ROH Blocks > 1.0 cM
+Longest Block: 1.072
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr21/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2659
+
+Loaded 15802 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr22.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 15802
+Nr of Matching Refs: 15802 / 15802
+Full Intersection Ref/Alt Identical: 15793 / 15802
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 13054 / 15793
+(Fraction SNP: 0.8265687329829672)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/I2659/chr22/
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/I2659/chr22/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0180
+Maximum Genetic Map: 0.7408
+Gaps bigger than 0.1 cM: 88
+Maximum Gap: 1.6949 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 13054)
+Loaded Observations:
+(2, 13054)
+Memory Usage: 830.23872 mB
+Reference Number: 5008
+Total Log likelihood: -4896.682
+Memory Usage: 830.23872 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/I2659/chr22/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/I2659/chr22/
+Fraction Markers in ROH: 0.4087
+Merged n=0 gaps < 0.0 M
+Called n=5 ROH Blocks > 1.0 cM
+Longest Block: 1.248
+Successfully saved to ./Empirical/Eigenstrat/Reichall/I2659/chr22/roh.csv
