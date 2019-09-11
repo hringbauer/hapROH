@@ -54,7 +54,7 @@ df_anno = load_eigenstrat_anno()
 ### Functions
 
 def analyze_chromosome_es(iid, ch=3, n_ref=503, save=True, save_fp=False, exclude_pops=[], 
-                          base_out_folder="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
+                          base_out_folder="./Empirical/Eigenstrat/Reichall/", prefix_out="",
                           roh_in=100, roh_out=100, roh_jump=300, e_rate=0.01, e_rate_ref=0.001, 
                           max_gap=0, logfile=True):
     """Run the analysis for one individual and chromosome on eigenstrat data
@@ -96,7 +96,7 @@ def analyze_chromosome_es(iid, ch=3, n_ref=503, save=True, save_fp=False, exclud
                          
 #########################################################
 def analyze_individual_es(iid, chs=range(1,23), n_ref=2504, save=True, save_fp=False, 
-                          exclude_pops=[], base_out_folder="./Empirical/Eigenstrat/Reichall/test/", 
+                          exclude_pops=[], base_out_folder="./Empirical/Eigenstrat/Reichall/", 
                           prefix_out="", roh_in=100, roh_out=100, roh_jump=300, e_rate=0.001, 
                           e_rate_ref=0.001, max_gap=0, logfile=True, output=True, processes=5, delete=True):
     """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel
@@ -112,7 +112,10 @@ def analyze_individual_es(iid, chs=range(1,23), n_ref=2504, save=True, save_fp=F
          roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, logfile] for ch in chs] 
                             
     ### Run the analysis in parallel
-    multi_run(analyze_chromosome_es, prms, processes = processes)
+        # Run the analysis for all Parameters
+    for prm in prms:
+        assert(len(prm)==15)  # Sanity Check
+        analyze_chromosome_es(*prm)
                             
     ### Merge results for that Individual
     combine_individual_data(base_out_folder, iid=iid, delete=delete, chs=chs)                  
@@ -139,6 +142,6 @@ if __name__ == "__main__":
 
     iid = get_iid_from_i(df_anno, run_nr, min_cov=0.5)
     analyze_individual_es(iid=iid, chs=range(1, 23), n_ref=2504, save=True, save_fp=False, exclude_pops=[],
-                          base_out_folder="./Empirical/HO/", prefix_out="",
-                          roh_in=100, roh_out=100, roh_jump=300, e_rate=0.001,
+                          base_out_folder="./Empirical/Eigenstrat/Reichall/", prefix_out="",
+                          roh_in=100, roh_out=100, roh_jump=300, e_rate=0.01,
                           e_rate_ref=0.001, max_gap=0.0, logfile=False, output=True, delete=False)
