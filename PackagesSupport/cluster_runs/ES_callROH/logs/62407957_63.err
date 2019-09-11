@@ -1,2 +1,0 @@
-/tmp/slurmd/job62408019/slurm_script: line 21: 14511 Killed                  python3 run_individual_ES.py $SLURM_ARRAY_TASK_ID
-slurmstepd-midway2-0352: error: Detected 1 oom-kill event(s) in step 62408019.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.
