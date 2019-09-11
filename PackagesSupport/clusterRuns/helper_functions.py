@@ -6,12 +6,13 @@ import numpy as np
 import pandas as pd
 import sys
 import os
+import multiprocessing as mp
 
-def prepare_path(path_mosaic, iid, ch, prefix_out, logfile=True):
+def prepare_path(base_path, iid, ch, prefix_out, logfile=True):
     """Prepare the path and pipe printing for one Individual.
     Create Path if not already existing.
     logfile: Whether to pipe output to log-file"""       
-    path_out = os.path.join(path_mosaic, "output", iid, "chr" + str(ch), prefix_out, "")
+    path_out = os.path.join(base_path, iid, "chr" + str(ch), prefix_out, "")
     if not os.path.exists(path_out):
             os.makedirs(path_out)
     ### Active LOG FILE if needed
