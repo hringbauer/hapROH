@@ -61,12 +61,9 @@ Contains the final product. Downsampled hdf5s to 1240k biallelic SNPs
 ## /ReichLabEigenstrat
 Contains the Eigenstrat from the Reich website. Use script in ./Notebooks/PrepareData/prepare_Reich_Eigenstrat to download and unzip it
 
-## Scripts
-Contains scripts outside the main Core engine
 
-# Diverse
 
-## Run Notebooks on cluster:
+# How to run Notebooks on cluster:
 sbatch ./jupyter.sbatch
 
 and then collect the URL from the .err file of the job. Afterwards: Do not forget to scancel the job otherwise it runs until the time limit is hit.
@@ -79,20 +76,38 @@ sacct -j jobid --format=User,JobID,Jobname,partition,state,time,start,end,elapse
 
 
 ## Notebooks to run for creation of data used in paper
-Several Notebooks to run HAPSBURG in parallel are found in
+Several Notebooks to run HAPSBURG in parallel on simulated as well as empirical data are found in
 `Notebooks/ParallelRuns/`
 
-these run Hapsburg in a parallelized fashion, assuming that the notebook is run on a cluster with enough nodes (which can be set). The general strategy is to produce lists of parameter files, which are then spread out by 'pool.starmap' to nodes.
+these run Hapsburg in a parallelized fashion, assuming that the notebook is run on a cluster with enough nodes (which can be set). The general strategy is to produce lists of parameter files (with one list of parameters per run, e.g. which individual and chromosome), which are then spread out by 'pool.starmap' to nodes via a multirun function.
 
-## Parallelized code to run HAPSBURG on cluster with slurm
-Code is found in ./scripts/cluster_runs/
+## Also: HAPSBURG  is run on cluster with slurm sequentially
+Code can be found in ./scripts/cluster_runs/
 
 Usually they are written as array jobs:
-Each folder contains a python file that runs a single individual, taking an integer as input.
+Each folder contains a python file that runs a single individual, taking an integer as input. These integers are mapped to individuals using the accoring meta files (somewhere in ./data/)
+
 The second file in each folder is `slurm_batch.sh` which is the shell submission script. Modify the .sh scripts to specify what batch to run (i.e. how many and which individuals to submit)
 
 They are submitted with:
 `sbatch slurm_batch.sh`
+
+## Further Processing per Individual:
+These jobs produce summary files for each individual (ususally with _roh_full.csv) with fields
+(Start,End,StartM,EndM,length,lengthM,iid,ch)
+
+These are then further post-process with functions in `./packagesSupport/pp_individual_roh_csvs.py`.
+
+The ususual structure of doing this is:
+
+1) Produce list of paths to csvs
+2) Iterate over these csvs, extract and postprocess (e.g. gap-merging) these (function: )
+3) These are then merged into one master .csv file with the fields, saved as `combinedroh.csv` with columns
+(iid, pop, max_roh, sum_roh, n_roh, lat, lon, age), where some summary details can be merged back in from the master meta dataframe.
+
+One example of this workflow: `notebooks/PrepareData/roh_process.ipynb`
+
+
 
 
 
