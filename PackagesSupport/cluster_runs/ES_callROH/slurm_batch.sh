@@ -11,7 +11,7 @@
 #SBATCH --export=NONE
 #SBATCH --output=./logs/%A_%a.out
 #SBATCH --error=./logs/%A_%a.err
-#SBATCH --array=0-240
+#SBATCH --array=0-234
 unset SLURM_EXPORT_ENV
 
 export OMP_NUM_THREADS=1
