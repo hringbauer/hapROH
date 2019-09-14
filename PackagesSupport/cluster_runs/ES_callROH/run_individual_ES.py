@@ -46,7 +46,7 @@ def load_eigenstrat_anno(path="./Data/ReichLabEigenstrat/Raw/v37.2.1240K.clean4.
     return df_anno
 
 #df_anno = load_eigenstrat_anno()
-df_anno = pd.read_csv("./PackagesSupport/cluster_runs/ES_callROH/rerun.csv")  # For the rerun of Shotgun Individuals
+df_anno = pd.read_csv("./PackagesSupport/cluster_runs/ES_callROH/rerun_top100.csv")  # For the rerun of Shotgun Individuals
 
 
 
@@ -76,7 +76,7 @@ def analyze_chromosome_es(iid, ch=3, n_ref=503, save=True, save_fp=False, exclud
 
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model()              # Load the preprocessing Model
-    hmm.p_obj.set_params(es_target_path=es_target_path, readcounts = False, destroy_phase=False,
+    hmm.p_obj.set_params(es_target_path=es_target_path, readcounts = False, destroy_phase=True,
                 base_out_folder=base_out_folder, prefix_out_data=prefix_out, excluded=exclude_pops)   
     
     ### Set to run with full 1000G reference. DELETE when run for with European Reference!!

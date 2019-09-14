@@ -46,7 +46,7 @@ def load_eigenstrat_anno(path="./Data/ReichLabEigenstrat/Raw/v37.2.1240K.clean4.
     return df_anno
 
 #df_anno = load_eigenstrat_anno()
-df_anno = pd.read_csv("./PackagesSupport/cluster_runs/ES_callROH/rerun.csv")  # For the rerun of Shotgun Individuals
+df_anno = pd.read_csv("./PackagesSupport/cluster_runs/ES_callROH/rerun_top100.csv")  # For the rerun of Shotgun Individuals
 
 
 
@@ -128,7 +128,7 @@ def get_iid_from_i(df_anno, i, min_cov=0.5):
     df_t = df_anno[df_anno["coverage"] > min_cov] # Extract high coverage individuals
     if i<0 or i>=len(df_t):    # Sanity Check
         raise RuntimeError(f"Index {i} out of Range of High Coverage ancients.") 
-    iid = df_t["Instance ID"].values[i]
+    iid = df_t["iid"].values[i]
     return iid
 
 
