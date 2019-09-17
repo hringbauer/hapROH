@@ -144,4 +144,4 @@ if __name__ == "__main__":
     analyze_individual_es(iid=iid, chs=range(1, 23), n_ref=2504, save=True, save_fp=False, exclude_pops=[],
                           base_out_folder="./Empirical/Eigenstrat/Reichall/", prefix_out="",
                           roh_in=100, roh_out=100, roh_jump=300, e_rate=0.01,
-                          e_rate_ref=0.001, max_gap=0.0, logfile=False, output=True, delete=True)
+                          e_rate_ref=0.001, max_gap=0.0, logfile=False, output=True, delete=False)
