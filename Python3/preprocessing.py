@@ -34,8 +34,6 @@ class PreProcessing(object):
     ch = 0       # Which Chromosome to analyze
     segM = []    # Segment of Chromosome to analyze (in Morgan)
 
-    output = False  # Whether to print output
-
     def __init__(self):
         """Initialize Class"""
         raise NotImplementedError()
@@ -232,11 +230,10 @@ class PreProcessingHDF5(PreProcessing):
         print(f"HDF5 loaded from {path}")
         return f
 
-    def merge_2hdf(self, f, g, ch=1):
+    def merge_2hdf(self, f, g):
         """ Merge two HDF 5 f and g. Return Indices of Overlap Individuals.
         f is Sardinian HDF5,
-        g the Reference HDF5
-        ch: Integer, which Chromosome to use"""
+        g the Reference HDF5"""
 
         pos1 = f["variants/POS"]
         pos2 = g["variants/POS"]
@@ -321,7 +318,6 @@ class PreProcessingHDF5(PreProcessing):
         return r_map[in_seg], markers_obs[in_seg], markers_ref[in_seg]
 
 ###########################################
-
 
 class PreProcessingEigenstrat(PreProcessingHDF5):
     """Class for PreProcessing Eigenstrat Files
@@ -425,7 +421,7 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
 
     out_folder = ""    # Where to save to
     prefix_out_data = ""  # Prefix of the Outdata
-    meta_path_targets = ""
+    meta_path_targets = "" # Not need in this class.
     h5_path_targets = ""
     # Path of 1000G (without chromosome part):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
