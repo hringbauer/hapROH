@@ -126,8 +126,9 @@ if __name__ == "__main__":
         raise RuntimeError("Script needs single argument (indiviual i)")
         
     run_nr = int(sys.argv[1]) # The Parameter passed to the Python Script from outside
-    iid = get_iid_from_i(df_anno, run_nr, min_cov=0.5)
+    #iid = get_iid_from_i(df_anno, run_nr, min_cov=0.5)
+    iid="I5244"
     analyze_individual_ph(iid=iid, chs=range(1, 23), n_ref=2504, save=True, save_fp=False, exclude_pops=[],
                           base_out_folder="./Empirical/1240k/MarcusAncsPH/", prefix_out="",
                           roh_in=100, roh_out=100, roh_jump=300, e_rate=0.01,
-                          e_rate_ref=0.01, max_gap=0.0, logfile=False, output=True, delete=True)
+                          e_rate_ref=0.01, max_gap=0.0, logfile=False, output=True, delete=False)
