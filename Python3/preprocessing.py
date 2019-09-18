@@ -12,10 +12,9 @@ import pandas as pd
 import os   # For creating folders
 import sys
 
-### Assume we are in Root Hapsburg Base Directory!!
+# Assume we are in Root Hapsburg Base Directory!
 sys.path.append("./PackagesSupport/loadEigenstrat/")
 from loadEigenstrat import load_eigenstrat
-
 
 # Write General PreProcessing Class: (PreProcessing)
 # Inherit one for real HDF5 Dataset: PreProcessingHDF5
@@ -33,6 +32,7 @@ class PreProcessing(object):
 
     iid = ""     # Which Individual to Analyze
     ch = 0       # Which Chromosome to analyze
+    segM = []    # Segment of Chromosome to analyze (in Morgan)
 
     output = False  # Whether to print output
 
@@ -147,16 +147,17 @@ class PreProcessingHDF5(PreProcessing):
         markers_obs = i1[markers]
         markers_ref = i2[markers]
 
-        ### Load Target Dataset
-        gts_ind = self.extract_snps_hdf5(fs, [id_obs], markers_obs, diploid=True)
+        # Load Target Dataset
+        gts_ind = self.extract_snps_hdf5(
+            fs, [id_obs], markers_obs, diploid=True)
         read_counts = self.extract_rc_hdf5(fs, id_obs, markers_obs)
 
-        ### Load Reference Dataset
+        # Load Reference Dataset
         gts = self.extract_snps_hdf5(
             f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
 
-        ### Do optional Processing Steps (based on boolean flags in class)
+        # Do optional Processing Steps (based on boolean flags in class)
         gts_ind, gts, r_map, out_folder = self.optional_postprocessing(
             gts_ind, gts, r_map, out_folder, read_counts)
 
@@ -171,7 +172,7 @@ class PreProcessingHDF5(PreProcessing):
             gts_ind = gts_ind[:, called]
             gts = gts[:, called]
             r_map = r_map[called]
-            if len(read_counts)>0:
+            if len(read_counts) > 0:
                 read_counts = read_counts[:, called]
             if self.output == True:
                 print(f"Reduced to markers called {np.shape(gts)[1]} / {len(called)}")
@@ -308,6 +309,17 @@ class PreProcessingHDF5(PreProcessing):
         r_map = np.array(h5["variants/MAP"])[markers]
         return r_map
 
+    def get_segment(self, r_map, markers_obs, markers_ref):
+        """Extract only markers in self.segM and downsamples
+        the key array. Return downsampled versions."""
+        segM = self.segM
+        assert(len(seg) == 2)  # Sanity Check
+        in_seg = (r_map > seg[0]) & (r_map < segM[1])
+        if self.output == True:
+            print(f"Extracting {np.sum(in_seg)}/{len(in_seg)} SNPs"
+                   "within {segM[0]}-{segM[1]}")
+        return r_map[in_seg], markers_obs[in_seg], markers_ref[in_seg]
+
 ###########################################
 
 
@@ -344,15 +356,20 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         id_obs = es.get_index_iid(iid)  # Get Index from Eigenstrat
         ids_ref = self.get_ref_ids(f1000, n_ref)
 
-        ### Do Extraction for Reference
-        gts = self.extract_snps_hdf5(
-            f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
 
-        ### Extraction for target (no RC here)
+        if len(self.segM) > 0:
+            r_map, markers_obs, markers_ref = self.get_segment(
+                r_map, markers_obs, markers_ref)
+
+        # Do Extraction for Reference
+        gts = self.extract_snps_hdf5(
+            f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
+
+        # Extraction for target (no RC here)
         gts_ind = self.extract_snps_es(es, id_obs, markers_obs)
 
-        ### Do optional Processing Steps (only covered, destroy phase, save)
+        # Do optional Processing Steps (only covered, destroy phase, save)
         gts_ind, gts, r_map, out_folder = self.optional_postprocessing(
             gts_ind, gts, r_map, out_folder)
 
@@ -504,26 +521,27 @@ def load_preprocessing(p_model="SardHDF5", save=True, output=True):
 
     return p_obj
 
+
 ############################################
-#### For testing the Module
+# For testing the Module
 if __name__ == "__main__":
-    ### Test Loading Eigenstrat
+    # Test Loading Eigenstrat
     #pp = load_preprocessing(p_model="Eigenstrat", save=False, output=True)
-    #pp.set_params(es_target_path="./Data/ReichLabEigenstrat/Olalde2019/Olalde_et_al_genotypes",
+    # pp.set_params(es_target_path="./Data/ReichLabEigenstrat/Olalde2019/Olalde_et_al_genotypes",
     #            base_out_folder="./Empirical/ES_Test/", only_calls=True)
 
-    ### Test Loading HDF5
+    # Test Loading HDF5
     pp = load_preprocessing(p_model="MosaicHDF5", save=False, output=True)
     pp.set_params(h5_path_targets="./Simulated/1000G_Mosaic/TSI5/ch3_4cm/data.h5",
                   base_out_folder="./Empirical/ES_Test/", only_calls=True,
-                  excluded = ["TSI",])
+                  excluded=["TSI", ])
 
     gts_ind, gts, r_map, out_folder = pp.load_data(
         iid="iid5", ch=3, n_ref=100)
 
     # gts_ind, gts, r_map, out_folder = pp.load_data(
     #    iid="MA89", ch=3, n_ref=503, folder="./Simulated/Test20r/")
-    moi=range(1050, 1070)
+    moi = range(1050, 1070)
     print(r_map[moi])
     print(np.shape(r_map))
     print(gts_ind[:2, moi])
