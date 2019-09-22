@@ -17,10 +17,11 @@ def give_iid_paths(iids, base_folder="./Empirical/HO/", suffix = "_roh_full.csv"
     paths_csv = [os.path.join(base_folder, str(iid) + suffix) for iid in iids]
     return paths_csv
 
-def create_combined_ROH_df(paths, iids, pops, min_cm=4, snp_cm=100, gap=0.5, output=True):
+def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100, gap=0.5, output=True):
     """Create the Ancient Sardinian Summary Dataframe
     paths: List of .csv Paths to load the Data from
     snp_cm: Minimum SNP Density per cM
+    min_cm: Minimal centiMorgan for Postprocessing Postanalysis
     savepath: If given, where to save the summary .csv to
     gap: Gaps to merge [in cM]"""    
     ### Dry run to check if paths exist
@@ -36,24 +37,31 @@ def create_combined_ROH_df(paths, iids, pops, min_cm=4, snp_cm=100, gap=0.5, out
         print(f"Warning, could not find {len(paths_not_exist)} Paths:")
         print(paths_not_exist)
     
-    # Default Values: Zero ROH
     n = len(paths_exist)
+    l = len(min_cm)
     max_roh = np.zeros(n, dtype="float")
-    sum_roh = np.zeros(n, dtype="float")
-    n_roh = np.zeros(n, dtype="int")
-    
-    not_found = []
+    sum_roh = np.zeros((n,l), dtype="float")
+    n_roh = np.zeros((n,l), dtype="int")
     
     for i, path in enumerate(paths_exist):            
         df_roh = pd.read_csv(path)
         if gap>0:
             df_roh = merge_called_blocks(df_roh, max_gap=gap/100)
-        df_roh = post_process_roh_df(df_roh, output=output, snp_cm=snp_cm, min_cm=min_cm)  ### Do the Postprocessing
-        max_roh[i], sum_roh[i], n_roh[i] = individual_roh_statistic(df_roh, output=output)
+            
+        for j, m_cm in enumerate(min_cm):
+            df_roh = post_process_roh_df(df_roh, output=output, snp_cm=snp_cm, min_cm=m_cm)  ### Do the Postprocessing
+            max_roh[i], sum_roh[i,j], n_roh[i,j] = individual_roh_statistic(df_roh, output=output)
 
-    ### Create the Dataframe:
-    d = {"iid": iids[idcs], "pop" : pops[idcs], "max_roh": max_roh*100, "sum_roh" : sum_roh*100, "n_roh" : n_roh}
-    df1 = pd.DataFrame(d).sort_values(by="sum_roh", ascending=False)  # Sort output      
+    ### Create the Dataframe with the basic entries:
+    d = {"iid": iids[idcs], "pop" : pops[idcs], "max_roh": max_roh*100}
+    df1 = pd.DataFrame(d) 
+    
+    ### Add Values for varying cM cutoffs:
+    for j, m_cm in enumerate(min_cm):
+        df1[f"sum_roh>{m_cm}"]= sum_roh[:,j]*100
+        df1[f"n_roh>{m_cm}"]=n_roh[:,j]
+       
+    df1 = df1.sort_values(by=f"n_roh>{min_cm[0]}", ascending=False)  # Sort output by minimal Cutoff 
     return df1
 
 def merge_called_blocks(df, max_gap=0, output=False):
