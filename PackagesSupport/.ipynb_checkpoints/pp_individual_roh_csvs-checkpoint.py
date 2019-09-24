@@ -131,7 +131,7 @@ def individual_roh_statistic(df, output=True):
 #### Main Function to post-process Individual ROH outputs
 
 def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", base_folder="./Empirical/Eigenstrat/Reichall/", 
-                       suffix='_roh_full.csv', save_path="", min_cm=4, snp_cm=50, gap=1.0, output=True, meta_info=True):
+                       suffix='_roh_full.csv', save_path="", min_cm=[4,8,12], snp_cm=50, gap=1.0, output=True, meta_info=True):
     """Post-process Individual ROH .csv files. Combines them into one summary ROH.csv, saved in save_path.
     Use Individuals iids, create paths and run the combining.
     iids: List of target Individuals
@@ -154,7 +154,7 @@ def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", 
     
     ### Merge results with Meta-Dataframe
     if meta_info:
-        df1 = pd.merge(df1[["iid", "max_roh", "sum_roh","n_roh"]], df_meta, on="iid")
+        df1 = pd.merge(df1[["iid", "max_roh", f"n_roh>{min_cm[0]}",f"sum_roh>{min_cm[0]}"]], df_meta, on="iid")
         
     if len(save_path) > 0:
         df1.to_csv(save_path, sep="\t", index=False)
