@@ -1,0 +1,33 @@
+PLINK v1.90b6.9 64-bit (4 Mar 2019)
+Options in effect:
+  --homozyg
+  --homozyg-density 50
+  --homozyg-gap 1000
+  --homozyg-kb 500
+  --homozyg-window-het 1
+  --homozyg-window-snp 50
+  --homozyg-window-threshold 0.05
+  --out ./Diverse/PLINK/roh
+  --vcf ./Diverse/TSI5cmIID0.vcf
+
+Hostname: VioletQueen
+Working directory: /home/harald/git/HAPSBURG
+Start time: Tue Oct 15 16:22:23 2019
+
+Random number seed: 1571174543
+7704 MB RAM detected; reserving 3852 MB for main workspace.
+--vcf: ./Diverse/PLINK/roh-temporary.bed + ./Diverse/PLINK/roh-temporary.bim +
+./Diverse/PLINK/roh-temporary.fam written.
+77652 variants loaded from .bim file.
+3 people (0 males, 0 females, 3 ambiguous) loaded from .fam.
+Ambiguous sex IDs written to ./Diverse/PLINK/roh.nosex .
+Using 1 thread (no multithreaded calculations invoked).
+Before main variant filters, 3 founders and 0 nonfounders present.
+Calculating allele frequencies... done.
+77652 variants and 3 people pass filters and QC.
+Note: No phenotypes present.
+--homozyg: Scan complete, found 57 ROH.
+Results saved to ./Diverse/PLINK/roh.hom + ./Diverse/PLINK/roh.hom.indiv +
+./Diverse/PLINK/roh.hom.summary .
+
+End time: Tue Oct 15 16:22:23 2019
