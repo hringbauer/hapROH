@@ -15,9 +15,8 @@ def prepare_path(base_path, iid, ch, prefix_out, logfile=True):
     path_out = os.path.join(base_path, iid, "chr" + str(ch), prefix_out, "")
     if not os.path.exists(path_out):
             os.makedirs(path_out)
-    ### Active LOG FILE if needed
+    ### Activate LOG FILE output if given
     if logfile == True:
-        #path_log = path_log + "hmm_run_log.txt"
         path_log = os.path.join(path_out, "hmm_run_log.txt")
         print(f"Set Output Log path: {path_log}")
         sys.stdout = open(path_log, 'w') 
