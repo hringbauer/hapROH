@@ -21,7 +21,7 @@ def load_h5(path, output=True):
         #self.f["samples"] # Samples Vector
 
     ### Sanity Check whether both Genotypes are there and nothing else
-    assert(np.min(f["calldata/GT"]) == 0)
+    assert(np.min(f["calldata/GT"]) >= -1)
     assert(np.max(f["calldata/GT"]) == 1)
     
     return f
@@ -51,14 +51,14 @@ def to_vcf(chrom, pos, ref, alt, gt, iids, vcf_path, header=[]):
     """"""
     ### Hard-Coded Default Header
     if len(header)==0:
-        header = """##fileformat=VCFv4.3\n##FILTER=<ID=PASS,Description="All filters passed">\n##fileDate=20191010\n##source=1000GenomesPhase3Pipeline\n##reference=ftp://ftp.1000genomes.ebi.ac.uk//vol1/ftp/technical/reference/phase2_reference_assembly_sequence/hs37d5.fa.gz\n"""     
+        header = """##fileformat=VCFv4.3\n##FILTER=<ID=PASS,Description="All filters passed">\n##fileDate=20191010\n##source=1000GenomesPhase3Pipeline\n##reference=ftp://ftp.1000genomes.ebi.ac.uk//vol1/ftp/technical/reference/phase2_reference_assembly_sequence/hs37d5.fa.gz\n##contig=<ID=3,assembly=b37,length=198022430>\n##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">\n"""     
         
     #last_line_h =  "\n#CHROM POS ID REF ALT QUAL FILTER INFO"
     dct = {'#CHROM':chrom, 'POS':pos, 'REF':ref, 'ALT':alt}
     df = pd.DataFrame(dct)
     df['ID'] = ""
     df['QUAL'] = 40
-    df['FILTER'] = ""
+    df['FILTER'] = "PASS"
     df['INFO'] = ""
     df["FORMAT"] = "GT"  # GT:AD if allele depth given
 
