@@ -1,6 +1,7 @@
 Data/
 Empirical/
 Simulated/
+Diverse/nosync/
 Python3/__pycache__/*
 Python3/create1000G_Mosaic/__pycache__/*
 Python3/cfunc.c

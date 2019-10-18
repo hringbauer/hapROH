@@ -95,7 +95,7 @@ def create_folders(input_base_folder, outfolder="plink_out/"):
     if not os.path.exists(input_h5):
         raise RuntimeError(f"Create .vcf file: {input_h5}")
         
-    plink_folder = os.path.join(input_base_folder,"plink_out/")
+    plink_folder = os.path.join(input_base_folder, outfolder)
     if not os.path.exists(plink_folder):
         print(f"Creating Folder for: {plink_folder}")
         os.makedirs(plink_folder)
