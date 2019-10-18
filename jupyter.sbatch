@@ -13,6 +13,7 @@
 module load python/3.7.0
 module load plink
 module load bcftools
+module load htslib
 
 ip=$(/sbin/ip route get 8.8.8.8 | awk '{print $NF;exit}')
 port=$((10000+ $RANDOM % 20000))
