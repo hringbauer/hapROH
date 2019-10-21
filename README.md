@@ -117,6 +117,15 @@ Important Posterior plotting is found in `plot_posetrior.ipynb`.
 
 Geographic and temporal figure produciton is found in `plot_map_ROH.ipynb`
 
+## Testing BCFTOOLS and PLINK
+
+Notebooks that wrap shell commands for these two are found in `notebooks/PLINK`.
+
+General strategy: Analyze the Mosaic Individuals with copied in ROH blocks. For that run the tools on the datasets with 100 individuals.
+First transfer H5 to VCF (for BCFTOOLS also the PL genotype likelihood field in bcftools is needed). Tools for that conversion are found in `PackagesSupport/h5_python/h5_functions.py`.
+
+After running the VCF (saving into output folders, after transforming to rough "HAPSBURG" ROH format), 2) split up the output .csv (or dataframe) into the individual output folders. These can then be analyzed in the same way as HAPSBURG outputs, with tools in `notebooks/Mosaic1000G_Analysis`
+
 
 
 
