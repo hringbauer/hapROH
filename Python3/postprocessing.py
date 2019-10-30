@@ -2,6 +2,7 @@
 Class for calling ROH from Posterior Data. Saves results as a .csv
 created by Pandas.
 Contains Sub-Classes, as well as factory Method.
+Pls always change parameters with set_params method!
 @ Author: Harald Ringbauer, 2019, All rights reserved
 """
 
@@ -19,6 +20,7 @@ class PostProcessing(object):
     cutoff = 0.8  # Cutoff Probability for ROH State
     l_cutoff = 0.01  # Cutoff [in Morgan]
     max_gap = 0.01  # The Maximum Gap Length to be Merged [in Morgan]
+    snps_extend = 0  # SNPs to snip on either side of blocks (after merge)
 
     merge = True  # Whether to Merge ROH Blocks
     output = True
@@ -39,13 +41,6 @@ class PostProcessing(object):
         Takes keyworded arguments"""
         for key, value in kwargs.items():
             setattr(self, key, value)
-
-    #def set_params(self, cutoff=0.8, l_cutoff=0.01, max_gap=0.01, merge=True):
-    #    """Set Parameters from outside of Class"""
-    #    self.cutoff = cutoff
-    #    self.l_cutoff = l_cutoff
-    #    self.merge = merge
-    #    self.max_gap = max_gap
 
     def load_data(self, folder=""):
         """Load and return genetic Map and Posterior0"""
@@ -101,6 +96,35 @@ class PostProcessing(object):
             print(f"Merged n={len(df) - len(df_n)} gaps < {max_gap} M")
         return df_n
 
+    def snp_extend(self, df, r_map, snps_extend=0):
+        """Extend Blocks in df by # n_snps.
+        Return dataframe of same size but with modified blocks"""
+        if snps_extend == 0:
+            snps_extend = self.snps_extend   # Default with Object Value
+
+        starts = df["Start"].values - snps_extend
+        ends = df["End"].values + snps_extend
+        starts = np.maximum(0, starts)  # To not shoot out of boundary
+        ends = np.minimum(len(r_map), ends)  # Same
+        l = ends - starts
+
+        ends_map = r_map[ends - 1]  # -1 to stay within bounds
+        starts_map = r_map[starts]
+        l_map = ends_map - starts_map
+        l_diff = l_map - df["lengthM"].values
+
+        # Set the new Values
+        df["Start"] = starts
+        df["End"] = ends
+        df["StartM"] = starts_map
+        df["EndM"] = ends_map
+        df["lengthM"] = l_map
+        df["length"] = l
+
+        if self.output == True:
+            print(f"Extended n={len(df)} ROH by {snps_extend} SNPs on Avg. by {np.mean(l_diff):.6f} M")
+        return df
+
     def modify_posterior0(self, posterior0):
         """Load and return the posterior."""
         roh_post = 1 - np.exp(posterior0)  # Go to non-logspace probability
@@ -118,7 +142,7 @@ class PostProcessing(object):
             frac_roh = np.mean(roh)
             print(f"Fraction Markers in ROH: {frac_roh:.4f}")
 
-        # Identify Stretches by going up and going down:
+        # Identify Stretches by difference (up and down)
         x1 = np.hstack([[False], roh, [False]]).astype("int")  # padding
         d = np.diff(x1)
         starts = np.where(d == 1)[0]
@@ -138,6 +162,9 @@ class PostProcessing(object):
         if self.merge == True:
             df = self.merge_called_blocks(df)
 
+        if self.snps_extend > 0:   # Extend by Nr of SNPs if needed
+            df = self.snp_extend(df, r_map)
+
         if self.output == True:
             print(f"Called n={len(df)} ROH Blocks > {self.l_cutoff * 100} cM")
             l = np.max(df["lengthM"])
@@ -145,7 +172,6 @@ class PostProcessing(object):
 
         self.df = df
         if self.save == True:
-            #save_folder = self.folder + "roh.csv"
             save_folder = os.path.join(self.folder, "roh.csv")
             df.to_csv(save_folder, index=False)
 
@@ -201,4 +227,10 @@ if __name__ == "__main__":
     # d05e e: Error Introduced. d05: Downsampled
     folder = "./Simulated/1000G_Mosaic/TSI/ch3_10cm/output/iid0/chr3/"
     pp = PostProcessing(folder=folder)
-    pp.call_roh()
+    pp.set_params(snps_extend=0, save=False)
+    df = pp.call_roh()
+    print(df)
+
+    pp.set_params(snps_extend=6, save=False)
+    df = pp.call_roh()
+    print(df)
