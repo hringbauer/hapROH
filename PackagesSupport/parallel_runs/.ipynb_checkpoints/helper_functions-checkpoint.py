@@ -15,9 +15,8 @@ def prepare_path(base_path, iid, ch, prefix_out, logfile=True):
     path_out = os.path.join(base_path, iid, "chr" + str(ch), prefix_out, "")
     if not os.path.exists(path_out):
             os.makedirs(path_out)
-    ### Active LOG FILE if needed
+    ### Activate LOG FILE output if given
     if logfile == True:
-        #path_log = path_log + "hmm_run_log.txt"
         path_log = os.path.join(path_out, "hmm_run_log.txt")
         print(f"Set Output Log path: {path_log}")
         sys.stdout = open(path_log, 'w') 
@@ -34,22 +33,24 @@ def multi_run(fun, prms, processes = 4):
     with mp.Pool(processes = processes) as pool:
         results = pool.starmap(fun, prms)
 
-def split_up_roh_df(base_path, path_out, iid):
-    """Splits up the ROH-dataframe.
+def split_up_roh_df(base_path, path_out, iid, 
+                    file_in="roh_info.csv", file_out="roh_gt.csv"):
+    """Splits up the ROH-dataframe from base_path/file_in into file_out.
+    Picks out Individual iid
     base_path: Where to find roh_info.csv
     path_out: Where to save roh_gt to
-    iid: Which Individual to extract from roh_info.csv"""
+    iid: Which Individual to extract from roh_info.csv."""
     #path = base_path + "roh_info.csv"
-    path = os.path.join(base_path, "roh_info.csv")
+    path = os.path.join(base_path, file_in)
     dft = pd.read_csv(path, sep="\t")  # Load the Meta File
 
     save_df = dft[dft["iid"] == iid]
-    save_path = os.path.join(path_out, "roh_gt.csv")
+    save_path = os.path.join(path_out, file_out)
     save_df.to_csv(save_path, sep="\t", index=False)
     #print(f"Saved to {save_path}")
     return
 
-def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), prefix_out=""):
+def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), prefix_out="", file_name="_roh_full.csv"):
     """Function to merge data from one Individual Analysis (all Chromosome)
     chs: Which Chromosomes to combine"
     delete: Whether to delete individual folder and contents after combining."""
@@ -65,7 +66,7 @@ def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), prefi
     full_df = pd.concat(full_df_vec)
         
     ### Save to Path:
-    path_save = os.path.join(base_path, str(iid) + "_roh_full.csv")
+    path_save = os.path.join(base_path, str(iid) + file_name)
     full_df.to_csv(path_save, index=False)
     
     ### Delete files in folder if need
@@ -80,6 +81,47 @@ def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), prefi
         os.rmdir(os.path.join(base_path, str(iid), ""))  # Remove the Individual Folder
     
     return full_df
+
+######################################################
+### For running bcftools & plink
+
+def create_folders(input_base_folder, outfolder="plink_out/"):
+    """Create Folders for ROH analysis with Plink/BCFTOOLs.
+    Operates within HAPSBURG Mosaic Data Structure. Return
+    h5 path, vcf path, and folder for intermediary output"""
+    input_h5 = os.path.join(input_base_folder, "data.h5")
+    input_vcf = os.path.join(input_base_folder, "data.vcf")
+    
+    if not os.path.exists(input_h5):
+        raise RuntimeError(f"Create .vcf file: {input_h5}")
+        
+    plink_folder = os.path.join(input_base_folder, outfolder)
+    if not os.path.exists(plink_folder):
+        print(f"Creating Folder for: {plink_folder}")
+        os.makedirs(plink_folder)
+    
+    return input_h5, input_vcf, plink_folder
+
+def split_up_inferred_roh(df_t, iid, save_path):
+    """Extract only ROH from Individual iid and saves it to save_path"""
+    df_iid = df_t[df_t["iid"]==iid]
+    df_iid.to_csv(save_path, index=False)
+    
+def postprocess_iid(df_plink, input_base_folder, iids, ch=3, prefix_out=""):
+    """Split up results into roh.csv and roh_gt.csv for each IID.
+    df_plink: Data Frame with Plink results, formated correctly"""
+
+    for iid in iids:
+        output_base_folder = os.path.join(input_base_folder, "output/")
+        path_out = prepare_path(output_base_folder, iid, ch, prefix_out=prefix_out, logfile=False)
+
+        path_inferred = os.path.join(path_out, "roh.csv")
+        split_up_inferred_roh(df_plink, iid, save_path=path_inferred)   # Split up Inferred ROH
+        split_up_roh_df(input_base_folder, path_out, iid)  # Split up Ground Truth ROH
+
+
+
+
 
 
 

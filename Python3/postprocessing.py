@@ -106,6 +106,7 @@ class PostProcessing(object):
         ends = df["End"].values + snps_extend
         starts = np.maximum(0, starts)  # To not shoot out of boundary
         ends = np.minimum(len(r_map), ends)  # Same
+        ends = np.maximum(starts, ends)  # Make sure that ends are after starts
         l = ends - starts
 
         ends_map = r_map[ends - 1]  # -1 to stay within bounds
@@ -162,7 +163,7 @@ class PostProcessing(object):
         if self.merge == True:
             df = self.merge_called_blocks(df)
 
-        if self.snps_extend > 0:   # Extend by Nr of SNPs if needed
+        if self.snps_extend != 0:   # Extend by Nr of SNPs if needed
             df = self.snp_extend(df, r_map)
 
         if self.output == True:

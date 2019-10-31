@@ -50,7 +50,7 @@ def split_up_roh_df(base_path, path_out, iid,
     #print(f"Saved to {save_path}")
     return
 
-def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), prefix_out=""):
+def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), prefix_out="", file_name="_roh_full.csv"):
     """Function to merge data from one Individual Analysis (all Chromosome)
     chs: Which Chromosomes to combine"
     delete: Whether to delete individual folder and contents after combining."""
@@ -66,7 +66,7 @@ def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), prefi
     full_df = pd.concat(full_df_vec)
         
     ### Save to Path:
-    path_save = os.path.join(base_path, str(iid) + "_roh_full.csv")
+    path_save = os.path.join(base_path, str(iid) + file_name)
     full_df.to_csv(path_save, index=False)
     
     ### Delete files in folder if need
