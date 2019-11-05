@@ -96,12 +96,6 @@ Usually Analysis per chromosomes are run, and results saved into folders: basefo
 
 There is a helper function `combine_individual_data` from `./packagesSupport/parallel_runs/helper_functions` that combines these results per Chromosome into a .csv per Individual, with a option to delete the Chromosome Result folder (to save space). For detailled downstream analysis (e.g. of the Posterior), the `delete` argument has to be False to keep the posterior file. The standard output ist `base_folder/IID_roch_full.csv`
 
-### Example: Antonio 2019 Individuas
-There is a notebook in `Notebooks/PrepareData` to prepare the Meta, as well as the hdf5 in the right format.
-All individuals can be sbatched viat a script in `packagesSupport/cluster_runs/Antonio_callROH/`
-Singe Individuals can be rerun with `Notebooks/ParallelRuns/parallel_antonio19.ipynb`. In this file, there is also the code to combine all indivdiual
-outputs into one summary .csv, that can than be used for downstream analysis (such as plotting all individuals)
-
 ## Further Processing per Individual:
 These jobs produce summary files for each individual (ususally with `iid_roh_full.csv`) with fields
 (Start,End,StartM,EndM,length,lengthM,iid,ch)
@@ -117,11 +111,23 @@ The ususual structure of doing this is:
 
 One example of this workflow: `notebooks/PrepareData/roh_process.ipynb`
 
+### Example: Antonio 2019 Individuals
+There is a notebook in `Notebooks/PrepareData` to prepare the Meta, as well as the hdf5 in the right format.
+All individuals can be sbatched viat a script in `packagesSupport/cluster_runs/Antonio_callROH/`
+Singe Individuals can be rerun with `Notebooks/ParallelRuns/parallel_antonio19.ipynb`. In this file, there is also the code to combine all indivdiual
+outputs into one summary .csv, that can than be used for downstream analysis (such as plotting all individuals)
+
+
 ## Plotting of Overall Results
 Key plotting notebooks are found in `notebooks/figures/`
 Important Posterior plotting is found in `plot_posetrior.ipynb`.
 
-Geographic and temporal figure produciton is found in `plot_map_ROH.ipynb`
+Geographic and temporal figure production is found in `plot_map_ROH.ipynb`
+
+### Peak Memory Requirements:
+For 1x-2x coverage on 1240k, with readcounts from WG (Poisson), such as for much of Antonio2019 data:
+Ca. 25gb per Chromosome (during Internal Calculations).
+Total runtime single CPU: Ca. 1h.
 
 ## Testing BCFTOOLS and PLINK
 
