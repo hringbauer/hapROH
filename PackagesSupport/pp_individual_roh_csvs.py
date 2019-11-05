@@ -50,7 +50,9 @@ def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100, gap=0
             
         for j, m_cm in enumerate(min_cm):
             df_roh = post_process_roh_df(df_roh, output=output, snp_cm=snp_cm, min_cm=m_cm)  ### Do the Postprocessing
-            max_roh[i], sum_roh[i,j], n_roh[i,j] = individual_roh_statistic(df_roh, output=output)
+            max_roh_t, sum_roh[i,j], n_roh[i,j] = individual_roh_statistic(df_roh, output=output)
+            if j==0:  # Only calcuate maximum for shortest cM category (containing the bigger ones)
+                max_roh[i] = max_roh_t
 
     ### Create the Dataframe with the basic entries:
     d = {"iid": iids[idcs], "pop" : pops[idcs], "max_roh": max_roh*100}
@@ -61,11 +63,12 @@ def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100, gap=0
         df1[f"sum_roh>{m_cm}"]= sum_roh[:,j]*100
         df1[f"n_roh>{m_cm}"]=n_roh[:,j]
        
-    df1 = df1.sort_values(by=f"n_roh>{min_cm[0]}", ascending=False)  # Sort output by minimal Cutoff 
+    df1 = df1.sort_values(by=f"sum_roh>{min_cm[0]}", ascending=False)  # Sort output by minimal Cutoff 
     return df1
 
 def merge_called_blocks(df, max_gap=0, output=False):
-        """Merge Blocks in Dataframe df and return merged Dataframe"""
+        """Merge Blocks in Dataframe df and return merged Dataframe.
+        Gap is given in Morgan"""
         if len(df) == 0:
             return df  # In case of empty dataframe don't do anything
 
@@ -135,7 +138,7 @@ def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", 
     """Post-process Individual ROH .csv files. Combines them into one summary ROH.csv, saved in save_path.
     Use Individuals iids, create paths and run the combining.
     iids: List of target Individuals
-    min_cm: Minimum post-processed Length of ROH blocks
+    min_cm: Minimum post-processed Length of ROH blocks. Array (to have multiple possible values)
     snp_cm: Minimum Number of SNPs per cM
     gap: Maximum length of gaps to merge
     output: Whether to plot output per Individual.
@@ -154,7 +157,8 @@ def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", 
     
     ### Merge results with Meta-Dataframe
     if meta_info:
-        df1 = pd.merge(df1[["iid", "max_roh", f"n_roh>{min_cm[0]}",f"sum_roh>{min_cm[0]}"]], df_meta, on="iid")
+        #df1 = pd.merge(df1[["iid", "max_roh", f"n_roh>{min_cm[0]}",f"sum_roh>{min_cm[0]}"]], df_meta, on="iid")
+        df1 = pd.merge(df1, df_meta, on="iid")
         
     if len(save_path) > 0:
         df1.to_csv(save_path, sep="\t", index=False)

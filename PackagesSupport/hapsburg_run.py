@@ -19,11 +19,11 @@ sys.path.append("./PackagesSupport/parallel_runs/")
 from helper_functions import prepare_path, multi_run, combine_individual_data
 
 
-def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=503, exclude_pops=[],
+def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[],
                 e_model="readcount", p_model="MosaicHDF5", readcounts=True, destroy_phase=True,
                 post_model="Standard", h5_path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
-                h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr" 
-                meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv"
+                h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
+                meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
                 base_out_folder="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
                 roh_in=100, roh_out=100, roh_jump=300, e_rate=0.01, e_rate_ref=0.01, 
                 max_gap=0, logfile=True):
@@ -56,23 +56,25 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=503, exclude_pops=[],
     hmm.calc_posterior(save=save)              # Calculate the Posterior.
     hmm.post_processing(save=save)             # Do the Post-Processing.
          
-        S
+
 #########################################################
 ### Run Hapsburg for one Individual (wrap for Chr.)
 
-def hapsb_ind(iid, chs=range(1,23), processes=1, delete=False, output=True, save=True, save_fp=False, n_ref=503, exclude_pops=[],
-              e_model="readcount", p_model="MosaicHDF5", readcounts=True, destroy_phase=True,
+def hapsb_ind(iid, chs=range(1,23), processes=1, delete=False, output=True, save=True, save_fp=False, n_ref=2504, 
+              exclude_pops=[], e_model="readcount", p_model="MosaicHDF5", readcounts=True, destroy_phase=False,
               post_model="Standard", h5_path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
-              h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr" 
-              meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv"
+              h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
+              meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
               base_out_folder="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
               roh_in=100, roh_out=100, roh_jump=300, e_rate=0.01, e_rate_ref=0.01, 
-              max_gap=0, logfile=True):
+              max_gap=0, logfile=True, combine=True, file_name="_roh_full.csv"):
     """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel
     Wrapper for hapsb_chrom
     logfile: Whether to use a logfile
     output: Whether to print general output.
-    delete: Whether to delete the output-folder after successfully combining output file"""
+    delete: Whether to delete the output-folder after successfully combining output file
+    combine: Whether to combine output into one .csv per Individual (with suffix file_name)
+    DEFAULT is with parameters to do Readcounts from a Reference HDF5 (and 1000G Ref)"""
                             
     if output:
         print(f"Doing Individual {iid}...")
@@ -81,13 +83,15 @@ def hapsb_ind(iid, chs=range(1,23), processes=1, delete=False, output=True, save
     prms = [[iid, ch, save, save_fp, n_ref, exclude_pops, e_model, p_model, readcounts, destroy_phase,
             post_model, h5_path_targets, h5_path1000g, meta_path_ref, base_out_folder, prefix_out,
             roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, logfile] for ch in chs]
-    
-    assert(len(prms[0]==23))   # Sanity Check
+    assert(len(prms[0])==23)   # Sanity Check
                             
     ### Run the analysis in parallel
     multi_run(hapsb_chrom, prms, processes = processes)
                             
     ### Merge results for that Individual
-    combine_individual_data(base_out_folder, iid=iid, delete=delete, chs=chs)                  
+    if combine:
+        if output:
+            print(f"Combining Information for {len(chs)} Chromosomes...")
+        combine_individual_data(base_out_folder, iid=iid, delete=delete, chs=chs, prefix_out=prefix_out, file_name=file_name)
     if output:
-        print(f"Successfully finished Individual {iid}")
+        print(f"Run finished successfully!")

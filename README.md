@@ -94,7 +94,13 @@ They are submitted with:
 
 Usually Analysis per chromosomes are run, and results saved into folders: basefolder/iid/chr0/
 
-There is a helper function `combine_individual_data` from `./packagesSupport/parallel_runs/helper_functions` that combines these results per Chromosome into a .csv per Individual, with a option to delete the Chromosome Result folder (to save space). For detailled downstream analysis (e.g. of the Posterior), the `delete` argument has to be False. The standard output ist `base_folder/IID_roch_full.csv`
+There is a helper function `combine_individual_data` from `./packagesSupport/parallel_runs/helper_functions` that combines these results per Chromosome into a .csv per Individual, with a option to delete the Chromosome Result folder (to save space). For detailled downstream analysis (e.g. of the Posterior), the `delete` argument has to be False to keep the posterior file. The standard output ist `base_folder/IID_roch_full.csv`
+
+### Example: Antonio 2019 Individuas
+There is a notebook in `Notebooks/PrepareData` to prepare the Meta, as well as the hdf5 in the right format.
+All individuals can be sbatched viat a script in `packagesSupport/cluster_runs/Antonio_callROH/`
+Singe Individuals can be rerun with `Notebooks/ParallelRuns/parallel_antonio19.ipynb`. In this file, there is also the code to combine all indivdiual
+outputs into one summary .csv, that can than be used for downstream analysis (such as plotting all individuals)
 
 ## Further Processing per Individual:
 These jobs produce summary files for each individual (ususally with `iid_roh_full.csv`) with fields
