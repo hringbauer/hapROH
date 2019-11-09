@@ -44,6 +44,9 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[]
     ### Set the paths to target & ref
     hmm.p_obj.set_params(h5_path1000g = h5_path1000g, meta_path_ref = meta_path_ref, h5_path_targets = h5_path_targets)
     
+    if p_model=="Eigenstrat":  # Hack to . Eventually switch to only target_path!
+        hmm.p_obj.set_params(es_target_path = h5_path_targets)
+    
     hmm.load_data(iid=iid, ch=ch, n_ref=n_ref)  # Load the actual Data
     hmm.load_secondary_objects()
 
