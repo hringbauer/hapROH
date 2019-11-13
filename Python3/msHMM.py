@@ -1,6 +1,30 @@
 import numpy
 
-from msTransitions import non_roh_state_map
+# python sucks
+import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "Python3"))
+# this is getting really bad
+# how is python good again?
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../PackagesSupport/loadEigenstrat/"))
+
+from hmm_inference import HMM_Analyze
+from msTransitions import rate_matrix_oneSL, exponentiate_rate_matrices, allele_frequencies, one_step_transitions_reference, non_roh_state_map, non_roh_transition_matrices
+# from msHMM import fancy_initial_distribution, stationary_inital_distribution, get_ROH_posterior
+from msEmissions import extended_genotype_emissions, extended_binom_emission
+from msFun import extended_fwd_bkwd_fast
+
+
+def fake_transition_matrices (rates, rec_v):
+    transition_matrices = numpy.zeros((len(rec_v),6,6))
+    for i in range(len(rec_v)):
+        transition_matrices[i] = numpy.eye(6)
+#         transition_matrices[i] = numpy.zeros((6,6))
+#         transition_matrices[i,:2,:2] = 0.5
+#         transition_matrices[i,2:4,2:4] = 0.5
+#         transition_matrices[i,2:4,2:4] = numpy.ones((2,2)) - numpy.eye(2)
+#         transition_matrices[i,4:6,4:6] = 0.5
+    return transition_matrices
 
 
 def fancy_initial_distribution (n_ref, f_marg = [0.5, 0.5], pi_s = 1e-4, pi_l = 1e-4):
@@ -83,3 +107,82 @@ def get_ROH_posterior (log_full_posterior):
 
     return newPost
 
+
+class HapsburgFiftyThree:
+
+    
+    def __init__(self, refHaps, recoMap, in_S = 100, in_L = 1, out_S = 400, out_L = 10,
+                     roh_jump = 300, e_rate_ref=1e-3, e_rate=1e-2):
+
+        self.n_ref = refHaps.shape[0]
+        self.n_loci = refHaps.shape[1]
+        # need to remember this for later
+        self.e_rate = e_rate
+
+        # prepare the recombination map
+        # fake class instance to use a member function of class HMM_Analyze
+        fake = type('', (), {})()
+        fake.r_map = recoMap
+        fake.output = False
+        self.r_map = HMM_Analyze.prepare_rmap (self=fake)
+
+        # transition rate matrix Q
+        # t_mat = new_calc_transitions (roh_in=100, roh_out=100, roh_jump=300)
+        # self.Q = rate_matrix_oneSL (in_S = 100, in_L = 2, out_S = 400, out_L = 10, roh_jump = 300)
+        self.Q = rate_matrix_oneSL (in_S = in_S, in_L = in_L, out_S = out_S, out_L = out_L, roh_jump = roh_jump)
+
+        # marginal properbilities
+        self.f_marg = allele_frequencies (refHaps)
+
+        # initial distribution
+        # self.init_d = numpy.log (fancy_initial_distribution (n_ref, f_marg[0], pi_s=1e-4, pi_l=1e-4))
+        self.init_d = numpy.log (stationary_inital_distribution (self.n_ref, self.f_marg[0], self.Q))
+    
+        # transition
+        self.transition_matrices = exponentiate_rate_matrices (rates=self.Q, rec_v=self.r_map)
+        # also need the allele frequencies
+        self.f_trans = one_step_transitions_reference (refHaps, self.f_marg)
+        # get transition matrices between the non-ROH states
+        self.non_roh_transitions = non_roh_transition_matrices (self.transition_matrices, self.f_trans, self.f_marg)
+
+        # emission
+        # prepare the emissions for all loci
+        # at least as much as we can do without the actual target
+        self.e_mat_geno = extended_genotype_emissions (refHaps, e_rate_ref=e_rate_ref)
+
+        
+    def compute_full_log_posterior (self, target):
+        
+        # now do the target specific emissions
+        self.e_mat_full = numpy.log (extended_binom_emission (ob_stat=target, e_mat=self.e_mat_geno,
+                                                              e_rate=self.e_rate))
+        # just some checks
+        assert(numpy.max(self.e_mat_full) < 0) 
+
+        # get some posterior
+        (newPost, fwd, bwd, tot_ll) = extended_fwd_bkwd_fast (init_d=self.init_d, e_prob0=self.e_mat_full,
+                                          t=self.transition_matrices, f_marg=self.f_marg, f_trans=self.f_trans,
+                                          non_roh_transitions=self.non_roh_transitions, full=True)
+
+        return (newPost, fwd, bwd, tot_ll)
+        
+        
+    def compute_reduced_posterior (self, target):
+        """
+        Computes the posterior for the combined states non-ROH, short-ROH, and long-ROH
+        """
+        
+        # get posterior
+        (newPost, fwd, bwd, tot_ll) = self.compute_full_log_posterior (target)
+        
+        # sum over the grouings of the states
+        return get_ROH_posterior (newPost)
+
+    
+    def compute_long_ROH_posterior (self, target):
+        """
+        Computes the posterior in the long ROH state
+        """
+        return (self.compute_reduced_posterior (target))[:,2]
+    
+    
