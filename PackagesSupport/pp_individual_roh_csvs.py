@@ -168,6 +168,48 @@ def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", 
 
 
 
+##########################################################
+### Postprocess Dataframes based on Geography and Keywords
+
+####################################################
+##### Helper Functions to split up Dataframes
+
+def extract_df_geo(df, lat0, lat1, lon0, lon1):
+    """Extract Dataframe df from Sub Data frame based on coordinates
+    lat0,lat1: Min and Max Lat. Equ. for lon0,lon1"""
+    lat_okay = (df["lat"]>lat0) & (df["lat"]<lat1)
+    lon_okay = (df["lon"]>lon0) & (df["lon"]<lon1)
+    df_s = df[lat_okay & lon_okay]
+    return df_s
+
+def extract_df_age(df, age0, age1=1e6):
+    """Extract Dataframe based on age.
+    df: Input Dataframe; age0 and age1 min and max age"""
+    age_okay = (df["age"]>=age0) & (df["age"]<=age1)
+    df = df[age_okay]
+    return df
+
+def give_df_clsts(df, search=[], col="pop"):
+    """Return sub dataframe within df
+    where in col one of search strings (list of string)"""
+    if len(search)>0:
+        idx = df[col].str.contains('|'.join(search)) # Find
+        df = df[idx]
+    else:
+        df=df[0:0]
+    return df
+
+def extract_sub_df_geo_kw(df, lat0, lat1, lon0, lon1, keywords=[]):
+    """Extract Dataframe df from Sub Data frame based on coordinates
+    AND from keywords
+    lat0,lat1: Min and Max Lat. Equ. for lon0,lon1"""
+    df1 = extract_df_geo(df, lat0, lat1, lon0, lon1).copy()  # Make a new Copy. America
+    df2 = give_df_clsts(df, search=keywords) 
+    df_m = pd.concat([df1, df2]).drop_duplicates().reset_index(drop=True)
+    print(f"Found {len(df_m)} Individuals; {len(df1)} from Geography")
+    return df_m
+
+
 
 
 
