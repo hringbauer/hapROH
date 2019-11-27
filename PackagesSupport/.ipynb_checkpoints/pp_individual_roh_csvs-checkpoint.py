@@ -199,14 +199,15 @@ def give_df_clsts(df, search=[], col="pop"):
         df=df[0:0]
     return df
 
-def extract_sub_df_geo_kw(df, lat0, lat1, lon0, lon1, keywords=[]):
+def extract_sub_df_geo_kw(df, lat0, lat1, lon0, lon1, keywords=[], output=True):
     """Extract Dataframe df from Sub Data frame based on coordinates
     AND from keywords
     lat0,lat1: Min and Max Lat. Equ. for lon0,lon1"""
     df1 = extract_df_geo(df, lat0, lat1, lon0, lon1).copy()  # Make a new Copy. America
     df2 = give_df_clsts(df, search=keywords) 
     df_m = pd.concat([df1, df2]).drop_duplicates().reset_index(drop=True)
-    print(f"Found {len(df_m)} Individuals; {len(df1)} from Geography")
+    if output:
+        print(f"Found {len(df_m)} Individuals; {len(df1)} from Geography")
     return df_m
 
 
