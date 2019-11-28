@@ -76,8 +76,9 @@ class Expected_Roh():
 
     def roh_pdf_allchr_N(self, x, chr_lgts=[], N=1000):
         """Calculate the PDF of ROH blocks of length x [Morgan]
-        for m Recombination events summed over Chromosome Lengths
+        for pop size N summed over Chromosome Lengths
         x: Can be Array
+        N: effective population size (stands in for 2N)
         chr_lgts: Array of all chromosome lengths [in Morgan]
         Return PDF (per Morgan)"""
         if len(chr_lgts)==0:
@@ -98,3 +99,33 @@ class Expected_Roh():
         bw = x_arr[1] - x_arr[0]
         y = self.roh_pdf_allchr_N(x_arr + bw/2, chr_lgts=chr_lgts, N=N) * (x_arr+bw/2) * bw
         return np.sum(y)
+    
+###########################################
+### For Pop Size N (=2Ne) for time t
+### Density with respect x and t
+
+    def roh_pdf_t_N(self, x, chr_l, t, N):
+        """Calculate the PDF of ROH blocks of length x [Morgan] dx
+        and time t dt
+        x: Can be Array
+        N: Population size (sometimes stands in for 2N)
+        chr_lgts: Array of all chromosome lengths [in Morgan]
+        Return PDF (per Morgan)"""
+        coal_den = np.exp(-t/N) * (1/N)
+        block_den1 = (chr_l - x) * (2*t)**2 * np.exp(-2*t*x)
+        block_den2 = 2 * (2*t) * np.exp(-2*t*x)
+        full_den = coal_den * (block_den1 + block_den2) * (x<chr_l)*(x>0)
+        return full_den
+        
+    def roh_pdf_allchr_t_N(self, x, chr_lgts=[], t=100, N=1000):
+        """Calculate the PDF of ROH blocks of length x [Morgan]
+        for pop size N summed over Chromosome Lengths
+        x: Can be Array
+        t: Density with respect to time of origin of ROH
+        chr_lgts: Array of all chromosome lengths [in Morgan]
+        Return PDF (per Morgan)"""
+        if len(chr_lgts)==0:
+            chr_lgts = self.chr_lgts ## Default value
+        pdfs = [self.roh_pdf_t_N(x, chr_l, t, N) for chr_l in chr_lgts]
+        pdf_full = np.sum(pdfs, axis=0)
+        return pdf_full
