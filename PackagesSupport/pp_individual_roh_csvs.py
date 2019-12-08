@@ -138,11 +138,13 @@ def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", 
     """Post-process Individual ROH .csv files. Combines them into one summary ROH.csv, saved in save_path.
     Use Individuals iids, create paths and run the combining.
     iids: List of target Individuals
+    base_folder: Folder where to find individual results .csvs
     min_cm: Minimum post-processed Length of ROH blocks. Array (to have multiple possible values)
     snp_cm: Minimum Number of SNPs per cM
     gap: Maximum length of gaps to merge
     output: Whether to plot output per Individual.
-    meta_info: Whether to merge in Meta-Info from the original Meta File"""
+    meta_info: Whether to merge in Meta-Info from the original Meta File
+    save_path: If given, save resulting dataframe there"""
     
     ### Look up Individuals in meta_df and extract relevant sub-table
     df_full = pd.read_csv(meta_path)

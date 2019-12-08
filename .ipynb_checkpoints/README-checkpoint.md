@@ -104,16 +104,19 @@ These are then further post-process with functions in `./packagesSupport/pp_indi
 
 The ususual structure of doing this is:
 
-1) Produce list of paths to csvs
-2) Iterate over these csvs, extract and postprocess (e.g. gap-merging) these (function: )
+1) Produce list of paths to .csvs
+2) Iterate over these csvs, extract and postprocess (e.g. gap-merging) these
 3) These are then merged into one master .csv file with the fields, saved as `combinedroh.csv` with columns
-(iid, pop, max_roh, sum_roh, n_roh, lat, lon, age), where some summary details can be merged back in from the master meta dataframe.
+(iid, pop, max_roh, sum_roh, n_roh, lat, lon, age), where some summary details can be merged back in from the master meta dataframe. The function to do so can be found in pp_individual_roh_csvs.py in PackagesSupport. This function is typically called in the ParallelRun notebooks, towards the end
 
 One example of this workflow: `notebooks/PrepareData/roh_process.ipynb`
 
+### Combining Different Dataset
+These combined csvs are then combined again in 'combine_roh_results.ipynb' into one giant master dataframe. In this function, also "region" columns are defined, which are the basis for downstream processing.
+
 ### Example: Antonio 2019 Individuals
 There is a notebook in `Notebooks/PrepareData` to prepare the Meta, as well as the hdf5 in the right format.
-All individuals can be sbatched viat a script in `packagesSupport/cluster_runs/Antonio_callROH/`
+All individuals can be sbatched via a script in `packagesSupport/cluster_runs/Antonio_callROH/`
 Singe Individuals can be rerun with `Notebooks/ParallelRuns/parallel_antonio19.ipynb`. In this file, there is also the code to combine all indivdiual
 outputs into one summary .csv, that can than be used for downstream analysis (such as plotting all individuals)
 
@@ -123,6 +126,7 @@ Key plotting notebooks are found in `notebooks/figures/`
 Important Posterior plotting is found in `plot_posetrior.ipynb`.
 
 Geographic and temporal figure production is found in `plot_map_ROH.ipynb`
+
 
 ### Peak Memory Requirements:
 For 1x-2x coverage on 1240k, with readcounts from WG (Poisson), such as for much of Antonio2019 data:
