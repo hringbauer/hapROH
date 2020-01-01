@@ -3,6 +3,7 @@ Empirical/
 Simulated/
 Diverse/nosync/
 /figures/
+/figures_test/
 Python3/__pycache__/*
 Python3/create1000G_Mosaic/__pycache__/*
 Python3/cfunc.c
