@@ -319,6 +319,7 @@ class PreProcessingHDF5(PreProcessing):
 
 ###########################################
 
+
 class PreProcessingEigenstrat(PreProcessingHDF5):
     """Class for PreProcessing Eigenstrat Files
     Same as PreProcessingHDF5 for reference, but with Eigenstrat coe
@@ -328,6 +329,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
     es_target_path = ""  # Path of the Eigenstrat Object
     # Path of 1000G (without chromosome part):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
+    packed = True  # Whether to use packed or unpacked Eigenstrat
 
     def load_data(self, iid="MA89", ch=6, n_ref=2504):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
@@ -345,7 +347,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         f1000 = self.load_h5(h5_path1000g)
 
         # Load Eigenstrat object
-        es = load_eigenstrat(base_path=self.es_target_path)
+        es = load_eigenstrat(base_path=self.es_target_path, packed=self.packed)
 
         markers_obs, markers_ref = self.merge_es_hdf5(es, f1000)
 
@@ -421,7 +423,7 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
 
     out_folder = ""    # Where to save to
     prefix_out_data = ""  # Prefix of the Outdata
-    meta_path_targets = "" # Not need in this class.
+    meta_path_targets = ""  # Not need in this class.
     h5_path_targets = ""
     # Path of 1000G (without chromosome part):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
