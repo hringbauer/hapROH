@@ -21,7 +21,7 @@ from helper_functions import prepare_path, multi_run, combine_individual_data
 
 def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[],
                 e_model="readcount", p_model="MosaicHDF5", readcounts=True, destroy_phase=True,
-                post_model="Standard", h5_path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
+                post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
                 h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
                 meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
                 base_out_folder="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
@@ -41,12 +41,8 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[]
     hmm.p_obj.set_params(readcounts = readcounts, destroy_phase=destroy_phase,
                 base_out_folder=base_out_folder, prefix_out_data=prefix_out, excluded=exclude_pops)
     
-    ### Set the paths to target & ref
-    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, meta_path_ref = meta_path_ref, h5_path_targets = h5_path_targets)
-    
-    if p_model=="Eigenstrat":  # Hack to . Eventually switch to only target_path!
-        hmm.p_obj.set_params(es_target_path = h5_path_targets)
-    
+    ### Set the paths to ref & target
+    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, meta_path_ref = meta_path_ref)
     hmm.load_data(iid=iid, ch=ch, n_ref=n_ref)  # Load the actual Data
     hmm.load_secondary_objects()
 
@@ -65,7 +61,7 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[]
 
 def hapsb_ind(iid, chs=range(1,23), processes=1, delete=False, output=True, save=True, save_fp=False, n_ref=2504, 
               exclude_pops=[], e_model="readcount", p_model="MosaicHDF5", readcounts=True, destroy_phase=False,
-              post_model="Standard", h5_path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
+              post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
               h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
               meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
               base_out_folder="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
@@ -84,7 +80,7 @@ def hapsb_ind(iid, chs=range(1,23), processes=1, delete=False, output=True, save
     
     ### Prepare the Parameters for that Indivdiual
     prms = [[iid, ch, save, save_fp, n_ref, exclude_pops, e_model, p_model, readcounts, destroy_phase,
-            post_model, h5_path_targets, h5_path1000g, meta_path_ref, base_out_folder, prefix_out,
+            post_model, path_targets, h5_path1000g, meta_path_ref, base_out_folder, prefix_out,
             roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, logfile] for ch in chs]
     assert(len(prms[0])==23)   # Sanity Check
                             

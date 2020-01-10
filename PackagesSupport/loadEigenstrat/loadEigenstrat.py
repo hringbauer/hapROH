@@ -147,7 +147,7 @@ class EigenstratLoadUnpacked(EigenstratLoad):
         self.output = output
         if len(base_path) > 0:
             self.base_path = base_path
-        ### Get Size of Genotypes
+        ### Get Size of Data Matrix and sanity check
         with open(self.base_path + ".geno",'r') as f:
             t = f.read()
             l = t.splitlines()

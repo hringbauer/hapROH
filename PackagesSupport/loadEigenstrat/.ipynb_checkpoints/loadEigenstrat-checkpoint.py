@@ -15,10 +15,11 @@ class EigenstratLoad(object):
     output = True
     df_snp = 0  # Dataframe with all SNP
 
-    def __init__(self, base_path="", output=True):
+    def __init__(self, base_path="", output=True, sep=r"\s+"):
         """Concstructor:
-        basepath: Which basepath to use (path without .geno/.snp/.ind).
-        ch: Which chromosome to load"""
+        base_path: Data Path without .geno/.snp/.ind).
+        ch: Which chromosome to load
+        sep: What separator to use when loading the File"""
         self.output = output
         if len(base_path) > 0:
             self.base_path = base_path
@@ -28,27 +29,29 @@ class EigenstratLoad(object):
         # assuming sizeof(char)=1 here
         self.rlen = max(48, int(np.ceil(self.nind * 2 / 8)))
 
-        self.df_snp = self.load_snp_df()   # Load the SNP DataFrame
-        self.df_ind = self.load_ind_df()   # Load the Individual DataFrame
+        self.df_snp = self.load_snp_df(sep=sep)   # Load the SNP DataFrame
+        self.df_ind = self.load_ind_df(sep=sep)   # Load the Individual DataFrame
         assert(len(self.df_snp) == self.nsnp)  # Sanity Check
         assert(len(self.df_ind) == self.nind)  # Sanity Check II
 
         if self.output == True:
             print(f"3 Eigenstrat Files with {self.nind} Individuals and {self.nsnp} SNPs")
 
-    def load_snp_df(self):
+    def load_snp_df(self, sep=r"\s+"):
         """Load the SNP dataframe.
-        Uses self.base_path"""
+        Uses self.base_path
+        sep: What separator to use when loading the File"""
         path_snp = self.base_path + ".snp"
         df_snp = pd.read_csv(path_snp, header=None,
-                             sep=r"\s+", engine="python")
+                             sep=sep, engine="python")
         df_snp.columns = ["SNP", "chr", "map",
                           "pos", "ref", "alt"]  # Set the Columns
         return df_snp
 
-    def load_ind_df(self):
+    def load_ind_df(self, sep=r"\s+"):
         """Load the Individual dataframe.
-        Uses self.base_path"""
+        Uses self.base_path
+        sep: What separator to use when loading the File"""
         path_ind = self.base_path + ".ind"
         df_ind = pd.read_csv(path_ind, header=None,
                              sep=r"\s+", engine="python")
@@ -111,7 +114,7 @@ class EigenstratLoad(object):
 
     def extract_snps(self, id, markers, conversion=True, dtype=np.int8):
         """Extract SNPs for Integer Index i on marker list
-        markers. if conversion: Convert to VCF type encoding
+        markers. If conversion: Convert to VCF type encoding
         Load all SNPs and then subset"""
         geno = self.get_geno_i(id)
         geno = geno[markers] # Subset to markers
@@ -127,14 +130,63 @@ class EigenstratLoad(object):
 
         return geno
 
+#########################################################
+#########################################################
+#### Subclass for Non-Binary Eigenstrats
 
+class EigenstratLoadUnpacked(EigenstratLoad):
+    """Class that loads and postprocesses Eigenstrats.
+    Same as Superclass, but overwrites methods to load
+    non-binary encoded Genotype Data"""
 
-def load_eigenstrat(base_path, output=True):
-    """Factory Method to Load Eigenstrat object"""
-    es = EigenstratLoad(base_path, output=output)
+    def __init__(self, base_path="", output=True, sep=r"\s+"):
+        """Overwrite Concstructor:
+        base_path: Data path without .geno/.snp/.ind.
+        ch: Which chromosome to load
+        sep: What separator to use when loading the File"""
+        self.output = output
+        if len(base_path) > 0:
+            self.base_path = base_path
+        ### Get Size of Data Matrix and sanity check
+        with open(self.base_path + ".geno",'r') as f:
+            t = f.read()
+            l = t.splitlines()
+            self.nind = len(l[0])
+            self.nsnp = len(l)
+
+        self.df_snp = self.load_snp_df(sep=sep)   # Load the SNP DataFrame
+        self.df_ind = self.load_ind_df(sep=sep)   # Load the Individual DataFrame
+        assert(len(self.df_snp) == self.nsnp)  # Sanity Check
+        assert(len(self.df_ind) == self.nind)  # Sanity Check II
+
+        if self.output == True:
+            print(f"3 Eigenstrat Files with {self.nind} Individuals and {self.nsnp} SNPs")
+
+    def get_geno_i(self, i, missing_val=3):
+        """Load Genotype for Individual (Row) i,
+        assuming it's encoded in unpacked Format."""
+        geno=np.genfromtxt(self.base_path + ".geno", dtype='i1', delimiter=1, usecols=i)
+        geno[geno == 9] = missing_val
+        return geno
+		
+
+#########################################################
+#########################################################
+#### Factory Method
+
+def load_eigenstrat(base_path, output=True, sep=r"\s+", packed=True):
+    """Factory Method to Load Eigenstrat object
+    sep: What separator to use when loading the File
+    Packed: Whether Genotype Data is encoded in binary Format"""
+    if packed:
+    	es = EigenstratLoad(base_path, output=output, sep=sep)
+    else:
+    	es = EigenstratLoadUnpacked(base_path, output=output, sep=sep) 
     return es
 
 
+#########################################################
+#########################################################
 # Some Testing
 if __name__ == "__main__":
     es = load_eigenstrat(base_path="./Data/ReichLabEigenstrat/Olalde2019/Olalde_et_al_genotypes")

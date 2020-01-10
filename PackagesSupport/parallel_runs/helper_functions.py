@@ -28,7 +28,7 @@ def multi_run(fun, prms, processes = 4):
     fun: Function
     prms: The Parameter Files
     processes: How many Processes to use"""
-    print(f"Running {len(prms)} jobs in parallel.")
+    print(f"Running {len(prms)} total jobs; {processes} in parallel.")
     
     with mp.Pool(processes = processes) as pool:
         results = pool.starmap(fun, prms)
