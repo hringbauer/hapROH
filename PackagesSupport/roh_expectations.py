@@ -88,8 +88,8 @@ class Expected_Roh():
         return pdf_full
 
     def exp_roh_len_in_bin_N(self, l=[0,3], bins=1000, N=500, chr_lgts=[]):
-        """Calculate Epected Block Length for Individual m Meisosis apart and
-        with comm_anc haplotypes in common within interval l [in Morgan].
+        """Calculate Epected Block Length for Individual in
+        panmictic population of size N and within interval l [in Morgan].
         bins: Number of linearly spaced bins to do.
         N: Population size of haploids
         Return Sum [in Morgan]"""
@@ -99,6 +99,21 @@ class Expected_Roh():
         bw = x_arr[1] - x_arr[0]
         y = self.roh_pdf_allchr_N(x_arr + bw/2, chr_lgts=chr_lgts, N=N) * (x_arr+bw/2) * bw
         return np.sum(y)
+    
+    def var_roh_len_in_bin_N(self, l=[0,3], bins=1000, N=500, chr_lgts=[]):
+        """Calculate Variance of Sum ROH for Individual in
+        panmictic population of size N and within interval l [in Morgan].
+        bins: Number of linearly spaced bins to do.
+        N: Population size of haploids
+        Return Variance of Sum [in Morgan]"""
+        if len(chr_lgts)==0:
+            chr_lgts = self.chr_lgts ## Default value
+        x_arr = np.linspace(l[0], l[1], bins)
+        bw = x_arr[1] - x_arr[0]
+        # Nr of Blocks in small bins 
+        n = self.roh_pdf_allchr_N(x_arr + bw/2, chr_lgts=chr_lgts, N=N) * bw
+        v = n * (x_arr+bw/2)**2   # Variance in every bin
+        return np.sum(v)  # Overall Variance
     
 ###########################################
 ### For Pop Size N (=2Ne) for time t
