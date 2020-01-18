@@ -85,6 +85,8 @@ class PreProcessingHDF5(PreProcessing):
     diploid_ref = True   # Whether to use diploid Reference Individuals
     destroy_phase = True  # Whether to destroy Phase of Target Individual
     only_calls = True    # Whether to downsample to markers with no missing data
+    
+    max_mm_rate = 0.9 # Maximal mismatch rate ref/alt alleles between target and ref
 
     def __init__(self, save=True, output=True):
         """Initialize Class.
@@ -227,8 +229,8 @@ class PreProcessingHDF5(PreProcessing):
         # print(list(f["calldata"].keys()))
         # print(list(f["variants"].keys()))
         print(f"HDF5 loaded from {path}")
-        return f
-
+        return f   
+        
     def merge_2hdf(self, f, g):
         """ Merge two HDF 5 f and g. Return Indices of Overlap Individuals.
         f is Sardinian HDF5,
@@ -240,23 +242,27 @@ class PreProcessingHDF5(PreProcessing):
         # Check if in both Datasets
         b, i1, i2 = np.intersect1d(pos1, pos2, return_indices=True)
 
-        # Sanity Check if Reference is the same
+        ### Sanity Check if Reference is the same
         ref1 = np.array(f["variants/REF"])[i1]
         ref2 = np.array(g["variants/REF"])[i2]
         alt1 = np.array(f["variants/ALT"])[i1]
         alt2 = np.array(g["variants/ALT"])[i2, 0]
 
-        # Downsample to Site where both Ref and Alt are the same
+        ### Downsample to Site where both Ref and Alt are the same
         same = (ref1 == ref2)
-
         both_same = (ref1 == ref2) & (alt1 == alt2)
         i11 = i1[both_same]
         i22 = i2[both_same]
 
         if self.output == True:
-            print(f"\nIntersection on Positions: {len(b)}")
-            print(f"Nr of Matching Refs: {np.sum(same)} / {len(same)}")
-            print(f"Full Intersection Ref/Alt Identical: {len(i11)} / {len(both_same)}")
+            print(f"Nr of Matching Refs: {np.sum(same)} / {len(same)} SNPs")
+            print(f"Both Ref/Alt Identical: {len(i11)} / {len(both_same)}")
+        
+        mm_frac = (len(i11)/len(both_same))
+        if mm_frac <= self.max_mm_rate:
+            error = f"Ref/Alt Base Match fraction {mm_frac:.4f} < {self.max_mm_rate}"
+            error1 = " Check genetic map" # Maybe enter what desired version should be
+            raise RuntimeError(error + error1)
 
         return i11, i22
 
@@ -329,7 +335,8 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
     # Path of 1000G (without chromosome part):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
     packed = True  # Whether to use packed or unpacked Eigenstrat
-    sep = r"\s+"  # Which Column Separator to use in ind and snp File
+    sep = r"\s+"   # Which Column Separator to use in ind and snp File
+    flipstrand = True # Flip Strand if both alleles matching, but flipped
     
     def __init__(self, save=True, output=True, packed=True, sep= r"\s+"):
         """Initialize Class.
@@ -345,7 +352,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
     def load_data(self, iid="MA89", ch=6, n_ref=2504):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l] and the output folder.
-        Also save the loaded data if self.save=True
+        Save the loaded data if self.save==True
         Various modifiers in class fields (check also PreProcessingHDF5)"""
         self.ch = ch  # To remember Chromosome
         if self.output == True:
@@ -353,15 +360,15 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
 
         out_folder = self.set_output_folder(iid, ch)
 
-        # Load Reference HDF5 object
+        ### Load Reference HDF5 object
         h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"
         f1000 = self.load_h5(h5_path1000g)
 
-        # Load Eigenstrat object
+        ### Load Eigenstrat object
         es = load_eigenstrat(base_path=self.path_targets, 
                              sep=self.sep, packed=self.packed)
 
-        markers_obs, markers_ref = self.merge_es_hdf5(es, f1000)
+        markers_obs, markers_ref, flipped = self.merge_es_hdf5(es, f1000)
 
         id_obs = es.get_index_iid(iid)  # Get Index from Eigenstrat
         ids_ref = self.get_ref_ids(f1000, n_ref)
@@ -372,14 +379,21 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
             r_map, markers_obs, markers_ref = self.get_segment(
                 r_map, markers_obs, markers_ref)
 
-        # Do Extraction for Reference
+        ### Do Extraction for Reference
         gts = self.extract_snps_hdf5(
             f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
 
-        # Extraction for target (no RC here)
+        ### Extraction for target (no RC here)
         gts_ind = self.extract_snps_es(es, id_obs, markers_obs)
+        
+        ### Flip target genotypes where flipped
+        if self.flipstrand==True:
+            if self.output:
+                print(f"Flipping Ref/Alt in target for {np.sum(flipped)} SNPs...")
+            flip_idcs = flipped & (gts_ind[0,:]>=0) # Where Flip AND Genotype Data
+            gts_ind[:,flip_idcs] = 1 - gts_ind[:,flip_idcs]
 
-        # Do optional Processing Steps (only covered, destroy phase, save)
+        ### Do optional Processing Steps (only covered, destroy phase, save)
         gts_ind, gts, r_map, out_folder = self.optional_postprocessing(
             gts_ind, gts, r_map, out_folder)
 
@@ -396,8 +410,10 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
     def merge_es_hdf5(self, es, f_ref):
         """Merge Eigenstrat and HDF5 Loci, return intersection indices
         es: LoadEigenstrat Object
-        f1000: ref"""
-        pos1, idcs = es.give_positions(ch=self.ch)
+        f_ref: Reference HDF5
+        if self.flipstrand return indices [its] [its] 
+        and flip boolean vector [its]"""
+        pos1, idcs = es.give_positions(ch = self.ch)
         pos2 = f_ref["variants/POS"]
 
         # Check if in both Datasets
@@ -410,19 +426,41 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         ref2 = np.array(f_ref["variants/REF"])[i2]
         alt2 = np.array(f_ref["variants/ALT"])[i2, 0]
 
-        # Downsample to Site where both Ref and Alt are identical
+        # Downsample to Site where both Ref and Alt are identical        
         same = (ref1 == ref2)
         both_same = (ref1 == ref2) & (alt1 == alt2)
+        flipped = (ref1 == alt2) & (alt1 == ref2)
 
-        i11 = idcs[i1[both_same]]  # Give the Indices in full array (all ch)
-        i22 = i2[both_same]
-
-        if self.output == True:
+        if self.output:
             print(f"\nIntersection on Positions: {len(b)}")
             print(f"Nr of Matching Refs: {np.sum(same)} / {len(same)}")
-            print(f"Full Intersection Ref/Alt Identical: {len(i11)} / {len(both_same)}")
+            print(f"Ref/Alt Matching: {np.sum(both_same)} / {len(both_same)}")
+            print(f"Flipped Ref/Alt Matching: {np.sum(flipped)}")
+            print(f"Together: {np.sum(flipped|both_same)} / {len(both_same)}")
+            
+        if self.flipstrand:
+            i11 = idcs[i1[both_same | flipped]]  # Give the Indices in full array (all ch)
+            i22 = i2[both_same | flipped]
+            ### Identify Flipped SNPs indices in OR indices
+            # Assume both_same and flipped have NO intersection!
+            # Could clip to 1 then intersection possible
+            flipped = (np.cumsum(both_same + flipped))[flipped]-1
+            
+        else:
+            i11 = idcs[i1[both_same]]  # Give the Indices in full array (all ch)
+            i22 = i2[both_same]
+            flipped = [] # Numpy Indices to flip nothing
+            
+        flip = np.zeros(len(i11), dtype="bool")
+        flip[flipped]=True
+            
+        mm_frac = (len(i11)/len(both_same))
+        if mm_frac <= self.max_mm_rate:
+            error = f"Ref/Alt Flip+Noflip fraction {mm_frac:.4f} < {self.max_mm_rate}"
+            error1 = " Check genetic map" # Maybe enter what desired version should be
+            raise RuntimeError(error + error1)
 
-        return i11, i22
+        return i11, i22, flip
 
 
 ###########################################
@@ -506,7 +544,6 @@ class PreProcessingFolder(PreProcessing):
             r_map = np.arange(nr_snps)
 
         assert(len(r_map) == nr_snps)  # Sanity Check
-
         return r_map
 
 
@@ -524,13 +561,14 @@ def load_preprocessing(p_model="SardHDF5", save=True, output=True):
         p_obj = PreProcessingHDF5Sim(save=save, output=output)
     elif p_model == "Folder":
         p_obj = PreProcessingFolder(save=save, output=output)
-    elif p_model == "Eigenstrat":
-        p_obj = PreProcessingEigenstrat(save=save, output=output)
+    elif p_model == "EigenstratPacked":
+        p_obj = PreProcessingEigenstrat(save=save, output=output,
+                                        packed=True)
     elif p_model == "EigenstratUnpacked":
         p_obj = PreProcessingEigenstrat(save=save, output=output,
                                         packed=False, sep=r"\t")
     else:
-        raise NotImplementedError("Transition Model not found!")
+        raise NotImplementedError(f"Emission Model string {p_model} not found.")
 
     return p_obj
 
@@ -539,7 +577,7 @@ def load_preprocessing(p_model="SardHDF5", save=True, output=True):
 # For testing the Module
 if __name__ == "__main__":
     # Test Loading Eigenstrat
-    #pp = load_preprocessing(p_model="Eigenstrat", save=False, output=True)
+    # pp = load_preprocessing(p_model="Eigenstrat", save=False, output=True)
     # pp.set_params(path_targets="./Data/ReichLabEigenstrat/Olalde2019/Olalde_et_al_genotypes",
     #            base_out_folder="./Empirical/ES_Test/", only_calls=True)
 
