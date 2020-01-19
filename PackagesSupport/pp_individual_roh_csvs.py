@@ -17,13 +17,15 @@ def give_iid_paths(iids, base_folder="./Empirical/HO/", suffix = "_roh_full.csv"
     paths_csv = [os.path.join(base_folder, str(iid) + suffix) for iid in iids]
     return paths_csv
 
-def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100, gap=0.5, output=True):
+def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100, 
+                           gap=0.5, min_len=2, output=True):
     """Create the Ancient Sardinian Summary Dataframe
     paths: List of .csv Paths to load the Data from
     snp_cm: Minimum SNP Density per cM
     min_cm: Minimal centiMorgan for Postprocessing Postanalysis
     savepath: If given, where to save the summary .csv to
-    gap: Gaps to merge [in cM]"""    
+    gap: Gaps to merge [in cM]
+    min_len: Minimum Length of both Blocks for merge [in cM]"""    
     ### Dry run to check if paths exist
     idcs, paths_exist, paths_not_exist = [], [], []
     for i, path in enumerate(paths):
@@ -46,7 +48,7 @@ def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100, gap=0
     for i, path in enumerate(paths_exist):            
         df_roh = pd.read_csv(path)
         if gap>0:
-            df_roh = merge_called_blocks(df_roh, max_gap=gap/100)
+            df_roh = merge_called_blocks(df_roh, max_gap=gap/100, min_len=min_len/100)
             
         for j, m_cm in enumerate(min_cm):
             df_roh = post_process_roh_df(df_roh, output=output, snp_cm=snp_cm, min_cm=m_cm)  ### Do the Postprocessing
@@ -66,7 +68,7 @@ def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100, gap=0
     df1 = df1.sort_values(by=f"sum_roh>{min_cm[0]}", ascending=False)  # Sort output by minimal Cutoff 
     return df1
 
-def merge_called_blocks(df, max_gap=0, output=False):
+def merge_called_blocks(df, max_gap=0, min_len=0.02, output=False):
         """Merge Blocks in Dataframe df and return merged Dataframe.
         Gap is given in Morgan"""
         if len(df) == 0:
@@ -74,10 +76,16 @@ def merge_called_blocks(df, max_gap=0, output=False):
 
         df_n = df.drop(df.index)  # Create New Data frame with all raws removed
         row_c = df.iloc[0, :].copy()
+        row_c["lengthM"] = row_c["EndM"] - row_c["StartM"]
 
         # Iterate over all rows, update blocks if gaps small enough
         for index, row in df.iterrows():
-            if (row["StartM"] - row_c["EndM"] < max_gap) and (row["ch"] == row_c["ch"]):
+            ### Calculate Conditions
+            long_b = np.max([row_c["lengthM"], row["lengthM"]])>=min_len
+            short_g = (row["StartM"] - row_c["EndM"] < max_gap)
+            same_c = (row["ch"] == row_c["ch"])
+            
+            if long_b and short_g and same_c:
                 row_c["End"] = row["End"]
                 row_c["EndM"] = row["EndM"]
                 row_c["length"] = row_c["End"] - row_c["Start"]
@@ -134,7 +142,8 @@ def individual_roh_statistic(df, output=True):
 #### Main Function to post-process Individual ROH outputs
 
 def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", base_folder="./Empirical/Eigenstrat/Reichall/", 
-                       suffix='_roh_full.csv', save_path="", min_cm=[4,8,12], snp_cm=50, gap=1.0, output=True, meta_info=True):
+                      suffix='_roh_full.csv', save_path="", min_cm=[4,8,12], snp_cm=50, gap=1.0, min_len=1,
+                      output=True, meta_info=True):
     """Post-process Individual ROH .csv files. Combines them into one summary ROH.csv, saved in save_path.
     Use Individuals iids, create paths and run the combining.
     iids: List of target Individuals
