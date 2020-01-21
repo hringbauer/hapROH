@@ -1,0 +1,1039 @@
+Loaded 1002 Ancients
+Nr. high coverage ancients: 517
+Picking individual I0122 
+
+Doing Individual I0122...
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 89147 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr1.hdf5
+
+Intersection on Positions: 89143
+Nr of Matching Refs: 89143 / 89143
+Full Intersection Ref/Alt Identical: 89079 / 89143
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 42981 / 89079
+(Fraction SNP: 0.482504293941333)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr1/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr1/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0221
+Maximum Genetic Map: 2.8627
+Gaps bigger than 0.1 cM: 438
+Maximum Gap: 2.9245 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 42981)
+Loaded Observations:
+(2, 42981)
+Memory Usage: 2137.66144 mB
+Reference Number: 5008
+Total Log likelihood: -15168.095
+Memory Usage: 2138.116096 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr1/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr1/
+Fraction Markers in ROH: 0.4359
+Merged n=0 gaps < 0.0 M
+Called n=23 ROH Blocks > 1.0 cM
+Longest Block: 2.680
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr1/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 94239 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr2.hdf5
+
+Intersection on Positions: 94237
+Nr of Matching Refs: 94205 / 94237
+Full Intersection Ref/Alt Identical: 94137 / 94237
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 44424 / 94137
+(Fraction SNP: 0.47190796392491796)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr2/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr2/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 2.6883
+Gaps bigger than 0.1 cM: 395
+Maximum Gap: 2.9216 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 44424)
+Loaded Observations:
+(2, 44424)
+Memory Usage: 2205.20448 mB
+Reference Number: 5008
+Total Log likelihood: -15849.168
+Memory Usage: 2205.20448 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr2/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr2/
+Fraction Markers in ROH: 0.3949
+Merged n=0 gaps < 0.0 M
+Called n=11 ROH Blocks > 1.0 cM
+Longest Block: 2.757
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr2/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 77652 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr3.hdf5
+
+Intersection on Positions: 77650
+Nr of Matching Refs: 77606 / 77650
+Full Intersection Ref/Alt Identical: 77553 / 77650
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 36560 / 77553
+(Fraction SNP: 0.47141954534318464)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr3/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr3/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 2.2326
+Gaps bigger than 0.1 cM: 371
+Maximum Gap: 0.3919 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 36560)
+Loaded Observations:
+(2, 36560)
+Memory Usage: 1851.031552 mB
+Reference Number: 5008
+Total Log likelihood: -12480.511
+Memory Usage: 1851.031552 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr3/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr3/
+Fraction Markers in ROH: 0.4482
+Merged n=0 gaps < 0.0 M
+Called n=11 ROH Blocks > 1.0 cM
+Longest Block: 11.503
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr3/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 68759 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr4.hdf5
+
+Intersection on Positions: 68759
+Nr of Matching Refs: 68709 / 68759
+Full Intersection Ref/Alt Identical: 68663 / 68759
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 31072 / 68663
+(Fraction SNP: 0.45252901853982497)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr4/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr4/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0034
+Maximum Genetic Map: 2.1454
+Gaps bigger than 0.1 cM: 340
+Maximum Gap: 2.0523 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 31072)
+Loaded Observations:
+(2, 31072)
+Memory Usage: 1603.702784 mB
+Reference Number: 5008
+Total Log likelihood: -10973.923
+Memory Usage: 1603.702784 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr4/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr4/
+Fraction Markers in ROH: 0.4523
+Merged n=0 gaps < 0.0 M
+Called n=16 ROH Blocks > 1.0 cM
+Longest Block: 2.628
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr4/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 69399 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr5.hdf5
+
+Intersection on Positions: 69394
+Nr of Matching Refs: 69307 / 69394
+Full Intersection Ref/Alt Identical: 69252 / 69394
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 32490 / 69252
+(Fraction SNP: 0.4691561254548605)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr5/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr5/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0004
+Maximum Genetic Map: 2.0409
+Gaps bigger than 0.1 cM: 347
+Maximum Gap: 1.0498 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 32490)
+Loaded Observations:
+(2, 32490)
+Memory Usage: 1667.629056 mB
+Reference Number: 5008
+Total Log likelihood: -11414.591
+Memory Usage: 1667.629056 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr5/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr5/
+Fraction Markers in ROH: 0.4268
+Merged n=0 gaps < 0.0 M
+Called n=14 ROH Blocks > 1.0 cM
+Longest Block: 3.994
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr5/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 75870 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr6.hdf5
+
+Intersection on Positions: 75866
+Nr of Matching Refs: 75743 / 75866
+Full Intersection Ref/Alt Identical: 75675 / 75866
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 35763 / 75675
+(Fraction SNP: 0.47258671952428144)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr6/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr6/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0035
+Maximum Genetic Map: 1.9203
+Gaps bigger than 0.1 cM: 275
+Maximum Gap: 0.5125 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 35763)
+Loaded Observations:
+(2, 35763)
+Memory Usage: 1815.240704 mB
+Reference Number: 5008
+Total Log likelihood: -12708.329
+Memory Usage: 1815.240704 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr6/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr6/
+Fraction Markers in ROH: 0.4243
+Merged n=0 gaps < 0.0 M
+Called n=8 ROH Blocks > 1.0 cM
+Longest Block: 1.871
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr6/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 59890 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr7.hdf5
+
+Intersection on Positions: 59889
+Nr of Matching Refs: 59781 / 59889
+Full Intersection Ref/Alt Identical: 59715 / 59889
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 27740 / 59715
+(Fraction SNP: 0.46453989784811184)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr7/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr7/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.8715
+Gaps bigger than 0.1 cM: 307
+Maximum Gap: 1.0200 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 27740)
+Loaded Observations:
+(2, 27740)
+Memory Usage: 1453.576192 mB
+Reference Number: 5008
+Total Log likelihood: -10243.301
+Memory Usage: 1453.576192 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr7/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr7/
+Fraction Markers in ROH: 0.3954
+Merged n=0 gaps < 0.0 M
+Called n=13 ROH Blocks > 1.0 cM
+Longest Block: 2.629
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr7/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 61133 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr8.hdf5
+
+Intersection on Positions: 61130
+Nr of Matching Refs: 61022 / 61130
+Full Intersection Ref/Alt Identical: 60960 / 61130
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 28919 / 60960
+(Fraction SNP: 0.47439304461942255)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr8/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr8/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.6800
+Gaps bigger than 0.1 cM: 244
+Maximum Gap: 1.8932 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28919)
+Loaded Observations:
+(2, 28919)
+Memory Usage: 1506.725888 mB
+Reference Number: 5008
+Total Log likelihood: -9922.555
+Memory Usage: 1506.725888 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr8/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr8/
+Fraction Markers in ROH: 0.5084
+Merged n=0 gaps < 0.0 M
+Called n=11 ROH Blocks > 1.0 cM
+Longest Block: 3.539
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr8/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 50668 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr9.hdf5
+
+Intersection on Positions: 50668
+Nr of Matching Refs: 50539 / 50668
+Full Intersection Ref/Alt Identical: 50493 / 50668
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 24021 / 50493
+(Fraction SNP: 0.47572930901313054)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr9/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr9/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.6630
+Gaps bigger than 0.1 cM: 273
+Maximum Gap: 1.9116 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 24021)
+Loaded Observations:
+(2, 24021)
+Memory Usage: 1286.152192 mB
+Reference Number: 5008
+Total Log likelihood: -8458.045
+Memory Usage: 1286.152192 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr9/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr9/
+Fraction Markers in ROH: 0.4392
+Merged n=0 gaps < 0.0 M
+Called n=15 ROH Blocks > 1.0 cM
+Longest Block: 4.151
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr9/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 58804 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr10.hdf5
+
+Intersection on Positions: 58803
+Nr of Matching Refs: 58657 / 58803
+Full Intersection Ref/Alt Identical: 58591 / 58803
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 28149 / 58591
+(Fraction SNP: 0.48043214828215935)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr10/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr10/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.8091
+Gaps bigger than 0.1 cM: 276
+Maximum Gap: 2.0338 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28149)
+Loaded Observations:
+(2, 28149)
+Memory Usage: 1472.282624 mB
+Reference Number: 5008
+Total Log likelihood: -10223.391
+Memory Usage: 1472.282624 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr10/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr10/
+Fraction Markers in ROH: 0.4253
+Merged n=0 gaps < 0.0 M
+Called n=10 ROH Blocks > 1.0 cM
+Longest Block: 2.459
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr10/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 54833 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr11.hdf5
+
+Intersection on Positions: 54831
+Nr of Matching Refs: 54669 / 54831
+Full Intersection Ref/Alt Identical: 54616 / 54831
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 25981 / 54616
+(Fraction SNP: 0.4757030906694009)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr11/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr11/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.5822
+Gaps bigger than 0.1 cM: 252
+Maximum Gap: 0.5279 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 25981)
+Loaded Observations:
+(2, 25981)
+Memory Usage: 1374.55616 mB
+Reference Number: 5008
+Total Log likelihood: -9602.900
+Memory Usage: 1374.55616 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr11/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr11/
+Fraction Markers in ROH: 0.3963
+Merged n=0 gaps < 0.0 M
+Called n=11 ROH Blocks > 1.0 cM
+Longest Block: 2.136
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr11/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 53911 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr12.hdf5
+
+Intersection on Positions: 53911
+Nr of Matching Refs: 53713 / 53911
+Full Intersection Ref/Alt Identical: 53672 / 53911
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 25453 / 53672
+(Fraction SNP: 0.47423237442241767)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr12/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr12/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0017
+Maximum Genetic Map: 1.7468
+Gaps bigger than 0.1 cM: 293
+Maximum Gap: 1.1095 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 25453)
+Loaded Observations:
+(2, 25453)
+Memory Usage: 1350.754304 mB
+Reference Number: 5008
+Total Log likelihood: -9127.977
+Memory Usage: 1350.754304 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr12/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr12/
+Fraction Markers in ROH: 0.4306
+Merged n=0 gaps < 0.0 M
+Called n=10 ROH Blocks > 1.0 cM
+Longest Block: 1.513
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr12/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 39018 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr13.hdf5
+
+Intersection on Positions: 39015
+Nr of Matching Refs: 38885 / 39015
+Full Intersection Ref/Alt Identical: 38841 / 39015
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 18055 / 38841
+(Fraction SNP: 0.46484385057027366)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr13/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr13/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0019
+Maximum Genetic Map: 1.2570
+Gaps bigger than 0.1 cM: 211
+Maximum Gap: 1.2285 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18055)
+Loaded Observations:
+(2, 18055)
+Memory Usage: 1017.253888 mB
+Reference Number: 5008
+Total Log likelihood: -6580.719
+Memory Usage: 1017.253888 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr13/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr13/
+Fraction Markers in ROH: 0.4068
+Merged n=0 gaps < 0.0 M
+Called n=6 ROH Blocks > 1.0 cM
+Longest Block: 1.609
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr13/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 36301 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr14.hdf5
+
+Intersection on Positions: 36301
+Nr of Matching Refs: 36166 / 36301
+Full Intersection Ref/Alt Identical: 36126 / 36301
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 16772 / 36126
+(Fraction SNP: 0.46426396501134914)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr14/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr14/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0184
+Maximum Genetic Map: 1.2020
+Gaps bigger than 0.1 cM: 204
+Maximum Gap: 3.0853 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 16772)
+Loaded Observations:
+(2, 16772)
+Memory Usage: 959.414272 mB
+Reference Number: 5008
+Total Log likelihood: -5809.075
+Memory Usage: 959.414272 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr14/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr14/
+Fraction Markers in ROH: 0.4724
+Merged n=0 gaps < 0.0 M
+Called n=9 ROH Blocks > 1.0 cM
+Longest Block: 3.298
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr14/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34429 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr15.hdf5
+
+Intersection on Positions: 34425
+Nr of Matching Refs: 34285 / 34425
+Full Intersection Ref/Alt Identical: 34249 / 34425
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 16541 / 34249
+(Fraction SNP: 0.48296300621915966)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr15/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr15/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 1.4135
+Gaps bigger than 0.1 cM: 210
+Maximum Gap: 11.6560 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 16541)
+Loaded Observations:
+(2, 16541)
+Memory Usage: 948.998144 mB
+Reference Number: 5008
+Total Log likelihood: -5775.514
+Memory Usage: 948.998144 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr15/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr15/
+Fraction Markers in ROH: 0.4656
+Merged n=0 gaps < 0.0 M
+Called n=12 ROH Blocks > 1.0 cM
+Longest Block: 1.589
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr15/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 34402 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr16.hdf5
+
+Intersection on Positions: 34399
+Nr of Matching Refs: 34254 / 34399
+Full Intersection Ref/Alt Identical: 34201 / 34399
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 16914 / 34201
+(Fraction SNP: 0.49454694307184)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr16/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr16/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.3403
+Gaps bigger than 0.1 cM: 234
+Maximum Gap: 0.8485 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 16914)
+Loaded Observations:
+(2, 16914)
+Memory Usage: 965.828608 mB
+Reference Number: 5008
+Total Log likelihood: -6142.052
+Memory Usage: 965.828608 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr16/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr16/
+Fraction Markers in ROH: 0.4337
+Merged n=0 gaps < 0.0 M
+Called n=7 ROH Blocks > 1.0 cM
+Longest Block: 2.284
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr16/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29314 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr17.hdf5
+
+Intersection on Positions: 29313
+Nr of Matching Refs: 29159 / 29313
+Full Intersection Ref/Alt Identical: 29124 / 29313
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 14074 / 29124
+(Fraction SNP: 0.48324405988188435)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr17/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr17/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0005
+Maximum Genetic Map: 1.2847
+Gaps bigger than 0.1 cM: 235
+Maximum Gap: 1.2341 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 14074)
+Loaded Observations:
+(2, 14074)
+Memory Usage: 837.79584 mB
+Reference Number: 5008
+Total Log likelihood: -5033.330
+Memory Usage: 837.79584 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr17/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr17/
+Fraction Markers in ROH: 0.4488
+Merged n=0 gaps < 0.0 M
+Called n=10 ROH Blocks > 1.0 cM
+Longest Block: 2.865
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr17/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 33917 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr18.hdf5
+
+Intersection on Positions: 33916
+Nr of Matching Refs: 33774 / 33916
+Full Intersection Ref/Alt Identical: 33746 / 33916
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 15896 / 33746
+(Fraction SNP: 0.47104842055354706)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr18/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr18/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0025
+Maximum Genetic Map: 1.1771
+Gaps bigger than 0.1 cM: 220
+Maximum Gap: 0.4879 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15896)
+Loaded Observations:
+(2, 15896)
+Memory Usage: 919.932928 mB
+Reference Number: 5008
+Total Log likelihood: -5739.110
+Memory Usage: 919.932928 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr18/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr18/
+Fraction Markers in ROH: 0.4290
+Merged n=0 gaps < 0.0 M
+Called n=10 ROH Blocks > 1.0 cM
+Longest Block: 1.954
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr18/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 18460 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr19.hdf5
+
+Intersection on Positions: 18459
+Nr of Matching Refs: 18381 / 18459
+Full Intersection Ref/Alt Identical: 18340 / 18459
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 8907 / 18340
+(Fraction SNP: 0.485659760087241)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr19/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr19/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.0773
+Gaps bigger than 0.1 cM: 244
+Maximum Gap: 0.5964 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 8907)
+Loaded Observations:
+(2, 8907)
+Memory Usage: 604.868608 mB
+Reference Number: 5008
+Total Log likelihood: -3370.793
+Memory Usage: 604.868608 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr19/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr19/
+Fraction Markers in ROH: 0.4074
+Merged n=0 gaps < 0.0 M
+Called n=10 ROH Blocks > 1.0 cM
+Longest Block: 2.754
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr19/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 29078 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr20.hdf5
+
+Intersection on Positions: 29077
+Nr of Matching Refs: 28908 / 29077
+Full Intersection Ref/Alt Identical: 28864 / 29077
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 14171 / 28864
+(Fraction SNP: 0.49095759423503327)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr20/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr20/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0006
+Maximum Genetic Map: 1.0821
+Gaps bigger than 0.1 cM: 208
+Maximum Gap: 0.4744 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 14171)
+Loaded Observations:
+(2, 14171)
+Memory Usage: 842.170368 mB
+Reference Number: 5008
+Total Log likelihood: -5113.815
+Memory Usage: 842.170368 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr20/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr20/
+Fraction Markers in ROH: 0.3862
+Merged n=0 gaps < 0.0 M
+Called n=5 ROH Blocks > 1.0 cM
+Longest Block: 2.016
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr20/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 16038 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr21.hdf5
+
+Intersection on Positions: 16036
+Nr of Matching Refs: 15949 / 16036
+Full Intersection Ref/Alt Identical: 15930 / 16036
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 7429 / 15930
+(Fraction SNP: 0.46635279347143754)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr21/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr21/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0099
+Maximum Genetic Map: 0.6277
+Gaps bigger than 0.1 cM: 129
+Maximum Gap: 0.4926 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7429)
+Loaded Observations:
+(2, 7429)
+Memory Usage: 538.251264 mB
+Reference Number: 5008
+Total Log likelihood: -2649.198
+Memory Usage: 538.251264 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr21/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr21/
+Fraction Markers in ROH: 0.4398
+Merged n=0 gaps < 0.0 M
+Called n=7 ROH Blocks > 1.0 cM
+Longest Block: 2.034
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr21/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: I0122
+
+Loaded 1145647 variants
+Loaded 4616 individuals
+HDF5 loaded from ./Data/Marcus2019_1240k/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5
+
+Loaded 15802 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr22.hdf5
+
+Intersection on Positions: 15802
+Nr of Matching Refs: 15704 / 15802
+Full Intersection Ref/Alt Identical: 15684 / 15802
+2504 / 2504 Individuals included in Reference
+Extraction of 2 Haplotypes complete
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 7810 / 15684
+(Fraction SNP: 0.4979597041571028)
+Successfully saved to: ./Empirical/1240k/MarcusAncsPH/I0122/chr22/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/1240k/MarcusAncsPH/I0122/chr22/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0199
+Maximum Genetic Map: 0.7408
+Gaps bigger than 0.1 cM: 133
+Maximum Gap: 1.6949 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 7810)
+Loaded Observations:
+(2, 7810)
+Memory Usage: 555.421696 mB
+Reference Number: 5008
+Total Log likelihood: -2858.657
+Memory Usage: 555.421696 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/1240k/MarcusAncsPH/I0122/chr22/.
+Successfully loaded for PP. from ./Empirical/1240k/MarcusAncsPH/I0122/chr22/
+Fraction Markers in ROH: 0.4656
+Merged n=0 gaps < 0.0 M
+Called n=8 ROH Blocks > 1.0 cM
+Longest Block: 1.353
+Successfully saved to ./Empirical/1240k/MarcusAncsPH/I0122/chr22/roh.csv

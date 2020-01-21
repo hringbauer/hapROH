@@ -1,0 +1,947 @@
+Doing Individual Botocudo17.SG...
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 89147 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr1.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 89147
+Nr of Matching Refs: 89147 / 89147
+Full Intersection Ref/Alt Identical: 89082 / 89147
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 67501 / 89082
+(Fraction SNP: 0.7577400597202577)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr1/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr1/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0201
+Maximum Genetic Map: 2.8627
+Gaps bigger than 0.1 cM: 329
+Maximum Gap: 2.9476 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 67501)
+Loaded Observations:
+(2, 67501)
+Memory Usage: 3227.0336 mB
+Reference Number: 5008
+Total Log likelihood: -21011.357
+Memory Usage: 3227.492352 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr1/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr1/
+Fraction Markers in ROH: 0.5218
+Merged n=0 gaps < 0.0 M
+Called n=26 ROH Blocks > 1.0 cM
+Longest Block: 8.097
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr1/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 94239 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr2.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 94239
+Nr of Matching Refs: 94239 / 94239
+Full Intersection Ref/Alt Identical: 94173 / 94239
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 71180 / 94173
+(Fraction SNP: 0.755842969853355)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr2/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr2/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0002
+Maximum Genetic Map: 2.6883
+Gaps bigger than 0.1 cM: 284
+Maximum Gap: 1.8302 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 71180)
+Loaded Observations:
+(2, 71180)
+Memory Usage: 3385.01632 mB
+Reference Number: 5008
+Total Log likelihood: -21167.066
+Memory Usage: 3385.01632 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr2/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr2/
+Fraction Markers in ROH: 0.5498
+Merged n=0 gaps < 0.0 M
+Called n=32 ROH Blocks > 1.0 cM
+Longest Block: 6.545
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr2/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 77652 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr3.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 77652
+Nr of Matching Refs: 77652 / 77652
+Full Intersection Ref/Alt Identical: 77601 / 77652
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 58453 / 77601
+(Fraction SNP: 0.7532506024406902)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr3/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr3/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 2.2326
+Gaps bigger than 0.1 cM: 273
+Maximum Gap: 0.2847 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 58453)
+Loaded Observations:
+(2, 58453)
+Memory Usage: 2813.140992 mB
+Reference Number: 5008
+Total Log likelihood: -18999.307
+Memory Usage: 2813.140992 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr3/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr3/
+Fraction Markers in ROH: 0.4845
+Merged n=0 gaps < 0.0 M
+Called n=18 ROH Blocks > 1.0 cM
+Longest Block: 2.731
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr3/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 68759 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr4.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 68759
+Nr of Matching Refs: 68759 / 68759
+Full Intersection Ref/Alt Identical: 68720 / 68759
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 51410 / 68720
+(Fraction SNP: 0.7481082654249127)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr4/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr4/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0034
+Maximum Genetic Map: 2.1454
+Gaps bigger than 0.1 cM: 239
+Maximum Gap: 2.0464 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 51410)
+Loaded Observations:
+(2, 51410)
+Memory Usage: 2496.688128 mB
+Reference Number: 5008
+Total Log likelihood: -15796.243
+Memory Usage: 2495.000576 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr4/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr4/
+Fraction Markers in ROH: 0.5300
+Merged n=0 gaps < 0.0 M
+Called n=14 ROH Blocks > 1.0 cM
+Longest Block: 20.154
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr4/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 69399 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr5.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 69399
+Nr of Matching Refs: 69399 / 69399
+Full Intersection Ref/Alt Identical: 69354 / 69399
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 52317 / 69354
+(Fraction SNP: 0.7543472618738645)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr5/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr5/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0004
+Maximum Genetic Map: 2.0409
+Gaps bigger than 0.1 cM: 248
+Maximum Gap: 1.1070 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 52317)
+Loaded Observations:
+(2, 52317)
+Memory Usage: 2537.910272 mB
+Reference Number: 5008
+Total Log likelihood: -16712.723
+Memory Usage: 2537.910272 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr5/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr5/
+Fraction Markers in ROH: 0.4914
+Merged n=0 gaps < 0.0 M
+Called n=19 ROH Blocks > 1.0 cM
+Longest Block: 3.418
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr5/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 75870 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr6.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 75870
+Nr of Matching Refs: 75870 / 75870
+Full Intersection Ref/Alt Identical: 75816 / 75870
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 57271 / 75816
+(Fraction SNP: 0.7553946396538989)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr6/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr6/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0032
+Maximum Genetic Map: 1.9203
+Gaps bigger than 0.1 cM: 196
+Maximum Gap: 0.5086 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 57271)
+Loaded Observations:
+(2, 57271)
+Memory Usage: 2758.107136 mB
+Reference Number: 5008
+Total Log likelihood: -16195.990
+Memory Usage: 2758.107136 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr6/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr6/
+Fraction Markers in ROH: 0.5788
+Merged n=0 gaps < 0.0 M
+Called n=15 ROH Blocks > 1.0 cM
+Longest Block: 7.353
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr6/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 59890 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr7.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 59890
+Nr of Matching Refs: 59890 / 59890
+Full Intersection Ref/Alt Identical: 59836 / 59890
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 45253 / 59836
+(Fraction SNP: 0.7562838425028411)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr7/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr7/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.8715
+Gaps bigger than 0.1 cM: 233
+Maximum Gap: 0.9578 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 45253)
+Loaded Observations:
+(2, 45253)
+Memory Usage: 2216.329216 mB
+Reference Number: 5008
+Total Log likelihood: -14764.671
+Memory Usage: 2216.329216 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr7/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr7/
+Fraction Markers in ROH: 0.5047
+Merged n=0 gaps < 0.0 M
+Called n=14 ROH Blocks > 1.0 cM
+Longest Block: 2.866
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr7/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 61133 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr8.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 61133
+Nr of Matching Refs: 61133 / 61133
+Full Intersection Ref/Alt Identical: 61091 / 61133
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 46281 / 61091
+(Fraction SNP: 0.7575747655137418)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr8/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr8/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.6800
+Gaps bigger than 0.1 cM: 174
+Maximum Gap: 1.8932 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 46281)
+Loaded Observations:
+(2, 46281)
+Memory Usage: 2255.245312 mB
+Reference Number: 5008
+Total Log likelihood: -14831.953
+Memory Usage: 2255.663104 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr8/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr8/
+Fraction Markers in ROH: 0.5044
+Merged n=0 gaps < 0.0 M
+Called n=16 ROH Blocks > 1.0 cM
+Longest Block: 5.584
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr8/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 50668 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr9.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 50668
+Nr of Matching Refs: 50668 / 50668
+Full Intersection Ref/Alt Identical: 50629 / 50668
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 38260 / 50629
+(Fraction SNP: 0.7556933773133975)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr9/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr9/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.6630
+Gaps bigger than 0.1 cM: 200
+Maximum Gap: 2.3102 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 38260)
+Loaded Observations:
+(2, 38260)
+Memory Usage: 1896.1408 mB
+Reference Number: 5008
+Total Log likelihood: -12629.659
+Memory Usage: 1896.1408 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr9/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr9/
+Fraction Markers in ROH: 0.5108
+Merged n=0 gaps < 0.0 M
+Called n=16 ROH Blocks > 1.0 cM
+Longest Block: 4.261
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr9/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 58804 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr10.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 58804
+Nr of Matching Refs: 58804 / 58804
+Full Intersection Ref/Alt Identical: 58763 / 58804
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 44609 / 58763
+(Fraction SNP: 0.7591341490393615)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr10/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr10/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.8092
+Gaps bigger than 0.1 cM: 206
+Maximum Gap: 2.0335 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 44609)
+Loaded Observations:
+(2, 44609)
+Memory Usage: 2183.401472 mB
+Reference Number: 5008
+Total Log likelihood: -14631.075
+Memory Usage: 2183.401472 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr10/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr10/
+Fraction Markers in ROH: 0.4866
+Merged n=0 gaps < 0.0 M
+Called n=12 ROH Blocks > 1.0 cM
+Longest Block: 3.007
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr10/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 54833 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr11.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 54833
+Nr of Matching Refs: 54833 / 54833
+Full Intersection Ref/Alt Identical: 54796 / 54833
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 41175 / 54796
+(Fraction SNP: 0.7514234615665377)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr11/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr11/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.5822
+Gaps bigger than 0.1 cM: 181
+Maximum Gap: 0.5658 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 41175)
+Loaded Observations:
+(2, 41175)
+Memory Usage: 2027.04896 mB
+Reference Number: 5008
+Total Log likelihood: -13684.041
+Memory Usage: 2027.04896 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr11/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr11/
+Fraction Markers in ROH: 0.4555
+Merged n=0 gaps < 0.0 M
+Called n=8 ROH Blocks > 1.0 cM
+Longest Block: 5.245
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr11/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 53911 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr12.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 53911
+Nr of Matching Refs: 53911 / 53911
+Full Intersection Ref/Alt Identical: 53884 / 53911
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 40726 / 53884
+(Fraction SNP: 0.7558087744042759)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr12/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr12/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0017
+Maximum Genetic Map: 1.7468
+Gaps bigger than 0.1 cM: 216
+Maximum Gap: 0.8015 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 40726)
+Loaded Observations:
+(2, 40726)
+Memory Usage: 2006.519808 mB
+Reference Number: 5008
+Total Log likelihood: -12279.670
+Memory Usage: 2006.519808 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr12/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr12/
+Fraction Markers in ROH: 0.5412
+Merged n=0 gaps < 0.0 M
+Called n=17 ROH Blocks > 1.0 cM
+Longest Block: 4.207
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr12/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 39018 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr13.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 39018
+Nr of Matching Refs: 39018 / 39018
+Full Intersection Ref/Alt Identical: 38994 / 39018
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 29373 / 38994
+(Fraction SNP: 0.7532697338052008)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr13/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr13/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0019
+Maximum Genetic Map: 1.2570
+Gaps bigger than 0.1 cM: 161
+Maximum Gap: 1.2227 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 29373)
+Loaded Observations:
+(2, 29373)
+Memory Usage: 1495.527424 mB
+Reference Number: 5008
+Total Log likelihood: -9280.467
+Memory Usage: 1495.527424 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr13/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr13/
+Fraction Markers in ROH: 0.5085
+Merged n=0 gaps < 0.0 M
+Called n=12 ROH Blocks > 1.0 cM
+Longest Block: 5.240
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr13/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 36301 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr14.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 36301
+Nr of Matching Refs: 36301 / 36301
+Full Intersection Ref/Alt Identical: 36280 / 36301
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 27320 / 36280
+(Fraction SNP: 0.75303197353914)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr14/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr14/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0161
+Maximum Genetic Map: 1.2020
+Gaps bigger than 0.1 cM: 152
+Maximum Gap: 3.0309 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 27320)
+Loaded Observations:
+(2, 27320)
+Memory Usage: 1404.022784 mB
+Reference Number: 5008
+Total Log likelihood: -9276.482
+Memory Usage: 1404.022784 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr14/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr14/
+Fraction Markers in ROH: 0.4723
+Merged n=0 gaps < 0.0 M
+Called n=7 ROH Blocks > 1.0 cM
+Longest Block: 2.363
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr14/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 34429 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr15.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 34429
+Nr of Matching Refs: 34429 / 34429
+Full Intersection Ref/Alt Identical: 34407 / 34429
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 26122 / 34407
+(Fraction SNP: 0.7592059755282355)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr15/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr15/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.4135
+Gaps bigger than 0.1 cM: 148
+Maximum Gap: 11.4957 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 26122)
+Loaded Observations:
+(2, 26122)
+Memory Usage: 1351.0656 mB
+Reference Number: 5008
+Total Log likelihood: -8147.972
+Memory Usage: 1351.0656 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr15/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr15/
+Fraction Markers in ROH: 0.5164
+Merged n=0 gaps < 0.0 M
+Called n=16 ROH Blocks > 1.0 cM
+Longest Block: 6.416
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr15/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 34402 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr16.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 34402
+Nr of Matching Refs: 34402 / 34402
+Full Intersection Ref/Alt Identical: 34375 / 34402
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 26046 / 34375
+(Fraction SNP: 0.7577018181818181)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr16/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr16/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0000
+Maximum Genetic Map: 1.3403
+Gaps bigger than 0.1 cM: 175
+Maximum Gap: 1.0338 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 26046)
+Loaded Observations:
+(2, 26046)
+Memory Usage: 1349.2224 mB
+Reference Number: 5008
+Total Log likelihood: -8591.254
+Memory Usage: 1344.774144 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr16/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr16/
+Fraction Markers in ROH: 0.4800
+Merged n=0 gaps < 0.0 M
+Called n=11 ROH Blocks > 1.0 cM
+Longest Block: 4.548
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr16/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 29314 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr17.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 29314
+Nr of Matching Refs: 29314 / 29314
+Full Intersection Ref/Alt Identical: 29292 / 29314
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 22326 / 29292
+(Fraction SNP: 0.7621876280213028)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr17/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr17/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0003
+Maximum Genetic Map: 1.2847
+Gaps bigger than 0.1 cM: 167
+Maximum Gap: 1.2341 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 22326)
+Loaded Observations:
+(2, 22326)
+Memory Usage: 1177.33376 mB
+Reference Number: 5008
+Total Log likelihood: -7389.772
+Memory Usage: 1177.33376 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr17/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr17/
+Fraction Markers in ROH: 0.5025
+Merged n=0 gaps < 0.0 M
+Called n=16 ROH Blocks > 1.0 cM
+Longest Block: 3.925
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr17/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 33917 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr18.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 33917
+Nr of Matching Refs: 33917 / 33917
+Full Intersection Ref/Alt Identical: 33902 / 33917
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 25735 / 33902
+(Fraction SNP: 0.7590997581263642)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr18/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr18/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.1771
+Gaps bigger than 0.1 cM: 149
+Maximum Gap: 0.4763 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 25735)
+Loaded Observations:
+(2, 25735)
+Memory Usage: 1332.57216 mB
+Reference Number: 5008
+Total Log likelihood: -8248.748
+Memory Usage: 1332.57216 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr18/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr18/
+Fraction Markers in ROH: 0.4800
+Merged n=0 gaps < 0.0 M
+Called n=11 ROH Blocks > 1.0 cM
+Longest Block: 3.679
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr18/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 18460 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr19.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 18460
+Nr of Matching Refs: 18460 / 18460
+Full Intersection Ref/Alt Identical: 18441 / 18460
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 14049 / 18441
+(Fraction SNP: 0.7618350414836506)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr19/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr19/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0773
+Gaps bigger than 0.1 cM: 172
+Maximum Gap: 0.5964 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 14049)
+Loaded Observations:
+(2, 14049)
+Memory Usage: 806.825984 mB
+Reference Number: 5008
+Total Log likelihood: -5014.626
+Memory Usage: 806.825984 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr19/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr19/
+Fraction Markers in ROH: 0.4696
+Merged n=0 gaps < 0.0 M
+Called n=11 ROH Blocks > 1.0 cM
+Longest Block: 3.183
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr19/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 29078 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr20.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 29078
+Nr of Matching Refs: 29078 / 29078
+Full Intersection Ref/Alt Identical: 29053 / 29078
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 22072 / 29053
+(Fraction SNP: 0.7597150036140846)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr20/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr20/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0821
+Gaps bigger than 0.1 cM: 156
+Maximum Gap: 0.4744 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 22072)
+Loaded Observations:
+(2, 22072)
+Memory Usage: 1169.240064 mB
+Reference Number: 5008
+Total Log likelihood: -7005.161
+Memory Usage: 1164.464128 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr20/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr20/
+Fraction Markers in ROH: 0.5427
+Merged n=0 gaps < 0.0 M
+Called n=15 ROH Blocks > 1.0 cM
+Longest Block: 3.899
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr20/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 16038 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr21.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 16038
+Nr of Matching Refs: 16038 / 16038
+Full Intersection Ref/Alt Identical: 16031 / 16038
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 12134 / 16031
+(Fraction SNP: 0.7569084898010106)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr21/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr21/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0086
+Maximum Genetic Map: 0.6279
+Gaps bigger than 0.1 cM: 88
+Maximum Gap: 0.4838 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 12134)
+Loaded Observations:
+(2, 12134)
+Memory Usage: 717.889536 mB
+Reference Number: 5008
+Total Log likelihood: -4460.005
+Memory Usage: 717.889536 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr21/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr21/
+Fraction Markers in ROH: 0.4037
+Merged n=0 gaps < 0.0 M
+Called n=5 ROH Blocks > 1.0 cM
+Longest Block: 1.884
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr21/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Botocudo17.SG
+
+Loaded 15802 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr22.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 15802
+Nr of Matching Refs: 15802 / 15802
+Full Intersection Ref/Alt Identical: 15793 / 15802
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 11935 / 15793
+(Fraction SNP: 0.7557145570822517)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr22/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr22/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0169
+Maximum Genetic Map: 0.7408
+Gaps bigger than 0.1 cM: 97
+Maximum Gap: 1.6277 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 11935)
+Loaded Observations:
+(2, 11935)
+Memory Usage: 705.519616 mB
+Reference Number: 5008
+Total Log likelihood: -3896.912
+Memory Usage: 705.519616 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr22/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr22/
+Fraction Markers in ROH: 0.4578
+Merged n=0 gaps < 0.0 M
+Called n=5 ROH Blocks > 1.0 cM
+Longest Block: 4.558
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Botocudo17.SG/chr22/roh.csv

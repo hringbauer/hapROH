@@ -1,0 +1,947 @@
+Doing Individual Andaman.SG...
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 89147 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr1.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 89147
+Nr of Matching Refs: 89147 / 89147
+Full Intersection Ref/Alt Identical: 89082 / 89147
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 87966 / 89082
+(Fraction SNP: 0.9874722166094161)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr1/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr1/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0201
+Maximum Genetic Map: 2.8627
+Gaps bigger than 0.1 cM: 253
+Maximum Gap: 2.9476 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 87966)
+Loaded Observations:
+(2, 87966)
+Memory Usage: 4149.858304 mB
+Reference Number: 5008
+Total Log likelihood: -26218.543
+Memory Usage: 4150.317056 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr1/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr1/
+Fraction Markers in ROH: 0.5488
+Merged n=0 gaps < 0.0 M
+Called n=16 ROH Blocks > 1.0 cM
+Longest Block: 8.251
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr1/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 94239 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr2.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 94239
+Nr of Matching Refs: 94239 / 94239
+Full Intersection Ref/Alt Identical: 94173 / 94239
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 92702 / 94173
+(Fraction SNP: 0.984379811623289)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr2/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr2/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 2.6883
+Gaps bigger than 0.1 cM: 248
+Maximum Gap: 1.8302 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 92702)
+Loaded Observations:
+(2, 92702)
+Memory Usage: 4355.227648 mB
+Reference Number: 5008
+Total Log likelihood: -29508.708
+Memory Usage: 4355.227648 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr2/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr2/
+Fraction Markers in ROH: 0.4878
+Merged n=0 gaps < 0.0 M
+Called n=14 ROH Blocks > 1.0 cM
+Longest Block: 6.899
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr2/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 77652 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr3.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 77652
+Nr of Matching Refs: 77652 / 77652
+Full Intersection Ref/Alt Identical: 77601 / 77652
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 76426 / 77601
+(Fraction SNP: 0.9848584425458434)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr3/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr3/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 2.2326
+Gaps bigger than 0.1 cM: 216
+Maximum Gap: 0.2348 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 76426)
+Loaded Observations:
+(2, 76426)
+Memory Usage: 3623.084032 mB
+Reference Number: 5008
+Total Log likelihood: -23935.919
+Memory Usage: 3623.084032 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr3/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr3/
+Fraction Markers in ROH: 0.5102
+Merged n=0 gaps < 0.0 M
+Called n=13 ROH Blocks > 1.0 cM
+Longest Block: 8.802
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr3/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 68759 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr4.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 68759
+Nr of Matching Refs: 68759 / 68759
+Full Intersection Ref/Alt Identical: 68720 / 68759
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 67070 / 68720
+(Fraction SNP: 0.9759895227008148)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr4/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr4/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0034
+Maximum Genetic Map: 2.1454
+Gaps bigger than 0.1 cM: 198
+Maximum Gap: 2.0422 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 67070)
+Loaded Observations:
+(2, 67070)
+Memory Usage: 3200.290816 mB
+Reference Number: 5008
+Total Log likelihood: -18199.868
+Memory Usage: 3200.311296 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr4/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr4/
+Fraction Markers in ROH: 0.6065
+Merged n=0 gaps < 0.0 M
+Called n=14 ROH Blocks > 1.0 cM
+Longest Block: 23.667
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr4/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 69399 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr5.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 69399
+Nr of Matching Refs: 69399 / 69399
+Full Intersection Ref/Alt Identical: 69354 / 69399
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 68101 / 69354
+(Fraction SNP: 0.9819332698907056)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr5/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr5/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0004
+Maximum Genetic Map: 2.0409
+Gaps bigger than 0.1 cM: 214
+Maximum Gap: 1.0498 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 68101)
+Loaded Observations:
+(2, 68101)
+Memory Usage: 3248.381952 mB
+Reference Number: 5008
+Total Log likelihood: -18764.746
+Memory Usage: 3248.381952 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr5/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr5/
+Fraction Markers in ROH: 0.5937
+Merged n=0 gaps < 0.0 M
+Called n=10 ROH Blocks > 1.0 cM
+Longest Block: 31.029
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr5/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 75870 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr6.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 75870
+Nr of Matching Refs: 75870 / 75870
+Full Intersection Ref/Alt Identical: 75816 / 75870
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 74373 / 75816
+(Fraction SNP: 0.9809670781893004)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr6/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr6/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0032
+Maximum Genetic Map: 1.9203
+Gaps bigger than 0.1 cM: 153
+Maximum Gap: 0.5062 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 74373)
+Loaded Observations:
+(2, 74373)
+Memory Usage: 3530.100736 mB
+Reference Number: 5008
+Total Log likelihood: -19634.885
+Memory Usage: 3529.691136 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr6/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr6/
+Fraction Markers in ROH: 0.6059
+Merged n=0 gaps < 0.0 M
+Called n=13 ROH Blocks > 1.0 cM
+Longest Block: 22.042
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr6/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 59890 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr7.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 59890
+Nr of Matching Refs: 59890 / 59890
+Full Intersection Ref/Alt Identical: 59836 / 59890
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 58741 / 59836
+(Fraction SNP: 0.9816999799451835)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr7/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr7/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.8715
+Gaps bigger than 0.1 cM: 193
+Maximum Gap: 0.8416 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 58741)
+Loaded Observations:
+(2, 58741)
+Memory Usage: 2816.565248 mB
+Reference Number: 5008
+Total Log likelihood: -19162.589
+Memory Usage: 2816.966656 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr7/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr7/
+Fraction Markers in ROH: 0.4903
+Merged n=0 gaps < 0.0 M
+Called n=13 ROH Blocks > 1.0 cM
+Longest Block: 6.290
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr7/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 61133 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr8.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 61133
+Nr of Matching Refs: 61133 / 61133
+Full Intersection Ref/Alt Identical: 61091 / 61133
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 60186 / 61091
+(Fraction SNP: 0.9851860339493542)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr8/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr8/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.6800
+Gaps bigger than 0.1 cM: 132
+Maximum Gap: 1.8932 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 60186)
+Loaded Observations:
+(2, 60186)
+Memory Usage: 2884.54656 mB
+Reference Number: 5008
+Total Log likelihood: -19659.150
+Memory Usage: 2884.54656 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr8/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr8/
+Fraction Markers in ROH: 0.4783
+Merged n=0 gaps < 0.0 M
+Called n=10 ROH Blocks > 1.0 cM
+Longest Block: 5.655
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr8/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 50668 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr9.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 50668
+Nr of Matching Refs: 50668 / 50668
+Full Intersection Ref/Alt Identical: 50629 / 50668
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 49876 / 50629
+(Fraction SNP: 0.9851271010685575)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr9/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr9/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.6630
+Gaps bigger than 0.1 cM: 169
+Maximum Gap: 1.8819 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 49876)
+Loaded Observations:
+(2, 49876)
+Memory Usage: 2421.092352 mB
+Reference Number: 5008
+Total Log likelihood: -16246.848
+Memory Usage: 2421.092352 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr9/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr9/
+Fraction Markers in ROH: 0.5078
+Merged n=0 gaps < 0.0 M
+Called n=12 ROH Blocks > 1.0 cM
+Longest Block: 2.585
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr9/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 58804 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr10.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 58804
+Nr of Matching Refs: 58804 / 58804
+Full Intersection Ref/Alt Identical: 58763 / 58804
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 58024 / 58763
+(Fraction SNP: 0.9874240593570784)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr10/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr10/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.8092
+Gaps bigger than 0.1 cM: 172
+Maximum Gap: 2.0338 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 58024)
+Loaded Observations:
+(2, 58024)
+Memory Usage: 2789.45792 mB
+Reference Number: 5008
+Total Log likelihood: -18609.897
+Memory Usage: 2789.45792 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr10/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr10/
+Fraction Markers in ROH: 0.4941
+Merged n=0 gaps < 0.0 M
+Called n=12 ROH Blocks > 1.0 cM
+Longest Block: 5.091
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr10/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 54833 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr11.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 54833
+Nr of Matching Refs: 54833 / 54833
+Full Intersection Ref/Alt Identical: 54796 / 54833
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 54049 / 54796
+(Fraction SNP: 0.986367618074312)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr11/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr11/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.5822
+Gaps bigger than 0.1 cM: 146
+Maximum Gap: 0.5351 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 54049)
+Loaded Observations:
+(2, 54049)
+Memory Usage: 2607.12448 mB
+Reference Number: 5008
+Total Log likelihood: -17157.676
+Memory Usage: 2607.12448 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr11/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr11/
+Fraction Markers in ROH: 0.4853
+Merged n=0 gaps < 0.0 M
+Called n=8 ROH Blocks > 1.0 cM
+Longest Block: 3.608
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr11/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 53911 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr12.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 53911
+Nr of Matching Refs: 53911 / 53911
+Full Intersection Ref/Alt Identical: 53884 / 53911
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 53028 / 53884
+(Fraction SNP: 0.9841140227154629)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr12/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr12/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0009
+Maximum Genetic Map: 1.7468
+Gaps bigger than 0.1 cM: 179
+Maximum Gap: 0.8015 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 53028)
+Loaded Observations:
+(2, 53028)
+Memory Usage: 2562.134016 mB
+Reference Number: 5008
+Total Log likelihood: -14688.530
+Memory Usage: 2562.134016 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr12/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr12/
+Fraction Markers in ROH: 0.6018
+Merged n=0 gaps < 0.0 M
+Called n=8 ROH Blocks > 1.0 cM
+Longest Block: 16.134
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr12/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 39018 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr13.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 39018
+Nr of Matching Refs: 39018 / 39018
+Full Intersection Ref/Alt Identical: 38994 / 39018
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 38175 / 38994
+(Fraction SNP: 0.9789967687336514)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr13/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr13/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0019
+Maximum Genetic Map: 1.2570
+Gaps bigger than 0.1 cM: 135
+Maximum Gap: 1.2216 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 38175)
+Loaded Observations:
+(2, 38175)
+Memory Usage: 1892.831232 mB
+Reference Number: 5008
+Total Log likelihood: -12014.533
+Memory Usage: 1892.831232 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr13/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr13/
+Fraction Markers in ROH: 0.5375
+Merged n=0 gaps < 0.0 M
+Called n=9 ROH Blocks > 1.0 cM
+Longest Block: 11.086
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr13/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 36301 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr14.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 36301
+Nr of Matching Refs: 36301 / 36301
+Full Intersection Ref/Alt Identical: 36280 / 36301
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 35660 / 36280
+(Fraction SNP: 0.9829106945975744)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr14/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr14/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0161
+Maximum Genetic Map: 1.2020
+Gaps bigger than 0.1 cM: 121
+Maximum Gap: 2.8508 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 35660)
+Loaded Observations:
+(2, 35660)
+Memory Usage: 1781.301248 mB
+Reference Number: 5008
+Total Log likelihood: -12094.058
+Memory Usage: 1781.301248 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr14/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr14/
+Fraction Markers in ROH: 0.4443
+Merged n=0 gaps < 0.0 M
+Called n=4 ROH Blocks > 1.0 cM
+Longest Block: 2.935
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr14/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 34429 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr15.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 34429
+Nr of Matching Refs: 34429 / 34429
+Full Intersection Ref/Alt Identical: 34407 / 34429
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 34003 / 34407
+(Fraction SNP: 0.9882582032725898)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr15/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr15/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.4135
+Gaps bigger than 0.1 cM: 121
+Maximum Gap: 11.4957 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34003)
+Loaded Observations:
+(2, 34003)
+Memory Usage: 1706.315776 mB
+Reference Number: 5008
+Total Log likelihood: -10138.017
+Memory Usage: 1701.51936 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr15/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr15/
+Fraction Markers in ROH: 0.5986
+Merged n=0 gaps < 0.0 M
+Called n=10 ROH Blocks > 1.0 cM
+Longest Block: 6.305
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr15/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 34402 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr16.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 34402
+Nr of Matching Refs: 34402 / 34402
+Full Intersection Ref/Alt Identical: 34375 / 34402
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 34123 / 34375
+(Fraction SNP: 0.992669090909091)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr16/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr16/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0000
+Maximum Genetic Map: 1.3403
+Gaps bigger than 0.1 cM: 142
+Maximum Gap: 0.8458 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34123)
+Loaded Observations:
+(2, 34123)
+Memory Usage: 1708.355584 mB
+Reference Number: 5008
+Total Log likelihood: -11267.606
+Memory Usage: 1708.355584 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr16/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr16/
+Fraction Markers in ROH: 0.4936
+Merged n=0 gaps < 0.0 M
+Called n=8 ROH Blocks > 1.0 cM
+Longest Block: 4.375
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr16/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 29314 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr17.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 29314
+Nr of Matching Refs: 29314 / 29314
+Full Intersection Ref/Alt Identical: 29292 / 29314
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 29082 / 29292
+(Fraction SNP: 0.9928308070462925)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr17/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr17/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0003
+Maximum Genetic Map: 1.2847
+Gaps bigger than 0.1 cM: 121
+Maximum Gap: 1.2341 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 29082)
+Loaded Observations:
+(2, 29082)
+Memory Usage: 1477.89824 mB
+Reference Number: 5008
+Total Log likelihood: -8291.387
+Memory Usage: 1477.89824 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr17/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr17/
+Fraction Markers in ROH: 0.6229
+Merged n=0 gaps < 0.0 M
+Called n=12 ROH Blocks > 1.0 cM
+Longest Block: 6.565
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr17/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 33917 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr18.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 33917
+Nr of Matching Refs: 33917 / 33917
+Full Intersection Ref/Alt Identical: 33902 / 33917
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 33346 / 33902
+(Fraction SNP: 0.983599787623149)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr18/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr18/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.1771
+Gaps bigger than 0.1 cM: 123
+Maximum Gap: 0.4763 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 33346)
+Loaded Observations:
+(2, 33346)
+Memory Usage: 1671.172096 mB
+Reference Number: 5008
+Total Log likelihood: -9760.488
+Memory Usage: 1671.172096 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr18/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr18/
+Fraction Markers in ROH: 0.5536
+Merged n=0 gaps < 0.0 M
+Called n=7 ROH Blocks > 1.0 cM
+Longest Block: 9.306
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr18/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 18460 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr19.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 18460
+Nr of Matching Refs: 18460 / 18460
+Full Intersection Ref/Alt Identical: 18441 / 18460
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 18350 / 18441
+(Fraction SNP: 0.9950653435280082)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr19/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr19/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0773
+Gaps bigger than 0.1 cM: 130
+Maximum Gap: 0.5964 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18350)
+Loaded Observations:
+(2, 18350)
+Memory Usage: 995.405824 mB
+Reference Number: 5008
+Total Log likelihood: -6347.843
+Memory Usage: 995.405824 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr19/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr19/
+Fraction Markers in ROH: 0.5316
+Merged n=0 gaps < 0.0 M
+Called n=9 ROH Blocks > 1.0 cM
+Longest Block: 11.347
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr19/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 29078 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr20.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 29078
+Nr of Matching Refs: 29078 / 29078
+Full Intersection Ref/Alt Identical: 29053 / 29078
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 28807 / 29053
+(Fraction SNP: 0.9915327160706295)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr20/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr20/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0821
+Gaps bigger than 0.1 cM: 120
+Maximum Gap: 0.4744 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 28807)
+Loaded Observations:
+(2, 28807)
+Memory Usage: 1467.346944 mB
+Reference Number: 5008
+Total Log likelihood: -9347.225
+Memory Usage: 1467.346944 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr20/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr20/
+Fraction Markers in ROH: 0.4821
+Merged n=0 gaps < 0.0 M
+Called n=7 ROH Blocks > 1.0 cM
+Longest Block: 4.939
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr20/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 16038 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr21.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 16038
+Nr of Matching Refs: 16038 / 16038
+Full Intersection Ref/Alt Identical: 16031 / 16038
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 15714 / 16031
+(Fraction SNP: 0.9802258124883039)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr21/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr21/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0085
+Maximum Genetic Map: 0.6279
+Gaps bigger than 0.1 cM: 78
+Maximum Gap: 1.7139 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15714)
+Loaded Observations:
+(2, 15714)
+Memory Usage: 878.157824 mB
+Reference Number: 5008
+Total Log likelihood: -5050.397
+Memory Usage: 878.157824 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr21/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr21/
+Fraction Markers in ROH: 0.5081
+Merged n=0 gaps < 0.0 M
+Called n=5 ROH Blocks > 1.0 cM
+Longest Block: 7.895
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr21/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Andaman.SG
+
+Loaded 15802 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr22.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 15802
+Nr of Matching Refs: 15802 / 15802
+Full Intersection Ref/Alt Identical: 15793 / 15802
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 15721 / 15793
+(Fraction SNP: 0.9954410181726081)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr22/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr22/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0163
+Maximum Genetic Map: 0.7408
+Gaps bigger than 0.1 cM: 79
+Maximum Gap: 1.6097 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 15721)
+Loaded Observations:
+(2, 15721)
+Memory Usage: 876.908544 mB
+Reference Number: 5008
+Total Log likelihood: -4878.530
+Memory Usage: 876.908544 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr22/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr22/
+Fraction Markers in ROH: 0.5421
+Merged n=0 gaps < 0.0 M
+Called n=7 ROH Blocks > 1.0 cM
+Longest Block: 8.692
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Andaman.SG/chr22/roh.csv

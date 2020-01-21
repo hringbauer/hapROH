@@ -1,0 +1,947 @@
+Doing Individual Kretuonas2...
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 89147 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr1.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 89147
+Nr of Matching Refs: 89147 / 89147
+Full Intersection Ref/Alt Identical: 89082 / 89147
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 51147 / 89082
+(Fraction SNP: 0.5741563952313599)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr1/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr1/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0201
+Maximum Genetic Map: 2.8627
+Gaps bigger than 0.1 cM: 383
+Maximum Gap: 2.9476 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 51147)
+Loaded Observations:
+(2, 51147)
+Memory Usage: 2490.322944 mB
+Reference Number: 5008
+Total Log likelihood: -16503.266
+Memory Usage: 2490.781696 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr1/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr1/
+Fraction Markers in ROH: 0.4992
+Merged n=0 gaps < 0.0 M
+Called n=26 ROH Blocks > 1.0 cM
+Longest Block: 7.030
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr1/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 94239 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr2.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 94239
+Nr of Matching Refs: 94239 / 94239
+Full Intersection Ref/Alt Identical: 94173 / 94239
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 51269 / 94173
+(Fraction SNP: 0.5444129421384049)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr2/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr2/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 2.6883
+Gaps bigger than 0.1 cM: 351
+Maximum Gap: 2.9097 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 51269)
+Loaded Observations:
+(2, 51269)
+Memory Usage: 2487.701504 mB
+Reference Number: 5008
+Total Log likelihood: -17462.219
+Memory Usage: 2487.701504 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr2/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr2/
+Fraction Markers in ROH: 0.4817
+Merged n=0 gaps < 0.0 M
+Called n=24 ROH Blocks > 1.0 cM
+Longest Block: 3.823
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr2/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 77652 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr3.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 77652
+Nr of Matching Refs: 77652 / 77652
+Full Intersection Ref/Alt Identical: 77601 / 77652
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 41659 / 77601
+(Fraction SNP: 0.536835865517197)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr3/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr3/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 2.2326
+Gaps bigger than 0.1 cM: 338
+Maximum Gap: 0.3910 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 41659)
+Loaded Observations:
+(2, 41659)
+Memory Usage: 2055.53664 mB
+Reference Number: 5008
+Total Log likelihood: -13045.734
+Memory Usage: 2055.53664 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr3/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr3/
+Fraction Markers in ROH: 0.5309
+Merged n=0 gaps < 0.0 M
+Called n=25 ROH Blocks > 1.0 cM
+Longest Block: 7.657
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr3/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 68759 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr4.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 68759
+Nr of Matching Refs: 68759 / 68759
+Full Intersection Ref/Alt Identical: 68720 / 68759
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 34307 / 68720
+(Fraction SNP: 0.4992287543655413)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr4/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr4/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0034
+Maximum Genetic Map: 2.1454
+Gaps bigger than 0.1 cM: 325
+Maximum Gap: 2.0422 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 34307)
+Loaded Observations:
+(2, 34307)
+Memory Usage: 1725.161472 mB
+Reference Number: 5008
+Total Log likelihood: -11311.908
+Memory Usage: 1725.161472 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr4/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr4/
+Fraction Markers in ROH: 0.4902
+Merged n=0 gaps < 0.0 M
+Called n=21 ROH Blocks > 1.0 cM
+Longest Block: 4.279
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr4/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 69399 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr5.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 69399
+Nr of Matching Refs: 69399 / 69399
+Full Intersection Ref/Alt Identical: 69354 / 69399
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 37040 / 69354
+(Fraction SNP: 0.5340715748190443)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr5/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr5/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0004
+Maximum Genetic Map: 2.0409
+Gaps bigger than 0.1 cM: 311
+Maximum Gap: 1.1070 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 37040)
+Loaded Observations:
+(2, 37040)
+Memory Usage: 1850.200064 mB
+Reference Number: 5008
+Total Log likelihood: -12012.586
+Memory Usage: 1850.200064 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr5/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr5/
+Fraction Markers in ROH: 0.5192
+Merged n=0 gaps < 0.0 M
+Called n=19 ROH Blocks > 1.0 cM
+Longest Block: 3.627
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr5/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 75870 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr6.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 75870
+Nr of Matching Refs: 75870 / 75870
+Full Intersection Ref/Alt Identical: 75816 / 75870
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 41092 / 75816
+(Fraction SNP: 0.5419964123667828)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr6/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr6/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0032
+Maximum Genetic Map: 1.9203
+Gaps bigger than 0.1 cM: 251
+Maximum Gap: 0.5122 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 41092)
+Loaded Observations:
+(2, 41092)
+Memory Usage: 2030.26432 mB
+Reference Number: 5008
+Total Log likelihood: -13478.249
+Memory Usage: 2030.26432 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr6/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr6/
+Fraction Markers in ROH: 0.5052
+Merged n=0 gaps < 0.0 M
+Called n=14 ROH Blocks > 1.0 cM
+Longest Block: 8.029
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr6/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 59890 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr7.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 59890
+Nr of Matching Refs: 59890 / 59890
+Full Intersection Ref/Alt Identical: 59836 / 59890
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 32199 / 59836
+(Fraction SNP: 0.5381208636940972)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr7/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr7/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.8715
+Gaps bigger than 0.1 cM: 291
+Maximum Gap: 0.8484 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 32199)
+Loaded Observations:
+(2, 32199)
+Memory Usage: 1629.888512 mB
+Reference Number: 5008
+Total Log likelihood: -10619.224
+Memory Usage: 1629.888512 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr7/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr7/
+Fraction Markers in ROH: 0.5054
+Merged n=0 gaps < 0.0 M
+Called n=23 ROH Blocks > 1.0 cM
+Longest Block: 6.180
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr7/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 61133 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr8.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 61133
+Nr of Matching Refs: 61133 / 61133
+Full Intersection Ref/Alt Identical: 61091 / 61133
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 33047 / 61091
+(Fraction SNP: 0.5409471116858457)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr8/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr8/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.6800
+Gaps bigger than 0.1 cM: 218
+Maximum Gap: 1.9271 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 33047)
+Loaded Observations:
+(2, 33047)
+Memory Usage: 1668.112384 mB
+Reference Number: 5008
+Total Log likelihood: -10913.404
+Memory Usage: 1668.112384 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr8/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr8/
+Fraction Markers in ROH: 0.5332
+Merged n=0 gaps < 0.0 M
+Called n=13 ROH Blocks > 1.0 cM
+Longest Block: 5.693
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr8/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 50668 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr9.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 50668
+Nr of Matching Refs: 50668 / 50668
+Full Intersection Ref/Alt Identical: 50629 / 50668
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 27854 / 50629
+(Fraction SNP: 0.5501589997827332)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr9/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr9/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0016
+Maximum Genetic Map: 1.6630
+Gaps bigger than 0.1 cM: 261
+Maximum Gap: 1.9151 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 27854)
+Loaded Observations:
+(2, 27854)
+Memory Usage: 1435.590656 mB
+Reference Number: 5008
+Total Log likelihood: -9359.327
+Memory Usage: 1435.590656 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr9/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr9/
+Fraction Markers in ROH: 0.5029
+Merged n=0 gaps < 0.0 M
+Called n=16 ROH Blocks > 1.0 cM
+Longest Block: 3.315
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr9/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 58804 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr10.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 58804
+Nr of Matching Refs: 58804 / 58804
+Full Intersection Ref/Alt Identical: 58763 / 58804
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 33424 / 58763
+(Fraction SNP: 0.5687932882936542)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr10/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr10/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0001
+Maximum Genetic Map: 1.8091
+Gaps bigger than 0.1 cM: 237
+Maximum Gap: 2.0340 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 33424)
+Loaded Observations:
+(2, 33424)
+Memory Usage: 1687.482368 mB
+Reference Number: 5008
+Total Log likelihood: -11214.761
+Memory Usage: 1687.482368 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr10/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr10/
+Fraction Markers in ROH: 0.4810
+Merged n=0 gaps < 0.0 M
+Called n=14 ROH Blocks > 1.0 cM
+Longest Block: 6.486
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr10/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 54833 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr11.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 54833
+Nr of Matching Refs: 54833 / 54833
+Full Intersection Ref/Alt Identical: 54796 / 54833
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 30795 / 54796
+(Fraction SNP: 0.5619935761734434)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr11/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr11/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.5822
+Gaps bigger than 0.1 cM: 229
+Maximum Gap: 0.5679 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 30795)
+Loaded Observations:
+(2, 30795)
+Memory Usage: 1566.875648 mB
+Reference Number: 5008
+Total Log likelihood: -10508.159
+Memory Usage: 1566.875648 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr11/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr11/
+Fraction Markers in ROH: 0.4744
+Merged n=0 gaps < 0.0 M
+Called n=12 ROH Blocks > 1.0 cM
+Longest Block: 4.764
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr11/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 53911 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr12.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 53911
+Nr of Matching Refs: 53911 / 53911
+Full Intersection Ref/Alt Identical: 53884 / 53911
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 29685 / 53884
+(Fraction SNP: 0.550905649172296)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr12/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr12/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0017
+Maximum Genetic Map: 1.7468
+Gaps bigger than 0.1 cM: 272
+Maximum Gap: 0.8437 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 29685)
+Loaded Observations:
+(2, 29685)
+Memory Usage: 1517.60896 mB
+Reference Number: 5008
+Total Log likelihood: -9986.976
+Memory Usage: 1517.60896 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr12/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr12/
+Fraction Markers in ROH: 0.4977
+Merged n=0 gaps < 0.0 M
+Called n=8 ROH Blocks > 1.0 cM
+Longest Block: 3.264
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr12/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 39018 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr13.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 39018
+Nr of Matching Refs: 39018 / 39018
+Full Intersection Ref/Alt Identical: 38994 / 39018
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 19712 / 38994
+(Fraction SNP: 0.5055136687695543)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr13/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr13/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0021
+Maximum Genetic Map: 1.2570
+Gaps bigger than 0.1 cM: 210
+Maximum Gap: 1.2227 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 19712)
+Loaded Observations:
+(2, 19712)
+Memory Usage: 1068.036096 mB
+Reference Number: 5008
+Total Log likelihood: -6575.943
+Memory Usage: 1068.036096 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr13/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr13/
+Fraction Markers in ROH: 0.5204
+Merged n=0 gaps < 0.0 M
+Called n=19 ROH Blocks > 1.0 cM
+Longest Block: 3.646
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr13/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 36301 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr14.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 36301
+Nr of Matching Refs: 36301 / 36301
+Full Intersection Ref/Alt Identical: 36280 / 36301
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 19991 / 36280
+(Fraction SNP: 0.5510198456449834)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr14/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr14/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0184
+Maximum Genetic Map: 1.2020
+Gaps bigger than 0.1 cM: 183
+Maximum Gap: 2.8508 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 19991)
+Loaded Observations:
+(2, 19991)
+Memory Usage: 1080.610816 mB
+Reference Number: 5008
+Total Log likelihood: -6909.509
+Memory Usage: 1080.610816 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr14/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr14/
+Fraction Markers in ROH: 0.4792
+Merged n=0 gaps < 0.0 M
+Called n=10 ROH Blocks > 1.0 cM
+Longest Block: 1.871
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr14/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 34429 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr15.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 34429
+Nr of Matching Refs: 34429 / 34429
+Full Intersection Ref/Alt Identical: 34407 / 34429
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 19881 / 34407
+(Fraction SNP: 0.5778184671723777)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr15/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr15/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.1168
+Maximum Genetic Map: 1.4134
+Gaps bigger than 0.1 cM: 179
+Maximum Gap: 4.4391 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 19881)
+Loaded Observations:
+(2, 19881)
+Memory Usage: 1076.965376 mB
+Reference Number: 5008
+Total Log likelihood: -6693.215
+Memory Usage: 1076.965376 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr15/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr15/
+Fraction Markers in ROH: 0.4893
+Merged n=0 gaps < 0.0 M
+Called n=15 ROH Blocks > 1.0 cM
+Longest Block: 5.180
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr15/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 34402 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr16.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 34402
+Nr of Matching Refs: 34402 / 34402
+Full Intersection Ref/Alt Identical: 34375 / 34402
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 20919 / 34375
+(Fraction SNP: 0.6085527272727272)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr16/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr16/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0000
+Maximum Genetic Map: 1.3403
+Gaps bigger than 0.1 cM: 205
+Maximum Gap: 1.0338 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 20919)
+Loaded Observations:
+(2, 20919)
+Memory Usage: 1125.072896 mB
+Reference Number: 5008
+Total Log likelihood: -6996.939
+Memory Usage: 1125.072896 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr16/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr16/
+Fraction Markers in ROH: 0.5031
+Merged n=0 gaps < 0.0 M
+Called n=14 ROH Blocks > 1.0 cM
+Longest Block: 5.083
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr16/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 29314 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr17.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 29314
+Nr of Matching Refs: 29314 / 29314
+Full Intersection Ref/Alt Identical: 29292 / 29314
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 18081 / 29292
+(Fraction SNP: 0.6172675133142155)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr17/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr17/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: -0.0003
+Maximum Genetic Map: 1.2845
+Gaps bigger than 0.1 cM: 193
+Maximum Gap: 1.3022 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18081)
+Loaded Observations:
+(2, 18081)
+Memory Usage: 993.210368 mB
+Reference Number: 5008
+Total Log likelihood: -6078.092
+Memory Usage: 993.210368 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr17/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr17/
+Fraction Markers in ROH: 0.5229
+Merged n=0 gaps < 0.0 M
+Called n=14 ROH Blocks > 1.0 cM
+Longest Block: 6.923
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr17/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 33917 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr18.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 33917
+Nr of Matching Refs: 33917 / 33917
+Full Intersection Ref/Alt Identical: 33902 / 33917
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 18252 / 33902
+(Fraction SNP: 0.5383753170904372)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr18/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr18/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0025
+Maximum Genetic Map: 1.1771
+Gaps bigger than 0.1 cM: 192
+Maximum Gap: 0.5108 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 18252)
+Loaded Observations:
+(2, 18252)
+Memory Usage: 1001.96352 mB
+Reference Number: 5008
+Total Log likelihood: -6102.573
+Memory Usage: 1001.96352 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr18/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr18/
+Fraction Markers in ROH: 0.5139
+Merged n=0 gaps < 0.0 M
+Called n=13 ROH Blocks > 1.0 cM
+Longest Block: 2.976
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr18/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 18460 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr19.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 18460
+Nr of Matching Refs: 18460 / 18460
+Full Intersection Ref/Alt Identical: 18441 / 18460
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 11975 / 18441
+(Fraction SNP: 0.6493682555175967)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr19/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr19/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0773
+Gaps bigger than 0.1 cM: 191
+Maximum Gap: 0.6406 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 11975)
+Loaded Observations:
+(2, 11975)
+Memory Usage: 719.781888 mB
+Reference Number: 5008
+Total Log likelihood: -3833.935
+Memory Usage: 719.781888 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr19/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr19/
+Fraction Markers in ROH: 0.5748
+Merged n=0 gaps < 0.0 M
+Called n=16 ROH Blocks > 1.0 cM
+Longest Block: 10.737
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr19/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 29078 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr20.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 29078
+Nr of Matching Refs: 29078 / 29078
+Full Intersection Ref/Alt Identical: 29053 / 29078
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 17721 / 29053
+(Fraction SNP: 0.609954221595016)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr20/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr20/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0000
+Maximum Genetic Map: 1.0821
+Gaps bigger than 0.1 cM: 181
+Maximum Gap: 0.5887 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 17721)
+Loaded Observations:
+(2, 17721)
+Memory Usage: 979.607552 mB
+Reference Number: 5008
+Total Log likelihood: -5662.136
+Memory Usage: 979.607552 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr20/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr20/
+Fraction Markers in ROH: 0.5326
+Merged n=0 gaps < 0.0 M
+Called n=7 ROH Blocks > 1.0 cM
+Longest Block: 7.860
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr20/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 16038 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr21.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 16038
+Nr of Matching Refs: 16038 / 16038
+Full Intersection Ref/Alt Identical: 16031 / 16038
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 8798 / 16031
+(Fraction SNP: 0.5488116773750857)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr21/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr21/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0087
+Maximum Genetic Map: 0.6277
+Gaps bigger than 0.1 cM: 117
+Maximum Gap: 0.6169 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 8798)
+Loaded Observations:
+(2, 8798)
+Memory Usage: 578.932736 mB
+Reference Number: 5008
+Total Log likelihood: -2925.161
+Memory Usage: 578.932736 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr21/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr21/
+Fraction Markers in ROH: 0.5260
+Merged n=0 gaps < 0.0 M
+Called n=6 ROH Blocks > 1.0 cM
+Longest Block: 3.329
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr21/roh.csv
+Using Low-Mem Cython Linear Speed Up.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: Kretuonas2
+
+Loaded 15802 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr22.hdf5
+3 Eigenstrat Files with 5081 Individuals and 1233013 SNPs
+
+Intersection on Positions: 15802
+Nr of Matching Refs: 15802 / 15802
+Full Intersection Ref/Alt Identical: 15793 / 15802
+2504 / 2504 Individuals included in Reference
+Extraction of 5008 Haplotypes complete
+Reduced to markers called 10342 / 15793
+(Fraction SNP: 0.6548470841512062)
+Successfully saved to: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr22/
+Shuffling phase of target...
+Successfully loaded Data from: ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr22/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+Minimum Genetic Map: 0.0178
+Maximum Genetic Map: 0.7408
+Gaps bigger than 0.1 cM: 113
+Maximum Gap: 1.7129 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 10342)
+Loaded Observations:
+(2, 10342)
+Memory Usage: 646.975488 mB
+Reference Number: 5008
+Total Log likelihood: -3556.573
+Memory Usage: 646.975488 mB
+Finished Calculation State Posteriors
+Saved Zero State Posterior to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr22/.
+Successfully loaded for PP. from ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr22/
+Fraction Markers in ROH: 0.5221
+Merged n=0 gaps < 0.0 M
+Called n=8 ROH Blocks > 1.0 cM
+Longest Block: 2.203
+Successfully saved to ./Empirical/Eigenstrat/Reichall/Kretuonas2/chr22/roh.csv
