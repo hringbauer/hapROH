@@ -146,7 +146,7 @@ def individual_roh_statistic(df, output=True):
 
 def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", base_folder="./Empirical/Eigenstrat/Reichall/", 
                       suffix='_roh_full.csv', save_path="", min_cm=[4,8,12], snp_cm=50, 
-                      gap=1.0, min_len1=2.0, min_len2=4.0,
+                      gap=0.5, min_len1=2.0, min_len2=4.0,
                       output=True, meta_info=True):
     """Post-process Individual ROH .csv files. Combines them into one summary ROH.csv, saved in save_path.
     Use Individuals iids, create paths and run the combining.
