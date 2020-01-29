@@ -13,12 +13,12 @@ import pandas as pd
 import socket
 
 # Assume that now we are in the root directory
-sys.path.append("./Python3/")
-from hmm_inference import HMM_Analyze   # The HMM core object
+#sys.path.append("./XX/") Go to base directory of HAPSBURG
+from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
 
 #sys.path.append("./PackagesSupport/parallel_runs/")
 #from helper_functions import prepare_path, multi_run, combine_individual_data
-from PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data
+from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data
 
 
 def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[],

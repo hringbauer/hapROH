@@ -399,7 +399,7 @@ body.cython { font-family: courier; font-size: 12; }
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
 </pre><pre class="cython line score-0">&#xA0;<span class="">011</span>: </pre>
 <pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">012</span>: <span class="k">cdef</span> <span class="kr">inline</span> <span class="kt">double</span> <span class="nf">logsumexp</span><span class="p">(</span><span class="n">double</span><span class="p">[:]</span> <span class="n">vec</span><span class="p">):</span></pre>
-<pre class='cython code score-2 '>static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice __pyx_v_vec) {
+<pre class='cython code score-2 '>static CYTHON_INLINE double __pyx_f_5cfunc_logsumexp(__Pyx_memviewslice __pyx_v_vec) {
   Py_ssize_t __pyx_v_i;
   double __pyx_v_result;
   double __pyx_v_largest;
@@ -409,7 +409,7 @@ body.cython { font-family: courier; font-size: 12; }
 /* … */
   /* function exit code */
   __pyx_L1_error:;
-  <span class='pyx_c_api'>__Pyx_WriteUnraisable</span>("Python3.cfunc.logsumexp", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  <span class='pyx_c_api'>__Pyx_WriteUnraisable</span>("cfunc.logsumexp", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
@@ -484,7 +484,7 @@ body.cython { font-family: courier; font-size: 12; }
   goto __pyx_L0;
 </pre><pre class="cython line score-0">&#xA0;<span class="">024</span>: </pre>
 <pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">025</span>: <span class="k">cdef</span> <span class="kr">inline</span> <span class="kt">long</span> <span class="nf">argmax</span><span class="p">(</span><span class="n">double</span><span class="p">[:]</span> <span class="n">vec</span><span class="p">):</span></pre>
-<pre class='cython code score-2 '>static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __pyx_v_vec) {
+<pre class='cython code score-2 '>static CYTHON_INLINE long __pyx_f_5cfunc_argmax(__Pyx_memviewslice __pyx_v_vec) {
   int __pyx_v_m;
   double __pyx_v_v;
   Py_ssize_t __pyx_v_k;
@@ -494,7 +494,7 @@ body.cython { font-family: courier; font-size: 12; }
 /* … */
   /* function exit code */
   __pyx_L1_error:;
-  <span class='pyx_c_api'>__Pyx_WriteUnraisable</span>("Python3.cfunc.argmax", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  <span class='pyx_c_api'>__Pyx_WriteUnraisable</span>("cfunc.argmax", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
@@ -557,21 +557,21 @@ body.cython { font-family: courier; font-size: 12; }
 <pre class="cython line score-0">&#xA0;<span class="">036</span>: </pre>
 <pre class="cython line score-23" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">037</span>: <span class="k">def</span> <span class="nf">print_memory_usage</span><span class="p">():</span></pre>
 <pre class='cython code score-23 '>/* Python wrapper */
-static PyObject *__pyx_pw_7Python3_5cfunc_1print_memory_usage(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_7Python3_5cfunc_print_memory_usage[] = "Print the current Memory Usage in mB";
-static PyMethodDef __pyx_mdef_7Python3_5cfunc_1print_memory_usage = {"print_memory_usage", (PyCFunction)__pyx_pw_7Python3_5cfunc_1print_memory_usage, METH_NOARGS, __pyx_doc_7Python3_5cfunc_print_memory_usage};
-static PyObject *__pyx_pw_7Python3_5cfunc_1print_memory_usage(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5cfunc_1print_memory_usage(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_5cfunc_print_memory_usage[] = "Print the current Memory Usage in mB";
+static PyMethodDef __pyx_mdef_5cfunc_1print_memory_usage = {"print_memory_usage", (PyCFunction)__pyx_pw_5cfunc_1print_memory_usage, METH_NOARGS, __pyx_doc_5cfunc_print_memory_usage};
+static PyObject *__pyx_pw_5cfunc_1print_memory_usage(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   <span class='refnanny'>__Pyx_RefNannyDeclarations</span>
   <span class='refnanny'>__Pyx_RefNannySetupContext</span>("print_memory_usage (wrapper)", 0);
-  __pyx_r = __pyx_pf_7Python3_5cfunc_print_memory_usage(__pyx_self);
+  __pyx_r = __pyx_pf_5cfunc_print_memory_usage(__pyx_self);
 
   /* function exit code */
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObject *__pyx_self) {
+static PyObject *__pyx_pf_5cfunc_print_memory_usage(CYTHON_UNUSED PyObject *__pyx_self) {
   PyObject *__pyx_v_process = NULL;
   PyObject *__pyx_v_mb_usage = NULL;
   PyObject *__pyx_r = NULL;
@@ -587,7 +587,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObj
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_t_3);
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_t_4);
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_t_5);
-  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("Python3.cfunc.print_memory_usage", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("cfunc.print_memory_usage", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_v_process);
@@ -601,7 +601,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObj
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__43);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__43);
 /* … */
-  __pyx_t_2 = PyCFunction_NewEx(&amp;__pyx_mdef_7Python3_5cfunc_1print_memory_usage, NULL, __pyx_n_s_Python3_cfunc);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)</span>
+  __pyx_t_2 = PyCFunction_NewEx(&amp;__pyx_mdef_5cfunc_1print_memory_usage, NULL, __pyx_n_s_cfunc);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_print_memory_usage, __pyx_t_2) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 37, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
@@ -744,10 +744,10 @@ static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObj
 <pre class="cython line score-0">&#xA0;<span class="">043</span>: </pre>
 <pre class="cython line score-27" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">044</span>: <span class="k">def</span> <span class="nf">fwd_bkwd</span><span class="p">(</span><span class="n">double</span><span class="p">[:,</span> <span class="p">:]</span> <span class="n">e_prob0</span><span class="p">,</span> <span class="n">double</span><span class="p">[:,</span> <span class="p">:]</span> <span class="n">t_mat</span><span class="p">,</span></pre>
 <pre class='cython code score-27 '>/* Python wrapper */
-static PyObject *__pyx_pw_7Python3_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7Python3_5cfunc_2fwd_bkwd[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Input: kxl matrices of emission, transition\n    and initialized fwd and bwd probabilities. Given in log Space\n    full: Boolean whether to return everything";
-static PyMethodDef __pyx_mdef_7Python3_5cfunc_3fwd_bkwd = {"fwd_bkwd", (PyCFunction)__pyx_pw_7Python3_5cfunc_3fwd_bkwd, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7Python3_5cfunc_2fwd_bkwd};
-static PyObject *__pyx_pw_7Python3_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5cfunc_2fwd_bkwd[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Input: kxl matrices of emission, transition\n    and initialized fwd and bwd probabilities. Given in log Space\n    full: Boolean whether to return everything";
+static PyMethodDef __pyx_mdef_5cfunc_3fwd_bkwd = {"fwd_bkwd", (PyCFunction)__pyx_pw_5cfunc_3fwd_bkwd, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5cfunc_2fwd_bkwd};
+static PyObject *__pyx_pw_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_e_prob0 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_t_mat = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_fwd = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -766,7 +766,7 @@ static PyObject *__pyx_pw_7Python3_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObje
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_fwd, __Pyx_memviewslice __pyx_v_bwd, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t, PyObject *__pyx_v_full) {
+static PyObject *__pyx_pf_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_fwd, __Pyx_memviewslice __pyx_v_bwd, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t, PyObject *__pyx_v_full) {
   int __pyx_v_n_states;
   int __pyx_v_n_loci;
   Py_ssize_t __pyx_v_i;
@@ -796,7 +796,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_t_7);
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_t_8);
   __PYX_XDEC_MEMVIEW(&amp;__pyx_t_9, 1);
-  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("Python3.cfunc.fwd_bkwd", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("cfunc.fwd_bkwd", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_v_post);
@@ -819,7 +819,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__45);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__45);
 /* … */
-  __pyx_t_2 = PyCFunction_NewEx(&amp;__pyx_mdef_7Python3_5cfunc_3fwd_bkwd, NULL, __pyx_n_s_Python3_cfunc);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)</span>
+  __pyx_t_2 = PyCFunction_NewEx(&amp;__pyx_mdef_5cfunc_3fwd_bkwd, NULL, __pyx_n_s_cfunc);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_fwd_bkwd, __pyx_t_2) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 44, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
@@ -908,11 +908,11 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __pyx_L5_argtuple_error:;
   <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("fwd_bkwd", 0, 5, 6, <span class='py_macro_api'>PyTuple_GET_SIZE</span>(__pyx_args)); <span class='error_goto'>__PYX_ERR(0, 44, __pyx_L3_error)</span>
   __pyx_L3_error:;
-  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("Python3.cfunc.fwd_bkwd", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("cfunc.fwd_bkwd", __pyx_clineno, __pyx_lineno, __pyx_filename);
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7Python3_5cfunc_2fwd_bkwd(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_fwd, __pyx_v_bwd, __pyx_v_t, __pyx_v_full);
+  __pyx_r = __pyx_pf_5cfunc_2fwd_bkwd(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_fwd, __pyx_v_bwd, __pyx_v_t, __pyx_v_full);
 </pre><pre class="cython line score-0">&#xA0;<span class="">046</span>:     <span class="sd">&quot;&quot;&quot;Takes emission and transition probabilities, and calculates posteriors.</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">047</span>: <span class="sd">    Input: kxl matrices of emission, transition</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">048</span>: <span class="sd">    and initialized fwd and bwd probabilities. Given in log Space</span></pre>
@@ -1192,7 +1192,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
         <span class='pyx_c_api'>__Pyx_RaiseBufferIndexError</span>(__pyx_t_16);
         <span class='error_goto'>__PYX_ERR(0, 68, __pyx_L1_error)</span>
       }
-      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_27 * __pyx_v_fwd.strides[0]) ) + __pyx_t_28 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_25 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_26 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view));
+      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_27 * __pyx_v_fwd.strides[0]) ) + __pyx_t_28 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_25 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_26 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view));
     }
   }
 </pre><pre class="cython line score-0">&#xA0;<span class="">069</span>: </pre>
@@ -1274,7 +1274,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
         <span class='pyx_c_api'>__Pyx_RaiseBufferIndexError</span>(__pyx_t_13);
         <span class='error_goto'>__PYX_ERR(0, 74, __pyx_L1_error)</span>
       }
-      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_36 * __pyx_v_bwd.strides[0]) ) + __pyx_t_37 * __pyx_v_bwd.strides[1]) )) = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_36 * __pyx_v_bwd.strides[0]) ) + __pyx_t_37 * __pyx_v_bwd.strides[1]) )) = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
     }
   }
 </pre><pre class="cython line score-0">&#xA0;<span class="">075</span>: </pre>
@@ -1323,7 +1323,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
     *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_42 * __pyx_v_trans_ll_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_38 * __pyx_v_fwd.strides[0]) ) + __pyx_t_39 * __pyx_v_fwd.strides[1]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_40 * __pyx_v_bwd.strides[0]) ) + __pyx_t_41 * __pyx_v_bwd.strides[1]) ))));
   }
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">079</span>:     <span class="n">tot_ll</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">trans_ll_view</span><span class="p">)</span></pre>
-<pre class='cython code score-0 '>  __pyx_v_tot_ll = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+<pre class='cython code score-0 '>  __pyx_v_tot_ll = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
 </pre><pre class="cython line score-0">&#xA0;<span class="">080</span>: </pre>
 <pre class="cython line score-15" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">081</span>:     <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;Total Log likelihood: {tot_ll: .3f}&quot;</span><span class="p">)</span></pre>
 <pre class='cython code score-15 '>  __pyx_t_2 = <span class='py_c_api'>PyFloat_FromDouble</span>(__pyx_v_tot_ll);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)</span>
@@ -1509,10 +1509,10 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
 <pre class="cython line score-0">&#xA0;<span class="">094</span>: </pre>
 <pre class="cython line score-31" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">095</span>: <span class="k">def</span> <span class="nf">fwd_bkwd_fast</span><span class="p">(</span><span class="n">double</span><span class="p">[:,</span> <span class="p">:]</span> <span class="n">e_prob0</span><span class="p">,</span> <span class="n">double</span><span class="p">[:,</span> <span class="p">:]</span> <span class="n">t_mat</span><span class="p">,</span></pre>
 <pre class='cython code score-31 '>/* Python wrapper */
-static PyObject *__pyx_pw_7Python3_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7Python3_5cfunc_4fwd_bkwd_fast[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Uses speed-up specific for Genotype data (pooling same transition rates)\n    Input:\n    Emission probabilities [k x l] (log space)       (log space)\n    Transition probabilities (infinitesimal) [k x k] (normal space)\n    Initialized fwd and bwd probabilities [k x l]    (log space)\n    t: Transition Matrix: [l x 3 x 3]                     (normal space)\n    full: Boolean whether to return everything";
-static PyMethodDef __pyx_mdef_7Python3_5cfunc_5fwd_bkwd_fast = {"fwd_bkwd_fast", (PyCFunction)__pyx_pw_7Python3_5cfunc_5fwd_bkwd_fast, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7Python3_5cfunc_4fwd_bkwd_fast};
-static PyObject *__pyx_pw_7Python3_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5cfunc_4fwd_bkwd_fast[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Uses speed-up specific for Genotype data (pooling same transition rates)\n    Input:\n    Emission probabilities [k x l] (log space)       (log space)\n    Transition probabilities (infinitesimal) [k x k] (normal space)\n    Initialized fwd and bwd probabilities [k x l]    (log space)\n    t: Transition Matrix: [l x 3 x 3]                     (normal space)\n    full: Boolean whether to return everything";
+static PyMethodDef __pyx_mdef_5cfunc_5fwd_bkwd_fast = {"fwd_bkwd_fast", (PyCFunction)__pyx_pw_5cfunc_5fwd_bkwd_fast, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5cfunc_4fwd_bkwd_fast};
+static PyObject *__pyx_pw_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_e_prob0 = { 0, 0, { 0 }, { 0 }, { 0 } };
   CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_t = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -1530,7 +1530,7 @@ static PyObject *__pyx_pw_7Python3_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, P
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full) {
+static PyObject *__pyx_pf_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full) {
   int __pyx_v_n_states;
   int __pyx_v_n_loci;
   Py_ssize_t __pyx_v_i;
@@ -1572,7 +1572,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __PYX_XDEC_MEMVIEW(&amp;__pyx_t_7, 1);
   __PYX_XDEC_MEMVIEW(&amp;__pyx_t_8, 1);
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_t_105);
-  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("Python3.cfunc.fwd_bkwd_fast", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("cfunc.fwd_bkwd_fast", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_v_post);
@@ -1603,7 +1603,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__47);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__47);
 /* … */
-  __pyx_t_2 = PyCFunction_NewEx(&amp;__pyx_mdef_7Python3_5cfunc_5fwd_bkwd_fast, NULL, __pyx_n_s_Python3_cfunc);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 95, __pyx_L1_error)</span>
+  __pyx_t_2 = PyCFunction_NewEx(&amp;__pyx_mdef_5cfunc_5fwd_bkwd_fast, NULL, __pyx_n_s_cfunc);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 95, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_fwd_bkwd_fast, __pyx_t_2) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 95, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
@@ -1687,11 +1687,11 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_L5_argtuple_error:;
   <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("fwd_bkwd_fast", 0, 3, 5, <span class='py_macro_api'>PyTuple_GET_SIZE</span>(__pyx_args)); <span class='error_goto'>__PYX_ERR(0, 95, __pyx_L3_error)</span>
   __pyx_L3_error:;
-  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("Python3.cfunc.fwd_bkwd_fast", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("cfunc.fwd_bkwd_fast", __pyx_clineno, __pyx_lineno, __pyx_filename);
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_t, __pyx_v_in_val, __pyx_v_full);
+  __pyx_r = __pyx_pf_5cfunc_4fwd_bkwd_fast(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_t, __pyx_v_in_val, __pyx_v_full);
 </pre><pre class="cython line score-0">&#xA0;<span class="">097</span>:     <span class="sd">&quot;&quot;&quot;Takes emission and transition probabilities, and calculates posteriors.</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">098</span>: <span class="sd">    Uses speed-up specific for Genotype data (pooling same transition rates)</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">099</span>: <span class="sd">    Input:</span></pre>
@@ -2326,7 +2326,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
       *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_24 * __pyx_v_trans_ll_view.strides[0]) )) = (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_21 * __pyx_v_fwd.strides[0]) ) + __pyx_t_22 * __pyx_v_fwd.strides[1]) )));
     }
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">146</span>:         <span class="n">f_l</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">trans_ll_view</span><span class="p">)</span> <span class="c"># Logsum of ROH States</span></pre>
-<pre class='cython code score-0 '>    __pyx_v_f_l = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+<pre class='cython code score-0 '>    __pyx_v_f_l = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
 </pre><pre class="cython line score-0">&#xA0;<span class="">147</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">148</span>:         <span class="c"># Do the 0 State:</span></pre>
 <pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">149</span>:         <span class="n">two_v_view</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fwd</span><span class="p">[</span><span class="mf">0</span><span class="p">,</span> <span class="n">i</span> <span class="o">-</span> <span class="mf">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">t0</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">0</span><span class="p">]</span>   <span class="c"># Staying in 0 State</span></pre>
@@ -2425,7 +2425,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
       <span class='pyx_c_api'>__Pyx_RaiseBufferIndexError</span>(__pyx_t_15);
       <span class='error_goto'>__PYX_ERR(0, 151, __pyx_L1_error)</span>
     }
-    *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_37 * __pyx_v_fwd.strides[0]) ) + __pyx_t_38 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_35 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_36 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_two_v_view));
+    *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_37 * __pyx_v_fwd.strides[0]) ) + __pyx_t_38 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_35 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_36 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_5cfunc_logsumexp(__pyx_v_two_v_view));
 </pre><pre class="cython line score-0">&#xA0;<span class="">152</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">153</span>:         <span class="c">### Do the other states</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">154</span>:         <span class="c"># Preprocessing:</span></pre>
@@ -2555,7 +2555,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
         <span class='pyx_c_api'>__Pyx_RaiseBufferIndexError</span>(__pyx_t_23);
         <span class='error_goto'>__PYX_ERR(0, 160, __pyx_L1_error)</span>
       }
-      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_54 * __pyx_v_fwd.strides[0]) ) + __pyx_t_55 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_52 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_53 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_three_v_view));
+      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_54 * __pyx_v_fwd.strides[0]) ) + __pyx_t_55 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_52 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_53 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_5cfunc_logsumexp(__pyx_v_three_v_view));
     }
   }
 </pre><pre class="cython line score-0">&#xA0;<span class="">161</span>: </pre>
@@ -2645,7 +2645,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
       *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_66 * __pyx_v_trans_ll_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_62 * __pyx_v_bwd.strides[0]) ) + __pyx_t_63 * __pyx_v_bwd.strides[1]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_64 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_65 * __pyx_v_e_prob0.strides[1]) ))));
     }
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">169</span>:       <span class="n">f_l</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">trans_ll_view</span><span class="p">)</span> <span class="c"># Logsum of ROH States</span></pre>
-<pre class='cython code score-0 '>    __pyx_v_f_l = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+<pre class='cython code score-0 '>    __pyx_v_f_l = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
 </pre><pre class="cython line score-0">&#xA0;<span class="">170</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">171</span>:       <span class="c"># Do the 0 State:</span></pre>
 <pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">172</span>:       <span class="n">two_v_view</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">bwd</span><span class="p">[</span><span class="mf">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">t0</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">e_prob0</span><span class="p">[</span><span class="mf">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>   <span class="c"># Staying in 0 State</span></pre>
@@ -2744,7 +2744,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
       <span class='pyx_c_api'>__Pyx_RaiseBufferIndexError</span>(__pyx_t_9);
       <span class='error_goto'>__PYX_ERR(0, 174, __pyx_L1_error)</span>
     }
-    *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_79 * __pyx_v_bwd.strides[0]) ) + __pyx_t_80 * __pyx_v_bwd.strides[1]) )) = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_two_v_view);
+    *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_79 * __pyx_v_bwd.strides[0]) ) + __pyx_t_80 * __pyx_v_bwd.strides[1]) )) = __pyx_f_5cfunc_logsumexp(__pyx_v_two_v_view);
 </pre><pre class="cython line score-0">&#xA0;<span class="">175</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">176</span>:       <span class="c">### Do the other states</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">177</span>:       <span class="c"># Preprocessing:</span></pre>
@@ -2887,7 +2887,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
         <span class='pyx_c_api'>__Pyx_RaiseBufferIndexError</span>(__pyx_t_15);
         <span class='error_goto'>__PYX_ERR(0, 183, __pyx_L1_error)</span>
       }
-      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_98 * __pyx_v_bwd.strides[0]) ) + __pyx_t_99 * __pyx_v_bwd.strides[1]) )) = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_three_v_view);
+      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_98 * __pyx_v_bwd.strides[0]) ) + __pyx_t_99 * __pyx_v_bwd.strides[1]) )) = __pyx_f_5cfunc_logsumexp(__pyx_v_three_v_view);
     }
   }
 </pre><pre class="cython line score-0">&#xA0;<span class="">184</span>: </pre>
@@ -2936,7 +2936,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view1.data + __pyx_t_104 * __pyx_v_trans_ll_view1.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_100 * __pyx_v_fwd.strides[0]) ) + __pyx_t_101 * __pyx_v_fwd.strides[1]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_102 * __pyx_v_bwd.strides[0]) ) + __pyx_t_103 * __pyx_v_bwd.strides[1]) ))));
   }
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">188</span>:     <span class="n">tot_ll</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">trans_ll_view1</span><span class="p">)</span></pre>
-<pre class='cython code score-0 '>  __pyx_v_tot_ll = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view1);
+<pre class='cython code score-0 '>  __pyx_v_tot_ll = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view1);
 </pre><pre class="cython line score-0">&#xA0;<span class="">189</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">190</span>:     <span class="c"># Combine the forward and backward calculations</span></pre>
 <pre class="cython line score-29" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">191</span>:     <span class="n">fwd1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">fwd</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>  <span class="c"># Transform</span></pre>
@@ -3149,10 +3149,10 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
 <pre class="cython line score-0">&#xA0;<span class="">205</span>: </pre>
 <pre class="cython line score-29" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">206</span>: <span class="k">def</span> <span class="nf">fwd_bkwd_lowmem</span><span class="p">(</span><span class="n">double</span><span class="p">[:,</span> <span class="p">:]</span> <span class="n">e_prob0</span><span class="p">,</span> <span class="n">double</span><span class="p">[:,</span> <span class="p">:]</span> <span class="n">t_mat</span><span class="p">,</span></pre>
 <pre class='cython code score-29 '>/* Python wrapper */
-static PyObject *__pyx_pw_7Python3_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7Python3_5cfunc_6fwd_bkwd_lowmem[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Uses speed-up specific for Genotype data (pooling same transition rates)\n    Low-Mem: Do no save the full FWD BWD and Posterior. Use temporary\n    Arrays for saving.\n    Input:\n    Emission probabilities [k x l] (log space)       (log space)\n    Transition probabilities (infinitesimal) [k x k] (normal space)\n    Initialized fwd and bwd probabilities [k x l]    (log space)\n    t: Transition Matrix: [l x 3 x 3]                     (normal space)\n    full: Boolean whether to return everything";
-static PyMethodDef __pyx_mdef_7Python3_5cfunc_7fwd_bkwd_lowmem = {"fwd_bkwd_lowmem", (PyCFunction)__pyx_pw_7Python3_5cfunc_7fwd_bkwd_lowmem, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7Python3_5cfunc_6fwd_bkwd_lowmem};
-static PyObject *__pyx_pw_7Python3_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5cfunc_6fwd_bkwd_lowmem[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Uses speed-up specific for Genotype data (pooling same transition rates)\n    Low-Mem: Do no save the full FWD BWD and Posterior. Use temporary\n    Arrays for saving.\n    Input:\n    Emission probabilities [k x l] (log space)       (log space)\n    Transition probabilities (infinitesimal) [k x k] (normal space)\n    Initialized fwd and bwd probabilities [k x l]    (log space)\n    t: Transition Matrix: [l x 3 x 3]                     (normal space)\n    full: Boolean whether to return everything";
+static PyMethodDef __pyx_mdef_5cfunc_7fwd_bkwd_lowmem = {"fwd_bkwd_lowmem", (PyCFunction)__pyx_pw_5cfunc_7fwd_bkwd_lowmem, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5cfunc_6fwd_bkwd_lowmem};
+static PyObject *__pyx_pw_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_e_prob0 = { 0, 0, { 0 }, { 0 }, { 0 } };
   CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_t = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -3170,7 +3170,7 @@ static PyObject *__pyx_pw_7Python3_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self,
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full) {
+static PyObject *__pyx_pf_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full) {
   int __pyx_v_n_states;
   int __pyx_v_n_loci;
   Py_ssize_t __pyx_v_i;
@@ -3211,7 +3211,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __PYX_XDEC_MEMVIEW(&amp;__pyx_t_5, 1);
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_t_6);
   __PYX_XDEC_MEMVIEW(&amp;__pyx_t_7, 1);
-  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("Python3.cfunc.fwd_bkwd_lowmem", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("cfunc.fwd_bkwd_lowmem", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   <span class='pyx_macro_api'>__Pyx_XDECREF</span>(__pyx_v_post);
@@ -3243,7 +3243,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__49);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__49);
 /* … */
-  __pyx_t_2 = PyCFunction_NewEx(&amp;__pyx_mdef_7Python3_5cfunc_7fwd_bkwd_lowmem, NULL, __pyx_n_s_Python3_cfunc);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L1_error)</span>
+  __pyx_t_2 = PyCFunction_NewEx(&amp;__pyx_mdef_5cfunc_7fwd_bkwd_lowmem, NULL, __pyx_n_s_cfunc);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_fwd_bkwd_lowmem, __pyx_t_2) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 206, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
@@ -3327,11 +3327,11 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_L5_argtuple_error:;
   <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("fwd_bkwd_lowmem", 0, 3, 5, <span class='py_macro_api'>PyTuple_GET_SIZE</span>(__pyx_args)); <span class='error_goto'>__PYX_ERR(0, 206, __pyx_L3_error)</span>
   __pyx_L3_error:;
-  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("Python3.cfunc.fwd_bkwd_lowmem", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("cfunc.fwd_bkwd_lowmem", __pyx_clineno, __pyx_lineno, __pyx_filename);
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_t, __pyx_v_in_val, __pyx_v_full);
+  __pyx_r = __pyx_pf_5cfunc_6fwd_bkwd_lowmem(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_t, __pyx_v_in_val, __pyx_v_full);
 </pre><pre class="cython line score-0">&#xA0;<span class="">208</span>:     <span class="sd">&quot;&quot;&quot;Takes emission and transition probabilities, and calculates posteriors.</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">209</span>: <span class="sd">    Uses speed-up specific for Genotype data (pooling same transition rates)</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">210</span>: <span class="sd">    Low-Mem: Do no save the full FWD BWD and Posterior. Use temporary</span></pre>
@@ -3985,7 +3985,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_24 * __pyx_v_trans_ll_view.strides[0]) )) = (*((double *) ( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_22 * __pyx_v_fwd.strides[0]) )));
     }
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">266</span>:         <span class="n">f_l</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">trans_ll_view</span><span class="p">)</span> <span class="c"># Logsum of ROH States</span></pre>
-<pre class='cython code score-0 '>    __pyx_v_f_l = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+<pre class='cython code score-0 '>    __pyx_v_f_l = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
 </pre><pre class="cython line score-0">&#xA0;<span class="">267</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">268</span>:         <span class="c"># Do the 0 State:</span></pre>
 <pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">269</span>:         <span class="n">two_v_view</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fwd</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">t0</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">0</span><span class="p">]</span>   <span class="c"># Staying in 0 State</span></pre>
@@ -4076,7 +4076,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       <span class='pyx_c_api'>__Pyx_RaiseBufferIndexError</span>(__pyx_t_16);
       <span class='error_goto'>__PYX_ERR(0, 271, __pyx_L1_error)</span>
     }
-    *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_36 * __pyx_v_tmp.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_34 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_35 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_two_v_view));
+    *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_36 * __pyx_v_tmp.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_34 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_35 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_5cfunc_logsumexp(__pyx_v_two_v_view));
 </pre><pre class="cython line score-0">&#xA0;<span class="">272</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">273</span>:         <span class="c">### Do the other states</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">274</span>:         <span class="c"># Preprocessing:</span></pre>
@@ -4194,7 +4194,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
         <span class='pyx_c_api'>__Pyx_RaiseBufferIndexError</span>(__pyx_t_23);
         <span class='error_goto'>__PYX_ERR(0, 280, __pyx_L1_error)</span>
       }
-      *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_50 * __pyx_v_tmp.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_48 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_49 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_three_v_view));
+      *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_50 * __pyx_v_tmp.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_48 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_49 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_5cfunc_logsumexp(__pyx_v_three_v_view));
     }
 </pre><pre class="cython line score-0">&#xA0;<span class="">281</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">282</span>:         <span class="c">### Make tmp new fwd vec:</span></pre>
@@ -4283,7 +4283,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view1.data + __pyx_t_57 * __pyx_v_trans_ll_view1.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_55 * __pyx_v_fwd.strides[0]) ))) + (*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_56 * __pyx_v_bwd.strides[0]) ))));
   }
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">290</span>:     <span class="n">tot_ll</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">trans_ll_view1</span><span class="p">)</span></pre>
-<pre class='cython code score-0 '>  __pyx_v_tot_ll = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view1);
+<pre class='cython code score-0 '>  __pyx_v_tot_ll = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view1);
 </pre><pre class="cython line score-0">&#xA0;<span class="">291</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">292</span>:     <span class="c">#############################</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">293</span>:     <span class="c">### Do the Backward Algorithm</span></pre>
@@ -4398,7 +4398,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_70 * __pyx_v_trans_ll_view.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_67 * __pyx_v_bwd.strides[0]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_68 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_69 * __pyx_v_e_prob0.strides[1]) ))));
     }
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">302</span>:       <span class="n">f_l</span> <span class="o">=</span> <span class="n">logsumexp</span><span class="p">(</span><span class="n">trans_ll_view</span><span class="p">)</span> <span class="c"># Logsum of ROH States</span></pre>
-<pre class='cython code score-0 '>    __pyx_v_f_l = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+<pre class='cython code score-0 '>    __pyx_v_f_l = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
 </pre><pre class="cython line score-0">&#xA0;<span class="">303</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">304</span>:       <span class="c"># Do the 0 State:</span></pre>
 <pre class="cython line score-8" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">305</span>:       <span class="n">two_v_view</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">bwd</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">t0</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">e_prob0</span><span class="p">[</span><span class="mf">0</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>   <span class="c"># Staying in 0 State</span></pre>
@@ -4489,7 +4489,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       <span class='pyx_c_api'>__Pyx_RaiseBufferIndexError</span>(__pyx_t_9);
       <span class='error_goto'>__PYX_ERR(0, 307, __pyx_L1_error)</span>
     }
-    *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_82 * __pyx_v_tmp.strides[0]) )) = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_two_v_view);
+    *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_82 * __pyx_v_tmp.strides[0]) )) = __pyx_f_5cfunc_logsumexp(__pyx_v_two_v_view);
 </pre><pre class="cython line score-0">&#xA0;<span class="">308</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">309</span>:       <span class="c">### Do the other states</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">310</span>:       <span class="c"># Preprocessing:</span></pre>
@@ -4620,7 +4620,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
         <span class='pyx_c_api'>__Pyx_RaiseBufferIndexError</span>(__pyx_t_16);
         <span class='error_goto'>__PYX_ERR(0, 316, __pyx_L1_error)</span>
       }
-      *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_98 * __pyx_v_tmp.strides[0]) )) = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_three_v_view);
+      *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_98 * __pyx_v_tmp.strides[0]) )) = __pyx_f_5cfunc_logsumexp(__pyx_v_three_v_view);
     }
 </pre><pre class="cython line score-0">&#xA0;<span class="">317</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">318</span>:       <span class="c">### Make tmp new bwd vec:</span></pre>
@@ -4782,10 +4782,10 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
 <pre class="cython line score-0">&#xA0;<span class="">334</span>: </pre>
 <pre class="cython line score-62" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">335</span>: <span class="k">def</span> <span class="nf">viterbi_path</span><span class="p">(</span><span class="n">double</span><span class="p">[:,</span> <span class="p">:]</span> <span class="n">e_prob0</span><span class="p">,</span> <span class="n">double</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="n">t_mat0</span><span class="p">,</span> <span class="n">double</span><span class="p">[:]</span> <span class="n">end_p0</span><span class="p">):</span></pre>
 <pre class='cython code score-62 '>/* Python wrapper */
-static PyObject *__pyx_pw_7Python3_5cfunc_9viterbi_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7Python3_5cfunc_8viterbi_path[] = "Implementation of a Viterbi Path.\n    e_prob0  Matrices with Emission Probabilities, [k,l] (log space)\n    t_mat: Transition Matrix: [l x 3 x 3]  (normal space)\n    end_p: probability to begin/end in states [k]";
-static PyMethodDef __pyx_mdef_7Python3_5cfunc_9viterbi_path = {"viterbi_path", (PyCFunction)__pyx_pw_7Python3_5cfunc_9viterbi_path, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7Python3_5cfunc_8viterbi_path};
-static PyObject *__pyx_pw_7Python3_5cfunc_9viterbi_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5cfunc_9viterbi_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5cfunc_8viterbi_path[] = "Implementation of a Viterbi Path.\n    e_prob0  Matrices with Emission Probabilities, [k,l] (log space)\n    t_mat: Transition Matrix: [l x 3 x 3]  (normal space)\n    end_p: probability to begin/end in states [k]";
+static PyMethodDef __pyx_mdef_5cfunc_9viterbi_path = {"viterbi_path", (PyCFunction)__pyx_pw_5cfunc_9viterbi_path, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5cfunc_8viterbi_path};
+static PyObject *__pyx_pw_5cfunc_9viterbi_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_e_prob0 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_t_mat0 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_end_p0 = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -4844,18 +4844,18 @@ static PyObject *__pyx_pw_7Python3_5cfunc_9viterbi_path(PyObject *__pyx_self, Py
   __pyx_L5_argtuple_error:;
   <span class='pyx_c_api'>__Pyx_RaiseArgtupleInvalid</span>("viterbi_path", 1, 3, 3, <span class='py_macro_api'>PyTuple_GET_SIZE</span>(__pyx_args)); <span class='error_goto'>__PYX_ERR(0, 335, __pyx_L3_error)</span>
   __pyx_L3_error:;
-  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("Python3.cfunc.viterbi_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("cfunc.viterbi_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7Python3_5cfunc_8viterbi_path(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat0, __pyx_v_end_p0);
+  __pyx_r = __pyx_pf_5cfunc_8viterbi_path(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat0, __pyx_v_end_p0);
 
   /* function exit code */
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat0, __Pyx_memviewslice __pyx_v_end_p0) {
+static PyObject *__pyx_pf_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat0, __Pyx_memviewslice __pyx_v_end_p0) {
   int __pyx_v_n_states;
   int __pyx_v_n_loci;
   Py_ssize_t __pyx_v_i;
@@ -4892,7 +4892,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __PYX_XDEC_MEMVIEW(&amp;__pyx_t_7, 1);
   __PYX_XDEC_MEMVIEW(&amp;__pyx_t_8, 1);
   __PYX_XDEC_MEMVIEW(&amp;__pyx_t_9, 1);
-  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("Python3.cfunc.viterbi_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  <span class='pyx_c_api'>__Pyx_AddTraceback</span>("cfunc.viterbi_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&amp;__pyx_v_mp, 1);
@@ -4922,7 +4922,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_tuple__51);
   <span class='refnanny'>__Pyx_GIVEREF</span>(__pyx_tuple__51);
 /* … */
-  __pyx_t_2 = PyCFunction_NewEx(&amp;__pyx_mdef_7Python3_5cfunc_9viterbi_path, NULL, __pyx_n_s_Python3_cfunc);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 335, __pyx_L1_error)</span>
+  __pyx_t_2 = PyCFunction_NewEx(&amp;__pyx_mdef_5cfunc_9viterbi_path, NULL, __pyx_n_s_cfunc);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 335, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_viterbi_path, __pyx_t_2) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 335, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_2); __pyx_t_2 = 0;
@@ -5292,7 +5292,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
         __pyx_t_7.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
-__pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
+__pyx_v_m = __pyx_f_5cfunc_argmax(__pyx_t_7);
     __PYX_XDEC_MEMVIEW(&amp;__pyx_t_7, 1);
     __pyx_t_7.memview = NULL;
     __pyx_t_7.data = NULL;
@@ -5437,7 +5437,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     *((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_36 * __pyx_v_two_v_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_mp.data + __pyx_t_31 * __pyx_v_mp.strides[0]) ) + __pyx_t_32 * __pyx_v_mp.strides[1]) ))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t_mat0.data + __pyx_t_33 * __pyx_v_t_mat0.strides[0]) ) + __pyx_t_34 * __pyx_v_t_mat0.strides[1]) ) + __pyx_t_35 * __pyx_v_t_mat0.strides[2]) ))));
 </pre><pre class="cython line score-0">&#xA0;<span class="">388</span>: </pre>
 <pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">389</span>:         <span class="n">m</span> <span class="o">=</span> <span class="n">argmax</span><span class="p">(</span><span class="n">two_v_view</span><span class="p">)</span>      <span class="c">### Do a Maximum</span></pre>
-<pre class='cython code score-0 '>    __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_v_two_v_view);
+<pre class='cython code score-0 '>    __pyx_v_m = __pyx_f_5cfunc_argmax(__pyx_v_two_v_view);
 </pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">390</span>:         <span class="n">v</span> <span class="o">=</span> <span class="n">two_v_view</span><span class="p">[</span><span class="n">m</span><span class="p">]</span></pre>
 <pre class='cython code score-2 '>    __pyx_t_37 = __pyx_v_m;
     __pyx_t_14 = -1;
@@ -5604,7 +5604,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
       *((long *) ( /* dim=0 */ (__pyx_v_three_vi_view.data + __pyx_t_60 * __pyx_v_three_vi_view.strides[0]) )) = __pyx_v_k;
 </pre><pre class="cython line score-0">&#xA0;<span class="">400</span>: </pre>
 <pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">401</span>:           <span class="n">m</span> <span class="o">=</span> <span class="n">argmax</span><span class="p">(</span><span class="n">three_v_view</span><span class="p">)</span>      <span class="c">### Do a Maximum</span></pre>
-<pre class='cython code score-0 '>      __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_v_three_v_view);
+<pre class='cython code score-0 '>      __pyx_v_m = __pyx_f_5cfunc_argmax(__pyx_v_three_v_view);
 </pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">402</span>:           <span class="n">v</span> <span class="o">=</span> <span class="n">three_v_view</span><span class="p">[</span><span class="n">m</span><span class="p">]</span></pre>
 <pre class='cython code score-2 '>      __pyx_t_61 = __pyx_v_m;
       __pyx_t_55 = -1;

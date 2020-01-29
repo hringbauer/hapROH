@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [],
-        "name": "Python3.cfunc",
+        "name": "cfunc",
         "sources": [
-            "/project/jnovembre/hringbauer/HAPSBURG/Python3/cfunc.pyx"
+            "cfunc.pyx"
         ]
     },
-    "module_name": "Python3.cfunc"
+    "module_name": "cfunc"
 }
 END: Cython Metadata */
 
@@ -572,8 +572,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__Python3__cfunc
-#define __PYX_HAVE_API__Python3__cfunc
+#define __PYX_HAVE__cfunc
+#define __PYX_HAVE_API__cfunc
 /* Early includes */
 #include <math.h>
 #include "pythread.h"
@@ -1676,7 +1676,7 @@ static PyObject *__pyx_memoryviewslice_assign_item_from_object(struct __pyx_memo
 
 /* Module declarations from 'libc.math' */
 
-/* Module declarations from 'Python3.cfunc' */
+/* Module declarations from 'cfunc' */
 static PyTypeObject *__pyx_array_type = 0;
 static PyTypeObject *__pyx_MemviewEnum_type = 0;
 static PyTypeObject *__pyx_memoryview_type = 0;
@@ -1688,8 +1688,8 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice); /*proto*/
-static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice); /*proto*/
+static CYTHON_INLINE double __pyx_f_5cfunc_logsumexp(__Pyx_memviewslice); /*proto*/
+static CYTHON_INLINE long __pyx_f_5cfunc_argmax(__Pyx_memviewslice); /*proto*/
 static struct __pyx_array_obj *__pyx_array_new(PyObject *, Py_ssize_t, char *, char *, char *); /*proto*/
 static void *__pyx_align_pointer(void *, size_t); /*proto*/
 static PyObject *__pyx_memoryview_new(PyObject *, int, int, __Pyx_TypeInfo *); /*proto*/
@@ -1725,11 +1725,11 @@ static void __pyx_memoryview__slice_assign_scalar(char *, Py_ssize_t *, Py_ssize
 static PyObject *__pyx_unpickle_Enum__set_state(struct __pyx_MemviewEnum_obj *, PyObject *); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_double = { "double", NULL, sizeof(double), { 0 }, 0, 'R', 0, 0 };
 static __Pyx_TypeInfo __Pyx_TypeInfo_long = { "long", NULL, sizeof(long), { 0 }, 0, IS_UNSIGNED(long) ? 'U' : 'I', IS_UNSIGNED(long), 0 };
-#define __Pyx_MODULE_NAME "Python3.cfunc"
-extern int __pyx_module_is_main_Python3__cfunc;
-int __pyx_module_is_main_Python3__cfunc = 0;
+#define __Pyx_MODULE_NAME "cfunc"
+extern int __pyx_module_is_main_cfunc;
+int __pyx_module_is_main_cfunc = 0;
 
-/* Implementation of 'Python3.cfunc' */
+/* Implementation of 'cfunc' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_print;
 static PyObject *__pyx_builtin_ValueError;
@@ -1791,6 +1791,7 @@ static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_tmp0[] = "tmp0";
 static const char __pyx_k_ASCII[] = "ASCII";
 static const char __pyx_k_DTYPE[] = "DTYPE";
+static const char __pyx_k_cfunc[] = "cfunc";
 static const char __pyx_k_class[] = "__class__";
 static const char __pyx_k_dtype[] = "dtype";
 static const char __pyx_k_empty[] = "empty";
@@ -1862,7 +1863,6 @@ static const char __pyx_k_pyx_checksum[] = "__pyx_checksum";
 static const char __pyx_k_stringsource[] = "stringsource";
 static const char __pyx_k_three_v_view[] = "three_v_view";
 static const char __pyx_k_viterbi_path[] = "viterbi_path";
-static const char __pyx_k_Python3_cfunc[] = "Python3.cfunc";
 static const char __pyx_k_fwd_bkwd_fast[] = "fwd_bkwd_fast";
 static const char __pyx_k_pyx_getbuffer[] = "__pyx_getbuffer";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
@@ -1931,7 +1931,6 @@ static PyObject *__pyx_n_b_O;
 static PyObject *__pyx_kp_s_Out_of_bounds_on_buffer_access_a;
 static PyObject *__pyx_n_s_PickleError;
 static PyObject *__pyx_n_s_Process;
-static PyObject *__pyx_n_s_Python3_cfunc;
 static PyObject *__pyx_kp_u_Total_Log_likelihood;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_kp_s_Unable_to_convert_item_to_object;
@@ -1946,6 +1945,7 @@ static PyObject *__pyx_n_s_bwd0;
 static PyObject *__pyx_n_s_bwd1;
 static PyObject *__pyx_n_s_c;
 static PyObject *__pyx_n_u_c;
+static PyObject *__pyx_n_s_cfunc;
 static PyObject *__pyx_kp_s_cfunc_pyx;
 static PyObject *__pyx_n_s_class;
 static PyObject *__pyx_n_s_cline_in_traceback;
@@ -2074,11 +2074,11 @@ static PyObject *__pyx_n_s_v;
 static PyObject *__pyx_n_s_viterbi_path;
 static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_n_s_zeros;
-static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
-static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_fwd, __Pyx_memviewslice __pyx_v_bwd, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t, PyObject *__pyx_v_full); /* proto */
-static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full); /* proto */
-static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full); /* proto */
-static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat0, __Pyx_memviewslice __pyx_v_end_p0); /* proto */
+static PyObject *__pyx_pf_5cfunc_print_memory_usage(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
+static PyObject *__pyx_pf_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_fwd, __Pyx_memviewslice __pyx_v_bwd, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t, PyObject *__pyx_v_full); /* proto */
+static PyObject *__pyx_pf_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full); /* proto */
+static PyObject *__pyx_pf_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full); /* proto */
+static PyObject *__pyx_pf_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat0, __Pyx_memviewslice __pyx_v_end_p0); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -2193,7 +2193,7 @@ static PyObject *__pyx_codeobj__52;
 static PyObject *__pyx_codeobj__59;
 /* Late includes */
 
-/* "Python3/cfunc.pyx":12
+/* "cfunc.pyx":12
  * DTYPE = np.float # The float data type
  * 
  * cdef inline double logsumexp(double[:] vec):             # <<<<<<<<<<<<<<
@@ -2201,7 +2201,7 @@ static PyObject *__pyx_codeobj__59;
  *   cdef Py_ssize_t i  # The iterator Variable
  */
 
-static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice __pyx_v_vec) {
+static CYTHON_INLINE double __pyx_f_5cfunc_logsumexp(__Pyx_memviewslice __pyx_v_vec) {
   Py_ssize_t __pyx_v_i;
   double __pyx_v_result;
   double __pyx_v_largest;
@@ -2218,7 +2218,7 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
   Py_ssize_t __pyx_t_9;
   __Pyx_RefNannySetupContext("logsumexp", 0);
 
-  /* "Python3/cfunc.pyx":15
+  /* "cfunc.pyx":15
  *   """Do the Log of the Sum of Exponentials."""
  *   cdef Py_ssize_t i  # The iterator Variable
  *   cdef double result = 0.0             # <<<<<<<<<<<<<<
@@ -2227,7 +2227,7 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
  */
   __pyx_v_result = 0.0;
 
-  /* "Python3/cfunc.pyx":16
+  /* "cfunc.pyx":16
  *   cdef Py_ssize_t i  # The iterator Variable
  *   cdef double result = 0.0
  *   cdef double largest = vec[0]             # <<<<<<<<<<<<<<
@@ -2245,7 +2245,7 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
   }
   __pyx_v_largest = (*((double *) ( /* dim=0 */ (__pyx_v_vec.data + __pyx_t_1 * __pyx_v_vec.strides[0]) )));
 
-  /* "Python3/cfunc.pyx":18
+  /* "cfunc.pyx":18
  *   cdef double largest = vec[0]
  * 
  *   for i in range(1, vec.shape[0]):   # Find Maximum in vec             # <<<<<<<<<<<<<<
@@ -2257,7 +2257,7 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
   for (__pyx_t_5 = 1; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "Python3/cfunc.pyx":19
+    /* "cfunc.pyx":19
  * 
  *   for i in range(1, vec.shape[0]):   # Find Maximum in vec
  *       if (vec[i] > largest):             # <<<<<<<<<<<<<<
@@ -2276,7 +2276,7 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
     __pyx_t_7 = (((*((double *) ( /* dim=0 */ (__pyx_v_vec.data + __pyx_t_6 * __pyx_v_vec.strides[0]) ))) > __pyx_v_largest) != 0);
     if (__pyx_t_7) {
 
-      /* "Python3/cfunc.pyx":20
+      /* "cfunc.pyx":20
  *   for i in range(1, vec.shape[0]):   # Find Maximum in vec
  *       if (vec[i] > largest):
  *           largest = vec[i]             # <<<<<<<<<<<<<<
@@ -2294,7 +2294,7 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
       }
       __pyx_v_largest = (*((double *) ( /* dim=0 */ (__pyx_v_vec.data + __pyx_t_8 * __pyx_v_vec.strides[0]) )));
 
-      /* "Python3/cfunc.pyx":19
+      /* "cfunc.pyx":19
  * 
  *   for i in range(1, vec.shape[0]):   # Find Maximum in vec
  *       if (vec[i] > largest):             # <<<<<<<<<<<<<<
@@ -2304,7 +2304,7 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
     }
   }
 
-  /* "Python3/cfunc.pyx":21
+  /* "cfunc.pyx":21
  *       if (vec[i] > largest):
  *           largest = vec[i]
  *   for i in range(vec.shape[0]):             # <<<<<<<<<<<<<<
@@ -2316,7 +2316,7 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "Python3/cfunc.pyx":22
+    /* "cfunc.pyx":22
  *           largest = vec[i]
  *   for i in range(vec.shape[0]):
  *       result += exp(vec[i] - largest)             # <<<<<<<<<<<<<<
@@ -2335,7 +2335,7 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
     __pyx_v_result = (__pyx_v_result + exp(((*((double *) ( /* dim=0 */ (__pyx_v_vec.data + __pyx_t_9 * __pyx_v_vec.strides[0]) ))) - __pyx_v_largest)));
   }
 
-  /* "Python3/cfunc.pyx":23
+  /* "cfunc.pyx":23
  *   for i in range(vec.shape[0]):
  *       result += exp(vec[i] - largest)
  *   return largest + log(result)             # <<<<<<<<<<<<<<
@@ -2345,7 +2345,7 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
   __pyx_r = (__pyx_v_largest + log(__pyx_v_result));
   goto __pyx_L0;
 
-  /* "Python3/cfunc.pyx":12
+  /* "cfunc.pyx":12
  * DTYPE = np.float # The float data type
  * 
  * cdef inline double logsumexp(double[:] vec):             # <<<<<<<<<<<<<<
@@ -2355,14 +2355,14 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("Python3.cfunc.logsumexp", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("cfunc.logsumexp", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "Python3/cfunc.pyx":25
+/* "cfunc.pyx":25
  *   return largest + log(result)
  * 
  * cdef inline long argmax(double[:] vec):             # <<<<<<<<<<<<<<
@@ -2370,7 +2370,7 @@ static CYTHON_INLINE double __pyx_f_7Python3_5cfunc_logsumexp(__Pyx_memviewslice
  *   cdef Py_ssize_t i  # The iterator Variable.
  */
 
-static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __pyx_v_vec) {
+static CYTHON_INLINE long __pyx_f_5cfunc_argmax(__Pyx_memviewslice __pyx_v_vec) {
   int __pyx_v_m;
   double __pyx_v_v;
   Py_ssize_t __pyx_v_k;
@@ -2388,7 +2388,7 @@ static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __py
   double __pyx_t_10;
   __Pyx_RefNannySetupContext("argmax", 0);
 
-  /* "Python3/cfunc.pyx":28
+  /* "cfunc.pyx":28
  *   """Return Max and ArgMax"""
  *   cdef Py_ssize_t i  # The iterator Variable.
  *   cdef int m = 0     # Position of the Maximum.             # <<<<<<<<<<<<<<
@@ -2397,7 +2397,7 @@ static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __py
  */
   __pyx_v_m = 0;
 
-  /* "Python3/cfunc.pyx":29
+  /* "cfunc.pyx":29
  *   cdef Py_ssize_t i  # The iterator Variable.
  *   cdef int m = 0     # Position of the Maximum.
  *   cdef double v = vec[0]             # <<<<<<<<<<<<<<
@@ -2415,7 +2415,7 @@ static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __py
   }
   __pyx_v_v = (*((double *) ( /* dim=0 */ (__pyx_v_vec.data + __pyx_t_1 * __pyx_v_vec.strides[0]) )));
 
-  /* "Python3/cfunc.pyx":31
+  /* "cfunc.pyx":31
  *   cdef double v = vec[0]
  * 
  *   for k in range(1, vec.shape[0]):   # Find Maximum             # <<<<<<<<<<<<<<
@@ -2427,7 +2427,7 @@ static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __py
   for (__pyx_t_5 = 1; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_k = __pyx_t_5;
 
-    /* "Python3/cfunc.pyx":32
+    /* "cfunc.pyx":32
  * 
  *   for k in range(1, vec.shape[0]):   # Find Maximum
  *     if (vec[k] > v):             # <<<<<<<<<<<<<<
@@ -2446,7 +2446,7 @@ static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __py
     __pyx_t_7 = (((*((double *) ( /* dim=0 */ (__pyx_v_vec.data + __pyx_t_6 * __pyx_v_vec.strides[0]) ))) > __pyx_v_v) != 0);
     if (__pyx_t_7) {
 
-      /* "Python3/cfunc.pyx":33
+      /* "cfunc.pyx":33
  *   for k in range(1, vec.shape[0]):   # Find Maximum
  *     if (vec[k] > v):
  *       m, v = k, vec[k]             # <<<<<<<<<<<<<<
@@ -2467,7 +2467,7 @@ static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __py
       __pyx_v_m = __pyx_t_8;
       __pyx_v_v = __pyx_t_10;
 
-      /* "Python3/cfunc.pyx":32
+      /* "cfunc.pyx":32
  * 
  *   for k in range(1, vec.shape[0]):   # Find Maximum
  *     if (vec[k] > v):             # <<<<<<<<<<<<<<
@@ -2477,7 +2477,7 @@ static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __py
     }
   }
 
-  /* "Python3/cfunc.pyx":34
+  /* "cfunc.pyx":34
  *     if (vec[k] > v):
  *       m, v = k, vec[k]
  *   return m  # Return Argmax             # <<<<<<<<<<<<<<
@@ -2487,7 +2487,7 @@ static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __py
   __pyx_r = __pyx_v_m;
   goto __pyx_L0;
 
-  /* "Python3/cfunc.pyx":25
+  /* "cfunc.pyx":25
  *   return largest + log(result)
  * 
  * cdef inline long argmax(double[:] vec):             # <<<<<<<<<<<<<<
@@ -2497,14 +2497,14 @@ static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __py
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("Python3.cfunc.argmax", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("cfunc.argmax", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "Python3/cfunc.pyx":37
+/* "cfunc.pyx":37
  * 
  * 
  * def print_memory_usage():             # <<<<<<<<<<<<<<
@@ -2513,21 +2513,21 @@ static CYTHON_INLINE long __pyx_f_7Python3_5cfunc_argmax(__Pyx_memviewslice __py
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7Python3_5cfunc_1print_memory_usage(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_7Python3_5cfunc_print_memory_usage[] = "Print the current Memory Usage in mB";
-static PyMethodDef __pyx_mdef_7Python3_5cfunc_1print_memory_usage = {"print_memory_usage", (PyCFunction)__pyx_pw_7Python3_5cfunc_1print_memory_usage, METH_NOARGS, __pyx_doc_7Python3_5cfunc_print_memory_usage};
-static PyObject *__pyx_pw_7Python3_5cfunc_1print_memory_usage(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5cfunc_1print_memory_usage(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_5cfunc_print_memory_usage[] = "Print the current Memory Usage in mB";
+static PyMethodDef __pyx_mdef_5cfunc_1print_memory_usage = {"print_memory_usage", (PyCFunction)__pyx_pw_5cfunc_1print_memory_usage, METH_NOARGS, __pyx_doc_5cfunc_print_memory_usage};
+static PyObject *__pyx_pw_5cfunc_1print_memory_usage(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("print_memory_usage (wrapper)", 0);
-  __pyx_r = __pyx_pf_7Python3_5cfunc_print_memory_usage(__pyx_self);
+  __pyx_r = __pyx_pf_5cfunc_print_memory_usage(__pyx_self);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObject *__pyx_self) {
+static PyObject *__pyx_pf_5cfunc_print_memory_usage(CYTHON_UNUSED PyObject *__pyx_self) {
   PyObject *__pyx_v_process = NULL;
   PyObject *__pyx_v_mb_usage = NULL;
   PyObject *__pyx_r = NULL;
@@ -2541,7 +2541,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObj
   Py_UCS4 __pyx_t_7;
   __Pyx_RefNannySetupContext("print_memory_usage", 0);
 
-  /* "Python3/cfunc.pyx":39
+  /* "cfunc.pyx":39
  * def print_memory_usage():
  *     """Print the current Memory Usage in mB"""
  *     process = psutil.Process(os.getpid())             # <<<<<<<<<<<<<<
@@ -2625,7 +2625,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObj
   __pyx_v_process = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "Python3/cfunc.pyx":40
+  /* "cfunc.pyx":40
  *     """Print the current Memory Usage in mB"""
  *     process = psutil.Process(os.getpid())
  *     mb_usage = process.memory_info().rss / 1e6             # <<<<<<<<<<<<<<
@@ -2661,7 +2661,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObj
   __pyx_v_mb_usage = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "Python3/cfunc.pyx":41
+  /* "cfunc.pyx":41
  *     process = psutil.Process(os.getpid())
  *     mb_usage = process.memory_info().rss / 1e6
  *     print(f"Memory Usage: {mb_usage} mB")             # <<<<<<<<<<<<<<
@@ -2695,7 +2695,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObj
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "Python3/cfunc.pyx":37
+  /* "cfunc.pyx":37
  * 
  * 
  * def print_memory_usage():             # <<<<<<<<<<<<<<
@@ -2712,7 +2712,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObj
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("Python3.cfunc.print_memory_usage", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cfunc.print_memory_usage", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_process);
@@ -2722,7 +2722,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObj
   return __pyx_r;
 }
 
-/* "Python3/cfunc.pyx":44
+/* "cfunc.pyx":44
  * 
  * 
  * def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -2731,10 +2731,10 @@ static PyObject *__pyx_pf_7Python3_5cfunc_print_memory_usage(CYTHON_UNUSED PyObj
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7Python3_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7Python3_5cfunc_2fwd_bkwd[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Input: kxl matrices of emission, transition\n    and initialized fwd and bwd probabilities. Given in log Space\n    full: Boolean whether to return everything";
-static PyMethodDef __pyx_mdef_7Python3_5cfunc_3fwd_bkwd = {"fwd_bkwd", (PyCFunction)__pyx_pw_7Python3_5cfunc_3fwd_bkwd, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7Python3_5cfunc_2fwd_bkwd};
-static PyObject *__pyx_pw_7Python3_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5cfunc_2fwd_bkwd[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Input: kxl matrices of emission, transition\n    and initialized fwd and bwd probabilities. Given in log Space\n    full: Boolean whether to return everything";
+static PyMethodDef __pyx_mdef_5cfunc_3fwd_bkwd = {"fwd_bkwd", (PyCFunction)__pyx_pw_5cfunc_3fwd_bkwd, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5cfunc_2fwd_bkwd};
+static PyObject *__pyx_pw_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_e_prob0 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_t_mat = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_fwd = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -2748,7 +2748,7 @@ static PyObject *__pyx_pw_7Python3_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObje
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_e_prob0,&__pyx_n_s_t_mat,&__pyx_n_s_fwd,&__pyx_n_s_bwd,&__pyx_n_s_t,&__pyx_n_s_full,0};
     PyObject* values[6] = {0,0,0,0,0,0};
 
-    /* "Python3/cfunc.pyx":45
+    /* "cfunc.pyx":45
  * 
  * def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,
  *     double[:, :] fwd, double[:, :] bwd, double[:,:,:] t, full=False):             # <<<<<<<<<<<<<<
@@ -2838,13 +2838,13 @@ static PyObject *__pyx_pw_7Python3_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObje
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("fwd_bkwd", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 44, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("Python3.cfunc.fwd_bkwd", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cfunc.fwd_bkwd", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7Python3_5cfunc_2fwd_bkwd(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_fwd, __pyx_v_bwd, __pyx_v_t, __pyx_v_full);
+  __pyx_r = __pyx_pf_5cfunc_2fwd_bkwd(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_fwd, __pyx_v_bwd, __pyx_v_t, __pyx_v_full);
 
-  /* "Python3/cfunc.pyx":44
+  /* "cfunc.pyx":44
  * 
  * 
  * def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -2857,7 +2857,7 @@ static PyObject *__pyx_pw_7Python3_5cfunc_3fwd_bkwd(PyObject *__pyx_self, PyObje
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_fwd, __Pyx_memviewslice __pyx_v_bwd, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t, PyObject *__pyx_v_full) {
+static PyObject *__pyx_pf_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_fwd, __Pyx_memviewslice __pyx_v_bwd, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t, PyObject *__pyx_v_full) {
   int __pyx_v_n_states;
   int __pyx_v_n_loci;
   Py_ssize_t __pyx_v_i;
@@ -2917,7 +2917,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   int __pyx_t_43;
   __Pyx_RefNannySetupContext("fwd_bkwd", 0);
 
-  /* "Python3/cfunc.pyx":50
+  /* "cfunc.pyx":50
  *     and initialized fwd and bwd probabilities. Given in log Space
  *     full: Boolean whether to return everything"""
  *     cdef int n_states = e_prob0.shape[0]             # <<<<<<<<<<<<<<
@@ -2926,7 +2926,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
  */
   __pyx_v_n_states = (__pyx_v_e_prob0.shape[0]);
 
-  /* "Python3/cfunc.pyx":51
+  /* "cfunc.pyx":51
  *     full: Boolean whether to return everything"""
  *     cdef int n_states = e_prob0.shape[0]
  *     cdef int n_loci = e_prob0.shape[1]             # <<<<<<<<<<<<<<
@@ -2935,7 +2935,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
  */
   __pyx_v_n_loci = (__pyx_v_e_prob0.shape[1]);
 
-  /* "Python3/cfunc.pyx":55
+  /* "cfunc.pyx":55
  * 
  *     # Initialize Posterior and Transition Probabilities
  *     post = np.empty([n_states, n_loci], dtype=DTYPE)             # <<<<<<<<<<<<<<
@@ -2978,7 +2978,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __pyx_v_post = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "Python3/cfunc.pyx":57
+  /* "cfunc.pyx":57
  *     post = np.empty([n_states, n_loci], dtype=DTYPE)
  * 
  *     trans_ll = np.empty(n_states, dtype=DTYPE)             # <<<<<<<<<<<<<<
@@ -3011,7 +3011,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __pyx_v_trans_ll = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":58
+  /* "cfunc.pyx":58
  * 
  *     trans_ll = np.empty(n_states, dtype=DTYPE)
  *     cdef double[:] trans_ll_view = trans_ll             # <<<<<<<<<<<<<<
@@ -3023,7 +3023,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":61
+  /* "cfunc.pyx":61
  * 
  *     ### Transform to Log space
  *     cdef double[:, :] t_mat0 = np.log(np.eye(n_states) + t_mat[:,:])  # Do log of (relevant) transition Matrix             # <<<<<<<<<<<<<<
@@ -3146,7 +3146,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __pyx_t_9.memview = NULL;
   __pyx_t_9.data = NULL;
 
-  /* "Python3/cfunc.pyx":63
+  /* "cfunc.pyx":63
  *     cdef double[:, :] t_mat0 = np.log(np.eye(n_states) + t_mat[:,:])  # Do log of (relevant) transition Matrix
  * 
  *     for i in range(1, n_loci):  # Do the forward recursion             # <<<<<<<<<<<<<<
@@ -3158,7 +3158,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   for (__pyx_t_12 = 1; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_i = __pyx_t_12;
 
-    /* "Python3/cfunc.pyx":64
+    /* "cfunc.pyx":64
  * 
  *     for i in range(1, n_loci):  # Do the forward recursion
  *         for j in range(n_states):             # <<<<<<<<<<<<<<
@@ -3170,7 +3170,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
     for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_14; __pyx_t_15+=1) {
       __pyx_v_j = __pyx_t_15;
 
-      /* "Python3/cfunc.pyx":65
+      /* "cfunc.pyx":65
  *     for i in range(1, n_loci):  # Do the forward recursion
  *         for j in range(n_states):
  *           for k in range(n_states):             # <<<<<<<<<<<<<<
@@ -3182,7 +3182,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
       for (__pyx_t_18 = 0; __pyx_t_18 < __pyx_t_17; __pyx_t_18+=1) {
         __pyx_v_k = __pyx_t_18;
 
-        /* "Python3/cfunc.pyx":66
+        /* "cfunc.pyx":66
  *         for j in range(n_states):
  *           for k in range(n_states):
  *             trans_ll_view[k] = fwd[k, i - 1] + t_mat0[k, j]             # <<<<<<<<<<<<<<
@@ -3227,7 +3227,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
         *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_24 * __pyx_v_trans_ll_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_19 * __pyx_v_fwd.strides[0]) ) + __pyx_t_20 * __pyx_v_fwd.strides[1]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t_mat0.data + __pyx_t_22 * __pyx_v_t_mat0.strides[0]) ) + __pyx_t_23 * __pyx_v_t_mat0.strides[1]) ))));
       }
 
-      /* "Python3/cfunc.pyx":68
+      /* "cfunc.pyx":68
  *             trans_ll_view[k] = fwd[k, i - 1] + t_mat0[k, j]
  * 
  *           fwd[j, i] = e_prob0[j, i] + logsumexp(trans_ll_view)             # <<<<<<<<<<<<<<
@@ -3260,11 +3260,11 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
         __Pyx_RaiseBufferIndexError(__pyx_t_16);
         __PYX_ERR(0, 68, __pyx_L1_error)
       }
-      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_27 * __pyx_v_fwd.strides[0]) ) + __pyx_t_28 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_25 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_26 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view));
+      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_27 * __pyx_v_fwd.strides[0]) ) + __pyx_t_28 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_25 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_26 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view));
     }
   }
 
-  /* "Python3/cfunc.pyx":70
+  /* "cfunc.pyx":70
  *           fwd[j, i] = e_prob0[j, i] + logsumexp(trans_ll_view)
  * 
  *     for i in range(n_loci-1, 0, -1):  # Do the backward recursion             # <<<<<<<<<<<<<<
@@ -3274,7 +3274,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   for (__pyx_t_12 = (__pyx_v_n_loci - 1); __pyx_t_12 > 0; __pyx_t_12-=1) {
     __pyx_v_i = __pyx_t_12;
 
-    /* "Python3/cfunc.pyx":71
+    /* "cfunc.pyx":71
  * 
  *     for i in range(n_loci-1, 0, -1):  # Do the backward recursion
  *       for j in range(n_states):             # <<<<<<<<<<<<<<
@@ -3286,7 +3286,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
     for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_11; __pyx_t_15+=1) {
       __pyx_v_j = __pyx_t_15;
 
-      /* "Python3/cfunc.pyx":72
+      /* "cfunc.pyx":72
  *     for i in range(n_loci-1, 0, -1):  # Do the backward recursion
  *       for j in range(n_states):
  *         for k in range(n_states):             # <<<<<<<<<<<<<<
@@ -3298,7 +3298,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
       for (__pyx_t_18 = 0; __pyx_t_18 < __pyx_t_14; __pyx_t_18+=1) {
         __pyx_v_k = __pyx_t_18;
 
-        /* "Python3/cfunc.pyx":73
+        /* "cfunc.pyx":73
  *       for j in range(n_states):
  *         for k in range(n_states):
  *           trans_ll_view[k] = t_mat0[j, k] + e_prob0[k, i] + bwd[k, i]             # <<<<<<<<<<<<<<
@@ -3356,7 +3356,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
         *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_35 * __pyx_v_trans_ll_view.strides[0]) )) = (((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t_mat0.data + __pyx_t_29 * __pyx_v_t_mat0.strides[0]) ) + __pyx_t_30 * __pyx_v_t_mat0.strides[1]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_31 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_32 * __pyx_v_e_prob0.strides[1]) )))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_33 * __pyx_v_bwd.strides[0]) ) + __pyx_t_34 * __pyx_v_bwd.strides[1]) ))));
       }
 
-      /* "Python3/cfunc.pyx":74
+      /* "cfunc.pyx":74
  *         for k in range(n_states):
  *           trans_ll_view[k] = t_mat0[j, k] + e_prob0[k, i] + bwd[k, i]
  *         bwd[j, i - 1] = logsumexp(trans_ll_view)             # <<<<<<<<<<<<<<
@@ -3376,11 +3376,11 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
         __Pyx_RaiseBufferIndexError(__pyx_t_13);
         __PYX_ERR(0, 74, __pyx_L1_error)
       }
-      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_36 * __pyx_v_bwd.strides[0]) ) + __pyx_t_37 * __pyx_v_bwd.strides[1]) )) = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_36 * __pyx_v_bwd.strides[0]) ) + __pyx_t_37 * __pyx_v_bwd.strides[1]) )) = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
     }
   }
 
-  /* "Python3/cfunc.pyx":77
+  /* "cfunc.pyx":77
  * 
  *     # Get total log likelihood
  *     for k in range(n_states):  # Simply sum the two 1D arrays             # <<<<<<<<<<<<<<
@@ -3392,7 +3392,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_k = __pyx_t_12;
 
-    /* "Python3/cfunc.pyx":78
+    /* "cfunc.pyx":78
  *     # Get total log likelihood
  *     for k in range(n_states):  # Simply sum the two 1D arrays
  *       trans_ll_view[k] = fwd[k, n_loci-1] + bwd[k, n_loci-1]             # <<<<<<<<<<<<<<
@@ -3437,16 +3437,16 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
     *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_42 * __pyx_v_trans_ll_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_38 * __pyx_v_fwd.strides[0]) ) + __pyx_t_39 * __pyx_v_fwd.strides[1]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_40 * __pyx_v_bwd.strides[0]) ) + __pyx_t_41 * __pyx_v_bwd.strides[1]) ))));
   }
 
-  /* "Python3/cfunc.pyx":79
+  /* "cfunc.pyx":79
  *     for k in range(n_states):  # Simply sum the two 1D arrays
  *       trans_ll_view[k] = fwd[k, n_loci-1] + bwd[k, n_loci-1]
  *     tot_ll = logsumexp(trans_ll_view)             # <<<<<<<<<<<<<<
  * 
  *     print(f"Total Log likelihood: {tot_ll: .3f}")
  */
-  __pyx_v_tot_ll = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+  __pyx_v_tot_ll = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
 
-  /* "Python3/cfunc.pyx":81
+  /* "cfunc.pyx":81
  *     tot_ll = logsumexp(trans_ll_view)
  * 
  *     print(f"Total Log likelihood: {tot_ll: .3f}")             # <<<<<<<<<<<<<<
@@ -3466,7 +3466,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "Python3/cfunc.pyx":84
+  /* "cfunc.pyx":84
  * 
  *     # Combine the forward and backward calculations
  *     fwd1 = np.asarray(fwd)  # Transform             # <<<<<<<<<<<<<<
@@ -3529,7 +3529,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __pyx_v_fwd1 = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "Python3/cfunc.pyx":85
+  /* "cfunc.pyx":85
  *     # Combine the forward and backward calculations
  *     fwd1 = np.asarray(fwd)  # Transform
  *     bwd1 = np.asarray(bwd)             # <<<<<<<<<<<<<<
@@ -3592,7 +3592,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __pyx_v_bwd1 = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "Python3/cfunc.pyx":86
+  /* "cfunc.pyx":86
  *     fwd1 = np.asarray(fwd)  # Transform
  *     bwd1 = np.asarray(bwd)
  *     post = fwd1 + bwd1 - tot_ll             # <<<<<<<<<<<<<<
@@ -3610,7 +3610,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __Pyx_DECREF_SET(__pyx_v_post, __pyx_t_8);
   __pyx_t_8 = 0;
 
-  /* "Python3/cfunc.pyx":88
+  /* "cfunc.pyx":88
  *     post = fwd1 + bwd1 - tot_ll
  * 
  *     if full==False:             # <<<<<<<<<<<<<<
@@ -3622,7 +3622,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   if (__pyx_t_43) {
 
-    /* "Python3/cfunc.pyx":89
+    /* "cfunc.pyx":89
  * 
  *     if full==False:
  *       return post             # <<<<<<<<<<<<<<
@@ -3634,7 +3634,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
     __pyx_r = __pyx_v_post;
     goto __pyx_L0;
 
-    /* "Python3/cfunc.pyx":88
+    /* "cfunc.pyx":88
  *     post = fwd1 + bwd1 - tot_ll
  * 
  *     if full==False:             # <<<<<<<<<<<<<<
@@ -3643,7 +3643,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
  */
   }
 
-  /* "Python3/cfunc.pyx":91
+  /* "cfunc.pyx":91
  *       return post
  * 
  *     elif full==True:   # Return everything             # <<<<<<<<<<<<<<
@@ -3655,7 +3655,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   if (__pyx_t_43) {
 
-    /* "Python3/cfunc.pyx":92
+    /* "cfunc.pyx":92
  * 
  *     elif full==True:   # Return everything
  *       return post, fwd1, bwd1, tot_ll             # <<<<<<<<<<<<<<
@@ -3683,7 +3683,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
     __pyx_t_6 = 0;
     goto __pyx_L0;
 
-    /* "Python3/cfunc.pyx":91
+    /* "cfunc.pyx":91
  *       return post
  * 
  *     elif full==True:   # Return everything             # <<<<<<<<<<<<<<
@@ -3692,7 +3692,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
  */
   }
 
-  /* "Python3/cfunc.pyx":44
+  /* "cfunc.pyx":44
  * 
  * 
  * def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -3713,7 +3713,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
-  __Pyx_AddTraceback("Python3.cfunc.fwd_bkwd", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cfunc.fwd_bkwd", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_post);
@@ -3732,7 +3732,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 
-/* "Python3/cfunc.pyx":95
+/* "cfunc.pyx":95
  * 
  * 
  * def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -3741,10 +3741,10 @@ static PyObject *__pyx_pf_7Python3_5cfunc_2fwd_bkwd(CYTHON_UNUSED PyObject *__py
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7Python3_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7Python3_5cfunc_4fwd_bkwd_fast[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Uses speed-up specific for Genotype data (pooling same transition rates)\n    Input:\n    Emission probabilities [k x l] (log space)       (log space)\n    Transition probabilities (infinitesimal) [k x k] (normal space)\n    Initialized fwd and bwd probabilities [k x l]    (log space)\n    t: Transition Matrix: [l x 3 x 3]                     (normal space)\n    full: Boolean whether to return everything";
-static PyMethodDef __pyx_mdef_7Python3_5cfunc_5fwd_bkwd_fast = {"fwd_bkwd_fast", (PyCFunction)__pyx_pw_7Python3_5cfunc_5fwd_bkwd_fast, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7Python3_5cfunc_4fwd_bkwd_fast};
-static PyObject *__pyx_pw_7Python3_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5cfunc_4fwd_bkwd_fast[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Uses speed-up specific for Genotype data (pooling same transition rates)\n    Input:\n    Emission probabilities [k x l] (log space)       (log space)\n    Transition probabilities (infinitesimal) [k x k] (normal space)\n    Initialized fwd and bwd probabilities [k x l]    (log space)\n    t: Transition Matrix: [l x 3 x 3]                     (normal space)\n    full: Boolean whether to return everything";
+static PyMethodDef __pyx_mdef_5cfunc_5fwd_bkwd_fast = {"fwd_bkwd_fast", (PyCFunction)__pyx_pw_5cfunc_5fwd_bkwd_fast, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5cfunc_4fwd_bkwd_fast};
+static PyObject *__pyx_pw_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_e_prob0 = { 0, 0, { 0 }, { 0 }, { 0 } };
   CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_t = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -3757,7 +3757,7 @@ static PyObject *__pyx_pw_7Python3_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, P
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_e_prob0,&__pyx_n_s_t_mat,&__pyx_n_s_t,&__pyx_n_s_in_val,&__pyx_n_s_full,0};
     PyObject* values[5] = {0,0,0,0,0};
 
-    /* "Python3/cfunc.pyx":96
+    /* "cfunc.pyx":96
  * 
  * def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,
  *     double[:, :, :] t, double in_val = 1e-4, full=False):             # <<<<<<<<<<<<<<
@@ -3842,13 +3842,13 @@ static PyObject *__pyx_pw_7Python3_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, P
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("fwd_bkwd_fast", 0, 3, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 95, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("Python3.cfunc.fwd_bkwd_fast", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cfunc.fwd_bkwd_fast", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_t, __pyx_v_in_val, __pyx_v_full);
+  __pyx_r = __pyx_pf_5cfunc_4fwd_bkwd_fast(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_t, __pyx_v_in_val, __pyx_v_full);
 
-  /* "Python3/cfunc.pyx":95
+  /* "cfunc.pyx":95
  * 
  * 
  * def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -3861,7 +3861,7 @@ static PyObject *__pyx_pw_7Python3_5cfunc_5fwd_bkwd_fast(PyObject *__pyx_self, P
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full) {
+static PyObject *__pyx_pf_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full) {
   int __pyx_v_n_states;
   int __pyx_v_n_loci;
   Py_ssize_t __pyx_v_i;
@@ -3996,7 +3996,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   int __pyx_t_106;
   __Pyx_RefNannySetupContext("fwd_bkwd_fast", 0);
 
-  /* "Python3/cfunc.pyx":105
+  /* "cfunc.pyx":105
  *     t: Transition Matrix: [l x 3 x 3]                     (normal space)
  *     full: Boolean whether to return everything"""
  *     cdef int n_states = e_prob0.shape[0]             # <<<<<<<<<<<<<<
@@ -4005,7 +4005,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
  */
   __pyx_v_n_states = (__pyx_v_e_prob0.shape[0]);
 
-  /* "Python3/cfunc.pyx":106
+  /* "cfunc.pyx":106
  *     full: Boolean whether to return everything"""
  *     cdef int n_states = e_prob0.shape[0]
  *     cdef int n_loci = e_prob0.shape[1]             # <<<<<<<<<<<<<<
@@ -4014,7 +4014,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
  */
   __pyx_v_n_loci = (__pyx_v_e_prob0.shape[1]);
 
-  /* "Python3/cfunc.pyx":111
+  /* "cfunc.pyx":111
  * 
  *     # Initialize Posterior and Transition Probabilities
  *     post = np.empty([n_states, n_loci], dtype=DTYPE)             # <<<<<<<<<<<<<<
@@ -4057,7 +4057,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_v_post = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "Python3/cfunc.pyx":113
+  /* "cfunc.pyx":113
  *     post = np.empty([n_states, n_loci], dtype=DTYPE)
  * 
  *     trans_ll = np.empty(n_states-1, dtype=DTYPE) # Array for pre-calculations             # <<<<<<<<<<<<<<
@@ -4090,7 +4090,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_v_trans_ll = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":114
+  /* "cfunc.pyx":114
  * 
  *     trans_ll = np.empty(n_states-1, dtype=DTYPE) # Array for pre-calculations
  *     cdef double[:] trans_ll_view = trans_ll             # <<<<<<<<<<<<<<
@@ -4102,7 +4102,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":116
+  /* "cfunc.pyx":116
  *     cdef double[:] trans_ll_view = trans_ll
  * 
  *     trans_ll1 = np.empty(n_states, dtype=DTYPE) # Array for calculations             # <<<<<<<<<<<<<<
@@ -4135,7 +4135,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_v_trans_ll1 = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "Python3/cfunc.pyx":117
+  /* "cfunc.pyx":117
  * 
  *     trans_ll1 = np.empty(n_states, dtype=DTYPE) # Array for calculations
  *     cdef double[:] trans_ll_view1 = trans_ll1             # <<<<<<<<<<<<<<
@@ -4147,7 +4147,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":119
+  /* "cfunc.pyx":119
  *     cdef double[:] trans_ll_view1 = trans_ll1
  * 
  *     three_v = np.empty(3, dtype=DTYPE)     # Array of size three             # <<<<<<<<<<<<<<
@@ -4172,7 +4172,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_v_three_v = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "Python3/cfunc.pyx":120
+  /* "cfunc.pyx":120
  * 
  *     three_v = np.empty(3, dtype=DTYPE)     # Array of size three
  *     cdef double[:] three_v_view = three_v             # <<<<<<<<<<<<<<
@@ -4184,7 +4184,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":122
+  /* "cfunc.pyx":122
  *     cdef double[:] three_v_view = three_v
  * 
  *     two_v = np.empty(2, dtype=DTYPE)       # Array of size two             # <<<<<<<<<<<<<<
@@ -4209,7 +4209,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_v_two_v = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":123
+  /* "cfunc.pyx":123
  * 
  *     two_v = np.empty(2, dtype=DTYPE)       # Array of size two
  *     cdef double[:] two_v_view = two_v             # <<<<<<<<<<<<<<
@@ -4221,7 +4221,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":126
+  /* "cfunc.pyx":126
  * 
  *     # Do transform to Log Space:
  *     cdef double[:,:,:] t0 = np.log(t)         # Do log of recombination Map             # <<<<<<<<<<<<<<
@@ -4287,7 +4287,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "Python3/cfunc.pyx":129
+  /* "cfunc.pyx":129
  * 
  *     ### Initialize FWD BWD matrices
  *     fwd0 = np.zeros((n_states, n_loci), dtype="float")             # <<<<<<<<<<<<<<
@@ -4327,7 +4327,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_v_fwd0 = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":130
+  /* "cfunc.pyx":130
  *     ### Initialize FWD BWD matrices
  *     fwd0 = np.zeros((n_states, n_loci), dtype="float")
  *     fwd0[:, 0] = np.log(in_val)  # Initial Probabilities             # <<<<<<<<<<<<<<
@@ -4390,7 +4390,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   if (unlikely(PyObject_SetItem(__pyx_v_fwd0, __pyx_tuple__4, __pyx_t_2) < 0)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":131
+  /* "cfunc.pyx":131
  *     fwd0 = np.zeros((n_states, n_loci), dtype="float")
  *     fwd0[:, 0] = np.log(in_val)  # Initial Probabilities
  *     fwd0[0, 0] = np.log(1 - (n_states - 1) * in_val)             # <<<<<<<<<<<<<<
@@ -4453,7 +4453,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   if (unlikely(PyObject_SetItem(__pyx_v_fwd0, __pyx_tuple__5, __pyx_t_2) < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":132
+  /* "cfunc.pyx":132
  *     fwd0[:, 0] = np.log(in_val)  # Initial Probabilities
  *     fwd0[0, 0] = np.log(1 - (n_states - 1) * in_val)
  *     cdef double[:,:] fwd = fwd0             # <<<<<<<<<<<<<<
@@ -4465,7 +4465,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_t_8.memview = NULL;
   __pyx_t_8.data = NULL;
 
-  /* "Python3/cfunc.pyx":134
+  /* "cfunc.pyx":134
  *     cdef double[:,:] fwd = fwd0
  * 
  *     bwd0 = np.zeros((n_states, n_loci), dtype="float")             # <<<<<<<<<<<<<<
@@ -4505,7 +4505,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_v_bwd0 = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":135
+  /* "cfunc.pyx":135
  * 
  *     bwd0 = np.zeros((n_states, n_loci), dtype="float")
  *     bwd0[:, -1] = np.log(in_val)             # <<<<<<<<<<<<<<
@@ -4568,7 +4568,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   if (unlikely(PyObject_SetItem(__pyx_v_bwd0, __pyx_tuple__7, __pyx_t_2) < 0)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":136
+  /* "cfunc.pyx":136
  *     bwd0 = np.zeros((n_states, n_loci), dtype="float")
  *     bwd0[:, -1] = np.log(in_val)
  *     bwd0[0, -1] = np.log(1 - (n_states - 1) * in_val)             # <<<<<<<<<<<<<<
@@ -4631,7 +4631,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   if (unlikely(PyObject_SetItem(__pyx_v_bwd0, __pyx_tuple__8, __pyx_t_2) < 0)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":137
+  /* "cfunc.pyx":137
  *     bwd0[:, -1] = np.log(in_val)
  *     bwd0[0, -1] = np.log(1 - (n_states - 1) * in_val)
  *     cdef double[:,:] bwd = bwd0             # <<<<<<<<<<<<<<
@@ -4643,7 +4643,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_t_8.memview = NULL;
   __pyx_t_8.data = NULL;
 
-  /* "Python3/cfunc.pyx":141
+  /* "cfunc.pyx":141
  *     #############################
  *     ### Do the Forward Algorithm
  *     for i in range(1, n_loci):  # Run forward recursion             # <<<<<<<<<<<<<<
@@ -4655,7 +4655,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   for (__pyx_t_11 = 1; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
     __pyx_v_i = __pyx_t_11;
 
-    /* "Python3/cfunc.pyx":142
+    /* "cfunc.pyx":142
  *     ### Do the Forward Algorithm
  *     for i in range(1, n_loci):  # Run forward recursion
  *         stay = log(t[i, 1, 1] - t[i, 1, 2])  # Do the log of the Stay term             # <<<<<<<<<<<<<<
@@ -4698,7 +4698,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     }
     __pyx_v_stay = log(((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t.data + __pyx_t_12 * __pyx_v_t.strides[0]) ) + __pyx_t_13 * __pyx_v_t.strides[1]) ) + __pyx_t_14 * __pyx_v_t.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t.data + __pyx_t_16 * __pyx_v_t.strides[0]) ) + __pyx_t_17 * __pyx_v_t.strides[1]) ) + __pyx_t_18 * __pyx_v_t.strides[2]) )))));
 
-    /* "Python3/cfunc.pyx":144
+    /* "cfunc.pyx":144
  *         stay = log(t[i, 1, 1] - t[i, 1, 2])  # Do the log of the Stay term
  * 
  *         for k in range(1, n_states): # Calculate logsum of ROH states:             # <<<<<<<<<<<<<<
@@ -4710,7 +4710,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     for (__pyx_t_20 = 1; __pyx_t_20 < __pyx_t_19; __pyx_t_20+=1) {
       __pyx_v_k = __pyx_t_20;
 
-      /* "Python3/cfunc.pyx":145
+      /* "cfunc.pyx":145
  * 
  *         for k in range(1, n_states): # Calculate logsum of ROH states:
  *             trans_ll_view[k-1] = fwd[k, i - 1]             # <<<<<<<<<<<<<<
@@ -4742,16 +4742,16 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
       *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_24 * __pyx_v_trans_ll_view.strides[0]) )) = (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_21 * __pyx_v_fwd.strides[0]) ) + __pyx_t_22 * __pyx_v_fwd.strides[1]) )));
     }
 
-    /* "Python3/cfunc.pyx":146
+    /* "cfunc.pyx":146
  *         for k in range(1, n_states): # Calculate logsum of ROH states:
  *             trans_ll_view[k-1] = fwd[k, i - 1]
  *         f_l = logsumexp(trans_ll_view) # Logsum of ROH States             # <<<<<<<<<<<<<<
  * 
  *         # Do the 0 State:
  */
-    __pyx_v_f_l = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+    __pyx_v_f_l = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
 
-    /* "Python3/cfunc.pyx":149
+    /* "cfunc.pyx":149
  * 
  *         # Do the 0 State:
  *         two_v_view[0] = fwd[0, i - 1] + t0[i, 0, 0]   # Staying in 0 State             # <<<<<<<<<<<<<<
@@ -4799,7 +4799,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     }
     *((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_30 * __pyx_v_two_v_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_25 * __pyx_v_fwd.strides[0]) ) + __pyx_t_26 * __pyx_v_fwd.strides[1]) ))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_27 * __pyx_v_t0.strides[0]) ) + __pyx_t_28 * __pyx_v_t0.strides[1]) ) + __pyx_t_29 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":150
+    /* "cfunc.pyx":150
  *         # Do the 0 State:
  *         two_v_view[0] = fwd[0, i - 1] + t0[i, 0, 0]   # Staying in 0 State
  *         two_v_view[1] = f_l + t0[i, 1, 0]             # Going into 0 State             # <<<<<<<<<<<<<<
@@ -4834,7 +4834,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     }
     *((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_34 * __pyx_v_two_v_view.strides[0]) )) = (__pyx_v_f_l + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_31 * __pyx_v_t0.strides[0]) ) + __pyx_t_32 * __pyx_v_t0.strides[1]) ) + __pyx_t_33 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":151
+    /* "cfunc.pyx":151
  *         two_v_view[0] = fwd[0, i - 1] + t0[i, 0, 0]   # Staying in 0 State
  *         two_v_view[1] = f_l + t0[i, 1, 0]             # Going into 0 State
  *         fwd[0, i] = e_prob0[0, i] + logsumexp(two_v_view)             # <<<<<<<<<<<<<<
@@ -4867,9 +4867,9 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
       __Pyx_RaiseBufferIndexError(__pyx_t_15);
       __PYX_ERR(0, 151, __pyx_L1_error)
     }
-    *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_37 * __pyx_v_fwd.strides[0]) ) + __pyx_t_38 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_35 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_36 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_two_v_view));
+    *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_37 * __pyx_v_fwd.strides[0]) ) + __pyx_t_38 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_35 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_36 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_5cfunc_logsumexp(__pyx_v_two_v_view));
 
-    /* "Python3/cfunc.pyx":155
+    /* "cfunc.pyx":155
  *         ### Do the other states
  *         # Preprocessing:
  *         three_v_view[0] = fwd[0, i - 1] + t0[i, 0, 1]   # Coming from 0 State             # <<<<<<<<<<<<<<
@@ -4917,7 +4917,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     }
     *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_44 * __pyx_v_three_v_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_39 * __pyx_v_fwd.strides[0]) ) + __pyx_t_40 * __pyx_v_fwd.strides[1]) ))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_41 * __pyx_v_t0.strides[0]) ) + __pyx_t_42 * __pyx_v_t0.strides[1]) ) + __pyx_t_43 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":156
+    /* "cfunc.pyx":156
  *         # Preprocessing:
  *         three_v_view[0] = fwd[0, i - 1] + t0[i, 0, 1]   # Coming from 0 State
  *         three_v_view[1] = f_l + t0[i, 1, 2]             # Coming from other ROH State             # <<<<<<<<<<<<<<
@@ -4952,7 +4952,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     }
     *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_48 * __pyx_v_three_v_view.strides[0]) )) = (__pyx_v_f_l + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_45 * __pyx_v_t0.strides[0]) ) + __pyx_t_46 * __pyx_v_t0.strides[1]) ) + __pyx_t_47 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":158
+    /* "cfunc.pyx":158
  *         three_v_view[1] = f_l + t0[i, 1, 2]             # Coming from other ROH State
  * 
  *         for j in range(1, n_states):  # Do the final run over all states             # <<<<<<<<<<<<<<
@@ -4964,7 +4964,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     for (__pyx_t_20 = 1; __pyx_t_20 < __pyx_t_19; __pyx_t_20+=1) {
       __pyx_v_j = __pyx_t_20;
 
-      /* "Python3/cfunc.pyx":159
+      /* "cfunc.pyx":159
  * 
  *         for j in range(1, n_states):  # Do the final run over all states
  *           three_v_view[2] = fwd[j, i-1] +  stay             # <<<<<<<<<<<<<<
@@ -4995,7 +4995,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
       }
       *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_51 * __pyx_v_three_v_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_49 * __pyx_v_fwd.strides[0]) ) + __pyx_t_50 * __pyx_v_fwd.strides[1]) ))) + __pyx_v_stay);
 
-      /* "Python3/cfunc.pyx":160
+      /* "cfunc.pyx":160
  *         for j in range(1, n_states):  # Do the final run over all states
  *           three_v_view[2] = fwd[j, i-1] +  stay
  *           fwd[j, i] = e_prob0[j, i] + logsumexp(three_v_view)             # <<<<<<<<<<<<<<
@@ -5028,11 +5028,11 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
         __Pyx_RaiseBufferIndexError(__pyx_t_23);
         __PYX_ERR(0, 160, __pyx_L1_error)
       }
-      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_54 * __pyx_v_fwd.strides[0]) ) + __pyx_t_55 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_52 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_53 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_three_v_view));
+      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_54 * __pyx_v_fwd.strides[0]) ) + __pyx_t_55 * __pyx_v_fwd.strides[1]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_52 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_53 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_5cfunc_logsumexp(__pyx_v_three_v_view));
     }
   }
 
-  /* "Python3/cfunc.pyx":164
+  /* "cfunc.pyx":164
  *     #############################
  *     ### Do the Backward Algorithm
  *     for i in range(n_loci-1, 0, -1):  # Run backward recursion             # <<<<<<<<<<<<<<
@@ -5042,7 +5042,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   for (__pyx_t_11 = (__pyx_v_n_loci - 1); __pyx_t_11 > 0; __pyx_t_11-=1) {
     __pyx_v_i = __pyx_t_11;
 
-    /* "Python3/cfunc.pyx":165
+    /* "cfunc.pyx":165
  *     ### Do the Backward Algorithm
  *     for i in range(n_loci-1, 0, -1):  # Run backward recursion
  *       stay = log(t[i, 1, 1] - t[i, 1, 2])             # <<<<<<<<<<<<<<
@@ -5085,7 +5085,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     }
     __pyx_v_stay = log(((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t.data + __pyx_t_56 * __pyx_v_t.strides[0]) ) + __pyx_t_57 * __pyx_v_t.strides[1]) ) + __pyx_t_58 * __pyx_v_t.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t.data + __pyx_t_59 * __pyx_v_t.strides[0]) ) + __pyx_t_60 * __pyx_v_t.strides[1]) ) + __pyx_t_61 * __pyx_v_t.strides[2]) )))));
 
-    /* "Python3/cfunc.pyx":167
+    /* "cfunc.pyx":167
  *       stay = log(t[i, 1, 1] - t[i, 1, 2])
  * 
  *       for k in range(1, n_states): # Calculate logsum of ROH states:             # <<<<<<<<<<<<<<
@@ -5097,7 +5097,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     for (__pyx_t_20 = 1; __pyx_t_20 < __pyx_t_10; __pyx_t_20+=1) {
       __pyx_v_k = __pyx_t_20;
 
-      /* "Python3/cfunc.pyx":168
+      /* "cfunc.pyx":168
  * 
  *       for k in range(1, n_states): # Calculate logsum of ROH states:
  *           trans_ll_view[k-1] = bwd[k, i] + e_prob0[k, i]             # <<<<<<<<<<<<<<
@@ -5142,16 +5142,16 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
       *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_66 * __pyx_v_trans_ll_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_62 * __pyx_v_bwd.strides[0]) ) + __pyx_t_63 * __pyx_v_bwd.strides[1]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_64 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_65 * __pyx_v_e_prob0.strides[1]) ))));
     }
 
-    /* "Python3/cfunc.pyx":169
+    /* "cfunc.pyx":169
  *       for k in range(1, n_states): # Calculate logsum of ROH states:
  *           trans_ll_view[k-1] = bwd[k, i] + e_prob0[k, i]
  *       f_l = logsumexp(trans_ll_view) # Logsum of ROH States             # <<<<<<<<<<<<<<
  * 
  *       # Do the 0 State:
  */
-    __pyx_v_f_l = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+    __pyx_v_f_l = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
 
-    /* "Python3/cfunc.pyx":172
+    /* "cfunc.pyx":172
  * 
  *       # Do the 0 State:
  *       two_v_view[0] = bwd[0, i] + t0[i, 0, 0] + e_prob0[0, i]   # Staying in 0 State             # <<<<<<<<<<<<<<
@@ -5212,7 +5212,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     }
     *((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_74 * __pyx_v_two_v_view.strides[0]) )) = (((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_67 * __pyx_v_bwd.strides[0]) ) + __pyx_t_68 * __pyx_v_bwd.strides[1]) ))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_69 * __pyx_v_t0.strides[0]) ) + __pyx_t_70 * __pyx_v_t0.strides[1]) ) + __pyx_t_71 * __pyx_v_t0.strides[2]) )))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_72 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_73 * __pyx_v_e_prob0.strides[1]) ))));
 
-    /* "Python3/cfunc.pyx":173
+    /* "cfunc.pyx":173
  *       # Do the 0 State:
  *       two_v_view[0] = bwd[0, i] + t0[i, 0, 0] + e_prob0[0, i]   # Staying in 0 State
  *       two_v_view[1] = f_l + t0[i, 0, 1]                         # Going into 0 State             # <<<<<<<<<<<<<<
@@ -5247,7 +5247,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     }
     *((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_78 * __pyx_v_two_v_view.strides[0]) )) = (__pyx_v_f_l + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_75 * __pyx_v_t0.strides[0]) ) + __pyx_t_76 * __pyx_v_t0.strides[1]) ) + __pyx_t_77 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":174
+    /* "cfunc.pyx":174
  *       two_v_view[0] = bwd[0, i] + t0[i, 0, 0] + e_prob0[0, i]   # Staying in 0 State
  *       two_v_view[1] = f_l + t0[i, 0, 1]                         # Going into 0 State
  *       bwd[0, i - 1] = logsumexp(two_v_view)             # <<<<<<<<<<<<<<
@@ -5267,9 +5267,9 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
       __Pyx_RaiseBufferIndexError(__pyx_t_9);
       __PYX_ERR(0, 174, __pyx_L1_error)
     }
-    *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_79 * __pyx_v_bwd.strides[0]) ) + __pyx_t_80 * __pyx_v_bwd.strides[1]) )) = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_two_v_view);
+    *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_79 * __pyx_v_bwd.strides[0]) ) + __pyx_t_80 * __pyx_v_bwd.strides[1]) )) = __pyx_f_5cfunc_logsumexp(__pyx_v_two_v_view);
 
-    /* "Python3/cfunc.pyx":178
+    /* "cfunc.pyx":178
  *       ### Do the other states
  *       # Preprocessing:
  *       three_v_view[0] = e_prob0[0, i] + bwd[0, i] + t0[i, 1, 0]             # <<<<<<<<<<<<<<
@@ -5330,7 +5330,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     }
     *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_88 * __pyx_v_three_v_view.strides[0]) )) = (((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_81 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_82 * __pyx_v_e_prob0.strides[1]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_83 * __pyx_v_bwd.strides[0]) ) + __pyx_t_84 * __pyx_v_bwd.strides[1]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_85 * __pyx_v_t0.strides[0]) ) + __pyx_t_86 * __pyx_v_t0.strides[1]) ) + __pyx_t_87 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":179
+    /* "cfunc.pyx":179
  *       # Preprocessing:
  *       three_v_view[0] = e_prob0[0, i] + bwd[0, i] + t0[i, 1, 0]
  *       three_v_view[1] = f_l + t0[i, 1, 2]    # Coming from other ROH State             # <<<<<<<<<<<<<<
@@ -5365,7 +5365,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     }
     *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_92 * __pyx_v_three_v_view.strides[0]) )) = (__pyx_v_f_l + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_89 * __pyx_v_t0.strides[0]) ) + __pyx_t_90 * __pyx_v_t0.strides[1]) ) + __pyx_t_91 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":181
+    /* "cfunc.pyx":181
  *       three_v_view[1] = f_l + t0[i, 1, 2]    # Coming from other ROH State
  * 
  *       for j in range(1, n_states):  # Do the final run over all states             # <<<<<<<<<<<<<<
@@ -5377,7 +5377,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     for (__pyx_t_20 = 1; __pyx_t_20 < __pyx_t_10; __pyx_t_20+=1) {
       __pyx_v_j = __pyx_t_20;
 
-      /* "Python3/cfunc.pyx":182
+      /* "cfunc.pyx":182
  * 
  *       for j in range(1, n_states):  # Do the final run over all states
  *         three_v_view[2] = e_prob0[j, i] + bwd[j, i] +  stay             # <<<<<<<<<<<<<<
@@ -5421,7 +5421,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
       }
       *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_97 * __pyx_v_three_v_view.strides[0]) )) = (((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_93 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_94 * __pyx_v_e_prob0.strides[1]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_95 * __pyx_v_bwd.strides[0]) ) + __pyx_t_96 * __pyx_v_bwd.strides[1]) )))) + __pyx_v_stay);
 
-      /* "Python3/cfunc.pyx":183
+      /* "cfunc.pyx":183
  *       for j in range(1, n_states):  # Do the final run over all states
  *         three_v_view[2] = e_prob0[j, i] + bwd[j, i] +  stay
  *         bwd[j, i - 1] = logsumexp(three_v_view)  # Fill in the backward Probability             # <<<<<<<<<<<<<<
@@ -5441,11 +5441,11 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
         __Pyx_RaiseBufferIndexError(__pyx_t_15);
         __PYX_ERR(0, 183, __pyx_L1_error)
       }
-      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_98 * __pyx_v_bwd.strides[0]) ) + __pyx_t_99 * __pyx_v_bwd.strides[1]) )) = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_three_v_view);
+      *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_98 * __pyx_v_bwd.strides[0]) ) + __pyx_t_99 * __pyx_v_bwd.strides[1]) )) = __pyx_f_5cfunc_logsumexp(__pyx_v_three_v_view);
     }
   }
 
-  /* "Python3/cfunc.pyx":186
+  /* "cfunc.pyx":186
  * 
  *     # Get total log likelihood
  *     for k in range(n_states):  # Simply sum the two 1D arrays             # <<<<<<<<<<<<<<
@@ -5457,7 +5457,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
     __pyx_v_k = __pyx_t_11;
 
-    /* "Python3/cfunc.pyx":187
+    /* "cfunc.pyx":187
  *     # Get total log likelihood
  *     for k in range(n_states):  # Simply sum the two 1D arrays
  *       trans_ll_view1[k] = fwd[k, n_loci - 1] + bwd[k, n_loci - 1]             # <<<<<<<<<<<<<<
@@ -5502,16 +5502,16 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view1.data + __pyx_t_104 * __pyx_v_trans_ll_view1.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_100 * __pyx_v_fwd.strides[0]) ) + __pyx_t_101 * __pyx_v_fwd.strides[1]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_102 * __pyx_v_bwd.strides[0]) ) + __pyx_t_103 * __pyx_v_bwd.strides[1]) ))));
   }
 
-  /* "Python3/cfunc.pyx":188
+  /* "cfunc.pyx":188
  *     for k in range(n_states):  # Simply sum the two 1D arrays
  *       trans_ll_view1[k] = fwd[k, n_loci - 1] + bwd[k, n_loci - 1]
  *     tot_ll = logsumexp(trans_ll_view1)             # <<<<<<<<<<<<<<
  * 
  *     # Combine the forward and backward calculations
  */
-  __pyx_v_tot_ll = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view1);
+  __pyx_v_tot_ll = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view1);
 
-  /* "Python3/cfunc.pyx":191
+  /* "cfunc.pyx":191
  * 
  *     # Combine the forward and backward calculations
  *     fwd1 = np.asarray(fwd, dtype=np.float)  # Transform             # <<<<<<<<<<<<<<
@@ -5547,7 +5547,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_v_fwd1 = __pyx_t_6;
   __pyx_t_6 = 0;
 
-  /* "Python3/cfunc.pyx":192
+  /* "cfunc.pyx":192
  *     # Combine the forward and backward calculations
  *     fwd1 = np.asarray(fwd, dtype=np.float)  # Transform
  *     bwd1 = np.asarray(bwd, dtype=np.float)             # <<<<<<<<<<<<<<
@@ -5583,7 +5583,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __pyx_v_bwd1 = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "Python3/cfunc.pyx":193
+  /* "cfunc.pyx":193
  *     fwd1 = np.asarray(fwd, dtype=np.float)  # Transform
  *     bwd1 = np.asarray(bwd, dtype=np.float)
  *     post = fwd1 + bwd1 - np.float(tot_ll)             # <<<<<<<<<<<<<<
@@ -5652,7 +5652,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __Pyx_DECREF_SET(__pyx_v_post, __pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":195
+  /* "cfunc.pyx":195
  *     post = fwd1 + bwd1 - np.float(tot_ll)
  * 
  *     print("Memory Usage Full:")             # <<<<<<<<<<<<<<
@@ -5663,7 +5663,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":196
+  /* "cfunc.pyx":196
  * 
  *     print("Memory Usage Full:")
  *     print_memory_usage()   ## For MEMORY_BENCH             # <<<<<<<<<<<<<<
@@ -5692,7 +5692,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":197
+  /* "cfunc.pyx":197
  *     print("Memory Usage Full:")
  *     print_memory_usage()   ## For MEMORY_BENCH
  *     print(f"Total Log likelihood: {tot_ll: .3f}")             # <<<<<<<<<<<<<<
@@ -5712,7 +5712,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "Python3/cfunc.pyx":199
+  /* "cfunc.pyx":199
  *     print(f"Total Log likelihood: {tot_ll: .3f}")
  * 
  *     if full==False:             # <<<<<<<<<<<<<<
@@ -5724,7 +5724,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   if (__pyx_t_106) {
 
-    /* "Python3/cfunc.pyx":200
+    /* "cfunc.pyx":200
  * 
  *     if full==False:
  *       return post             # <<<<<<<<<<<<<<
@@ -5736,7 +5736,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     __pyx_r = __pyx_v_post;
     goto __pyx_L0;
 
-    /* "Python3/cfunc.pyx":199
+    /* "cfunc.pyx":199
  *     print(f"Total Log likelihood: {tot_ll: .3f}")
  * 
  *     if full==False:             # <<<<<<<<<<<<<<
@@ -5745,7 +5745,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
  */
   }
 
-  /* "Python3/cfunc.pyx":202
+  /* "cfunc.pyx":202
  *       return post
  * 
  *     elif full==True:   # Return everything             # <<<<<<<<<<<<<<
@@ -5757,7 +5757,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   if (__pyx_t_106) {
 
-    /* "Python3/cfunc.pyx":203
+    /* "cfunc.pyx":203
  * 
  *     elif full==True:   # Return everything
  *       return post, fwd1, bwd1, tot_ll             # <<<<<<<<<<<<<<
@@ -5785,7 +5785,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "Python3/cfunc.pyx":202
+    /* "cfunc.pyx":202
  *       return post
  * 
  *     elif full==True:   # Return everything             # <<<<<<<<<<<<<<
@@ -5794,7 +5794,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
  */
   }
 
-  /* "Python3/cfunc.pyx":95
+  /* "cfunc.pyx":95
  * 
  * 
  * def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -5815,7 +5815,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   __PYX_XDEC_MEMVIEW(&__pyx_t_7, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
   __Pyx_XDECREF(__pyx_t_105);
-  __Pyx_AddTraceback("Python3.cfunc.fwd_bkwd_fast", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cfunc.fwd_bkwd_fast", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_post);
@@ -5842,7 +5842,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
   return __pyx_r;
 }
 
-/* "Python3/cfunc.pyx":206
+/* "cfunc.pyx":206
  * 
  * 
  * def fwd_bkwd_lowmem(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -5851,10 +5851,10 @@ static PyObject *__pyx_pf_7Python3_5cfunc_4fwd_bkwd_fast(CYTHON_UNUSED PyObject 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7Python3_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7Python3_5cfunc_6fwd_bkwd_lowmem[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Uses speed-up specific for Genotype data (pooling same transition rates)\n    Low-Mem: Do no save the full FWD BWD and Posterior. Use temporary\n    Arrays for saving.\n    Input:\n    Emission probabilities [k x l] (log space)       (log space)\n    Transition probabilities (infinitesimal) [k x k] (normal space)\n    Initialized fwd and bwd probabilities [k x l]    (log space)\n    t: Transition Matrix: [l x 3 x 3]                     (normal space)\n    full: Boolean whether to return everything";
-static PyMethodDef __pyx_mdef_7Python3_5cfunc_7fwd_bkwd_lowmem = {"fwd_bkwd_lowmem", (PyCFunction)__pyx_pw_7Python3_5cfunc_7fwd_bkwd_lowmem, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7Python3_5cfunc_6fwd_bkwd_lowmem};
-static PyObject *__pyx_pw_7Python3_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5cfunc_6fwd_bkwd_lowmem[] = "Takes emission and transition probabilities, and calculates posteriors.\n    Uses speed-up specific for Genotype data (pooling same transition rates)\n    Low-Mem: Do no save the full FWD BWD and Posterior. Use temporary\n    Arrays for saving.\n    Input:\n    Emission probabilities [k x l] (log space)       (log space)\n    Transition probabilities (infinitesimal) [k x k] (normal space)\n    Initialized fwd and bwd probabilities [k x l]    (log space)\n    t: Transition Matrix: [l x 3 x 3]                     (normal space)\n    full: Boolean whether to return everything";
+static PyMethodDef __pyx_mdef_5cfunc_7fwd_bkwd_lowmem = {"fwd_bkwd_lowmem", (PyCFunction)__pyx_pw_5cfunc_7fwd_bkwd_lowmem, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5cfunc_6fwd_bkwd_lowmem};
+static PyObject *__pyx_pw_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_e_prob0 = { 0, 0, { 0 }, { 0 }, { 0 } };
   CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_t = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -5867,7 +5867,7 @@ static PyObject *__pyx_pw_7Python3_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self,
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_e_prob0,&__pyx_n_s_t_mat,&__pyx_n_s_t,&__pyx_n_s_in_val,&__pyx_n_s_full,0};
     PyObject* values[5] = {0,0,0,0,0};
 
-    /* "Python3/cfunc.pyx":207
+    /* "cfunc.pyx":207
  * 
  * def fwd_bkwd_lowmem(double[:, :] e_prob0, double[:, :] t_mat,
  *     double[:, :, :] t, double in_val = 1e-4, full=False):             # <<<<<<<<<<<<<<
@@ -5952,13 +5952,13 @@ static PyObject *__pyx_pw_7Python3_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self,
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("fwd_bkwd_lowmem", 0, 3, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 206, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("Python3.cfunc.fwd_bkwd_lowmem", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cfunc.fwd_bkwd_lowmem", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_t, __pyx_v_in_val, __pyx_v_full);
+  __pyx_r = __pyx_pf_5cfunc_6fwd_bkwd_lowmem(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_t, __pyx_v_in_val, __pyx_v_full);
 
-  /* "Python3/cfunc.pyx":206
+  /* "cfunc.pyx":206
  * 
  * 
  * def fwd_bkwd_lowmem(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -5971,7 +5971,7 @@ static PyObject *__pyx_pw_7Python3_5cfunc_7fwd_bkwd_lowmem(PyObject *__pyx_self,
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full) {
+static PyObject *__pyx_pf_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_t_mat, __Pyx_memviewslice __pyx_v_t, double __pyx_v_in_val, PyObject *__pyx_v_full) {
   int __pyx_v_n_states;
   int __pyx_v_n_loci;
   Py_ssize_t __pyx_v_i;
@@ -6105,7 +6105,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   int __pyx_t_104;
   __Pyx_RefNannySetupContext("fwd_bkwd_lowmem", 0);
 
-  /* "Python3/cfunc.pyx":218
+  /* "cfunc.pyx":218
  *     t: Transition Matrix: [l x 3 x 3]                     (normal space)
  *     full: Boolean whether to return everything"""
  *     cdef int n_states = e_prob0.shape[0]             # <<<<<<<<<<<<<<
@@ -6114,7 +6114,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
  */
   __pyx_v_n_states = (__pyx_v_e_prob0.shape[0]);
 
-  /* "Python3/cfunc.pyx":219
+  /* "cfunc.pyx":219
  *     full: Boolean whether to return everything"""
  *     cdef int n_states = e_prob0.shape[0]
  *     cdef int n_loci = e_prob0.shape[1]             # <<<<<<<<<<<<<<
@@ -6123,7 +6123,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
  */
   __pyx_v_n_loci = (__pyx_v_e_prob0.shape[1]);
 
-  /* "Python3/cfunc.pyx":225
+  /* "cfunc.pyx":225
  * 
  *     # Initialize Posterior and Transition Probabilities
  *     post = np.empty(n_loci, dtype=DTYPE) # Array of 0 State Posterior             # <<<<<<<<<<<<<<
@@ -6156,7 +6156,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_v_post = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "Python3/cfunc.pyx":226
+  /* "cfunc.pyx":226
  *     # Initialize Posterior and Transition Probabilities
  *     post = np.empty(n_loci, dtype=DTYPE) # Array of 0 State Posterior
  *     cdef double[:] post_view = post             # <<<<<<<<<<<<<<
@@ -6168,7 +6168,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":228
+  /* "cfunc.pyx":228
  *     cdef double[:] post_view = post
  * 
  *     trans_ll = np.empty(n_states-1, dtype=DTYPE) # Array for pre-calculations             # <<<<<<<<<<<<<<
@@ -6201,7 +6201,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_v_trans_ll = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":229
+  /* "cfunc.pyx":229
  * 
  *     trans_ll = np.empty(n_states-1, dtype=DTYPE) # Array for pre-calculations
  *     cdef double[:] trans_ll_view = trans_ll             # <<<<<<<<<<<<<<
@@ -6213,7 +6213,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":231
+  /* "cfunc.pyx":231
  *     cdef double[:] trans_ll_view = trans_ll
  * 
  *     trans_ll1 = np.empty(n_states, dtype=DTYPE) # Array for calculations             # <<<<<<<<<<<<<<
@@ -6246,7 +6246,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_v_trans_ll1 = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "Python3/cfunc.pyx":232
+  /* "cfunc.pyx":232
  * 
  *     trans_ll1 = np.empty(n_states, dtype=DTYPE) # Array for calculations
  *     cdef double[:] trans_ll_view1 = trans_ll1             # <<<<<<<<<<<<<<
@@ -6258,7 +6258,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":234
+  /* "cfunc.pyx":234
  *     cdef double[:] trans_ll_view1 = trans_ll1
  * 
  *     three_v = np.empty(3, dtype=DTYPE)     # Array of size three             # <<<<<<<<<<<<<<
@@ -6283,7 +6283,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_v_three_v = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "Python3/cfunc.pyx":235
+  /* "cfunc.pyx":235
  * 
  *     three_v = np.empty(3, dtype=DTYPE)     # Array of size three
  *     cdef double[:] three_v_view = three_v             # <<<<<<<<<<<<<<
@@ -6295,7 +6295,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":237
+  /* "cfunc.pyx":237
  *     cdef double[:] three_v_view = three_v
  * 
  *     two_v = np.empty(2, dtype=DTYPE)       # Array of size two             # <<<<<<<<<<<<<<
@@ -6320,7 +6320,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_v_two_v = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":238
+  /* "cfunc.pyx":238
  * 
  *     two_v = np.empty(2, dtype=DTYPE)       # Array of size two
  *     cdef double[:] two_v_view = two_v             # <<<<<<<<<<<<<<
@@ -6332,7 +6332,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":241
+  /* "cfunc.pyx":241
  * 
  *     # Do transform to Log Space:
  *     cdef double[:,:,:] t0 = np.log(t)         # Do log of recombination Map             # <<<<<<<<<<<<<<
@@ -6398,7 +6398,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "Python3/cfunc.pyx":244
+  /* "cfunc.pyx":244
  * 
  *     ### Initialize FWD BWD Arrays
  *     fwd0 = np.zeros(n_states, dtype=DTYPE)             # <<<<<<<<<<<<<<
@@ -6431,7 +6431,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_v_fwd0 = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "Python3/cfunc.pyx":245
+  /* "cfunc.pyx":245
  *     ### Initialize FWD BWD Arrays
  *     fwd0 = np.zeros(n_states, dtype=DTYPE)
  *     fwd0[:] = np.log(in_val)  # Initial Probabilities             # <<<<<<<<<<<<<<
@@ -6494,7 +6494,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   if (__Pyx_PyObject_SetSlice(__pyx_v_fwd0, __pyx_t_3, 0, 0, NULL, NULL, &__pyx_slice__12, 0, 0, 0) < 0) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "Python3/cfunc.pyx":246
+  /* "cfunc.pyx":246
  *     fwd0 = np.zeros(n_states, dtype=DTYPE)
  *     fwd0[:] = np.log(in_val)  # Initial Probabilities
  *     fwd0[0] = np.log(1 - (n_states - 1) * in_val)             # <<<<<<<<<<<<<<
@@ -6557,7 +6557,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   if (unlikely(__Pyx_SetItemInt(__pyx_v_fwd0, 0, __pyx_t_3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(0, 246, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "Python3/cfunc.pyx":247
+  /* "cfunc.pyx":247
  *     fwd0[:] = np.log(in_val)  # Initial Probabilities
  *     fwd0[0] = np.log(1 - (n_states - 1) * in_val)
  *     cdef double[:] fwd = fwd0             # <<<<<<<<<<<<<<
@@ -6569,7 +6569,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":249
+  /* "cfunc.pyx":249
  *     cdef double[:] fwd = fwd0
  * 
  *     bwd0 = np.zeros(n_states, dtype=DTYPE)             # <<<<<<<<<<<<<<
@@ -6602,7 +6602,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_v_bwd0 = __pyx_t_6;
   __pyx_t_6 = 0;
 
-  /* "Python3/cfunc.pyx":250
+  /* "cfunc.pyx":250
  * 
  *     bwd0 = np.zeros(n_states, dtype=DTYPE)
  *     bwd0[:] = np.log(in_val)             # <<<<<<<<<<<<<<
@@ -6665,7 +6665,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   if (__Pyx_PyObject_SetSlice(__pyx_v_bwd0, __pyx_t_6, 0, 0, NULL, NULL, &__pyx_slice__13, 0, 0, 0) < 0) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "Python3/cfunc.pyx":251
+  /* "cfunc.pyx":251
  *     bwd0 = np.zeros(n_states, dtype=DTYPE)
  *     bwd0[:] = np.log(in_val)
  *     bwd0[0] = np.log(1 - (n_states - 1) * in_val)             # <<<<<<<<<<<<<<
@@ -6728,7 +6728,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   if (unlikely(__Pyx_SetItemInt(__pyx_v_bwd0, 0, __pyx_t_6, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(0, 251, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "Python3/cfunc.pyx":252
+  /* "cfunc.pyx":252
  *     bwd0[:] = np.log(in_val)
  *     bwd0[0] = np.log(1 - (n_states - 1) * in_val)
  *     cdef double[:] bwd = bwd0             # <<<<<<<<<<<<<<
@@ -6740,7 +6740,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":254
+  /* "cfunc.pyx":254
  *     cdef double[:] bwd = bwd0
  * 
  *     tmp0 = np.zeros(n_states, dtype=DTYPE)             # <<<<<<<<<<<<<<
@@ -6773,7 +6773,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_v_tmp0 = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "Python3/cfunc.pyx":255
+  /* "cfunc.pyx":255
  * 
  *     tmp0 = np.zeros(n_states, dtype=DTYPE)
  *     cdef double[:] tmp = tmp0             # <<<<<<<<<<<<<<
@@ -6785,7 +6785,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "Python3/cfunc.pyx":260
+  /* "cfunc.pyx":260
  *     ### Do the Forward Algorithm
  * 
  *     post_view[0] = fwd[0] # Add to first locus 0 Posterior             # <<<<<<<<<<<<<<
@@ -6812,7 +6812,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   }
   *((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_10 * __pyx_v_post_view.strides[0]) )) = (*((double *) ( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_8 * __pyx_v_fwd.strides[0]) )));
 
-  /* "Python3/cfunc.pyx":261
+  /* "cfunc.pyx":261
  * 
  *     post_view[0] = fwd[0] # Add to first locus 0 Posterior
  *     for i in range(1, n_loci):  # Run forward recursion             # <<<<<<<<<<<<<<
@@ -6824,7 +6824,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   for (__pyx_t_12 = 1; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_i = __pyx_t_12;
 
-    /* "Python3/cfunc.pyx":262
+    /* "cfunc.pyx":262
  *     post_view[0] = fwd[0] # Add to first locus 0 Posterior
  *     for i in range(1, n_loci):  # Run forward recursion
  *         stay = log(t[i, 1, 1] - t[i, 1, 2])  # Do the log of the Stay term             # <<<<<<<<<<<<<<
@@ -6867,7 +6867,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     }
     __pyx_v_stay = log(((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t.data + __pyx_t_13 * __pyx_v_t.strides[0]) ) + __pyx_t_14 * __pyx_v_t.strides[1]) ) + __pyx_t_15 * __pyx_v_t.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t.data + __pyx_t_17 * __pyx_v_t.strides[0]) ) + __pyx_t_18 * __pyx_v_t.strides[1]) ) + __pyx_t_19 * __pyx_v_t.strides[2]) )))));
 
-    /* "Python3/cfunc.pyx":264
+    /* "cfunc.pyx":264
  *         stay = log(t[i, 1, 1] - t[i, 1, 2])  # Do the log of the Stay term
  * 
  *         for k in range(1, n_states): # Calculate logsum of ROH states:             # <<<<<<<<<<<<<<
@@ -6879,7 +6879,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     for (__pyx_t_21 = 1; __pyx_t_21 < __pyx_t_20; __pyx_t_21+=1) {
       __pyx_v_k = __pyx_t_21;
 
-      /* "Python3/cfunc.pyx":265
+      /* "cfunc.pyx":265
  * 
  *         for k in range(1, n_states): # Calculate logsum of ROH states:
  *             trans_ll_view[k-1] = fwd[k]             # <<<<<<<<<<<<<<
@@ -6907,16 +6907,16 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_24 * __pyx_v_trans_ll_view.strides[0]) )) = (*((double *) ( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_22 * __pyx_v_fwd.strides[0]) )));
     }
 
-    /* "Python3/cfunc.pyx":266
+    /* "cfunc.pyx":266
  *         for k in range(1, n_states): # Calculate logsum of ROH states:
  *             trans_ll_view[k-1] = fwd[k]
  *         f_l = logsumexp(trans_ll_view) # Logsum of ROH States             # <<<<<<<<<<<<<<
  * 
  *         # Do the 0 State:
  */
-    __pyx_v_f_l = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+    __pyx_v_f_l = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
 
-    /* "Python3/cfunc.pyx":269
+    /* "cfunc.pyx":269
  * 
  *         # Do the 0 State:
  *         two_v_view[0] = fwd[0] + t0[i, 0, 0]   # Staying in 0 State             # <<<<<<<<<<<<<<
@@ -6960,7 +6960,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     }
     *((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_29 * __pyx_v_two_v_view.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_25 * __pyx_v_fwd.strides[0]) ))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_26 * __pyx_v_t0.strides[0]) ) + __pyx_t_27 * __pyx_v_t0.strides[1]) ) + __pyx_t_28 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":270
+    /* "cfunc.pyx":270
  *         # Do the 0 State:
  *         two_v_view[0] = fwd[0] + t0[i, 0, 0]   # Staying in 0 State
  *         two_v_view[1] = f_l + t0[i, 1, 0]             # Going into 0 State             # <<<<<<<<<<<<<<
@@ -6995,7 +6995,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     }
     *((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_33 * __pyx_v_two_v_view.strides[0]) )) = (__pyx_v_f_l + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_30 * __pyx_v_t0.strides[0]) ) + __pyx_t_31 * __pyx_v_t0.strides[1]) ) + __pyx_t_32 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":271
+    /* "cfunc.pyx":271
  *         two_v_view[0] = fwd[0] + t0[i, 0, 0]   # Staying in 0 State
  *         two_v_view[1] = f_l + t0[i, 1, 0]             # Going into 0 State
  *         tmp[0] = e_prob0[0, i] + logsumexp(two_v_view)             # <<<<<<<<<<<<<<
@@ -7024,9 +7024,9 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       __Pyx_RaiseBufferIndexError(__pyx_t_16);
       __PYX_ERR(0, 271, __pyx_L1_error)
     }
-    *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_36 * __pyx_v_tmp.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_34 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_35 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_two_v_view));
+    *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_36 * __pyx_v_tmp.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_34 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_35 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_5cfunc_logsumexp(__pyx_v_two_v_view));
 
-    /* "Python3/cfunc.pyx":275
+    /* "cfunc.pyx":275
  *         ### Do the other states
  *         # Preprocessing:
  *         three_v_view[0] = fwd[0] + t0[i, 0, 1]   # Coming from 0 State             # <<<<<<<<<<<<<<
@@ -7070,7 +7070,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     }
     *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_41 * __pyx_v_three_v_view.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_37 * __pyx_v_fwd.strides[0]) ))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_38 * __pyx_v_t0.strides[0]) ) + __pyx_t_39 * __pyx_v_t0.strides[1]) ) + __pyx_t_40 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":276
+    /* "cfunc.pyx":276
  *         # Preprocessing:
  *         three_v_view[0] = fwd[0] + t0[i, 0, 1]   # Coming from 0 State
  *         three_v_view[1] = f_l + t0[i, 1, 2]             # Coming from other ROH State             # <<<<<<<<<<<<<<
@@ -7105,7 +7105,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     }
     *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_45 * __pyx_v_three_v_view.strides[0]) )) = (__pyx_v_f_l + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_42 * __pyx_v_t0.strides[0]) ) + __pyx_t_43 * __pyx_v_t0.strides[1]) ) + __pyx_t_44 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":278
+    /* "cfunc.pyx":278
  *         three_v_view[1] = f_l + t0[i, 1, 2]             # Coming from other ROH State
  * 
  *         for j in range(1, n_states):  # Do the final run over all states             # <<<<<<<<<<<<<<
@@ -7117,7 +7117,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     for (__pyx_t_21 = 1; __pyx_t_21 < __pyx_t_20; __pyx_t_21+=1) {
       __pyx_v_j = __pyx_t_21;
 
-      /* "Python3/cfunc.pyx":279
+      /* "cfunc.pyx":279
  * 
  *         for j in range(1, n_states):  # Do the final run over all states
  *           three_v_view[2] = fwd[j] +  stay             # <<<<<<<<<<<<<<
@@ -7144,7 +7144,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       }
       *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_47 * __pyx_v_three_v_view.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_46 * __pyx_v_fwd.strides[0]) ))) + __pyx_v_stay);
 
-      /* "Python3/cfunc.pyx":280
+      /* "cfunc.pyx":280
  *         for j in range(1, n_states):  # Do the final run over all states
  *           three_v_view[2] = fwd[j] +  stay
  *           tmp[j] = e_prob0[j, i] + logsumexp(three_v_view)             # <<<<<<<<<<<<<<
@@ -7173,10 +7173,10 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
         __Pyx_RaiseBufferIndexError(__pyx_t_23);
         __PYX_ERR(0, 280, __pyx_L1_error)
       }
-      *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_50 * __pyx_v_tmp.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_48 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_49 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_three_v_view));
+      *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_50 * __pyx_v_tmp.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_48 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_49 * __pyx_v_e_prob0.strides[1]) ))) + __pyx_f_5cfunc_logsumexp(__pyx_v_three_v_view));
     }
 
-    /* "Python3/cfunc.pyx":283
+    /* "cfunc.pyx":283
  * 
  *         ### Make tmp new fwd vec:
  *         for j in range(0, n_states):             # <<<<<<<<<<<<<<
@@ -7188,7 +7188,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     for (__pyx_t_21 = 0; __pyx_t_21 < __pyx_t_20; __pyx_t_21+=1) {
       __pyx_v_j = __pyx_t_21;
 
-      /* "Python3/cfunc.pyx":284
+      /* "cfunc.pyx":284
  *         ### Make tmp new fwd vec:
  *         for j in range(0, n_states):
  *           fwd[j] = tmp[j]             # <<<<<<<<<<<<<<
@@ -7216,7 +7216,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       *((double *) ( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_52 * __pyx_v_fwd.strides[0]) )) = (*((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_51 * __pyx_v_tmp.strides[0]) )));
     }
 
-    /* "Python3/cfunc.pyx":285
+    /* "cfunc.pyx":285
  *         for j in range(0, n_states):
  *           fwd[j] = tmp[j]
  *         post_view[i] = fwd[0]  # Add to 0-State Posterior             # <<<<<<<<<<<<<<
@@ -7244,7 +7244,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     *((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_54 * __pyx_v_post_view.strides[0]) )) = (*((double *) ( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_53 * __pyx_v_fwd.strides[0]) )));
   }
 
-  /* "Python3/cfunc.pyx":288
+  /* "cfunc.pyx":288
  * 
  *     ### Get total log likelihood
  *     for k in range(n_states):  # Simply sum the two 1D arrays             # <<<<<<<<<<<<<<
@@ -7256,7 +7256,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_k = __pyx_t_12;
 
-    /* "Python3/cfunc.pyx":289
+    /* "cfunc.pyx":289
  *     ### Get total log likelihood
  *     for k in range(n_states):  # Simply sum the two 1D arrays
  *       trans_ll_view1[k] = fwd[k] + bwd[k]             # <<<<<<<<<<<<<<
@@ -7293,16 +7293,16 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view1.data + __pyx_t_57 * __pyx_v_trans_ll_view1.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_fwd.data + __pyx_t_55 * __pyx_v_fwd.strides[0]) ))) + (*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_56 * __pyx_v_bwd.strides[0]) ))));
   }
 
-  /* "Python3/cfunc.pyx":290
+  /* "cfunc.pyx":290
  *     for k in range(n_states):  # Simply sum the two 1D arrays
  *       trans_ll_view1[k] = fwd[k] + bwd[k]
  *     tot_ll = logsumexp(trans_ll_view1)             # <<<<<<<<<<<<<<
  * 
  *     #############################
  */
-  __pyx_v_tot_ll = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view1);
+  __pyx_v_tot_ll = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view1);
 
-  /* "Python3/cfunc.pyx":295
+  /* "cfunc.pyx":295
  *     ### Do the Backward Algorithm
  *     ## last0-State Posterior
  *     post_view[n_loci-1] = post_view[n_loci-1] + bwd[0] - tot_ll             # <<<<<<<<<<<<<<
@@ -7338,7 +7338,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   }
   *((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_60 * __pyx_v_post_view.strides[0]) )) = (((*((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_58 * __pyx_v_post_view.strides[0]) ))) + (*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_59 * __pyx_v_bwd.strides[0]) )))) - __pyx_v_tot_ll);
 
-  /* "Python3/cfunc.pyx":297
+  /* "cfunc.pyx":297
  *     post_view[n_loci-1] = post_view[n_loci-1] + bwd[0] - tot_ll
  * 
  *     for i in range(n_loci-1, 0, -1):  # Run backward recursion             # <<<<<<<<<<<<<<
@@ -7348,7 +7348,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   for (__pyx_t_12 = (__pyx_v_n_loci - 1); __pyx_t_12 > 0; __pyx_t_12-=1) {
     __pyx_v_i = __pyx_t_12;
 
-    /* "Python3/cfunc.pyx":298
+    /* "cfunc.pyx":298
  * 
  *     for i in range(n_loci-1, 0, -1):  # Run backward recursion
  *       stay = log(t[i, 1, 1] - t[i, 1, 2])             # <<<<<<<<<<<<<<
@@ -7391,7 +7391,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     }
     __pyx_v_stay = log(((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t.data + __pyx_t_61 * __pyx_v_t.strides[0]) ) + __pyx_t_62 * __pyx_v_t.strides[1]) ) + __pyx_t_63 * __pyx_v_t.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t.data + __pyx_t_64 * __pyx_v_t.strides[0]) ) + __pyx_t_65 * __pyx_v_t.strides[1]) ) + __pyx_t_66 * __pyx_v_t.strides[2]) )))));
 
-    /* "Python3/cfunc.pyx":300
+    /* "cfunc.pyx":300
  *       stay = log(t[i, 1, 1] - t[i, 1, 2])
  * 
  *       for k in range(1, n_states): # Calculate logsum of ROH states:             # <<<<<<<<<<<<<<
@@ -7403,7 +7403,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     for (__pyx_t_21 = 1; __pyx_t_21 < __pyx_t_11; __pyx_t_21+=1) {
       __pyx_v_k = __pyx_t_21;
 
-      /* "Python3/cfunc.pyx":301
+      /* "cfunc.pyx":301
  * 
  *       for k in range(1, n_states): # Calculate logsum of ROH states:
  *           trans_ll_view[k-1] = bwd[k] + e_prob0[k, i]             # <<<<<<<<<<<<<<
@@ -7444,16 +7444,16 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       *((double *) ( /* dim=0 */ (__pyx_v_trans_ll_view.data + __pyx_t_70 * __pyx_v_trans_ll_view.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_67 * __pyx_v_bwd.strides[0]) ))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_68 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_69 * __pyx_v_e_prob0.strides[1]) ))));
     }
 
-    /* "Python3/cfunc.pyx":302
+    /* "cfunc.pyx":302
  *       for k in range(1, n_states): # Calculate logsum of ROH states:
  *           trans_ll_view[k-1] = bwd[k] + e_prob0[k, i]
  *       f_l = logsumexp(trans_ll_view) # Logsum of ROH States             # <<<<<<<<<<<<<<
  * 
  *       # Do the 0 State:
  */
-    __pyx_v_f_l = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_trans_ll_view);
+    __pyx_v_f_l = __pyx_f_5cfunc_logsumexp(__pyx_v_trans_ll_view);
 
-    /* "Python3/cfunc.pyx":305
+    /* "cfunc.pyx":305
  * 
  *       # Do the 0 State:
  *       two_v_view[0] = bwd[0] + t0[i, 0, 0] + e_prob0[0, i]   # Staying in 0 State             # <<<<<<<<<<<<<<
@@ -7510,7 +7510,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     }
     *((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_77 * __pyx_v_two_v_view.strides[0]) )) = (((*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_71 * __pyx_v_bwd.strides[0]) ))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_72 * __pyx_v_t0.strides[0]) ) + __pyx_t_73 * __pyx_v_t0.strides[1]) ) + __pyx_t_74 * __pyx_v_t0.strides[2]) )))) + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_75 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_76 * __pyx_v_e_prob0.strides[1]) ))));
 
-    /* "Python3/cfunc.pyx":306
+    /* "cfunc.pyx":306
  *       # Do the 0 State:
  *       two_v_view[0] = bwd[0] + t0[i, 0, 0] + e_prob0[0, i]   # Staying in 0 State
  *       two_v_view[1] = f_l + t0[i, 0, 1]                         # Going into 0 State             # <<<<<<<<<<<<<<
@@ -7545,7 +7545,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     }
     *((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_81 * __pyx_v_two_v_view.strides[0]) )) = (__pyx_v_f_l + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_78 * __pyx_v_t0.strides[0]) ) + __pyx_t_79 * __pyx_v_t0.strides[1]) ) + __pyx_t_80 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":307
+    /* "cfunc.pyx":307
  *       two_v_view[0] = bwd[0] + t0[i, 0, 0] + e_prob0[0, i]   # Staying in 0 State
  *       two_v_view[1] = f_l + t0[i, 0, 1]                         # Going into 0 State
  *       tmp[0] = logsumexp(two_v_view)             # <<<<<<<<<<<<<<
@@ -7561,9 +7561,9 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       __Pyx_RaiseBufferIndexError(__pyx_t_9);
       __PYX_ERR(0, 307, __pyx_L1_error)
     }
-    *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_82 * __pyx_v_tmp.strides[0]) )) = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_two_v_view);
+    *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_82 * __pyx_v_tmp.strides[0]) )) = __pyx_f_5cfunc_logsumexp(__pyx_v_two_v_view);
 
-    /* "Python3/cfunc.pyx":311
+    /* "cfunc.pyx":311
  *       ### Do the other states
  *       # Preprocessing:
  *       three_v_view[0] = e_prob0[0, i] + bwd[0] + t0[i, 1, 0]             # <<<<<<<<<<<<<<
@@ -7620,7 +7620,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     }
     *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_89 * __pyx_v_three_v_view.strides[0]) )) = (((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_83 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_84 * __pyx_v_e_prob0.strides[1]) ))) + (*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_85 * __pyx_v_bwd.strides[0]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_86 * __pyx_v_t0.strides[0]) ) + __pyx_t_87 * __pyx_v_t0.strides[1]) ) + __pyx_t_88 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":312
+    /* "cfunc.pyx":312
  *       # Preprocessing:
  *       three_v_view[0] = e_prob0[0, i] + bwd[0] + t0[i, 1, 0]
  *       three_v_view[1] = f_l + t0[i, 1, 2]    # Coming from other ROH State             # <<<<<<<<<<<<<<
@@ -7655,7 +7655,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     }
     *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_93 * __pyx_v_three_v_view.strides[0]) )) = (__pyx_v_f_l + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t0.data + __pyx_t_90 * __pyx_v_t0.strides[0]) ) + __pyx_t_91 * __pyx_v_t0.strides[1]) ) + __pyx_t_92 * __pyx_v_t0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":314
+    /* "cfunc.pyx":314
  *       three_v_view[1] = f_l + t0[i, 1, 2]    # Coming from other ROH State
  * 
  *       for j in range(1, n_states):  # Do the final run over all states             # <<<<<<<<<<<<<<
@@ -7667,7 +7667,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     for (__pyx_t_21 = 1; __pyx_t_21 < __pyx_t_11; __pyx_t_21+=1) {
       __pyx_v_j = __pyx_t_21;
 
-      /* "Python3/cfunc.pyx":315
+      /* "cfunc.pyx":315
  * 
  *       for j in range(1, n_states):  # Do the final run over all states
  *         three_v_view[2] = e_prob0[j, i] + bwd[j] +  stay             # <<<<<<<<<<<<<<
@@ -7707,7 +7707,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       }
       *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_97 * __pyx_v_three_v_view.strides[0]) )) = (((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_94 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_95 * __pyx_v_e_prob0.strides[1]) ))) + (*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_96 * __pyx_v_bwd.strides[0]) )))) + __pyx_v_stay);
 
-      /* "Python3/cfunc.pyx":316
+      /* "cfunc.pyx":316
  *       for j in range(1, n_states):  # Do the final run over all states
  *         three_v_view[2] = e_prob0[j, i] + bwd[j] +  stay
  *         tmp[j] = logsumexp(three_v_view)  # Fill in the backward Probability             # <<<<<<<<<<<<<<
@@ -7723,10 +7723,10 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
         __Pyx_RaiseBufferIndexError(__pyx_t_16);
         __PYX_ERR(0, 316, __pyx_L1_error)
       }
-      *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_98 * __pyx_v_tmp.strides[0]) )) = __pyx_f_7Python3_5cfunc_logsumexp(__pyx_v_three_v_view);
+      *((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_98 * __pyx_v_tmp.strides[0]) )) = __pyx_f_5cfunc_logsumexp(__pyx_v_three_v_view);
     }
 
-    /* "Python3/cfunc.pyx":319
+    /* "cfunc.pyx":319
  * 
  *       ### Make tmp new bwd vec:
  *       for j in range(0, n_states):             # <<<<<<<<<<<<<<
@@ -7738,7 +7738,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     for (__pyx_t_21 = 0; __pyx_t_21 < __pyx_t_11; __pyx_t_21+=1) {
       __pyx_v_j = __pyx_t_21;
 
-      /* "Python3/cfunc.pyx":320
+      /* "cfunc.pyx":320
  *       ### Make tmp new bwd vec:
  *       for j in range(0, n_states):
  *         bwd[j] = tmp[j]             # <<<<<<<<<<<<<<
@@ -7766,7 +7766,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
       *((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_100 * __pyx_v_bwd.strides[0]) )) = (*((double *) ( /* dim=0 */ (__pyx_v_tmp.data + __pyx_t_99 * __pyx_v_tmp.strides[0]) )));
     }
 
-    /* "Python3/cfunc.pyx":323
+    /* "cfunc.pyx":323
  * 
  *       ### Finalize the 0 Posterior
  *       post_view[i-1] = post_view[i-1] + bwd[0] - tot_ll             # <<<<<<<<<<<<<<
@@ -7803,7 +7803,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     *((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_103 * __pyx_v_post_view.strides[0]) )) = (((*((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_101 * __pyx_v_post_view.strides[0]) ))) + (*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_102 * __pyx_v_bwd.strides[0]) )))) - __pyx_v_tot_ll);
   }
 
-  /* "Python3/cfunc.pyx":325
+  /* "cfunc.pyx":325
  *       post_view[i-1] = post_view[i-1] + bwd[0] - tot_ll
  * 
  *     print(f"Total Log likelihood: {tot_ll: .3f}")             # <<<<<<<<<<<<<<
@@ -7823,7 +7823,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "Python3/cfunc.pyx":326
+  /* "cfunc.pyx":326
  * 
  *     print(f"Total Log likelihood: {tot_ll: .3f}")
  *     print_memory_usage()   ## For MEMORY_BENCH             # <<<<<<<<<<<<<<
@@ -7852,7 +7852,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "Python3/cfunc.pyx":328
+  /* "cfunc.pyx":328
  *     print_memory_usage()   ## For MEMORY_BENCH
  * 
  *     if full==False:             # <<<<<<<<<<<<<<
@@ -7864,7 +7864,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   if (__pyx_t_104) {
 
-    /* "Python3/cfunc.pyx":329
+    /* "cfunc.pyx":329
  * 
  *     if full==False:
  *       return post[None,:]  # For "fake" axis             # <<<<<<<<<<<<<<
@@ -7878,7 +7878,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     __pyx_t_6 = 0;
     goto __pyx_L0;
 
-    /* "Python3/cfunc.pyx":328
+    /* "cfunc.pyx":328
  *     print_memory_usage()   ## For MEMORY_BENCH
  * 
  *     if full==False:             # <<<<<<<<<<<<<<
@@ -7887,7 +7887,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
  */
   }
 
-  /* "Python3/cfunc.pyx":331
+  /* "cfunc.pyx":331
  *       return post[None,:]  # For "fake" axis
  * 
  *     elif full==True:   # Return everything             # <<<<<<<<<<<<<<
@@ -7899,7 +7899,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   if (__pyx_t_104) {
 
-    /* "Python3/cfunc.pyx":332
+    /* "cfunc.pyx":332
  * 
  *     elif full==True:   # Return everything
  *       return post[None,:], fwd0, bwd0, tot_ll             # <<<<<<<<<<<<<<
@@ -7929,7 +7929,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "Python3/cfunc.pyx":331
+    /* "cfunc.pyx":331
  *       return post[None,:]  # For "fake" axis
  * 
  *     elif full==True:   # Return everything             # <<<<<<<<<<<<<<
@@ -7938,7 +7938,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
  */
   }
 
-  /* "Python3/cfunc.pyx":206
+  /* "cfunc.pyx":206
  * 
  * 
  * def fwd_bkwd_lowmem(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -7957,7 +7957,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   __PYX_XDEC_MEMVIEW(&__pyx_t_5, 1);
   __Pyx_XDECREF(__pyx_t_6);
   __PYX_XDEC_MEMVIEW(&__pyx_t_7, 1);
-  __Pyx_AddTraceback("Python3.cfunc.fwd_bkwd_lowmem", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cfunc.fwd_bkwd_lowmem", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_post);
@@ -7985,7 +7985,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "Python3/cfunc.pyx":335
+/* "cfunc.pyx":335
  * 
  * 
  * def viterbi_path(double[:, :] e_prob0, double[:, :, :] t_mat0, double[:] end_p0):             # <<<<<<<<<<<<<<
@@ -7994,10 +7994,10 @@ static PyObject *__pyx_pf_7Python3_5cfunc_6fwd_bkwd_lowmem(CYTHON_UNUSED PyObjec
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7Python3_5cfunc_9viterbi_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7Python3_5cfunc_8viterbi_path[] = "Implementation of a Viterbi Path.\n    e_prob0  Matrices with Emission Probabilities, [k,l] (log space)\n    t_mat: Transition Matrix: [l x 3 x 3]  (normal space)\n    end_p: probability to begin/end in states [k]";
-static PyMethodDef __pyx_mdef_7Python3_5cfunc_9viterbi_path = {"viterbi_path", (PyCFunction)__pyx_pw_7Python3_5cfunc_9viterbi_path, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7Python3_5cfunc_8viterbi_path};
-static PyObject *__pyx_pw_7Python3_5cfunc_9viterbi_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5cfunc_9viterbi_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5cfunc_8viterbi_path[] = "Implementation of a Viterbi Path.\n    e_prob0  Matrices with Emission Probabilities, [k,l] (log space)\n    t_mat: Transition Matrix: [l x 3 x 3]  (normal space)\n    end_p: probability to begin/end in states [k]";
+static PyMethodDef __pyx_mdef_5cfunc_9viterbi_path = {"viterbi_path", (PyCFunction)__pyx_pw_5cfunc_9viterbi_path, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5cfunc_8viterbi_path};
+static PyObject *__pyx_pw_5cfunc_9viterbi_path(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __Pyx_memviewslice __pyx_v_e_prob0 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_t_mat0 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_end_p0 = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -8056,18 +8056,18 @@ static PyObject *__pyx_pw_7Python3_5cfunc_9viterbi_path(PyObject *__pyx_self, Py
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("viterbi_path", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 335, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("Python3.cfunc.viterbi_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cfunc.viterbi_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7Python3_5cfunc_8viterbi_path(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat0, __pyx_v_end_p0);
+  __pyx_r = __pyx_pf_5cfunc_8viterbi_path(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat0, __pyx_v_end_p0);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat0, __Pyx_memviewslice __pyx_v_end_p0) {
+static PyObject *__pyx_pf_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_e_prob0, __Pyx_memviewslice __pyx_v_t_mat0, __Pyx_memviewslice __pyx_v_end_p0) {
   int __pyx_v_n_states;
   int __pyx_v_n_loci;
   Py_ssize_t __pyx_v_i;
@@ -8171,7 +8171,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   int __pyx_t_78;
   __Pyx_RefNannySetupContext("viterbi_path", 0);
 
-  /* "Python3/cfunc.pyx":340
+  /* "cfunc.pyx":340
  *     t_mat: Transition Matrix: [l x 3 x 3]  (normal space)
  *     end_p: probability to begin/end in states [k]"""
  *     cdef int n_states = e_prob0.shape[0]             # <<<<<<<<<<<<<<
@@ -8180,7 +8180,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
  */
   __pyx_v_n_states = (__pyx_v_e_prob0.shape[0]);
 
-  /* "Python3/cfunc.pyx":341
+  /* "cfunc.pyx":341
  *     end_p: probability to begin/end in states [k]"""
  *     cdef int n_states = e_prob0.shape[0]
  *     cdef int n_loci = e_prob0.shape[1]             # <<<<<<<<<<<<<<
@@ -8189,7 +8189,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
  */
   __pyx_v_n_loci = (__pyx_v_e_prob0.shape[1]);
 
-  /* "Python3/cfunc.pyx":348
+  /* "cfunc.pyx":348
  *     # Do the actual optimization (with back-tracking)
  *     # Initialize Views:
  *     cdef double[:, :] mp = np.empty((n_states, n_loci), dtype=np.float)             # <<<<<<<<<<<<<<
@@ -8238,7 +8238,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "Python3/cfunc.pyx":349
+  /* "cfunc.pyx":349
  *     # Initialize Views:
  *     cdef double[:, :] mp = np.empty((n_states, n_loci), dtype=np.float)
  *     cdef double[:] new_p = np.empty(n_states, dtype = np.float) # Temporary Array             # <<<<<<<<<<<<<<
@@ -8277,7 +8277,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "Python3/cfunc.pyx":350
+  /* "cfunc.pyx":350
  *     cdef double[:, :] mp = np.empty((n_states, n_loci), dtype=np.float)
  *     cdef double[:] new_p = np.empty(n_states, dtype = np.float) # Temporary Array
  *     cdef long[:,:] pt = np.empty((n_states, n_loci), dtype = np.int)  # Previous State Pointer             # <<<<<<<<<<<<<<
@@ -8326,7 +8326,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_t_8.memview = NULL;
   __pyx_t_8.data = NULL;
 
-  /* "Python3/cfunc.pyx":352
+  /* "cfunc.pyx":352
  *     cdef long[:,:] pt = np.empty((n_states, n_loci), dtype = np.int)  # Previous State Pointer
  * 
  *     trans_ll = np.empty(n_states-1, dtype=DTYPE) # Array for pre-calculations             # <<<<<<<<<<<<<<
@@ -8359,7 +8359,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_v_trans_ll = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "Python3/cfunc.pyx":353
+  /* "cfunc.pyx":353
  * 
  *     trans_ll = np.empty(n_states-1, dtype=DTYPE) # Array for pre-calculations
  *     cdef double[:] trans_ll_view = trans_ll             # <<<<<<<<<<<<<<
@@ -8371,7 +8371,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "Python3/cfunc.pyx":355
+  /* "cfunc.pyx":355
  *     cdef double[:] trans_ll_view = trans_ll
  * 
  *     three_v = np.empty(3, dtype=DTYPE)     # Array of size three             # <<<<<<<<<<<<<<
@@ -8396,7 +8396,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_v_three_v = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "Python3/cfunc.pyx":356
+  /* "cfunc.pyx":356
  * 
  *     three_v = np.empty(3, dtype=DTYPE)     # Array of size three
  *     cdef double[:] three_v_view = three_v             # <<<<<<<<<<<<<<
@@ -8408,7 +8408,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "Python3/cfunc.pyx":358
+  /* "cfunc.pyx":358
  *     cdef double[:] three_v_view = three_v
  * 
  *     three_vi = np.empty(3, dtype=int)       # Int Array of size three             # <<<<<<<<<<<<<<
@@ -8430,7 +8430,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_v_three_vi = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":359
+  /* "cfunc.pyx":359
  * 
  *     three_vi = np.empty(3, dtype=int)       # Int Array of size three
  *     cdef long[:] three_vi_view = three_vi             # <<<<<<<<<<<<<<
@@ -8442,7 +8442,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_t_9.memview = NULL;
   __pyx_t_9.data = NULL;
 
-  /* "Python3/cfunc.pyx":361
+  /* "cfunc.pyx":361
  *     cdef long[:] three_vi_view = three_vi
  * 
  *     two_v = np.empty(2, dtype=DTYPE)       # Array of size two             # <<<<<<<<<<<<<<
@@ -8467,7 +8467,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_v_two_v = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "Python3/cfunc.pyx":362
+  /* "cfunc.pyx":362
  * 
  *     two_v = np.empty(2, dtype=DTYPE)       # Array of size two
  *     cdef double[:] two_v_view = two_v             # <<<<<<<<<<<<<<
@@ -8479,7 +8479,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_t_7.memview = NULL;
   __pyx_t_7.data = NULL;
 
-  /* "Python3/cfunc.pyx":364
+  /* "cfunc.pyx":364
  *     cdef double[:] two_v_view = two_v
  * 
  *     two_vi = np.empty(2, dtype=int)       # Int Array of size two             # <<<<<<<<<<<<<<
@@ -8501,7 +8501,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_v_two_vi = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "Python3/cfunc.pyx":365
+  /* "cfunc.pyx":365
  * 
  *     two_vi = np.empty(2, dtype=int)       # Int Array of size two
  *     cdef long[:] two_vi_view = two_vi             # <<<<<<<<<<<<<<
@@ -8513,7 +8513,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   __pyx_t_9.memview = NULL;
   __pyx_t_9.data = NULL;
 
-  /* "Python3/cfunc.pyx":367
+  /* "cfunc.pyx":367
  *     cdef long[:] two_vi_view = two_vi
  * 
  *     for k in range(n_states):             # <<<<<<<<<<<<<<
@@ -8525,7 +8525,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_k = __pyx_t_12;
 
-    /* "Python3/cfunc.pyx":368
+    /* "cfunc.pyx":368
  * 
  *     for k in range(n_states):
  *       mp[k, 0] = end_p0[k]  # Initialize with Ending Probabilities             # <<<<<<<<<<<<<<
@@ -8556,7 +8556,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
     }
     *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_mp.data + __pyx_t_15 * __pyx_v_mp.strides[0]) ) + __pyx_t_16 * __pyx_v_mp.strides[1]) )) = (*((double *) ( /* dim=0 */ (__pyx_v_end_p0.data + __pyx_t_13 * __pyx_v_end_p0.strides[0]) )));
 
-    /* "Python3/cfunc.pyx":370
+    /* "cfunc.pyx":370
  *       mp[k, 0] = end_p0[k]  # Initialize with Ending Probabilities
  * 
  *       two_vi_view[0] = 0             # <<<<<<<<<<<<<<
@@ -8574,7 +8574,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
     }
     *((long *) ( /* dim=0 */ (__pyx_v_two_vi_view.data + __pyx_t_17 * __pyx_v_two_vi_view.strides[0]) )) = 0;
 
-    /* "Python3/cfunc.pyx":371
+    /* "cfunc.pyx":371
  * 
  *       two_vi_view[0] = 0
  *       three_vi_view[0] = 0             # <<<<<<<<<<<<<<
@@ -8593,7 +8593,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
     *((long *) ( /* dim=0 */ (__pyx_v_three_vi_view.data + __pyx_t_18 * __pyx_v_three_vi_view.strides[0]) )) = 0;
   }
 
-  /* "Python3/cfunc.pyx":373
+  /* "cfunc.pyx":373
  *       three_vi_view[0] = 0
  * 
  *     for i in range(1, n_loci):  # Do the Viterbi-Iteration             # <<<<<<<<<<<<<<
@@ -8605,7 +8605,7 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
   for (__pyx_t_12 = 1; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_i = __pyx_t_12;
 
-    /* "Python3/cfunc.pyx":376
+    /* "cfunc.pyx":376
  *         ### Precomputation:
  *         # Do the maximal log probability of 1, ...k State:
  *         m = argmax(mp[1:, i - 1])             # <<<<<<<<<<<<<<
@@ -8646,12 +8646,12 @@ static PyObject *__pyx_pf_7Python3_5cfunc_8viterbi_path(CYTHON_UNUSED PyObject *
         __pyx_t_7.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
-__pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
+__pyx_v_m = __pyx_f_5cfunc_argmax(__pyx_t_7);
     __PYX_XDEC_MEMVIEW(&__pyx_t_7, 1);
     __pyx_t_7.memview = NULL;
     __pyx_t_7.data = NULL;
 
-    /* "Python3/cfunc.pyx":377
+    /* "cfunc.pyx":377
  *         # Do the maximal log probability of 1, ...k State:
  *         m = argmax(mp[1:, i - 1])
  *         v = mp[m+1, i - 1]             # <<<<<<<<<<<<<<
@@ -8673,7 +8673,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     }
     __pyx_v_v = (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_mp.data + __pyx_t_19 * __pyx_v_mp.strides[0]) ) + __pyx_t_20 * __pyx_v_mp.strides[1]) )));
 
-    /* "Python3/cfunc.pyx":380
+    /* "cfunc.pyx":380
  * 
  *         # Do the States from collapsed states
  *         two_vi_view[1] = m+1   # Set the Pointers             # <<<<<<<<<<<<<<
@@ -8691,7 +8691,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     }
     *((long *) ( /* dim=0 */ (__pyx_v_two_vi_view.data + __pyx_t_21 * __pyx_v_two_vi_view.strides[0]) )) = (__pyx_v_m + 1);
 
-    /* "Python3/cfunc.pyx":381
+    /* "cfunc.pyx":381
  *         # Do the States from collapsed states
  *         two_vi_view[1] = m+1   # Set the Pointers
  *         three_vi_view[1] = m+1             # <<<<<<<<<<<<<<
@@ -8709,7 +8709,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     }
     *((long *) ( /* dim=0 */ (__pyx_v_three_vi_view.data + __pyx_t_22 * __pyx_v_three_vi_view.strides[0]) )) = (__pyx_v_m + 1);
 
-    /* "Python3/cfunc.pyx":383
+    /* "cfunc.pyx":383
  *         three_vi_view[1] = m+1
  * 
  *         two_v_view[1] = v + t_mat0[i, 1, 0]             # <<<<<<<<<<<<<<
@@ -8744,7 +8744,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     }
     *((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_26 * __pyx_v_two_v_view.strides[0]) )) = (__pyx_v_v + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t_mat0.data + __pyx_t_23 * __pyx_v_t_mat0.strides[0]) ) + __pyx_t_24 * __pyx_v_t_mat0.strides[1]) ) + __pyx_t_25 * __pyx_v_t_mat0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":384
+    /* "cfunc.pyx":384
  * 
  *         two_v_view[1] = v + t_mat0[i, 1, 0]
  *         three_v_view[1] = v + t_mat0[i, 1, 2] # Move in from other ROH             # <<<<<<<<<<<<<<
@@ -8779,7 +8779,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     }
     *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_30 * __pyx_v_three_v_view.strides[0]) )) = (__pyx_v_v + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t_mat0.data + __pyx_t_27 * __pyx_v_t_mat0.strides[0]) ) + __pyx_t_28 * __pyx_v_t_mat0.strides[1]) ) + __pyx_t_29 * __pyx_v_t_mat0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":387
+    /* "cfunc.pyx":387
  * 
  *         ### Do the zero State
  *         two_v_view[0] = mp[0, i - 1] + t_mat0[i, 0, 0]             # <<<<<<<<<<<<<<
@@ -8827,16 +8827,16 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     }
     *((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_36 * __pyx_v_two_v_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_mp.data + __pyx_t_31 * __pyx_v_mp.strides[0]) ) + __pyx_t_32 * __pyx_v_mp.strides[1]) ))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t_mat0.data + __pyx_t_33 * __pyx_v_t_mat0.strides[0]) ) + __pyx_t_34 * __pyx_v_t_mat0.strides[1]) ) + __pyx_t_35 * __pyx_v_t_mat0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":389
+    /* "cfunc.pyx":389
  *         two_v_view[0] = mp[0, i - 1] + t_mat0[i, 0, 0]
  * 
  *         m = argmax(two_v_view)      ### Do a Maximum             # <<<<<<<<<<<<<<
  *         v = two_v_view[m]
  *         mp[0, i] = v + e_prob0[0, i]   ### Set Max. Probability
  */
-    __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_v_two_v_view);
+    __pyx_v_m = __pyx_f_5cfunc_argmax(__pyx_v_two_v_view);
 
-    /* "Python3/cfunc.pyx":390
+    /* "cfunc.pyx":390
  * 
  *         m = argmax(two_v_view)      ### Do a Maximum
  *         v = two_v_view[m]             # <<<<<<<<<<<<<<
@@ -8854,7 +8854,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     }
     __pyx_v_v = (*((double *) ( /* dim=0 */ (__pyx_v_two_v_view.data + __pyx_t_37 * __pyx_v_two_v_view.strides[0]) )));
 
-    /* "Python3/cfunc.pyx":391
+    /* "cfunc.pyx":391
  *         m = argmax(two_v_view)      ### Do a Maximum
  *         v = two_v_view[m]
  *         mp[0, i] = v + e_prob0[0, i]   ### Set Max. Probability             # <<<<<<<<<<<<<<
@@ -8889,7 +8889,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     }
     *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_mp.data + __pyx_t_40 * __pyx_v_mp.strides[0]) ) + __pyx_t_41 * __pyx_v_mp.strides[1]) )) = (__pyx_v_v + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_38 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_39 * __pyx_v_e_prob0.strides[1]) ))));
 
-    /* "Python3/cfunc.pyx":392
+    /* "cfunc.pyx":392
  *         v = two_v_view[m]
  *         mp[0, i] = v + e_prob0[0, i]   ### Set Max. Probability
  *         pt[0, i] = two_vi_view[m]      ### Set Pointer for Backtrace             # <<<<<<<<<<<<<<
@@ -8920,7 +8920,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     }
     *((long *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_pt.data + __pyx_t_43 * __pyx_v_pt.strides[0]) ) + __pyx_t_44 * __pyx_v_pt.strides[1]) )) = (*((long *) ( /* dim=0 */ (__pyx_v_two_vi_view.data + __pyx_t_42 * __pyx_v_two_vi_view.strides[0]) )));
 
-    /* "Python3/cfunc.pyx":395
+    /* "cfunc.pyx":395
  * 
  *         ### Do the other States
  *         three_v_view[0] = mp[0, i - 1] + t_mat0[i, 0, 1] # Move from 0 State             # <<<<<<<<<<<<<<
@@ -8968,7 +8968,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     }
     *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_50 * __pyx_v_three_v_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_mp.data + __pyx_t_45 * __pyx_v_mp.strides[0]) ) + __pyx_t_46 * __pyx_v_mp.strides[1]) ))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t_mat0.data + __pyx_t_47 * __pyx_v_t_mat0.strides[0]) ) + __pyx_t_48 * __pyx_v_t_mat0.strides[1]) ) + __pyx_t_49 * __pyx_v_t_mat0.strides[2]) ))));
 
-    /* "Python3/cfunc.pyx":397
+    /* "cfunc.pyx":397
  *         three_v_view[0] = mp[0, i - 1] + t_mat0[i, 0, 1] # Move from 0 State
  * 
  *         for k in range(1, n_states):   # Find Maximum             # <<<<<<<<<<<<<<
@@ -8980,7 +8980,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     for (__pyx_t_52 = 1; __pyx_t_52 < __pyx_t_51; __pyx_t_52+=1) {
       __pyx_v_k = __pyx_t_52;
 
-      /* "Python3/cfunc.pyx":398
+      /* "cfunc.pyx":398
  * 
  *         for k in range(1, n_states):   # Find Maximum
  *           three_v_view[2] = mp[k, i - 1] + t_mat0[i, 1, 1] # The Stay State             # <<<<<<<<<<<<<<
@@ -9028,7 +9028,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
       }
       *((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_59 * __pyx_v_three_v_view.strides[0]) )) = ((*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_mp.data + __pyx_t_53 * __pyx_v_mp.strides[0]) ) + __pyx_t_54 * __pyx_v_mp.strides[1]) ))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_t_mat0.data + __pyx_t_56 * __pyx_v_t_mat0.strides[0]) ) + __pyx_t_57 * __pyx_v_t_mat0.strides[1]) ) + __pyx_t_58 * __pyx_v_t_mat0.strides[2]) ))));
 
-      /* "Python3/cfunc.pyx":399
+      /* "cfunc.pyx":399
  *         for k in range(1, n_states):   # Find Maximum
  *           three_v_view[2] = mp[k, i - 1] + t_mat0[i, 1, 1] # The Stay State
  *           three_vi_view[2] = k             # <<<<<<<<<<<<<<
@@ -9046,16 +9046,16 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
       }
       *((long *) ( /* dim=0 */ (__pyx_v_three_vi_view.data + __pyx_t_60 * __pyx_v_three_vi_view.strides[0]) )) = __pyx_v_k;
 
-      /* "Python3/cfunc.pyx":401
+      /* "cfunc.pyx":401
  *           three_vi_view[2] = k
  * 
  *           m = argmax(three_v_view)      ### Do a Maximum             # <<<<<<<<<<<<<<
  *           v = three_v_view[m]
  * 
  */
-      __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_v_three_v_view);
+      __pyx_v_m = __pyx_f_5cfunc_argmax(__pyx_v_three_v_view);
 
-      /* "Python3/cfunc.pyx":402
+      /* "cfunc.pyx":402
  * 
  *           m = argmax(three_v_view)      ### Do a Maximum
  *           v = three_v_view[m]             # <<<<<<<<<<<<<<
@@ -9073,7 +9073,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
       }
       __pyx_v_v = (*((double *) ( /* dim=0 */ (__pyx_v_three_v_view.data + __pyx_t_61 * __pyx_v_three_v_view.strides[0]) )));
 
-      /* "Python3/cfunc.pyx":404
+      /* "cfunc.pyx":404
  *           v = three_v_view[m]
  * 
  *           mp[k, i] = v + e_prob0[k, i]   ### Set Max. Probability             # <<<<<<<<<<<<<<
@@ -9108,7 +9108,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
       }
       *((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_mp.data + __pyx_t_64 * __pyx_v_mp.strides[0]) ) + __pyx_t_65 * __pyx_v_mp.strides[1]) )) = (__pyx_v_v + (*((double *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_e_prob0.data + __pyx_t_62 * __pyx_v_e_prob0.strides[0]) ) + __pyx_t_63 * __pyx_v_e_prob0.strides[1]) ))));
 
-      /* "Python3/cfunc.pyx":405
+      /* "cfunc.pyx":405
  * 
  *           mp[k, i] = v + e_prob0[k, i]   ### Set Max. Probability
  *           pt[k, i] = three_vi_view[m]      ### Set Pointer for Backtrace             # <<<<<<<<<<<<<<
@@ -9141,7 +9141,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
     }
   }
 
-  /* "Python3/cfunc.pyx":408
+  /* "cfunc.pyx":408
  * 
  *     ### Do the trace back
  *     cdef long[:] path = -np.ones(n_loci, dtype=np.int)  # Initialize             # <<<<<<<<<<<<<<
@@ -9183,7 +9183,7 @@ __pyx_v_m = __pyx_f_7Python3_5cfunc_argmax(__pyx_t_7);
   __pyx_t_9.memview = NULL;
   __pyx_t_9.data = NULL;
 
-  /* "Python3/cfunc.pyx":410
+  /* "cfunc.pyx":410
  *     cdef long[:] path = -np.ones(n_loci, dtype=np.int)  # Initialize
  * 
  *     x = np.argmax(mp[:, n_loci-1])  # The highest probability             # <<<<<<<<<<<<<<
@@ -9269,7 +9269,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_7, 1, (PyObject *(*)(char *)) __p
   __pyx_v_x = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "Python3/cfunc.pyx":411
+  /* "cfunc.pyx":411
  * 
  *     x = np.argmax(mp[:, n_loci-1])  # The highest probability
  *     path[n_loci-1] = x             # <<<<<<<<<<<<<<
@@ -9288,7 +9288,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_7, 1, (PyObject *(*)(char *)) __p
   }
   *((long *) ( /* dim=0 */ (__pyx_v_path.data + __pyx_t_70 * __pyx_v_path.strides[0]) )) = __pyx_t_69;
 
-  /* "Python3/cfunc.pyx":413
+  /* "cfunc.pyx":413
  *     path[n_loci-1] = x
  * 
  *     for i in range(n_loci - 1, 0, -1):             # <<<<<<<<<<<<<<
@@ -9298,7 +9298,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_7, 1, (PyObject *(*)(char *)) __p
   for (__pyx_t_12 = (__pyx_v_n_loci - 1); __pyx_t_12 > 0; __pyx_t_12-=1) {
     __pyx_v_i = __pyx_t_12;
 
-    /* "Python3/cfunc.pyx":415
+    /* "cfunc.pyx":415
  *     for i in range(n_loci - 1, 0, -1):
  *         # Always th pointer to the previous path
  *         path[i - 1] = pt[path[i], i]             # <<<<<<<<<<<<<<
@@ -9339,7 +9339,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_7, 1, (PyObject *(*)(char *)) __p
     *((long *) ( /* dim=0 */ (__pyx_v_path.data + __pyx_t_74 * __pyx_v_path.strides[0]) )) = (*((long *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_pt.data + __pyx_t_72 * __pyx_v_pt.strides[0]) ) + __pyx_t_73 * __pyx_v_pt.strides[1]) )));
   }
 
-  /* "Python3/cfunc.pyx":417
+  /* "cfunc.pyx":417
  *         path[i - 1] = pt[path[i], i]
  * 
  *     m = path[n_loci-1]             # <<<<<<<<<<<<<<
@@ -9357,7 +9357,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_7, 1, (PyObject *(*)(char *)) __p
   }
   __pyx_v_m = (*((long *) ( /* dim=0 */ (__pyx_v_path.data + __pyx_t_75 * __pyx_v_path.strides[0]) )));
 
-  /* "Python3/cfunc.pyx":418
+  /* "cfunc.pyx":418
  * 
  *     m = path[n_loci-1]
  *     print(f"Log likelihood Path: {mp[m,n_loci-1]:.3f}")             # <<<<<<<<<<<<<<
@@ -9390,7 +9390,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_7, 1, (PyObject *(*)(char *)) __p
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":419
+  /* "cfunc.pyx":419
  *     m = path[n_loci-1]
  *     print(f"Log likelihood Path: {mp[m,n_loci-1]:.3f}")
  *     assert(np.min(path)>=0) #Sanity check if everything was filled up             # <<<<<<<<<<<<<<
@@ -9462,7 +9462,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_7, 1, (PyObject *(*)(char *)) __p
   }
   #endif
 
-  /* "Python3/cfunc.pyx":420
+  /* "cfunc.pyx":420
  *     print(f"Log likelihood Path: {mp[m,n_loci-1]:.3f}")
  *     assert(np.min(path)>=0) #Sanity check if everything was filled up
  *     return np.asarray(path)             # <<<<<<<<<<<<<<
@@ -9525,7 +9525,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_7, 1, (PyObject *(*)(char *)) __p
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "Python3/cfunc.pyx":335
+  /* "cfunc.pyx":335
  * 
  * 
  * def viterbi_path(double[:, :] e_prob0, double[:, :, :] t_mat0, double[:] end_p0):             # <<<<<<<<<<<<<<
@@ -9544,7 +9544,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_7, 1, (PyObject *(*)(char *)) __p
   __PYX_XDEC_MEMVIEW(&__pyx_t_7, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
-  __Pyx_AddTraceback("Python3.cfunc.viterbi_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("cfunc.viterbi_path", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_mp, 1);
@@ -22608,7 +22608,7 @@ static PyBufferProcs __pyx_tp_as_buffer_array = {
 
 static PyTypeObject __pyx_type___pyx_array = {
   PyVarObject_HEAD_INIT(0, 0)
-  "Python3.cfunc.array", /*tp_name*/
+  "cfunc.array", /*tp_name*/
   sizeof(struct __pyx_array_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_array, /*tp_dealloc*/
@@ -22716,7 +22716,7 @@ static PyMethodDef __pyx_methods_Enum[] = {
 
 static PyTypeObject __pyx_type___pyx_MemviewEnum = {
   PyVarObject_HEAD_INIT(0, 0)
-  "Python3.cfunc.Enum", /*tp_name*/
+  "cfunc.Enum", /*tp_name*/
   sizeof(struct __pyx_MemviewEnum_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_Enum, /*tp_dealloc*/
@@ -22966,7 +22966,7 @@ static PyBufferProcs __pyx_tp_as_buffer_memoryview = {
 
 static PyTypeObject __pyx_type___pyx_memoryview = {
   PyVarObject_HEAD_INIT(0, 0)
-  "Python3.cfunc.memoryview", /*tp_name*/
+  "cfunc.memoryview", /*tp_name*/
   sizeof(struct __pyx_memoryview_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc_memoryview, /*tp_dealloc*/
@@ -23093,7 +23093,7 @@ static struct PyGetSetDef __pyx_getsets__memoryviewslice[] = {
 
 static PyTypeObject __pyx_type___pyx_memoryviewslice = {
   PyVarObject_HEAD_INIT(0, 0)
-  "Python3.cfunc._memoryviewslice", /*tp_name*/
+  "cfunc._memoryviewslice", /*tp_name*/
   sizeof(struct __pyx_memoryviewslice_obj), /*tp_basicsize*/
   0, /*tp_itemsize*/
   __pyx_tp_dealloc__memoryviewslice, /*tp_dealloc*/
@@ -23220,7 +23220,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Out_of_bounds_on_buffer_access_a, __pyx_k_Out_of_bounds_on_buffer_access_a, sizeof(__pyx_k_Out_of_bounds_on_buffer_access_a), 0, 0, 1, 0},
   {&__pyx_n_s_PickleError, __pyx_k_PickleError, sizeof(__pyx_k_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_Process, __pyx_k_Process, sizeof(__pyx_k_Process), 0, 0, 1, 1},
-  {&__pyx_n_s_Python3_cfunc, __pyx_k_Python3_cfunc, sizeof(__pyx_k_Python3_cfunc), 0, 0, 1, 1},
   {&__pyx_kp_u_Total_Log_likelihood, __pyx_k_Total_Log_likelihood, sizeof(__pyx_k_Total_Log_likelihood), 0, 1, 0, 0},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_kp_s_Unable_to_convert_item_to_object, __pyx_k_Unable_to_convert_item_to_object, sizeof(__pyx_k_Unable_to_convert_item_to_object), 0, 0, 1, 0},
@@ -23235,6 +23234,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_bwd1, __pyx_k_bwd1, sizeof(__pyx_k_bwd1), 0, 0, 1, 1},
   {&__pyx_n_s_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 0, 1, 1},
   {&__pyx_n_u_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 1, 0, 1},
+  {&__pyx_n_s_cfunc, __pyx_k_cfunc, sizeof(__pyx_k_cfunc), 0, 0, 1, 1},
   {&__pyx_kp_s_cfunc_pyx, __pyx_k_cfunc_pyx, sizeof(__pyx_k_cfunc_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_class, __pyx_k_class, sizeof(__pyx_k_class), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
@@ -23384,7 +23384,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "Python3/cfunc.pyx":119
+  /* "cfunc.pyx":119
  *     cdef double[:] trans_ll_view1 = trans_ll1
  * 
  *     three_v = np.empty(3, dtype=DTYPE)     # Array of size three             # <<<<<<<<<<<<<<
@@ -23395,7 +23395,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "Python3/cfunc.pyx":122
+  /* "cfunc.pyx":122
  *     cdef double[:] three_v_view = three_v
  * 
  *     two_v = np.empty(2, dtype=DTYPE)       # Array of size two             # <<<<<<<<<<<<<<
@@ -23406,7 +23406,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "Python3/cfunc.pyx":130
+  /* "cfunc.pyx":130
  *     ### Initialize FWD BWD matrices
  *     fwd0 = np.zeros((n_states, n_loci), dtype="float")
  *     fwd0[:, 0] = np.log(in_val)  # Initial Probabilities             # <<<<<<<<<<<<<<
@@ -23420,7 +23420,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "Python3/cfunc.pyx":131
+  /* "cfunc.pyx":131
  *     fwd0 = np.zeros((n_states, n_loci), dtype="float")
  *     fwd0[:, 0] = np.log(in_val)  # Initial Probabilities
  *     fwd0[0, 0] = np.log(1 - (n_states - 1) * in_val)             # <<<<<<<<<<<<<<
@@ -23431,7 +23431,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "Python3/cfunc.pyx":135
+  /* "cfunc.pyx":135
  * 
  *     bwd0 = np.zeros((n_states, n_loci), dtype="float")
  *     bwd0[:, -1] = np.log(in_val)             # <<<<<<<<<<<<<<
@@ -23445,7 +23445,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "Python3/cfunc.pyx":136
+  /* "cfunc.pyx":136
  *     bwd0 = np.zeros((n_states, n_loci), dtype="float")
  *     bwd0[:, -1] = np.log(in_val)
  *     bwd0[0, -1] = np.log(1 - (n_states - 1) * in_val)             # <<<<<<<<<<<<<<
@@ -23456,7 +23456,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "Python3/cfunc.pyx":195
+  /* "cfunc.pyx":195
  *     post = fwd1 + bwd1 - np.float(tot_ll)
  * 
  *     print("Memory Usage Full:")             # <<<<<<<<<<<<<<
@@ -23467,7 +23467,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "Python3/cfunc.pyx":234
+  /* "cfunc.pyx":234
  *     cdef double[:] trans_ll_view1 = trans_ll1
  * 
  *     three_v = np.empty(3, dtype=DTYPE)     # Array of size three             # <<<<<<<<<<<<<<
@@ -23478,7 +23478,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 
-  /* "Python3/cfunc.pyx":237
+  /* "cfunc.pyx":237
  *     cdef double[:] three_v_view = three_v
  * 
  *     two_v = np.empty(2, dtype=DTYPE)       # Array of size two             # <<<<<<<<<<<<<<
@@ -23489,7 +23489,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
 
-  /* "Python3/cfunc.pyx":245
+  /* "cfunc.pyx":245
  *     ### Initialize FWD BWD Arrays
  *     fwd0 = np.zeros(n_states, dtype=DTYPE)
  *     fwd0[:] = np.log(in_val)  # Initial Probabilities             # <<<<<<<<<<<<<<
@@ -23500,7 +23500,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_slice__12);
   __Pyx_GIVEREF(__pyx_slice__12);
 
-  /* "Python3/cfunc.pyx":250
+  /* "cfunc.pyx":250
  * 
  *     bwd0 = np.zeros(n_states, dtype=DTYPE)
  *     bwd0[:] = np.log(in_val)             # <<<<<<<<<<<<<<
@@ -23511,7 +23511,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_slice__13);
   __Pyx_GIVEREF(__pyx_slice__13);
 
-  /* "Python3/cfunc.pyx":329
+  /* "cfunc.pyx":329
  * 
  *     if full==False:
  *       return post[None,:]  # For "fake" axis             # <<<<<<<<<<<<<<
@@ -23525,7 +23525,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__15);
   __Pyx_GIVEREF(__pyx_tuple__15);
 
-  /* "Python3/cfunc.pyx":332
+  /* "cfunc.pyx":332
  * 
  *     elif full==True:   # Return everything
  *       return post[None,:], fwd0, bwd0, tot_ll             # <<<<<<<<<<<<<<
@@ -23539,7 +23539,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__17);
   __Pyx_GIVEREF(__pyx_tuple__17);
 
-  /* "Python3/cfunc.pyx":355
+  /* "cfunc.pyx":355
  *     cdef double[:] trans_ll_view = trans_ll
  * 
  *     three_v = np.empty(3, dtype=DTYPE)     # Array of size three             # <<<<<<<<<<<<<<
@@ -23550,7 +23550,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__18);
   __Pyx_GIVEREF(__pyx_tuple__18);
 
-  /* "Python3/cfunc.pyx":358
+  /* "cfunc.pyx":358
  *     cdef double[:] three_v_view = three_v
  * 
  *     three_vi = np.empty(3, dtype=int)       # Int Array of size three             # <<<<<<<<<<<<<<
@@ -23561,7 +23561,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__19);
   __Pyx_GIVEREF(__pyx_tuple__19);
 
-  /* "Python3/cfunc.pyx":361
+  /* "cfunc.pyx":361
  *     cdef long[:] three_vi_view = three_vi
  * 
  *     two_v = np.empty(2, dtype=DTYPE)       # Array of size two             # <<<<<<<<<<<<<<
@@ -23572,7 +23572,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__20);
   __Pyx_GIVEREF(__pyx_tuple__20);
 
-  /* "Python3/cfunc.pyx":364
+  /* "cfunc.pyx":364
  *     cdef double[:] two_v_view = two_v
  * 
  *     two_vi = np.empty(2, dtype=int)       # Int Array of size two             # <<<<<<<<<<<<<<
@@ -23808,7 +23808,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__42);
   __Pyx_GIVEREF(__pyx_tuple__42);
 
-  /* "Python3/cfunc.pyx":37
+  /* "cfunc.pyx":37
  * 
  * 
  * def print_memory_usage():             # <<<<<<<<<<<<<<
@@ -23820,7 +23820,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__43);
   __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_print_memory_usage, 37, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(0, 37, __pyx_L1_error)
 
-  /* "Python3/cfunc.pyx":44
+  /* "cfunc.pyx":44
  * 
  * 
  * def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -23832,7 +23832,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__45);
   __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(6, 0, 18, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__45, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_fwd_bkwd, 44, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(0, 44, __pyx_L1_error)
 
-  /* "Python3/cfunc.pyx":95
+  /* "cfunc.pyx":95
  * 
  * 
  * def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -23844,7 +23844,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__47);
   __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(5, 0, 29, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__47, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_fwd_bkwd_fast, 95, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(0, 95, __pyx_L1_error)
 
-  /* "Python3/cfunc.pyx":206
+  /* "cfunc.pyx":206
  * 
  * 
  * def fwd_bkwd_lowmem(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
@@ -23856,7 +23856,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__49);
   __pyx_codeobj__50 = (PyObject*)__Pyx_PyCode_New(5, 0, 30, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__49, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_fwd_bkwd_lowmem, 206, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__50)) __PYX_ERR(0, 206, __pyx_L1_error)
 
-  /* "Python3/cfunc.pyx":335
+  /* "cfunc.pyx":335
  * 
  * 
  * def viterbi_path(double[:, :] e_prob0, double[:, :, :] t_mat0, double[:] end_p0):             # <<<<<<<<<<<<<<
@@ -24215,14 +24215,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_Python3__cfunc) {
+  if (__pyx_module_is_main_cfunc) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "Python3.cfunc")) {
-      if (unlikely(PyDict_SetItemString(modules, "Python3.cfunc", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "cfunc")) {
+      if (unlikely(PyDict_SetItemString(modules, "cfunc", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -24243,7 +24243,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "Python3/cfunc.pyx":2
+  /* "cfunc.pyx":2
  * # cython: language_level=3, boundscheck=True, wraparound=False
  * import numpy as np             # <<<<<<<<<<<<<<
  * import psutil      # For Memory Profiling
@@ -24254,7 +24254,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "Python3/cfunc.pyx":3
+  /* "cfunc.pyx":3
  * # cython: language_level=3, boundscheck=True, wraparound=False
  * import numpy as np
  * import psutil      # For Memory Profiling             # <<<<<<<<<<<<<<
@@ -24266,7 +24266,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_psutil, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "Python3/cfunc.pyx":4
+  /* "cfunc.pyx":4
  * import numpy as np
  * import psutil      # For Memory Profiling
  * import os             # <<<<<<<<<<<<<<
@@ -24278,7 +24278,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_os, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "Python3/cfunc.pyx":10
+  /* "cfunc.pyx":10
  * from libc.math cimport exp, log   # For doing Exponentials and Logs
  * 
  * DTYPE = np.float # The float data type             # <<<<<<<<<<<<<<
@@ -24293,67 +24293,67 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_DTYPE, __pyx_t_2) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":37
+  /* "cfunc.pyx":37
  * 
  * 
  * def print_memory_usage():             # <<<<<<<<<<<<<<
  *     """Print the current Memory Usage in mB"""
  *     process = psutil.Process(os.getpid())
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7Python3_5cfunc_1print_memory_usage, NULL, __pyx_n_s_Python3_cfunc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5cfunc_1print_memory_usage, NULL, __pyx_n_s_cfunc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_print_memory_usage, __pyx_t_2) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":44
+  /* "cfunc.pyx":44
  * 
  * 
  * def fwd_bkwd(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
  *     double[:, :] fwd, double[:, :] bwd, double[:,:,:] t, full=False):
  *     """Takes emission and transition probabilities, and calculates posteriors.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7Python3_5cfunc_3fwd_bkwd, NULL, __pyx_n_s_Python3_cfunc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5cfunc_3fwd_bkwd, NULL, __pyx_n_s_cfunc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_fwd_bkwd, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":95
+  /* "cfunc.pyx":95
  * 
  * 
  * def fwd_bkwd_fast(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
  *     double[:, :, :] t, double in_val = 1e-4, full=False):
  *     """Takes emission and transition probabilities, and calculates posteriors.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7Python3_5cfunc_5fwd_bkwd_fast, NULL, __pyx_n_s_Python3_cfunc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5cfunc_5fwd_bkwd_fast, NULL, __pyx_n_s_cfunc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_fwd_bkwd_fast, __pyx_t_2) < 0) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":206
+  /* "cfunc.pyx":206
  * 
  * 
  * def fwd_bkwd_lowmem(double[:, :] e_prob0, double[:, :] t_mat,             # <<<<<<<<<<<<<<
  *     double[:, :, :] t, double in_val = 1e-4, full=False):
  *     """Takes emission and transition probabilities, and calculates posteriors.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7Python3_5cfunc_7fwd_bkwd_lowmem, NULL, __pyx_n_s_Python3_cfunc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5cfunc_7fwd_bkwd_lowmem, NULL, __pyx_n_s_cfunc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_fwd_bkwd_lowmem, __pyx_t_2) < 0) __PYX_ERR(0, 206, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":335
+  /* "cfunc.pyx":335
  * 
  * 
  * def viterbi_path(double[:, :] e_prob0, double[:, :, :] t_mat0, double[:] end_p0):             # <<<<<<<<<<<<<<
  *     """Implementation of a Viterbi Path.
  *     e_prob0  Matrices with Emission Probabilities, [k,l] (log space)
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_7Python3_5cfunc_9viterbi_path, NULL, __pyx_n_s_Python3_cfunc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 335, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5cfunc_9viterbi_path, NULL, __pyx_n_s_cfunc); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 335, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_viterbi_path, __pyx_t_2) < 0) __PYX_ERR(0, 335, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "Python3/cfunc.pyx":1
+  /* "cfunc.pyx":1
  * # cython: language_level=3, boundscheck=True, wraparound=False             # <<<<<<<<<<<<<<
  * import numpy as np
  * import psutil      # For Memory Profiling
@@ -24524,11 +24524,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init Python3.cfunc", 0, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init cfunc", 0, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init Python3.cfunc");
+    PyErr_SetString(PyExc_ImportError, "init cfunc");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

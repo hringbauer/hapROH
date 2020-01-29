@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: hapsburg
+Version: 0.1a2
+Summary: Identifction of long ROH in 1240k ancient DNA data
+Home-page: https://github.com/hringbauer/HAPSBURG
+Author: Harald Ringbauer
+Author-email: harald_ringbauer@hms.harvard.edu
+License: UNKNOWN
+Description: # HAPSBURG
+        Software to call ROHs
+        Author: Harald Ringbauer, 2019
+        @all rights reserved
+        
+        python code/notebooks are all in python3
+        
+        
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
