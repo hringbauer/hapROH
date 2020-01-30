@@ -19,7 +19,7 @@ import sys
 #from loadEigenstrat import load_eigenstrat
 
 #Assume Root Hapsburg Directory is in root
-from PackagesSupport.loadEigenstrat.loadEigenstrat import load_eigenstrat
+from hapsburg.PackagesSupport.loadEigenstrat.loadEigenstrat import load_eigenstrat
 
 # Write General PreProcessing Class: (PreProcessing)
 # Inherit one for real HDF5 Dataset: PreProcessingHDF5
@@ -178,7 +178,7 @@ class PreProcessingHDF5(PreProcessing):
                 read_counts = read_counts[:, called]
             if self.output == True:
                 print(f"Reduced to markers called {np.shape(gts)[1]} / {len(called)}")
-                print(f"(Fraction SNP: {np.shape(gts)[1] / len(called)})")
+                print(f"Fraction SNPs covered: {np.shape(gts)[1] / len(called):.4f}")
 
         if self.save == True:
             self.save_info(out_folder, r_map,

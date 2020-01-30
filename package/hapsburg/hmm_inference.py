@@ -9,12 +9,12 @@ import os                     # For Saving to Folder
 import psutil                 # For Memory Profiling
 import cProfile               # For Profiling
 # from func import fwd_bkwd    # Import the Python Function
-from cfunc import viterbi_path, fwd_bkwd_fast, fwd_bkwd_lowmem  # Cython Functions
-from func import fwd_bkwd_p, viterbi_path_p, sloppyROH_cumsum  # Python Functions
-from emissions import load_emission_model     # Factory Methods
-from transitions import load_transition_model
-from postprocessing import load_Postprocessing
-from preprocessing import load_preprocessing
+from hapsburg.cfunc import viterbi_path, fwd_bkwd_fast, fwd_bkwd_lowmem  # Cython Functions
+from hapsburg.func import fwd_bkwd_p, viterbi_path_p, sloppyROH_cumsum  # Python Functions
+from hapsburg.emissions import load_emission_model     # Factory Methods
+from hapsburg.transitions import load_transition_model
+from hapsburg.postprocessing import load_Postprocessing
+from hapsburg.preprocessing import load_preprocessing
 
 #################################
 #################################
@@ -168,8 +168,8 @@ class HMM_Analyze(object):
         r_map = np.maximum(r_map, min_gap)
 
         if self.output == True:
-            print(f"Minimum Genetic Map: {np.min(self.r_map):.4f}")
-            print(f"Maximum Genetic Map: {np.max(self.r_map):.4f}")
+            print(f"Minimum Genetic Map: {np.min(self.r_map):.4f} Morgan")
+            print(f"Maximum Genetic Map: {np.max(self.r_map):.4f} Morgan")
             print(f"Gaps bigger than 0.1 cM: {np.sum(r_map > 0.001)}")
             print(f"Maximum Gap: {np.max(r_map) * 100:.4f} cM")
 

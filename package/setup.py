@@ -2,19 +2,10 @@ from setuptools import setup, find_packages
 from setuptools.extension import Extension
 from Cython.Distutils import build_ext
 
-### Comment by Harald Jan2020
-# Eventually change Name to setup_pypi.py
-# Documentation for packaging at
-# https://packaging.python.org/tutorials/packaging-projects/
-# Documentation for C extensino (here cython):
-# For version numbers:
-# (https://www.python.org/dev/peps/pep-0440/)
 ###
-
-###
-# I only distribute the source,
+# I distribute the source only,
 # to avoid trouble with platform
-# specific wheels. Pls build yourself.
+# specific wheels. Pls build yourself!
 
 USE_CYTHON = True   
 
@@ -41,10 +32,10 @@ with open("README.md", "r") as fh:
 
 setup(
     name="hapsburg",
-    version="0.1a2",  # a means alpha
+    version="0.1a3",  # a means alpha
     author="Harald Ringbauer",
     author_email="harald_ringbauer@hms.harvard.edu",
-    description="Identifction of long ROH in 1240k ancient DNA data",
+    description="Identifction of long ROH in 1240k ancient DNA data using modern reference panel",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/hringbauer/HAPSBURG",

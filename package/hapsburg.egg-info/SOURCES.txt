@@ -24,3 +24,8 @@ hapsburg/PackagesSupport/loadEigenstrat/__init__.py
 hapsburg/PackagesSupport/loadEigenstrat/loadEigenstrat.py
 hapsburg/PackagesSupport/parallel_runs/__init__.py
 hapsburg/PackagesSupport/parallel_runs/helper_functions.py
+hapsburg/figures/__init__.py
+hapsburg/figures/plot_bars.py
+hapsburg/figures/plot_individual_roh.py
+hapsburg/figures/plot_posterior.py
+hapsburg/figures/plot_timelines.py
