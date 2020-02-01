@@ -15,8 +15,10 @@ python3 setup.py sdist
 ### Upload to the Sources (copy into shell, to interactively do it!)
 python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-# Documentation for 
+## To test whether extensions builds
+python3 setup.py build_ext --inplace
 
+# Further Documentation 
 ### for packaging: 
 https://packaging.python.org/tutorials/packaging-projects/
 

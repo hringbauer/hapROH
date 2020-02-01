@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
 Name: hapsburg
-Version: 0.1a3
-Summary: Identifction of long ROH in 1240k ancient DNA data using modern reference panel
+Version: 0.1a4
+Summary: Calling long ROH in 1240k ancient DNA data using modern reference panel
 Home-page: https://github.com/hringbauer/HAPSBURG
 Author: Harald Ringbauer
 Author-email: harald_ringbauer@hms.harvard.edu
@@ -14,6 +14,7 @@ Description: # HAPSBURG
         
         ### Installation
         Please install the package using the Package manager pip. 
+        
         python3 -m pip install --user --index-url https://test.pypi.org/simple/ --no-deps hapsburg
         
         [IN FINAL VERSION, no --index-url necessary]

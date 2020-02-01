@@ -1,7 +1,9 @@
+MANIFEST.in
 README.md
 setup.py
 hapsburg/__init__.py
 hapsburg/cfunc.c
+hapsburg/cfunc.pyx
 hapsburg/emissions.py
 hapsburg/func.py
 hapsburg/hmm_inference.py
