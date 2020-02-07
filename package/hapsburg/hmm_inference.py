@@ -153,7 +153,7 @@ class HMM_Analyze(object):
         if self.output:
             print(f"Loaded Post Processing Model: {self.post_model}")
 
-    def prepare_rmap(self, cm=False, min_gap=1e-10):
+    def prepare_rmap(self, cm=False, min_gap=1e-10, max_gap=0.05):
         """Return the recombination map [in Morgan]
         Input: Map Positions [l]
         Return: Rec. Distance Array [l]
@@ -164,14 +164,18 @@ class HMM_Analyze(object):
         assert(np.min(r_map) >= 0)
         if cm == True:
             r_map = r_map / 100     # Normalize to CentiMorgan.
+        
+        max_g = np.max(r_map) 
         # Extend the minimum gap where needed
         r_map = np.maximum(r_map, min_gap)
+        r_map = np.minimum(r_map, max_gap)
 
         if self.output == True:
             print(f"Minimum Genetic Map: {np.min(self.r_map):.4f} Morgan")
             print(f"Maximum Genetic Map: {np.max(self.r_map):.4f} Morgan")
             print(f"Gaps bigger than 0.1 cM: {np.sum(r_map > 0.001)}")
-            print(f"Maximum Gap: {np.max(r_map) * 100:.4f} cM")
+            print(f"Maximum Gap: {max_g * 100:.4f} cM")
+            print(f"Upper Gap Cutoff: {max_gap * 100:.4f} cM")
 
         return r_map
 
