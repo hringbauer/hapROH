@@ -36,7 +36,7 @@ def multi_run(fun, prms, processes = 4):
 def split_up_roh_df(base_path, path_out, iid, 
                     file_in="roh_info.csv", file_out="roh_gt.csv"):
     """Splits up the ROH-dataframe from base_path/file_in into file_out.
-    Picks out Individual iid
+    Picks out Individual iid. Done to pass on "ground truth"
     base_path: Where to find roh_info.csv
     path_out: Where to save roh_gt to
     iid: Which Individual to extract from roh_info.csv."""

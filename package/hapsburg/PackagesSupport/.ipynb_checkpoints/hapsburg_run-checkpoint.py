@@ -44,8 +44,9 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[]
                 base_out_folder=base_out_folder, prefix_out_data=prefix_out, excluded=exclude_pops)
     
     ### Set the paths to ref & target
-    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, meta_path_ref = meta_path_ref)
-    hmm.load_data(iid=iid, ch=ch, n_ref=n_ref)  # Load the actual Data
+    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
+                         meta_path_ref = meta_path_ref, n_ref=n_ref)
+    hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
     hmm.load_secondary_objects()
 
     ### Set the Parameters

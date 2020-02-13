@@ -38,12 +38,13 @@ class PreProcessing(object):
     iid = ""     # Which Individual to Analyze
     ch = 0       # Which Chromosome to analyze
     segM = []    # Segment of Chromosome to analyze (in Morgan)
+    n_ref = 503   # Nr of diploid reference Individuals to use (diploid)
 
     def __init__(self):
         """Initialize Class"""
         raise NotImplementedError()
 
-    def load_data(self, iid="MA89", ch=6, n_ref=503):
+    def load_data(self, iid="MA89", ch=6):
         """Return Refererence Matrix [k,l], Genotype/Readcount Matrix [2,l]
         as well as linkage map [l] """
         raise NotImplementedError()
@@ -66,7 +67,6 @@ class PreProcessing(object):
             os.makedirs(out_folder)
 
         return out_folder
-
 
 class PreProcessingHDF5(PreProcessing):
     """Class for PreProcessing the Data.
@@ -111,19 +111,21 @@ class PreProcessingHDF5(PreProcessing):
             raise RuntimeError(f"Individual {iid} not found in {self.meta_path_targets}!")
         return id_obs[0]
 
-    def get_ref_ids(self, f, n_ref):
+    def get_ref_ids(self, f, n_ref=self.n_ref):
         """OVERWRITE: Get the Indices of the individuals
         in the HDF5 to extract. Here: Allow to subset for Individuals from
         different 100G Populations"""
 
         # Load Meta Population File
         meta_df = pd.read_csv(self.meta_path_ref, sep="\t")
+        assert(len(meta_df) == np.shape(f["calldata/GT"])[1])  # Sanity Check
 
         iids = np.where(~meta_df["pop"].isin(self.excluded))[0]
-        print(f"{len(iids)} / {len(meta_df)} Individuals included in Reference")
+        if self.output:
+            print(f"{len(iids)} / {len(meta_df)} Individuals included in Reference")
         return iids[:n_ref]   # Return up to n_ref Individual Indices
 
-    def load_data(self, iid="MA89", ch=6, n_ref=503):
+    def load_data(self, iid="MA89", ch=6):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l]"""
 
@@ -142,7 +144,7 @@ class PreProcessingHDF5(PreProcessing):
         i1, i2 = self.merge_2hdf(fs, f1000)
 
         id_obs = self.get_index_iid(iid, fs)
-        ids_ref = self.get_ref_ids(f1000, n_ref)
+        ids_ref = self.get_ref_ids(f1000, self.n_ref)
 
         # All 503 EUR Samples as Reference (first Chromosome)
         markers = np.arange(0, len(i1))  # Which Markers to Slice out
@@ -176,7 +178,7 @@ class PreProcessingHDF5(PreProcessing):
             r_map = r_map[called]
             if len(read_counts) > 0:
                 read_counts = read_counts[:, called]
-            if self.output == True:
+            if self.output:
                 print(f"Reduced to markers called {np.shape(gts)[1]} / {len(called)}")
                 print(f"Fraction SNPs covered: {np.shape(gts)[1] / len(called):.4f}")
 
@@ -185,7 +187,7 @@ class PreProcessingHDF5(PreProcessing):
                            gt_individual=gts_ind, read_counts=read_counts)
 
         if (self.readcounts == True) and len(read_counts) > 0:   # Switch to Readcount
-            if self.output == True:
+            if self.output:
                 print(f"Loading Readcounts...")
                 print(f"Mean Readcount markers loaded: {np.mean(read_counts) * 2:.5f}")
             gts_ind = read_counts
@@ -352,7 +354,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         self.packed = packed
         self.sep = sep
 
-    def load_data(self, iid="MA89", ch=6, n_ref=2504):
+    def load_data(self, iid="MA89", ch=6):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l] and the output folder.
         Save the loaded data if self.save==True
@@ -374,7 +376,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         markers_obs, markers_ref, flipped = self.merge_es_hdf5(es, f1000)
 
         id_obs = es.get_index_iid(iid)  # Get Index from Eigenstrat
-        ids_ref = self.get_ref_ids(f1000, n_ref)
+        ids_ref = self.get_ref_ids(f1000, self.n_ref)
 
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
 

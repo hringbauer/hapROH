@@ -91,10 +91,10 @@ class HMM_Analyze(object):
             self.fwd_bkwd = fwd_bkwd_p
             self.viterbi_path = viterbi_path_p
 
-    def load_objects(self, iid="", ch=0, n_ref=503):
+    def load_objects(self, iid="", ch=0):
         """Load all the required Objects in right order"""
         self.load_preprocessing_model()
-        self.load_data(iid, ch, n_ref)
+        self.load_data(iid, ch)
         self.load_secondary_objects()
 
     def load_secondary_objects(self):
@@ -104,10 +104,10 @@ class HMM_Analyze(object):
         self.load_transition_model()
         self.load_postprocessing_model()
 
-    def load_data(self, iid="", ch=0, n_ref=503):
+    def load_data(self, iid="", ch=0):
         """Load the External Data"""
         gts_ind, gts, r_map, out_folder = self.p_obj.load_data(
-            iid=iid, ch=ch, n_ref=n_ref)
+            iid=iid, ch=ch)
 
         self.ch = ch
         self.iid = iid
