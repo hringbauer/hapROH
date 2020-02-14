@@ -69,7 +69,7 @@ def process_read_counts(read_counts, m=1):
 
 def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=True, 
                       plot=True, cm_lim=[], m=1, groundtruth=False, readcount=False, 
-                     plot_hets=True, plot_calls=True, plot_post=True,
+                     plot_hets=True, plot_calls=True, plot_post=True, scale=1.0,
                       figsize=(14,4), title="", post_c="maroon", het_c="blue"):
     """Plot Viterbi Path of Haplotype copying.
     save: Whether to save the results.
@@ -113,7 +113,7 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
     #ax.set_ylabel("Het", fontsize=fs)
     #ax.set_title("Hetorzygosity", fontsize=fs)
     if plot_post:
-        ax1.plot(gmap*100, np.exp(posterior), linewidth=2, color=post_c, label="State 0", zorder=1)
+        ax1.plot(gmap*100, np.exp(posterior)*scale, linewidth=2, color=post_c, label="State 0", zorder=1)
         ax1.set_ylabel("Post. Probability", fontsize=fs, color=post_c)
     
     if plot_calls:
@@ -122,6 +122,8 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
     
     ax1.set_xlabel("SNP", fontsize=fs)
     ax1.set_xlabel("CentiMorgan")
+    
+    ax1.set_ylim([-0.05, 1.25])
     
     if len(cm_lim)==2:
         ax1.set_xlim(cm_lim)
@@ -143,6 +145,8 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
         ax2.set_yticklabels([])
         ax1.set_yticklabels([])
         ax2.set_ylabel(f"$\geq/\geq$ {m} Ref/Alt Reads", fontsize=fs*0.7, color=het_c)
+        
+    
         
     if len(title)>0:
         plt.title(title, fontsize=fs)

@@ -38,7 +38,7 @@ class PreProcessing(object):
     iid = ""     # Which Individual to Analyze
     ch = 0       # Which Chromosome to analyze
     segM = []    # Segment of Chromosome to analyze (in Morgan)
-    n_ref = 503   # Nr of diploid reference Individuals to use (diploid)
+    n_ref = 0   # Nr of diploid reference Individuals to use (diploid)
 
     def __init__(self):
         """Initialize Class"""
@@ -111,7 +111,7 @@ class PreProcessingHDF5(PreProcessing):
             raise RuntimeError(f"Individual {iid} not found in {self.meta_path_targets}!")
         return id_obs[0]
 
-    def get_ref_ids(self, f, n_ref=self.n_ref):
+    def get_ref_ids(self, f):
         """OVERWRITE: Get the Indices of the individuals
         in the HDF5 to extract. Here: Allow to subset for Individuals from
         different 100G Populations"""
@@ -123,7 +123,8 @@ class PreProcessingHDF5(PreProcessing):
         iids = np.where(~meta_df["pop"].isin(self.excluded))[0]
         if self.output:
             print(f"{len(iids)} / {len(meta_df)} Individuals included in Reference")
-        return iids[:n_ref]   # Return up to n_ref Individual Indices
+            print(f"Extracting up to {self.n_ref} Individuals")
+        return iids[:self.n_ref]   # Return up to n_ref Individual Indices
 
     def load_data(self, iid="MA89", ch=6):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
@@ -144,7 +145,7 @@ class PreProcessingHDF5(PreProcessing):
         i1, i2 = self.merge_2hdf(fs, f1000)
 
         id_obs = self.get_index_iid(iid, fs)
-        ids_ref = self.get_ref_ids(f1000, self.n_ref)
+        ids_ref = self.get_ref_ids(f1000)
 
         # All 503 EUR Samples as Reference (first Chromosome)
         markers = np.arange(0, len(i1))  # Which Markers to Slice out

@@ -13,7 +13,7 @@ import pandas as pd
 import socket
 
 # Assume that now we are in the root directory
-#sys.path.append("./XX/") Go to base directory of HAPSBURG
+# Delete in final version!!
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
 
 #sys.path.append("./PackagesSupport/parallel_runs/")
@@ -27,8 +27,8 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[]
                 h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
                 meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
                 base_out_folder="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
-                roh_in=100, roh_out=100, roh_jump=300, e_rate=0.01, e_rate_ref=0.01, 
-                max_gap=0, logfile=True):
+                roh_in=100, roh_out=100, roh_jump=300, e_rate=0.01, e_rate_ref=0.01,
+                max_gap=0, cutoff = 0.8, l_cutoff = 0.01, logfile=True):
     """Run Hapsburg analysis for one chromosome on eigenstrat data
     Wrapper for HMM Class. Takes 20 Parameters"""
     
@@ -52,7 +52,7 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[]
     ### Set the Parameters
     hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
     hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
-    hmm.post_obj.set_params(max_gap=max_gap)
+    hmm.post_obj.set_params(max_gap=max_gap, cutoff=cutoff, l_cutoff = l_cutoff)
     
     ### hmm.calc_viterbi_path(save=save)           # Calculate the Viterbi Path.
     hmm.calc_posterior(save=save)              # Calculate the Posterior.
@@ -69,7 +69,7 @@ def hapsb_ind(iid, chs=range(1,23), processes=1, delete=False, output=True, save
               meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
               base_out_folder="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
               roh_in=100, roh_out=100, roh_jump=300, e_rate=0.01, e_rate_ref=0.01, 
-              max_gap=0, logfile=True, combine=True, file_name="_roh_full.csv"):
+              max_gap=0, cutoff = 0.8, l_cutoff = 0.01, logfile=True, combine=True, file_name="_roh_full.csv"):
     """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel
     Wrapper for hapsb_chrom
     logfile: Whether to use a logfile
@@ -84,8 +84,8 @@ def hapsb_ind(iid, chs=range(1,23), processes=1, delete=False, output=True, save
     ### Prepare the Parameters for that Indivdiual
     prms = [[iid, ch, save, save_fp, n_ref, exclude_pops, e_model, p_model, readcounts, destroy_phase,
             post_model, path_targets, h5_path1000g, meta_path_ref, base_out_folder, prefix_out,
-            roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, logfile] for ch in chs]
-    assert(len(prms[0])==23)   # Sanity Check
+            roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff, l_cutoff, logfile] for ch in chs]
+    assert(len(prms[0])==25)   # Sanity Check
                             
     ### Run the analysis in parallel
     multi_run(hapsb_chrom, prms, processes = processes)
