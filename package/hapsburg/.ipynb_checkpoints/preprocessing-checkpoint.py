@@ -237,10 +237,11 @@ class PreProcessingHDF5(PreProcessing):
         print(f"HDF5 loaded from {path}")
         return f   
         
-    def merge_2hdf(self, f, g):
+    def merge_2hdf(self, f, g, mult_alt=False):
         """ Merge two HDF 5 f and g. Return Indices of Overlap Individuals.
         f is Sardinian HDF5,
-        g the Reference HDF5"""
+        g the Reference HDF5
+        mult_alt: In case HDF5 with multiple alternative Alleles is used"""
 
         pos1 = f["variants/POS"]
         pos2 = g["variants/POS"]
@@ -252,7 +253,10 @@ class PreProcessingHDF5(PreProcessing):
         ref1 = np.array(f["variants/REF"])[i1]
         ref2 = np.array(g["variants/REF"])[i2]
         alt1 = np.array(f["variants/ALT"])[i1]
-        alt2 = np.array(g["variants/ALT"])[i2, 0]
+        if mult_alt:
+            alt2 = np.array(g["variants/ALT"])[i2, 0]
+        else:
+            alt2 = np.array(g["variants/ALT"])[i2]
 
         ### Downsample to Site where both Ref and Alt are the same
         same = (ref1 == ref2)
