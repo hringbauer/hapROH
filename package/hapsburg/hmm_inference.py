@@ -163,7 +163,7 @@ class HMM_Analyze(object):
         r_map[1:] = self.r_map[1:] - self.r_map[:-1]  # Calculate Differences
         assert(np.min(r_map) >= 0)
         if cm == True:
-            r_map = r_map / 100     # Normalize to CentiMorgan.
+            r_map = r_map / 100     # Normalize to Morgan if map in cM
         
         max_g = np.max(r_map) 
         # Extend the minimum gap where needed

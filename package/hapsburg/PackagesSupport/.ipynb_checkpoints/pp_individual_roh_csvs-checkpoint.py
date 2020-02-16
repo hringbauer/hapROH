@@ -78,10 +78,10 @@ def merge_called_blocks(df, max_gap=0, min_len1=0.02,
 
         df_n = df.drop(df.index)  # Create New Data frame with all raws removed
         row_c = df.iloc[0, :].copy()
-        row_c["lengthM"] = row_c["EndM"] - row_c["StartM"]
+        #row_c["lengthM"] = row_c["EndM"] - row_c["StartM"] # Should be there
 
-        # Iterate over all rows, update blocks if gaps small enough
-        for index, row in df.iterrows():
+        # Iterate over all further rows, update blocks if gaps small enough
+        for index, row in df.iloc[1:,:].iterrows():
             ### Calculate Conditions
             short_b = np.min([row_c["lengthM"], row["lengthM"]])>=min_len1
             long_b = np.max([row_c["lengthM"], row["lengthM"]])>=min_len2
