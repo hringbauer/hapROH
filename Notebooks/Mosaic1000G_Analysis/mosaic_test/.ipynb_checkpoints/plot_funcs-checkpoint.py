@@ -12,7 +12,7 @@ from matplotlib import gridspec
 
 def plot_power(bl_lens, df_call_vec1, powers, df_fp=[], fs = 12, fs_l=12, 
                xlim=(0,12.5), figsize=(10,6), n=100, color_fp="red", ec="silver",
-               savepath="", title=""):
+               alpha=0.8, savepath="", title=""):
     """ bl_lens: Array of Block Lengths
         df_call_vec1: Array of Called Blocks
         powers: Array of Power to call Blocks
@@ -39,16 +39,16 @@ def plot_power(bl_lens, df_call_vec1, powers, df_fp=[], fs = 12, fs_l=12,
     ax.tick_params(axis='both', labelsize=fs)
     ax1.tick_params(axis='both', labelsize=fs)
 
-    # Plot All Histograms
-    if len(df_fp)>0:
-        ax.hist(df_fp["lengthM"]*100, bins = bins, color = color_fp, 
-                alpha=0.9, label= "FP", ec=ec)
-        
+    # Plot All Histograms        
     for i in range(len(bl_lens)):
         l = bl_lens[i]
-        ax.hist(df_call_vec1[i]["CalledLength"], bins = bins, color = colors[i], alpha=0.9, 
+        ax.hist(df_call_vec1[i]["CalledLength"], bins = bins, color = colors[i], alpha=alpha, 
                 label= str(l) + " cM", ec=ec)
         ax.axvline(l, color = "gray", linewidth=2)
+    
+    if len(df_fp)>0:
+        ax.hist(df_fp["lengthM"]*100, bins = bins, color = color_fp, 
+                alpha=1.0, label= "FP", ec=ec)
         
     ax.set_xlim(xlim)
     ax.set_xlabel("Inferred ROH Length [cM]", fontsize = fs)

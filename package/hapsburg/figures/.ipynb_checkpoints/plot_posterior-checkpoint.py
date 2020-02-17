@@ -69,7 +69,7 @@ def process_read_counts(read_counts, m=1):
 
 def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=True, 
                       plot=True, cm_lim=[], m=1, groundtruth=False, readcount=False, 
-                     plot_hets=True, plot_calls=True, plot_post=True, scale=1.0,
+                     plot_hets=True, plot_calls=True, plot_post=True, scale=1.0, min_cm=1.0,
                       figsize=(14,4), title="", post_c="maroon", het_c="blue"):
     """Plot Viterbi Path of Haplotype copying.
     save: Whether to save the results.
@@ -117,6 +117,7 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
         ax1.set_ylabel("Post. Probability", fontsize=fs, color=post_c)
     
     if plot_calls:
+        roh_df = roh_df[roh_df["lengthM"]>min_cm/100.0]  # Filter out long enough calls
         plt.hlines(y=[1.2]*len(roh_df), xmin=100 * roh_df["StartM"], xmax= 100 * roh_df["EndM"], 
                         colors="blue", linewidth=lw)
     

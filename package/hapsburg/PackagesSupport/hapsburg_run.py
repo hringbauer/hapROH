@@ -22,13 +22,13 @@ from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path
 
 
 def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[],
-                e_model="readcount", p_model="MosaicHDF5", readcounts=True, destroy_phase=True,
+                e_model="EigenstratPacked", p_model="MosaicHDF5", readcounts=True, destroy_phase=True,
                 post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
                 h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
                 meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
                 base_out_folder="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
-                roh_in=100, roh_out=100, roh_jump=300, e_rate=0.01, e_rate_ref=0.01,
-                max_gap=0, cutoff = 0.8, l_cutoff = 0.01, logfile=True):
+                roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
+                max_gap=0, cutoff = 0.999, l_cutoff = 0.01, logfile=True):
     """Run Hapsburg analysis for one chromosome on eigenstrat data
     Wrapper for HMM Class. Takes 20 Parameters"""
     
@@ -63,13 +63,13 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[]
 ### Run Hapsburg for one Individual (wrap for Chr.)
 
 def hapsb_ind(iid, chs=range(1,23), processes=1, delete=False, output=True, save=True, save_fp=False, n_ref=2504, 
-              exclude_pops=[], e_model="readcount", p_model="MosaicHDF5", readcounts=True, destroy_phase=False,
-              post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
-              h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
+              exclude_pops=[], e_model="EigenstratPacked", p_model="MosaicHDF5", readcounts=True, destroy_phase=True,
+              post_model="Standard", path_targets = "./Data/ReichLabEigenstrat/Raw/v37.2.1240K",
+              h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240int8/chr", 
               meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
               base_out_folder="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
-              roh_in=100, roh_out=100, roh_jump=300, e_rate=0.01, e_rate_ref=0.01, 
-              max_gap=0, cutoff = 0.8, l_cutoff = 0.01, logfile=True, combine=True, file_name="_roh_full.csv"):
+              roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
+              max_gap=0, cutoff = 0.999, l_cutoff = 0.01, logfile=True, combine=True, file_name="_roh_full.csv"):
     """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel
     Wrapper for hapsb_chrom
     logfile: Whether to use a logfile

@@ -381,7 +381,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         markers_obs, markers_ref, flipped = self.merge_es_hdf5(es, f1000)
 
         id_obs = es.get_index_iid(iid)  # Get Index from Eigenstrat
-        ids_ref = self.get_ref_ids(f1000, self.n_ref)
+        ids_ref = self.get_ref_ids(f1000)
 
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
 
@@ -417,7 +417,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         gts_ind = es.extract_snps(id, markers, conversion=True)
         return gts_ind
 
-    def merge_es_hdf5(self, es, f_ref):
+    def merge_es_hdf5(self, es, f_ref, mult_alt=False):
         """Merge Eigenstrat and HDF5 Loci, return intersection indices
         es: LoadEigenstrat Object
         f_ref: Reference HDF5
@@ -434,7 +434,10 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         ref1, alt1 = ref1[i1], alt1[i1]  # Subset to intersection
 
         ref2 = np.array(f_ref["variants/REF"])[i2]
-        alt2 = np.array(f_ref["variants/ALT"])[i2, 0]
+        if mult_alt:
+            alt2 = np.array(f_ref["variants/ALT"])[i2, 0]
+        else:
+            alt2 = np.array(f_ref["variants/ALT"])[i2]
 
         # Downsample to Site where both Ref and Alt are identical        
         same = (ref1 == ref2)
@@ -578,7 +581,7 @@ def load_preprocessing(p_model="SardHDF5", save=True, output=True):
         p_obj = PreProcessingEigenstrat(save=save, output=output,
                                         packed=False, sep=r"\t")
     else:
-        raise NotImplementedError(f"Emission Model string {p_model} not found.")
+        raise NotImplementedError(f"Preprocessing Model string {p_model} not found.")
 
     return p_obj
 
