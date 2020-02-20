@@ -88,7 +88,6 @@ class PreProcessingHDF5(PreProcessing):
     diploid_ref = True   # Whether to use diploid Reference Individuals
     destroy_phase = True  # Whether to destroy Phase of Target Individual
     only_calls = True    # Whether to downsample to markers with no missing data
-    
     max_mm_rate = 0.9 # Maximal mismatch rate ref/alt alleles between target and ref
 
     def __init__(self, save=True, output=True):
@@ -237,11 +236,10 @@ class PreProcessingHDF5(PreProcessing):
         print(f"HDF5 loaded from {path}")
         return f   
         
-    def merge_2hdf(self, f, g, mult_alt=False):
+    def merge_2hdf(self, f, g):
         """ Merge two HDF 5 f and g. Return Indices of Overlap Individuals.
         f is Sardinian HDF5,
-        g the Reference HDF5
-        mult_alt: In case HDF5 with multiple alternative Alleles is used"""
+        g the Reference HDF5"""
 
         pos1 = f["variants/POS"]
         pos2 = g["variants/POS"]
@@ -253,7 +251,8 @@ class PreProcessingHDF5(PreProcessing):
         ref1 = np.array(f["variants/REF"])[i1]
         ref2 = np.array(g["variants/REF"])[i2]
         alt1 = np.array(f["variants/ALT"])[i1]
-        if mult_alt:
+        
+        if len(np.shape(g["variants/ALT"]))>1:   # If multiple ALT Alleles
             alt2 = np.array(g["variants/ALT"])[i2, 0]
         else:
             alt2 = np.array(g["variants/ALT"])[i2]
@@ -417,7 +416,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         gts_ind = es.extract_snps(id, markers, conversion=True)
         return gts_ind
 
-    def merge_es_hdf5(self, es, f_ref, mult_alt=False):
+    def merge_es_hdf5(self, es, f_ref):
         """Merge Eigenstrat and HDF5 Loci, return intersection indices
         es: LoadEigenstrat Object
         f_ref: Reference HDF5
@@ -434,7 +433,8 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         ref1, alt1 = ref1[i1], alt1[i1]  # Subset to intersection
 
         ref2 = np.array(f_ref["variants/REF"])[i2]
-        if mult_alt:
+        
+        if len(np.shape(f_ref["variants/ALT"]))>1:  # If multiple alt alleles
             alt2 = np.array(f_ref["variants/ALT"])[i2, 0]
         else:
             alt2 = np.array(f_ref["variants/ALT"])[i2]
