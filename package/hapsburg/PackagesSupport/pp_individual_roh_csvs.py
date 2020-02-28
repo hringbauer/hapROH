@@ -17,7 +17,7 @@ def give_iid_paths(iids, base_folder="./Empirical/HO/", suffix = "_roh_full.csv"
     return paths_csv
 
 def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100, 
-                           gap=0.5, min_len1=2, min_len2=4, output=True):
+                           gap=0.5, min_len1=2, min_len2=4, output=True, sort=True):
     """Create the Ancient Sardinian Summary Dataframe
     paths: List of .csv Paths to load the Data from
     snp_cm: Minimum SNP Density per cM
@@ -26,6 +26,7 @@ def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100,
     gap: Maximum Gaps to merge [in cM]
     min_len1: Minimum Length of both Blocks for merge [in cM]
     min_len2: Minimum Length of longer Block to merge [in cM]"""    
+    
     ### Dry run to check if paths exist
     idcs, paths_exist, paths_not_exist = [], [], []
     for i, path in enumerate(paths):
@@ -39,18 +40,38 @@ def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100,
         print(f"Warning, could not find {len(paths_not_exist)} Paths:")
         print(paths_not_exist)
     
-    n = len(paths_exist)
+    df_rohs = [pd.read_csv(path) for path in paths_exist] # Create list of Dataframes
+    # A bit wast of memory, but allows easy refactoring
+    iids, pops = iids[idcs], pops[idcs]  # Cut out only the existing Indivdiduals
+    
+    df1 =combine_ROH_df(df_rohs, iids=iids, pops=pops, min_cm=min_cm, snp_cm=snp_cm,
+                        gap=gap, min_len1=min_len1, min_len2=min_len2,
+                        output=output, sort=sort)
+    return df1
+
+
+def combine_ROH_df(df_rohs, iids=[], pops=[], min_cm=[4,8,12], snp_cm=100, 
+                   gap=0.5, min_len1=2, min_len2=4, output=True, sort=True):
+    """Takes list of ROH Dataframes, and creates a single
+    summary dataframe. Being wrapped around by create_combined_ROH_df
+    which does the path and loading.
+    df_rohs: List of individual dataframes
+    iids: IIds of the Individuals (filled in columns)
+    pops: Populations of the Individuals (filled in column)
+    gap, min_len1/2 are in cM (!!)"""
+                   
+    # Create Place Holder Arrays
+    n = len(df_rohs)
     l = len(min_cm)
     max_roh = np.zeros(n, dtype="float")
     sum_roh = np.zeros((n,l), dtype="float")
     n_roh = np.zeros((n,l), dtype="int")
-    
-    for i, path in enumerate(paths_exist):            
-        df_roh = pd.read_csv(path)
+                        
+    for i, df_roh in enumerate(df_rohs):
         if gap>0:
             df_roh = merge_called_blocks(df_roh, max_gap=gap/100, 
                                          min_len1=min_len1/100, min_len2=min_len2/100)
-            
+
         for j, m_cm in enumerate(min_cm):
             df_roh = post_process_roh_df(df_roh, output=output, snp_cm=snp_cm, min_cm=m_cm)  ### Do the Postprocessing
             max_roh_t, sum_roh[i,j], n_roh[i,j] = individual_roh_statistic(df_roh, output=output)
@@ -58,17 +79,17 @@ def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100,
                 max_roh[i] = max_roh_t
 
     ### Create the Dataframe with the basic entries:
-    d = {"iid": iids[idcs], "pop" : pops[idcs], "max_roh": max_roh*100}
+    d = {"iid": iids, "pop" : pops, "max_roh": max_roh*100}
     df1 = pd.DataFrame(d) 
     
     ### Add Values for varying cM cutoffs:
     for j, m_cm in enumerate(min_cm):
         df1[f"sum_roh>{m_cm}"]= sum_roh[:,j]*100
         df1[f"n_roh>{m_cm}"]=n_roh[:,j]
-       
-    df1 = df1.sort_values(by=f"sum_roh>{min_cm[0]}", ascending=False)  # Sort output by minimal Cutoff 
-    return df1
-
+    if sort:
+        df1 = df1.sort_values(by=f"sum_roh>{min_cm[0]}", ascending=False)  # Sort output by minimal Cutoff                    
+    return df1                 
+                      
 def merge_called_blocks(df, max_gap=0, min_len1=0.02, 
                         min_len2=0.04, output=False):
         """Merge Blocks in Dataframe df and return merged Dataframe.

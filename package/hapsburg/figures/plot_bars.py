@@ -20,7 +20,10 @@ rcParams['font.sans-serif'] = ['Arial']  # Make sure to have the font installed 
 from hapsburg.PackagesSupport.roh_expectations import Expected_Roh
 
 def create_cousins_roh(degrees=[1,2,3], 
-                       bins=[[0.04,0.08],[0.08,0.12],[0.12,0.2],[0.2,3.0]], bin_n=10000):
+                       bins=[[0.04,0.08],
+                             [0.08,0.12],
+                             [0.12,0.2],
+                             [0.2,3.0]], bin_n=10000):
     """Create ROH sharing in list of bins (list of [begin,end]) 
     for Cousins of degree degrees [list]
     return sharing [len(degrees), len(bins)]"""
