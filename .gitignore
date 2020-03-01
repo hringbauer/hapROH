@@ -12,8 +12,8 @@ Python3/cfunc.c
 Python3/cfunc.html
 Python3/cfunc.cpython-37m-x86_64-linux-gnu.so
 
-PackagesSupport/cluster_runs/ES_callROH/logs/
-PackagesSupport/cluster_runs/HO_callROH/logs/
-PackagesSupport/cluster_runs/Marcus_callROH/logs/
+cluster_runs/ES_callROH/logs/
+cluster_runs/HO_callROH/logs/
+cluster_runs/Marcus_callROH/logs/
 
 nb-log*

@@ -46,7 +46,7 @@ def load_eigenstrat_anno(path="./Data/ReichLabEigenstrat/Raw/v37.2.1240K.clean4.
     return df_anno
 
 #df_anno = load_eigenstrat_anno()
-df_anno = pd.read_csv("./PackagesSupport/cluster_runs/ES_callROH/rerun_top100.csv")  # For the rerun of Shotgun Individuals
+#df_anno = pd.read_csv("./PackagesSupport/cluster_runs/ES_callROH/rerun_top100.csv")  # For the rerun of Shotgun Individuals
 
 
 
