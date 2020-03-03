@@ -52,6 +52,21 @@ def load_eigenstrat_anno(path="./Data/ReichLabEigenstrat/Raw/v37.2.1240K.clean4.
     print(f"Loaded {len(df_anno)} Individuals with >{min_snps} SNPs covered")
     return df_anno
 
+def load_meta_csv(path="", anc_only=True, min_snps=400000,
+                 cov_col="n_cov_snp"):
+    """Load dataframe from pre-processed Metafile"""
+    df = pd.read_csv(path, sep=",")
+    
+    if anc_only:
+        df_anc = df[df["age"]>0]
+        print(f"Loaded {len(df_anc)} / {len(df)} ancient Indivdiuals Anno File.")
+        df=df_anc
+        
+    df[cov_col] = pd.to_numeric(df[cov_col], errors="coerce")
+    df = df[df[cov_col]>min_snps]
+    print(f"Loaded {len(df)} Individuals with >{min_snps} SNPs covered")
+    return df
+
 def get_iid_from_df(df, i, id_col="Instance ID"):
     """Get the Individual IID"""
     if i<0 or i>=len(df):    # Sanity Check
@@ -67,16 +82,20 @@ if __name__ == "__main__":
         raise RuntimeError("Script needs argument (indiviual i)")
     
     run_nr = int(sys.argv[1]) # The Parameter passed to the Python Script from outside
-    df_anno = load_eigenstrat_anno(min_snps=400000)
-    iid = get_iid_from_df(df_anno, run_nr, id_col="Instance ID")
+    #df_anno = load_eigenstrat_anno(min_snps=400000)
+    #iid = get_iid_from_df(df_anno, run_nr, id_col="Instance ID")
+    
+    df_anno = load_meta_csv(path = "./Data/ReichLabEigenstrat/Raw/meta.v42_additional.csv",
+                            min_snps=400000)
+    iid=get_iid_from_df(df_anno, run_nr, id_col="iid")
     
     hapsb_ind(iid, chs=range(1, 23), processes=1, delete=False, output=True, 
                save=True, save_fp=False, n_ref=2504, exclude_pops=[], 
                e_model='haploid', p_model='EigenstratPacked', readcounts=False, 
                destroy_phase=True, post_model='Standard', 
-               path_targets='./Data/ReichLabEigenstrat/Raw/v37.2.1240K', 
+               path_targets="./Data/ReichLabEigenstrat/Raw.v42.4/v42.4.1240K", 
                h5_path1000g='./Data/1000Genomes/HDF5/1240kHDF5/all1240int8/chr', 
                meta_path_ref='./Data/1000Genomes/Individuals/meta_df_all.csv', 
-               base_out_folder='./Empirical/Eigenstrat/Reichall/final/', prefix_out='', 
+               base_out_folder='./Empirical/Eigenstrat/Reichall/v42_add/', prefix_out='', 
                roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0, max_gap=0, 
                cutoff=0.999, l_cutoff=0.01, logfile=True, combine=True, file_name='_roh_full.csv')
