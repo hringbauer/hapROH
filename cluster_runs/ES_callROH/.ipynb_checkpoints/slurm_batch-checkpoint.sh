@@ -11,7 +11,7 @@
 #SBATCH --export=NONE
 #SBATCH --output=./logs/%A_%a.out
 #SBATCH --error=./logs/%A_%a.err
-#SBATCH --array=0-499   # max 1094 870
+#SBATCH --array=0-28   # max 1094 870 1025 (v42_core)
 unset SLURM_EXPORT_ENV
 
 export OMP_NUM_THREADS=1

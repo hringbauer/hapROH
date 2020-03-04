@@ -85,7 +85,9 @@ if __name__ == "__main__":
     #df_anno = load_eigenstrat_anno(min_snps=400000)
     #iid = get_iid_from_df(df_anno, run_nr, id_col="Instance ID")
     
-    df_anno = load_meta_csv(path = "./Data/ReichLabEigenstrat/Raw/meta.v42_additional.csv",
+    #df_anno = load_meta_csv(path = "./Data/ReichLabEigenstrat/Raw/meta.v42_additional.csv",
+    #                        min_snps=400000)
+    df_anno = load_meta_csv(path = "./Data/ReichLabEigenstrat/Raw/meta.v42_old.csv",
                             min_snps=400000)
     iid=get_iid_from_df(df_anno, run_nr, id_col="iid")
     
@@ -96,6 +98,6 @@ if __name__ == "__main__":
                path_targets="./Data/ReichLabEigenstrat/Raw.v42.4/v42.4.1240K", 
                h5_path1000g='./Data/1000Genomes/HDF5/1240kHDF5/all1240int8/chr', 
                meta_path_ref='./Data/1000Genomes/Individuals/meta_df_all.csv', 
-               base_out_folder='./Empirical/Eigenstrat/Reichall/v42_add/', prefix_out='', 
+               base_out_folder='./Empirical/Eigenstrat/Reichall/v42_core/', prefix_out='', 
                roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0, max_gap=0, 
                cutoff=0.999, l_cutoff=0.01, logfile=True, combine=True, file_name='_roh_full.csv')

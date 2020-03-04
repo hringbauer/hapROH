@@ -11,15 +11,18 @@ import matplotlib.cm as cm
 from matplotlib import gridspec
 
 def plot_power(bl_lens, df_call_vec1, powers, df_fp=[], fs = 12, fs_l=12, 
-               xlim=(0,12.5), figsize=(10,6), n=100, color_fp="red", ec="silver",
+               xlim=(0,12.5), figsize=(10,6), n=100, ylim_pow=[0.5, 1.05],
+               lw_power=1.2, color_fp="red", ec="silver", pw_yticks=[0.5,0.75,1.0], s=100,
                alpha=0.8, savepath="", title=""):
     """ bl_lens: Array of Block Lengths
         df_call_vec1: Array of Called Blocks
         powers: Array of Power to call Blocks
-    Load, and plot power and power curves"""
+    Load, and plot power and power curves
+    s: Size of ticks on y axis
+    pw_ticks: Where to set the ticks for the power
+    lw_power: Line width of power plot""" 
     assert(len(bl_lens)==len(df_call_vec1)==len(powers)) # Sanity Check
-        
-    ylim_pow =[0.5, 1.05]
+    
     bins = np.linspace(0, 15, 75)  # Bins of 0.1 cM
     
     ### Set Colors
@@ -52,14 +55,18 @@ def plot_power(bl_lens, df_call_vec1, powers, df_fp=[], fs = 12, fs_l=12,
         
     ax.set_xlim(xlim)
     ax.set_xlabel("Inferred ROH Length [cM]", fontsize = fs)
-    ax.set_ylabel("# Inferred ROH blocks", fontsize = fs)
+    ax.set_ylabel("# Inferred \nROH blocks", fontsize = fs)
     legend = ax.legend(loc = "upper right", fontsize = fs_l, title="Simulated ROH")
     legend.get_title().set_fontsize(fs_l)
-
+    
+    ### Plot the upper panel
     ax1.set_ylabel("Called at \n80% overlap", fontsize = fs)
     ax1.set_xticks([])
-    ax1.scatter(bl_lens, powers, c=colors, s=100,zorder=1, ec=ec)
-    ax1.plot(bl_lens, powers, "gray", zorder=0)
+    ax1.yaxis.set_ticks(pw_yticks)
+    for y in pw_yticks:
+        ax1.axhline(y, linestyle='--', color='gray', lw=0.3, zorder=0)
+    ax1.scatter(bl_lens, powers, c=colors, s=s, zorder=2, ec=ec)
+    ax1.plot(bl_lens, powers, "gray", zorder=1, lw=lw_power)
     ax1.set_xlim(xlim)
     ax1.set_ylim(ylim_pow)
 
