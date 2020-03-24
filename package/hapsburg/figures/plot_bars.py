@@ -108,7 +108,7 @@ def plot_bar_ax(ax, fracs, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c
         ax.set_yticklabels([])
         ax.set_ylabel("")
     if len(title)>0:
-        ax.set_title(title, fontsize=fs, rotation=r_title)
+        ax.set_title(title, fontsize=fs, rotation=r_title, horizontalalignment="left")
         
         
 def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepath="", x_ticks=True,

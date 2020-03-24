@@ -20,7 +20,10 @@ rcParams['font.sans-serif'] = ['Arial']  # Make sure to have the font installed 
 from hapsburg.PackagesSupport.roh_expectations import Expected_Roh
 
 def create_cousins_roh(degrees=[1,2,3], 
-                       bins=[[0.04,0.08],[0.08,0.12],[0.12,0.2],[0.2,3.0]], bin_n=10000):
+                       bins=[[0.04,0.08],
+                             [0.08,0.12],
+                             [0.12,0.2],
+                             [0.2,3.0]], bin_n=10000):
     """Create ROH sharing in list of bins (list of [begin,end]) 
     for Cousins of degree degrees [list]
     return sharing [len(degrees), len(bins)]"""
@@ -105,7 +108,7 @@ def plot_bar_ax(ax, fracs, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c
         ax.set_yticklabels([])
         ax.set_ylabel("")
     if len(title)>0:
-        ax.set_title(title, fontsize=fs, rotation=r_title)
+        ax.set_title(title, fontsize=fs, rotation=r_title, horizontalalignment="left")
         
         
 def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepath="", x_ticks=True,
