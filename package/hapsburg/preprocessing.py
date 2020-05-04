@@ -15,10 +15,7 @@ import os   # For creating folders
 import sys
 
 
-#sys.path.append("./PackagesSupport/loadEigenstrat/")
-#from loadEigenstrat import load_eigenstrat
-
-#Assume Root Hapsburg Directory is in root
+#Assume hapsburg directory is in root
 from hapsburg.PackagesSupport.loadEigenstrat.loadEigenstrat import load_eigenstrat
 
 # Write General PreProcessing Class: (PreProcessing)
@@ -56,9 +53,9 @@ class PreProcessing(object):
             setattr(self, key, value)
 
     def set_output_folder(self, iid, ch):
-        """Set the output folder after base_out.
-        General Structure for HAPSBURG: base_out/iid/chrX/"""
-        out_folder = os.path.join(self.base_out_folder, str(
+        """Set the output folder after folder_out.
+        General Structure for HAPSBURG: folder_out/iid/chrX/"""
+        out_folder = os.path.join(self.folder_out, str(
             iid),  "chr" + str(ch), self.prefix_out_data)
 
         if not os.path.exists(out_folder):   # Create Output Folder if needed
@@ -81,14 +78,14 @@ class PreProcessingHDF5(PreProcessing):
     meta_path_ref = "./Data/1000Genomes/Individuals/meta_df.csv"
     excluded = ["TSI", ]  # List of excluded Populations in Meta
 
-    base_out_folder = "./Empirical/1240k/"  # Base Path of the Output Folder
+    folder_out = "./Empirical/1240k/"  # Base Path of the Output Folder
     prefix_out_data = ""  # Prefix of the Outdata (should be of form "path/")
 
-    readcounts = False   # Whether to return Readcounts
-    diploid_ref = True   # Whether to use diploid Reference Individuals
-    destroy_phase = True  # Whether to destroy Phase of Target Individual
-    only_calls = True    # Whether to downsample to markers with no missing data
-    max_mm_rate = 0.9 # Maximal mismatch rate ref/alt alleles between target and ref
+    readcounts = False    # Whether to return Readcounts
+    diploid_ref = True    # Whether to use diploid Reference Individuals
+    random_allele = True  # Whether to pick one of two alleles at Target Individual at random
+    only_calls = True     # Whether to downsample to markers with no missing data
+    max_mm_rate = 0.9     # Maximal mismatch rate ref/alt alleles between target and ref
 
     def __init__(self, save=True, output=True):
         """Initialize Class.
@@ -191,8 +188,9 @@ class PreProcessingHDF5(PreProcessing):
                 print(f"Loading Readcounts...")
                 print(f"Mean Readcount markers loaded: {np.mean(read_counts) * 2:.5f}")
             gts_ind = read_counts
-
-        if self.destroy_phase == True:     # Destroy Phase
+        
+        ### Shuffle Target Allele     
+        if self.random_allele == True:     
             if self.output == True:
                 print("Shuffling phase of target...")
             gts_ind = self.destroy_phase_func(gts_ind)
@@ -592,12 +590,12 @@ if __name__ == "__main__":
     # Test Loading Eigenstrat
     # pp = load_preprocessing(p_model="Eigenstrat", save=False, output=True)
     # pp.set_params(path_targets="./Data/ReichLabEigenstrat/Olalde2019/Olalde_et_al_genotypes",
-    #            base_out_folder="./Empirical/ES_Test/", only_calls=True)
+    #            folder_out="./Empirical/ES_Test/", only_calls=True)
 
     # Test Loading HDF5
     pp = load_preprocessing(p_model="MosaicHDF5", save=False, output=True)
     pp.set_params(h5_path_targets="./Simulated/1000G_Mosaic/TSI5/ch3_4cm/data.h5",
-                  base_out_folder="./Empirical/ES_Test/", only_calls=True,
+                  folder_out="./Empirical/ES_Test/", only_calls=True,
                   excluded=["TSI", ])
 
     gts_ind, gts, r_map, out_folder = pp.load_data(

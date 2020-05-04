@@ -4,7 +4,7 @@ Helper Functions to post-process large Number of Individuals on Cluster into Sum
 Structure: Produce list of paths with Individuals ROH files for a group.
 These are then combined into one summary data frame (and some post-processing such as gap merging can be done)
 This is then saved as a single "summary" dataframe (csv) 
-@ Author: Harald Ringbauer, 2019, All rights reserved
+@ Author: Harald Ringbauer, 2019
 """
 import numpy as np
 import pandas as pd
@@ -195,7 +195,6 @@ def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", 
     
     ### Merge results with Meta-Dataframe
     if meta_info:
-        #df1 = pd.merge(df1[["iid", "max_roh", f"n_roh>{min_cm[0]}",f"sum_roh>{min_cm[0]}"]], df_meta, on="iid")
         df1 = pd.merge(df1, df_meta, on="iid")
         
     if len(save_path) > 0:

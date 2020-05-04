@@ -1,7 +1,8 @@
 """
 Helper Functions for Notebook Runs on Cluster
-@ Author: Harald Ringbauer, 2019, All rights reserved
+@ Author: Harald Ringbauer, 2019
 """
+
 import numpy as np
 import pandas as pd
 import sys
@@ -50,7 +51,8 @@ def split_up_roh_df(base_path, path_out, iid,
     #print(f"Saved to {save_path}")
     return
 
-def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), prefix_out="", file_name="_roh_full.csv"):
+def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), 
+                            prefix_out="", file_result="_roh_full.csv"):
     """Function to merge data from one Individual Analysis (all Chromosome)
     chs: Which Chromosomes to combine"
     delete: Whether to delete individual folder and contents after combining."""
@@ -66,7 +68,7 @@ def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), prefi
     full_df = pd.concat(full_df_vec)
         
     ### Save to Path:
-    path_save = os.path.join(base_path, str(iid) + file_name)
+    path_save = os.path.join(base_path, str(iid) + file_result)
     full_df.to_csv(path_save, index=False)
     
     ### Delete files in folder if need

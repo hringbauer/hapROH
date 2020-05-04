@@ -3,7 +3,7 @@ Class for calling ROH from Posterior Data. Saves results as a .csv
 created by Pandas.
 Contains Sub-Classes, as well as factory Method.
 Pls always change parameters with set_params method!
-@ Author: Harald Ringbauer, 2019, All rights reserved
+@ Author: Harald Ringbauer, 2019
 """
 
 import numpy as np
@@ -17,8 +17,8 @@ class PostProcessing(object):
     folder = ""          # The Folder to operate in
     roh_df = []          # Dataframe for Runs of Homozygosity
 
-    cutoff = 0.8  # Cutoff Probability for ROH State
-    l_cutoff = 0.01  # Cutoff [in Morgan]
+    cutoff_post = 0.8  # Cutoff Probability for ROH State
+    roh_min_l = 0.01  # Cutoff [in Morgan]
     max_gap = 0.01  # The Maximum Gap Length to be Merged [in Morgan]
     snps_extend = 0  # SNPs to snip on either side of blocks (after merge)
 
@@ -137,7 +137,7 @@ class PostProcessing(object):
         log: Whether Posterior is given in log space"""
         r_map, posterior0 = self.load_data()
         roh_post = self.modify_posterior0(posterior0)
-        roh = roh_post > self.cutoff
+        roh = roh_post > self.cutoff_post
 
         if self.output == True:
             frac_roh = np.mean(roh)
@@ -157,7 +157,7 @@ class PostProcessing(object):
         full_df = pd.DataFrame({'Start': starts, 'End': ends,
                                 'StartM': starts_map, 'EndM': ends_map, 'length': l,
                                 'lengthM': l_map, 'iid': iid, "ch": ch})
-        df = full_df[full_df["lengthM"] > self.l_cutoff]  # Cut out long blocks
+        df = full_df[full_df["lengthM"] > self.roh_min_l]  # Cut out long blocks
 
         # Merge Blocks in Postprocessing Step
         if self.merge == True:
@@ -167,7 +167,7 @@ class PostProcessing(object):
             df = self.snp_extend(df, r_map)
 
         if self.output == True:
-            print(f"Called n={len(df)} ROH Blocks > {self.l_cutoff * 100} cM")
+            print(f"Called n={len(df)} ROH Blocks > {self.roh_min_l * 100} cM")
             l = np.max(df["lengthM"])
             print(f"Longest Block: {l *100:.3f}")
 

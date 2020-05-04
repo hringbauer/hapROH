@@ -176,7 +176,8 @@ class EigenstratLoadUnpacked(EigenstratLoad):
 
 def load_eigenstrat(base_path, output=True, sep=r"\s+", packed=True):
     """Factory Method to Load Eigenstrat object
-    sep: What separator to use when loading the File
+    sep: What separator to use when loading the File. 
+    Default is space seperated (by arbitrary number of spaces)
     Packed: Whether Genotype Data is encoded in binary Format"""
     if packed:
     	es = EigenstratLoad(base_path, output=output, sep=sep)
