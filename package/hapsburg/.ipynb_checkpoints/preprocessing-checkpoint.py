@@ -71,7 +71,7 @@ class PreProcessingHDF5(PreProcessing):
     Return the Intersection Dataset
     """
     path_targets = "./../ancient-sardinia/output/h5_rev/mod_reich_sardinia_ancients_rev_mrg_dedup_3trm_anno.h5"
-    meta_path_targets = "./../ancient-sardinia/output/meta/meta_rev_final.csv"
+    #meta_path_targets = "./../ancient-sardinia/output/meta/meta_rev_final.csv" Meta now encoded in f["samples"]!!
 
     # Path of 1000G (without chromosome part)
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
@@ -96,7 +96,7 @@ class PreProcessingHDF5(PreProcessing):
         self.output = output
         # print(os.getcwd()) # Show the current working directory
 
-    def get_index_iid(self, iid, fs=0):
+    def get_index_iid_legacy(self, iid, fs=0):
         """Get the Index of IID in fs
         iid to extract. fs reference HDF5"""
         meta_df = pd.read_csv(self.meta_path_targets)
@@ -105,6 +105,16 @@ class PreProcessingHDF5(PreProcessing):
         id_obs = np.where(meta_df["iid"] == iid)[0]
         if len(id_obs) == 0:
             raise RuntimeError(f"Individual {iid} not found in {self.meta_path_targets}!")
+        return id_obs[0]
+    
+    def get_index_iid(self, iid, f=0, samples_field="samples"):
+        """Get the Index of IID in fs
+        iid to extract. fs reference HDF5"""
+        assert(len(f[samples_field]) == np.shape(f["calldata/GT"])[1])  # Sanity Check
+
+        id_obs = np.where(f[samples_field][:] == iid)[0]
+        if len(id_obs) == 0:
+            raise RuntimeError(f"Individual {iid} not found in H5 field {samples_field}!")
         return id_obs[0]
 
     def get_ref_ids(self, f):
@@ -337,7 +347,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
     Same as PreProcessingHDF5 for reference, but with Eigenstrat coe
     for target
     """
-    meta_path_targets = ""
+    #meta_path_targets = "" # Meta not needed any more, only .ind file
     path_targets = ""  # Base Path of the Eigenstrat
     # Path of 1000G (without chromosome part):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
@@ -484,25 +494,10 @@ class PreProcessingHDF5Sim(PreProcessingHDF5):
 
     out_folder = ""    # Where to save to
     prefix_out_data = ""  # Prefix of the Outdata
-    meta_path_targets = ""  # Not need in this class.
+    #meta_path_targets = ""  # Not needed any more
     path_targets = ""
     # Path of 1000G (without chromosome part):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
-
-    def get_index_iid(self, iid, fs=0):
-        """OVERWRITE: Get the Index of IID in fs (target HDF5)
-        iid to extract.
-        Difference: Here looked up directly in HDF Samples array"""
-
-        iids = np.array(fs['samples'])
-        assert(len(iids) == np.shape(fs["calldata/GT"])[1])  # Sanity Check
-
-        id_obs = np.where(iids == iid)[0]
-
-        if len(id_obs) == 0:
-            raise RuntimeError(f"Individual {iid} not found in samples!")
-        return id_obs[0]
-
 
 ############################################
 ############################################

@@ -169,7 +169,7 @@ class PostProcessing(object):
         if self.output == True:
             print(f"Called n={len(df)} ROH Blocks > {self.roh_min_l * 100} cM")
             l = np.max(df["lengthM"])
-            print(f"Longest Block: {l *100:.3f}")
+            print(f"Longest Block: {l *100:.2f} cM")
 
         self.df = df
         if self.save == True:
@@ -218,7 +218,6 @@ def load_Postprocessing(folder="", method="Standard", output=True, save=True):
         pp = MMR_PostProcessing(folder, output=output, save=save)
     else:
         raise RuntimeError(f"Postprocessing method {method} not available!")
-
     return pp
 
 

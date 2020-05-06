@@ -93,7 +93,7 @@ def hapsb_ind(iid, chs=range(1,23),
               h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240int8/chr", 
               meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
               folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
-              e_model="EigenstratPacked", p_model="MosaicHDF5", post_model="Standard",
+              e_model="haploid", p_model="EigenstratPacked", post_model="Standard",
               processes=1, delete=False, output=True, save=True, save_fp=False, 
               n_ref=2504, exclude_pops=[], readcounts=True, random_allele=True,
               roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
@@ -107,9 +107,9 @@ def hapsb_ind(iid, chs=range(1,23),
     meta_path_ref: Path of the meta file for the references [str]
     folder_out: Path of the basis folder for output [str]
     prefix_out: Path to insert in output string, e.g. test/ [str]
-    e_model: Emission model to use [str]
-    p_model: Preprocessing model tu use [str]
-    post_model: Model to post-process the data [str]
+    e_model: Emission model to use [str]: haploid/diploid_gt/readcount
+    p_model: Preprocessing model tu use [str]: EigenstratPacked/EigenstratUnpacked/MosaicHDF5
+    post_model: Model to post-process the data [str]: Standard/MMR (experimental)
     processes: How many Processes to use [int]
     delete: Whether to delete raw posterior per locus [bool]
     output: Whether to print extensive output [bool]
