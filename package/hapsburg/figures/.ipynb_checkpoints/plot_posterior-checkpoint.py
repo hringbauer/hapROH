@@ -145,9 +145,11 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
         ax2.set_yticks(np.array([1,0]) * 1.1 - 0.05)
         ax2.set_yticklabels([])
         ax1.set_yticklabels([])
-        ax2.set_ylabel(f"$\geq/\geq$ {m} Ref/Alt Reads", fontsize=fs*0.7, color=het_c)
-        
-    
+        if readcount:
+            ylabel = f"$\geq/\geq$ {m} Ref/Alt Reads"
+        else:
+            ylabel = f"Heterozygote (no/yes)"
+        ax2.set_ylabel(ylabel, fontsize=fs*0.7, color=het_c)
         
     if len(title)>0:
         plt.title(title, fontsize=fs)

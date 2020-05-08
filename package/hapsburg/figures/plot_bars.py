@@ -101,11 +101,13 @@ def plot_bar_ax(ax, y, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], 
     ax.set_ylabel(ylabel, fontsize=fs_y)
     ax.set_ylim(ylim)
     ax.set_xlim(x[0] - 0.7*barWidth, x[-1] + 0.7*barWidth)
+    
+    ### Do the xtricks
+    ax.set_xticks(x)
     if len(x_ticks)>0:
-        ax.set_xticks(x)
         ax.set_xticklabels(x_ticks, fontsize=fs_x, rotation=270)
     else:
-        ax.set_xticks([])
+        ax.set_xticklabels([])
     if not yticks:
         ax.set_yticklabels([])
         ax.set_ylabel("")
@@ -177,8 +179,7 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
             x_ticks0 = []
         plot_bar_ax(ax, obs_roh, bins_cM, yticks=ytick, legend=legend, r_title=r_title, c=c,
                     x_ticks = x_ticks0, title=df[title_col].values[0], ha_title=ha_title,
-                    ylim=ylim, hlines=hlines,
-                    fs_l=fs_l, fs_y = fs_y, fs_x=fs_x, fs_t=fs_t)
+                    ylim=ylim, hlines=hlines, fs_l=fs_l, fs_y = fs_y, fs_x=fs_x, fs_t=fs_t)
     
     ### Make the placeholder axis invisible
     ax_none = plt.subplot(gs[n_plots0])
@@ -213,9 +214,9 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
     
     
 def plot_legend_only(figsize=(7,6), wspace=0.05, hspace=0.01, savepath="",
-                     fs=12, fs_l=10, fs_x=10, c=["#313695", "#abd9e9", "#fee090", "#d7191c"],
+                     fs_l=10, fs_y = 10, fs_x=8, fs_t=10, c=["#313695", "#abd9e9", "#fee090", "#d7191c"],
                      bins = [[0.04, 0.08], [0.08, 0.12], [0.12, 0.2], [0.2,3.0]],
-                     degrees=[1, 2, 3], Ns=[400, 800, 1600, 3200, 6400]
+                     degrees=[1, 2, 3], Ns=[400, 800, 1600, 3200, 6400], ylim = [0,250],
                      ):
     """Plot Inbreeding from recent Cousins as well as small pop size.
     bins: list of length bins to plot [[a1,a2],...[z1,z2]]
@@ -236,12 +237,14 @@ def plot_legend_only(figsize=(7,6), wspace=0.05, hspace=0.01, savepath="",
     sum_roh = create_Ne_roh(Ns=Ns, bins = bins)
     
     plot_bar_ax(ax_cousin, c_roh*100, bins_cM, yticks=True, legend=False, 
-                fs=fs, fs_l=fs_l, fs_x=fs_x, c=c, ylabel="Expected Sum ROH>4cM [cM]",
+                fs_l=fs_l, fs_y = fs_y, fs_x = fs_x, fs_t = fs_t,
+                c=c, ylabel="Expected Sum ROH>4cM [cM]",
                 x_ticks = ["1st C.", "2nd C.", "3rd C."], title="Recent Loops")
 
     ticks_N = [f"2N={i}" for i in Ns]
     plot_bar_ax(ax_Ne, sum_roh*100, bins_cM, yticks=False, legend=True, c=c, 
-                fs=fs, fs_l=fs_l, fs_x=fs_x, x_ticks = ticks_N, 
+                fs_l=fs_l, fs_y = fs_y, fs_x = fs_x, fs_t = fs_t, 
+                x_ticks = ticks_N, ylim = ylim,
                 title="Small Pop. Size")
             
     if len(savepath)>0:
@@ -274,3 +277,17 @@ def prepare_dfs_plot(df, cms=[4,8,12], col_group="clst", split_modern=True,
     for df in plot_dfs:
         df.sort_values(by=cols[sortcol], inplace=True, ascending=False)
     return plot_dfs, cols
+
+def prep_dfs_plot_exact(df, pops=[], col_group = "pop", 
+                        mod_only=False, exact=True, cm_sort=4):
+    """Pull all matching populations and return list of dataframes"""
+    if mod_only:
+        df = df[df["age"]==0]
+    if exact:
+        df_plots = [df[df[col_group].values==p] for p in pops]
+    else:
+        df_plots = [df[df[col_group].str.contains(p)] for p in pops]
+    if cm_sort>0:
+        df_plots = [df.sort_values(by=f"sum_roh>{cm_sort}", ascending=False) for df in df_plots]
+    lgths = [len(df) for df in df_plots]
+    return df_plots, lgths
