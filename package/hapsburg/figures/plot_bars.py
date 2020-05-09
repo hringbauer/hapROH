@@ -71,8 +71,9 @@ def std_Ne_roh(Ns=[400, 800, 1600, 3200, 6400],
 def plot_bar_ax(ax, y, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], x_ticks = [], 
                 ec = "silver", fs_l=10, fs_y = 10, fs_x=8, fs_t=10,
                 barWidth=0.95, ylim = [0,220], stds = [], 
-                title="", ha_title="left",
-                yticks=False, legend=False, r_title=0, hlines=[], ylabel="Sum Inferred ROH>4cM [cM]"):
+                title="", ha_title="left", 
+                yticks=False, ylabel="Sum Inferred ROH>4cM [cM]",
+                legend=False, r_title=0, hlines=[]):
     """Plot bars of ROH on Axis.
     ax: Where to Plot on
     y: Array of ROH to plot: [n Inds, k Legnth Bins]
@@ -118,7 +119,7 @@ def plot_bar_ax(ax, y, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], 
 def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepath="", x_labels=True,
                    c=["#313695", "#abd9e9", "#fee090", "#d7191c"], ylim = [0,250], r_title = 90,
                    fs_l=10, fs_y = 10, fs_x=8, fs_t=10, ha_title="left", hspace_leg=1,
-                   leg_pos = -2, show=True, title_col="clst", hlines=[],
+                   leg_pos = -2, show=True, title_col="clst", titles=[], hlines=[],
                    cols = ['sum_roh>4', 'sum_roh>8', 'sum_roh>12', 'sum_roh>20'],
                    bins = [[0.04, 0.08], [0.08, 0.12], [0.12, 0.2], [0.2, 3.0]],
                    degrees=[1, 2, 3], Ns=[400, 800, 1600, 3200, 6400],
@@ -131,6 +132,8 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
     hspace_leg: Horizontol space between data plots and legend
     gs: Gridspec: If given plot on there
     legends: Whether to plot the two legends
+    titles: If given, list of titles
+    title_col: If not title use this column of the dataframe
     hlines: Where to plot horizontal lines
     cols: List of Column Names for plot_dfs (assumes > in increasing order)
     bins: list of length bins to plot [[a1,a2],...[z1,z2]]
@@ -170,15 +173,21 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
         obs_roh = df[cols].values
         
         ### Calculate the value in the Bins
-        for i in range(len(cols)-1):
-            obs_roh[:,i] = obs_roh[:,i] - obs_roh[:,i+1]
+        for j in range(len(cols)-1):
+            obs_roh[:,j] = obs_roh[:,j] - obs_roh[:,j+1]
         
         if x_labels:
             x_ticks0 = df["iid"].values
         else: 
             x_ticks0 = []
+        
+        if len(titles)>0:
+            title=titles[i]
+        else:
+            title=df[title_col].values[0]
+                  
         plot_bar_ax(ax, obs_roh, bins_cM, yticks=ytick, legend=legend, r_title=r_title, c=c,
-                    x_ticks = x_ticks0, title=df[title_col].values[0], ha_title=ha_title,
+                    x_ticks = x_ticks0, title=title, ha_title=ha_title,
                     ylim=ylim, hlines=hlines, fs_l=fs_l, fs_y = fs_y, fs_x=fs_x, fs_t=fs_t)
     
     ### Make the placeholder axis invisible
@@ -213,10 +222,12 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
     return
     
     
-def plot_legend_only(figsize=(7,6), wspace=0.05, hspace=0.01, savepath="",
+def plot_legend_only(figsize=(7,6), wspace=0.05, hspace=0.01, savepath="", hlines=[],
                      fs_l=10, fs_y = 10, fs_x=8, fs_t=10, c=["#313695", "#abd9e9", "#fee090", "#d7191c"],
-                     bins = [[0.04, 0.08], [0.08, 0.12], [0.12, 0.2], [0.2,3.0]],
+                     bins = [[0.04, 0.08], [0.08, 0.12], [0.12, 0.2], [0.2,3.0]], ha_title="center",
                      degrees=[1, 2, 3], Ns=[400, 800, 1600, 3200, 6400], ylim = [0,250],
+                     x_ticks_c = ["1st C.", "2nd C.", "3rd C."], title_c = "Recent Loops",
+                     title_N="Small Pop. Size", y_label="Expected Sum ROH>4cM [cM]"
                      ):
     """Plot Inbreeding from recent Cousins as well as small pop size.
     bins: list of length bins to plot [[a1,a2],...[z1,z2]]
@@ -231,21 +242,22 @@ def plot_legend_only(figsize=(7,6), wspace=0.05, hspace=0.01, savepath="",
     gs.update(wspace=wspace, hspace=hspace) # set the spacing between axes
 
     ### Calcualte Expectations Cousins:
-    c_roh = create_cousins_roh(degrees = degrees, bins = bins)
+    c_roh = create_cousins_roh(degrees = degrees, bins = bins) # in Morgan
     
     ### Calculate Expectations Ne:
-    sum_roh = create_Ne_roh(Ns=Ns, bins = bins)
+    sum_roh = create_Ne_roh(Ns=Ns, bins = bins) # in Morgan
     
     plot_bar_ax(ax_cousin, c_roh*100, bins_cM, yticks=True, legend=False, 
-                fs_l=fs_l, fs_y = fs_y, fs_x = fs_x, fs_t = fs_t,
-                c=c, ylabel="Expected Sum ROH>4cM [cM]",
-                x_ticks = ["1st C.", "2nd C.", "3rd C."], title="Recent Loops")
+                fs_l = fs_l, fs_y = fs_y, fs_x = fs_x, fs_t = fs_t, c = c,
+                ylim = ylim, ylabel = y_label, x_ticks = x_ticks_c,
+                hlines=hlines, title=title_c, ha_title=ha_title,
+                )
 
     ticks_N = [f"2N={i}" for i in Ns]
-    plot_bar_ax(ax_Ne, sum_roh*100, bins_cM, yticks=False, legend=True, c=c, 
-                fs_l=fs_l, fs_y = fs_y, fs_x = fs_x, fs_t = fs_t, 
+    plot_bar_ax(ax_Ne, sum_roh*100, bins_cM, yticks=False, legend=True, 
+                fs_l=fs_l, fs_y = fs_y, fs_x = fs_x, fs_t = fs_t, c = c, 
                 x_ticks = ticks_N, ylim = ylim,
-                title="Small Pop. Size")
+                hlines=hlines, title=title_N, ha_title=ha_title)
             
     if len(savepath)>0:
         plt.savefig(savepath, bbox_inches = 'tight', pad_inches = 0, dpi=300)
