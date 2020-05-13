@@ -109,7 +109,11 @@ class EigenstratLoad(object):
     def get_index_iid(self, iid):
         """Get Index of Individual iid"""
         # Detect the Individual
-        i = np.where(self.df_ind["iid"] == iid)[0][0]
+        found = np.where(self.df_ind["iid"] == iid)[0]
+        if len(found)==0:
+            raise RuntimeError(f"Individual {iid} not found!")
+        else: 
+            i = found[0]
         return i
 
     def extract_snps(self, id, markers, conversion=True, dtype=np.int8):

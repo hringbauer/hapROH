@@ -41,7 +41,6 @@ tar -xvf FILE.tar.gz
 ```
 
 You can then set the link to the folder in the HAPSBURG run parameters. 
-
 You can also download some example Eigenstrats:  
 https://www.dropbox.com/s/hjthy138c5t8elv/freilich20.tar.gz?dl=0
 
@@ -49,20 +48,19 @@ https://www.dropbox.com/s/hjthy138c5t8elv/freilich20.tar.gz?dl=0
 ### Example Use
 Please find an example notebook, walking through a typical usecase, at
 
-[FILL IN FOLDER OF EXAMPLE NOTEBOOK]
+./Notebooks/test_pypi_package.ipynb [TEMPORARY, FILL IN FINAL FOLDER OF EXAMPLE NOTEBOOK]
 
 
 ### c Extension
-The package is distributed via source. This means the c extension has to be built. Ideally, this is done automatically via the package cython, set CYTHON=True in setup.py.
+The package is distributed via source. This means the c extension has to be built. Ideally, this is done automatically via the package cython, set CYTHON=True in setup.py (is done by default).
 
 The heavy lifting is coded into a cfunction cfunc.c, that was built with cython from cfunc.pyx
 
-You can also set CYTHON=FALSE, then the extension is compied from cfunc.c directly.
+You can also set CYTHON=FALSE, then the extension is compiled from cfunc.c directly.
 
 
 ## Citation
-
-Please cite as
+If you want to cite this software:
 [TO BE ANNOUNCED]
 
 
