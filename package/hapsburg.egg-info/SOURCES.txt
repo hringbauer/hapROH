@@ -64,6 +64,7 @@ hapsburg/PackagesSupport/parallel_runs/.ipynb_checkpoints/helper_functions-check
 hapsburg/PackagesSupport/parallel_runs/__pycache__/__init__.cpython-37.pyc
 hapsburg/PackagesSupport/parallel_runs/__pycache__/helper_functions.cpython-36.pyc
 hapsburg/PackagesSupport/parallel_runs/__pycache__/helper_functions.cpython-37.pyc
+hapsburg/__pycache__/__init__.cpython-36.pyc
 hapsburg/__pycache__/__init__.cpython-37.pyc
 hapsburg/__pycache__/c_func.cpython-36.pyc
 hapsburg/__pycache__/cfunc.cpython-36.pyc
@@ -89,7 +90,9 @@ hapsburg/figures/.ipynb_checkpoints/plot_bars-checkpoint.py
 hapsburg/figures/.ipynb_checkpoints/plot_individual_roh-checkpoint.py
 hapsburg/figures/.ipynb_checkpoints/plot_posterior-checkpoint.py
 hapsburg/figures/.ipynb_checkpoints/plot_timelines-checkpoint.py
+hapsburg/figures/__pycache__/__init__.cpython-36.pyc
 hapsburg/figures/__pycache__/__init__.cpython-37.pyc
+hapsburg/figures/__pycache__/plot_bars.cpython-36.pyc
 hapsburg/figures/__pycache__/plot_bars.cpython-37.pyc
 hapsburg/figures/__pycache__/plot_individual_roh.cpython-37.pyc
 hapsburg/figures/__pycache__/plot_posterior.cpython-37.pyc

@@ -87,7 +87,7 @@ def chrom_length(ch, ch_lengths=[], output=False):
         return ch_lengths[ch-1]
 
 def load_individual_roh(iid, min_cm=4, gap=0.0, snp_cm=50, path_folder = "./Empirical/1240k/", 
-                        prefix_out = "e01/", folder="./Empirical/1240k/", output=False):
+                        prefix_out = "", folder="./Empirical/1240k/", output=False):
     """Load ROH of one Individual"""
     df_rohs = []
     for i in range(1,23):
@@ -134,10 +134,11 @@ def plot_chromosome(ax, l, x_pos, lw=24, df_roh = [], df_low = []):
         
             
 def plot_roh_individual(iid="MA89", fs=12, figsize=(8,8), savepath="", min_cm=4, snp_cm=50, gap=0.0,
-                        folder="./Empirical/1240k/MarcusAncs/", prefix_out="e01/", plot_bad=True,
+                        folder="./Empirical/1240k/MarcusAncs/", prefix_out="", plot_bad=True,
                         title=True, output=False):
     """Plot ROH in one ancient Individual.
-    gap: What Gap to Merge [in cM!]"""
+    gap: What Gap to Merge [in cM!]
+    prefix_out: If there is a folder before indivual data, e.g. e01/"""
     
     ### Load the Data (could be done seperately)
     df_rohs = load_individual_roh(iid, min_cm=min_cm, snp_cm=snp_cm, gap=gap,

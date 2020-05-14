@@ -24,7 +24,7 @@ with open("README.md", "r") as fh:
     
 setup(
     name="hapsburg",
-    version="0.1a5",  # a means alpha
+    version="0.1a6",  # a means alpha
     author="Harald Ringbauer",
     author_email="harald_ringbauer@hms.harvard.edu",
     description="Calling long ROH in 1240k ancient DNA data using modern reference panel",

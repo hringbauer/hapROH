@@ -17,5 +17,5 @@ Python3/cfunc.cpython-37m-x86_64-linux-gnu.so
 cluster_runs/ES_callROH/logs/
 cluster_runs/HO_callROH/logs/
 cluster_runs/Marcus_callROH/logs/
-
+package/dist/
 nb-log*

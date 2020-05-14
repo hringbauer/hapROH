@@ -569,10 +569,10 @@ def load_preprocessing(p_model="SardHDF5", save=True, output=True):
         p_obj = PreProcessingFolder(save=save, output=output)
     elif p_model == "EigenstratPacked":
         p_obj = PreProcessingEigenstrat(save=save, output=output,
-                                        packed=True)
+                                        packed=True, r"\s+")
     elif p_model == "EigenstratUnpacked":
         p_obj = PreProcessingEigenstrat(save=save, output=output,
-                                        packed=False, sep=r"\t")
+                                        packed=False, sep=r"\s+")
     else:
         raise NotImplementedError(f"Preprocessing Model string {p_model} not found.")
 
