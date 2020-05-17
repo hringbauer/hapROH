@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --time=20:00:00
-#SBATCH --partition=jnovembre  #broadwl
+#SBATCH --partition=broadwl #jnovembre  #broadwl
 #SBATCH --account=pi-jnovembre
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=20
