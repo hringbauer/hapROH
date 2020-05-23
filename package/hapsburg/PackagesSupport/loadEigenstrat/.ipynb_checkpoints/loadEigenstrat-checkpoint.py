@@ -57,6 +57,16 @@ class EigenstratLoad(object):
                              sep=r"\s+", engine="python")
         df_ind.columns = ["iid", "sex", "cls"]  # Set the Columns
         return df_ind
+    
+    def get_geno_all(self, missing_val=3):
+        """Load all genotypes from Eigenstrat File.
+        Use self.nind for number of individuals.
+        Return genotype matrix, with missing values set to missing_val"""
+        geno = self.give_bit_file()  # Load the whole bit file
+        gt = np.unpackbits(geno, axis=1)[:,:2*self.nind]
+        gt = 2 * gt[:, 0::2] + gt[:, 1::2]
+        gt[gt == 3] = missing_val  # set missing values
+        return gt
 
     def get_geno_i(self, i, missing_val=3):
         """Load Individual i"""

@@ -116,8 +116,8 @@ def plot_bar_ax(ax, y, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], 
         ax.set_title(title, fontsize=fs_t, rotation=r_title, horizontalalignment=ha_title)
         
         
-def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepath="", x_labels=True,
-                   c=["#313695", "#abd9e9", "#fee090", "#d7191c"], ylim = [0,250], r_title = 90,
+def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepath="", 
+                   x_labels=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], ylim = [0,250], r_title = 90,
                    fs_l=10, fs_y = 10, fs_x=8, fs_t=10, ha_title="left", hspace_leg=1,
                    leg_pos = -2, show=True, title_col="clst", titles=[], hlines=[],
                    cols = ['sum_roh>4', 'sum_roh>8', 'sum_roh>12', 'sum_roh>20'],
@@ -139,7 +139,8 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
     bins: list of length bins to plot [[a1,a2],...[z1,z2]]
     Ns: What population sizes to plot in barplot [list]
     degrees: What degrees of Cousins to plot. [list]
-    ticks_c: Tick Labels for Cousin Legend [list]"""
+    ticks_c: Tick Labels for Cousin Legend [list]
+    x_labels: If FALSE, don't plot any xlabels, if empty list default [list]"""
     bins_cM=(np.array(bins)*100).astype("int")
     n_plots0 = len(plot_dfs) # The original plots
     n_plots = len(plot_dfs) + 1 # Add 1 for the empty plot
@@ -176,10 +177,13 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
         for j in range(len(cols)-1):
             obs_roh[:,j] = obs_roh[:,j] - obs_roh[:,j+1]
         
-        if x_labels:
-            x_ticks0 = df["iid"].values
-        else: 
+        if x_labels == False:
             x_ticks0 = []
+        else:
+            if len(x_labels)>0:
+                x_ticks0 = x_labels[i]
+            else:
+                x_ticks0 = df["iid"].values
         
         if len(titles)>0:
             title=titles[i]
