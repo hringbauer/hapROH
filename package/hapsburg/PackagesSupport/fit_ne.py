@@ -43,15 +43,19 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
     summary = 0  # Full summary of the last fitted results is saved here
     output = True
     
-    def __init__(self, endog=[], exog=[], start_params=[1000,], 
+    def __init__(self, endog=[], exog=[], start_params=[1000,],
+                 min_len=4, max_len = 20.0,
                  error_model=False, output=False, **kwds):
-        '''endog: List of individual ROH lists
+        '''endog: List of n individual ROH lists [roh_list1, ..., roh_listn]
         output: Whether to plot detailled output strings
+        start_params: Where to start the fit
+        min_len, max_len: Bin edges of ROH to fit.
         '''
         if len(exog)==0:
             exog = np.zeros(len(endog), dtype="int8") # Just empty placeholder
         self.initialize_ll_model(endog=endog, exog=exog, **kwds)
-        self.set_params(start_params=start_params, error_model=error_model, output=output)
+        self.set_params(start_params=start_params, error_model=error_model, output=output,
+                        min_len=min_len, max_len=max_len)
         
         self.create_bins()  # Create the Mid Bin vector
 
