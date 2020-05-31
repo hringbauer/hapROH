@@ -53,7 +53,8 @@ def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100,
 def combine_ROH_df(df_rohs, iids=[], pops=[], min_cm=[4,8,12], snp_cm=100, 
                    gap=0.5, min_len1=2, min_len2=4, output=True, sort=True):
     """Takes list of ROH Dataframes, and creates a single
-    summary dataframe. Being wrapped around by create_combined_ROH_df
+    summary dataframe. Return single dataframe.
+    Being wrapped around by create_combined_ROH_df
     which does the path and loading.
     df_rohs: List of individual dataframes
     iids: IIds of the Individuals (filled in columns)
@@ -203,8 +204,6 @@ def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", 
     
     return df1
 
-
-
 ##########################################################
 ### Postprocess Dataframes based on Geography and Keywords
 
@@ -246,6 +245,23 @@ def extract_sub_df_geo_kw(df, lat0, lat1, lon0, lon1, keywords=[], output=True):
     if output:
         print(f"Found {len(df_m)} Individuals; {len(df1)} from Geography")
     return df_m
+
+
+#################################################################
+##### More utility functions
+
+def calc_average_roh(df, cms=[4,8,12,20], 
+                     col_pop="pop", new_pop="Average"):
+    """Calcualte the average ROH in df.
+    in columns cmss [list]
+    Return new dataframe"""
+    cs = [4,8,12,20]
+    labels = [f"sum_roh>{c}" for c in cs]
+
+    df_new = pd.DataFrame({"iid": ["Average"], col_pop:[new_pop]})
+    for l in labels:
+        df_new[l] = np.mean(df[l])
+    return df_new
 
 
 
