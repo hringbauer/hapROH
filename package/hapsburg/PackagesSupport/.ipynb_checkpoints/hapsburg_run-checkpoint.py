@@ -6,11 +6,8 @@ Function for running on single chromsome, with all relevant keywords.
 """
 
 import numpy as np
-import os as os
-import sys as sys
 import multiprocessing as mp
 import pandas as pd
-import socket
 
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
 from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data

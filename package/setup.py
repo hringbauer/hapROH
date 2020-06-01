@@ -5,7 +5,6 @@ from Cython.Distutils import build_ext
 ###
 # I distribute the source only,
 # to avoid trouble with platform
-# specific wheels. Pls build yourself!
 
 ### MODIFY IF YOU WANT TO USE CYTHON FOR BUILDING!
 USE_CYTHON = True   
@@ -23,16 +22,15 @@ with open("README.md", "r") as fh:
 
     
 setup(
-    name="hapsburg",
-    version="0.1a6",  # a means alpha
+    name="hapROH",
+    version="0.1a2",  # a means alpha
     author="Harald Ringbauer",
     author_email="harald_ringbauer@hms.harvard.edu",
-    description="Calling long ROH in 1240k ancient DNA data using modern reference panel",
+    description="Calling ROH in low coverage ancient DNA data (1240k SNPs) using modern reference panel",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/hringbauer/HAPSBURG",
+    url="https://github.com/hringbauer/hapROH",
     packages=find_packages(),
-    #cmdclass=cmdclass,
     ext_modules=extensions,
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -40,4 +38,6 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
+    install_requires=['numpy', 'pandas', 'scipy', 'multiprocessing', 
+                      'os', 'h5py'],
 )

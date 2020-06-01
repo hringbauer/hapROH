@@ -166,7 +166,8 @@ def individual_roh_statistic(df, output=True):
 #########################################################
 #### Main Function to post-process Individual ROH outputs
 
-def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", base_folder="./Empirical/Eigenstrat/Reichall/", 
+def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", 
+                      base_folder="./Empirical/Eigenstrat/Reichall/", 
                       suffix='_roh_full.csv', save_path="", min_cm=[4,8,12], snp_cm=50, 
                       gap=0.5, min_len1=2.0, min_len2=4.0,
                       output=True, meta_info=True):

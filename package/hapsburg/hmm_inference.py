@@ -6,8 +6,8 @@ Main Inference Class for HMM. Wrapper for Inerence of Posterior.
 import numpy as np
 import matplotlib.pyplot as plt
 import os                     # For Saving to Folder
-import psutil                 # For Memory Profiling
-import cProfile               # For Profiling
+#import psutil                 # For Memory Profiling
+#import cProfile               # For Profiling
 # from func import fwd_bkwd    # Import the Python Function
 from hapsburg.cfunc import viterbi_path, fwd_bkwd_fast, fwd_bkwd_lowmem  # Cython Functions
 from hapsburg.func import fwd_bkwd_p, viterbi_path_p, sloppyROH_cumsum  # Python Functions
@@ -272,7 +272,7 @@ class HMM_Analyze(object):
         #assert(np.min(e_mat) > 0)  # For LOG calculation (Assume Error Model)
         #e_mat = np.log(e_mat)
 
-        print_memory_usage()  # For MEMORY_BENCH
+        #print_memory_usage()  # For MEMORY_BENCH
 
         # Precompute the 3x3 Transition Matrix
         t_mat_full = self.pre_compute_transition_matrix(

@@ -7,12 +7,11 @@ factory method to load classes.
 @ Author: Harald Ringbauer, 2019, All rights reserved
 """
 
-import allel  # Scikit Allel
+#import allel  # Scikit Allel
 import h5py   # For Processing HDF5s
 import numpy as np
 import pandas as pd
 import os   # For creating folders
-import sys
 
 
 #Assume hapsburg directory is in root
