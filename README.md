@@ -1,6 +1,6 @@
-# HAPSBURG
-Software to call ROHs
-Author: Harald Ringbauer, 2019
+# hapROH
+Software to call ROH from ancient and present-day DNA using reference haplotypes.
+Author: Harald Ringbauer, 2020
 @all rights reserved
 
 python code/notebooks are all in python3
