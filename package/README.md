@@ -1,9 +1,17 @@
 # hapROH
 Software to call ROHs in ancient and present-day DNA, using a haplotype reference panel.
-Author: Harald Ringbauer, 2020
+Author: Harald Ringbauer 2020
 
 This package contains functions and wrappers to call ROH for ancient DNA data (for data on 1240k SNPs) and functions to visualize the results.
-It needs a haplotype reference panel, 
+It needs a haplotype reference panel.
+
+For historical reasons and for compatibility, the package uses `hapsburg` as module name, after installation you can import functions via
+`from hapsburg.XX import YY`
+This will be updated in a follow-up release.
+
+A vignette jupyter notebook walking through examples for how to use the core ROH calling function, and functions for plotting various aspects of ROH can be found at:
+https://www.dropbox.com/sh/eq4drs62tu6wuob/AABM41qAErmI2S3iypAV-j2da?dl=0
+
 
 ### Installation
 Youc can install the package using the Package manager pip:
@@ -32,7 +40,8 @@ harald_ringbauer AT hms harvard edu
 
 ### Get reference Data
 Hapsburg currently uses global 1000 Genome haplotypes (n=5008), filtered down to bi-allelic 1240k SNPs, including a genetic map. 
-We use .hdf5 format for the final output
+We use .hdf5 format for the reference panel.
+
 You can download the prepared reference data (including a necessary metadata .csv) from:  
 https://www.dropbox.com/s/0qhjgo1npeih0bw/1000g1240khdf5.tar.gz?dl=0
 
@@ -42,18 +51,18 @@ and unpack into a directory of your choise using
 tar -xvf FILE.tar.gz
 ```
 
-You can then set the link to the folder in the hapROH run parameters. 
-You can also download some example Eigenstrats:  
-[WILL BE FILLED IN]
+You then have to link the paths in the hapROH run parameters (see vignette)
 
 
 ### Example Use
-Please find an example notebook, walking through a typical usecase, at
+Please find example notebooks, walking through a typical application to an eigenstrat file at
+https://www.dropbox.com/sh/eq4drs62tu6wuob/AABM41qAErmI2S3iypAV-j2da?dl=0
 
-./Notebooks/test_pypi_package.ipynb [TEMPORARY, WILL BE FILLED IN]
+All you need is a packed or unpacked Eigenstrat file, and the reference data, and you are good to go to run your own ROH calling!
 
-### Package Requirements
-The basic requirements for calling ROH are rather minimal. There are extra Python packages that you need to install (e.g. via `pip`) if you want to use the plotting functionality, you should have `matplotlib` installed. For plotting of maps, you will need `basemap` (warning: installing can be tricky on some systems). If you want to use the effective population size fitting functionality from ROH output, you will need to have `statsmodels` installed.
+
+### Dependencies
+The basic requirements for calling ROH are minimal. There are extra Python packages that you need to install (e.g. via `pip`) if you want to use the plotting functionality, you should have `matplotlib` installed. For plotting of maps, you will need `basemap` (warning: installing can be tricky on some architectures). If you want to use the effective population size fitting functionality from ROH output, you will need to have `statsmodels` installed.
 
 
 ### c Extension
@@ -65,8 +74,8 @@ You can also set CYTHON=FALSE, then the extension is compiled from cfunc.c direc
 
 
 ## Citation
-If you want to cite this software:
-[TO BE ANNOUNCED]
+If you use the software and want to cite it, you can use:
+https://www.biorxiv.org/content/10.1101/2020.05.31.126912v1
 
 
 

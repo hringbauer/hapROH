@@ -10,6 +10,7 @@ upload_instructions.md
 hapROH.egg-info/PKG-INFO
 hapROH.egg-info/SOURCES.txt
 hapROH.egg-info/dependency_links.txt
+hapROH.egg-info/requires.txt
 hapROH.egg-info/top_level.txt
 hapsburg/__init__.py
 hapsburg/cfunc.c
@@ -22,7 +23,6 @@ hapsburg/func.py
 hapsburg/hmm_inference.py
 hapsburg/postprocessing.py
 hapsburg/preprocessing.py
-hapsburg/simData.py
 hapsburg/transitions.py
 hapsburg.egg-info/PKG-INFO
 hapsburg.egg-info/SOURCES.txt
@@ -39,11 +39,13 @@ hapsburg/PackagesSupport/fit_ne.py
 hapsburg/PackagesSupport/hapsburg_run.py
 hapsburg/PackagesSupport/pp_individual_roh_csvs.py
 hapsburg/PackagesSupport/roh_expectations.py
+hapsburg/PackagesSupport/simData.py
 hapsburg/PackagesSupport/sqrt_scale.py
 hapsburg/PackagesSupport/.ipynb_checkpoints/fit_ne-checkpoint.py
 hapsburg/PackagesSupport/.ipynb_checkpoints/hapsburg_run-checkpoint.py
 hapsburg/PackagesSupport/.ipynb_checkpoints/pp_individual_roh_csvs-checkpoint.py
 hapsburg/PackagesSupport/.ipynb_checkpoints/roh_expectations-checkpoint.py
+hapsburg/PackagesSupport/.ipynb_checkpoints/simData-checkpoint.py
 hapsburg/PackagesSupport/.ipynb_checkpoints/sqrt_scale-checkpoint.py
 hapsburg/PackagesSupport/__pycache__/__init__.cpython-36.pyc
 hapsburg/PackagesSupport/__pycache__/__init__.cpython-37.pyc
