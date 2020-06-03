@@ -10,8 +10,9 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from matplotlib import gridspec
 
-def plot_power(bl_lens, df_call_vec1, powers, df_fp=[], fs = 12, fs_l=12, 
+def plot_power(bl_lens, df_call_vec1, powers, df_fp=[], 
                xlim=(0,12.5), figsize=(10,6), n=100, ylim_pow=[0.5, 1.05],
+               leg_loc="upper right", fs_l=12, fs = 12, fs_t=10, hspace=0.04,
                lw_power=1.2, color_fp="red", ec="silver", pw_yticks=[0.5,0.75,1.0], s=100,
                alpha=0.8, savepath="", title=""):
     """ bl_lens: Array of Block Lengths
@@ -33,14 +34,14 @@ def plot_power(bl_lens, df_call_vec1, powers, df_fp=[], fs = 12, fs_l=12,
     plt.figure(figsize=figsize)
 
     gs = gridspec.GridSpec(2, 1, height_ratios=[1, 4])
-    gs.update(hspace=0.04) # set the spacing between axes. 
+    gs.update(hspace=hspace) # set the spacing between axes. 
 
     ax = plt.subplot(gs[1]) # The lower subplot
     ax1 = plt.subplot(gs[0]) # The upper subplot
     
     ### Set Font Sizes
-    ax.tick_params(axis='both', labelsize=fs)
-    ax1.tick_params(axis='both', labelsize=fs)
+    ax.tick_params(axis='both', labelsize=fs_t)
+    ax1.tick_params(axis='both', labelsize=fs_t)
 
     # Plot All Histograms        
     for i in range(len(bl_lens)):
@@ -56,9 +57,10 @@ def plot_power(bl_lens, df_call_vec1, powers, df_fp=[], fs = 12, fs_l=12,
     ax.set_xlim(xlim)
     ax.set_xlabel("Inferred ROH Length [cM]", fontsize = fs)
     ax.set_ylabel("# Inferred \nROH blocks", fontsize = fs)
-    legend = ax.legend(loc = "upper right", fontsize = fs_l, title="Simulated ROH")
-    legend.get_title().set_fontsize(fs_l)
-    
+    if len(leg_loc)>0:
+        legend = ax.legend(loc = leg_loc, fontsize = fs_l, title="Simulated ROH")
+        legend.get_title().set_fontsize(fs_l)
+
     ### Plot the upper panel
     ax1.set_ylabel("Called at \n80% overlap", fontsize = fs)
     ax1.set_xticks([])
