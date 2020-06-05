@@ -13,7 +13,8 @@ from matplotlib import gridspec
 def plot_power(bl_lens, df_call_vec1, powers, df_fp=[], 
                xlim=(0,12.5), figsize=(10,6), n=100, ylim_pow=[0.5, 1.05],
                leg_loc="upper right", fs_l=12, fs = 12, fs_t=10, hspace=0.04,
-               lw_power=1.2, color_fp="red", ec="silver", pw_yticks=[0.5,0.75,1.0], s=100,
+               lw_power=1.2, color_fp="red", ec="silver", cmap="viridis_r",
+               pw_yticks=[0.5,0.75,1.0], s=100,
                alpha=0.8, savepath="", title=""):
     """ bl_lens: Array of Block Lengths
         df_call_vec1: Array of Called Blocks
@@ -27,7 +28,7 @@ def plot_power(bl_lens, df_call_vec1, powers, df_fp=[],
     bins = np.linspace(0, 15, 75)  # Bins of 0.1 cM
     
     ### Set Colors
-    cmap = cm.get_cmap("viridis_r")
+    cmap = cm.get_cmap(cmap)
     colors = [cmap(x) for x in np.linspace(0,1, len(bl_lens))]
     
     ####### Do the actual Plot

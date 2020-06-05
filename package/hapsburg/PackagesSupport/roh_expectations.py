@@ -3,7 +3,7 @@ import numpy as np
 
 class Expected_Roh():
     """Class that calculates expected ROH"""
-    # Length of all Chromosomes
+    #### Length of all Chromosomes (between first and last 1240k SNP)
     chr_lgts = [2.8426, 2.688187, 2.232549, 2.14201, 2.040477, 1.917145, 1.871491, 1.680018, 
                 1.661367, 1.8090949, 1.5821669, 1.745901, 1.2551429, 1.1859521, 1.413411, 
                 1.340264, 1.2849959, 1.175495, 1.0772971, 1.082123, 0.636394, 0.724438]
