@@ -48,30 +48,6 @@ def post_process_roh_df1(df, min_cm=4, snp_cm=100, output=False):
     df = df[length_okay]
     return df
 
-#########################
-### TODO Jan2020: Eventually merge with theoretical prediction code
-### Working fix is copy here!!
-
-### The original chrom_length function
-
-#def load_h5(path, output=True):
-#        """Load and return the HDF5 File from Path"""
-#        f = h5py.File(path, "r")  # Load for Sanity Check. See below!
-#        if output == True:
-#            print("\nLoaded %i variants" % np.shape(f["calldata/GT"])[0])
-#            print("Loaded %i individuals" % np.shape(f["calldata/GT"])[1])
-#            # print(list(f["calldata"].keys()))
-#            # print(list(f["variants"].keys()))
-#            print(f"HDF5 loaded from {path}")
-#        return f
-    
-#def chrom_length1(ch, output=False):
-#    """Get and retrun length of Chromosome"""
-#    path1000G = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr" + str(ch) + ".hdf5"  # Path of 1000G (without chromosome part)
-#    f = load_h5(path1000G, output=output)
-#    rec = np.array(f["variants/MAP"])
-#    l = np.max(rec)
-#    return rec, l
 
 def chrom_length(ch, ch_lengths=[], output=False):
     """Get and return length of Chromosome ch
@@ -239,10 +215,18 @@ def exp_blocks_full_individual(x, m, comm_anc=1):
     return exp_blocks
 
 
-def plot_pde_indivdiual(iid="MA89", min_cm=4, snp_cm=50, bw_cm=4, kde_plot=False, plotlim=[4,100], savepath="", 
-                        folder="./Empirical/1240k/", prefix_out="e01/", output=False, gap=0.0):
+def plot_pde_indivdiual(iid="MA89", figsize=(8,6),
+                        min_cm=4, snp_cm=50, bw_cm=4, kde_plot=False, 
+                        plotlim=[4,100], savepath="", 
+                        folder="./Empirical/1240k/", prefix_out="e01/", output=False, gap=0.0, lw_curve=3,
+                        comm_ancs=[4,4,4,2], ms=[6,5,4,3], labels=["First Cousins", "Aunt/Nephew", "Full Siblings", "Parent/Offpsring"],
+                        cs=["red", "green", "orange", "gray"], title="", leg_loc="upper right"):
     """Plot Histograms/PDEs of ROH Distribution for one Individual
-    bw_cm: Length of one Bin (in cM)"""
+    bw_cm: Length of one Bin (in cM)
+    comm_ancs: How many common ancestors to plot [list]
+    ms: How many meiosis to plot [list]
+    labels: what labels do they have [list]
+    cs: what colors to plot [list]"""
     #########################
     ### Load And Prepare Data
     df_rohs = load_individual_roh(iid=iid, min_cm=min_cm, snp_cm=snp_cm, 
@@ -251,37 +235,38 @@ def plot_pde_indivdiual(iid="MA89", min_cm=4, snp_cm=50, bw_cm=4, kde_plot=False
 
     bins = np.arange(plotlim[0], plotlim[1], bw_cm)
     bin_mean = (bins[1:] + bins[:-1]) / 2.0  # Mean of each bin
-
-    block_pdf1 = exp_blocks_full_individual(bin_mean/100, m=6, comm_anc=4)
-    block_pdf2 = exp_blocks_full_individual(bin_mean/100, m=6, comm_anc=8)
-    block_pdf3 = exp_blocks_full_individual(bin_mean/100, m=5, comm_anc=4)
-
-    ### Do the Gaussian KDE:
-    kde = gaussian_kde(df_roh["lengthM"]*100) # KDE per cM
-    #kde = gaussian_kde()
+    
     #######################
     ### Do the Actual Plot
     fs = 16
 
-    plt.figure(figsize=(8,6))
+    plt.figure(figsize=figsize)
     plt.hist(df_roh["lengthM"]*100, bins=bins, ec="k", fc="dodgerblue", label="Observed ROH")
-
-    plt.plot(bin_mean, bw_cm * block_pdf2/100, c="red", label="Double First Cousin", lw=3) # Plot Density Per cM (adjusted for bin width)
-    plt.plot(bin_mean, bw_cm * block_pdf3/100, c="green", label="Nephew / Full Aunt", lw=3) # Plot Density Per cM (adjusted for bin width)
-    plt.plot(bin_mean, bw_cm * block_pdf1/100, c="orange", label="First Cousins", lw=3) # Plot Density Per cM (adjusted for bin width)
     
+    # Plot the Empirical Averages
+    for i in range(len(labels)):
+        block_pdf = exp_blocks_full_individual(bin_mean/100, m=ms[i], comm_anc=comm_ancs[i])
+        plt.plot(bin_mean, bw_cm * block_pdf/100, c=cs[i], label=labels[i], lw=lw_curve) # Plot Density Per cM (adjusted for bin width)
+    #block_pdf2 = exp_blocks_full_individual(bin_mean/100, m=6, comm_anc=8)
+    #block_pdf3 = exp_blocks_full_individual(bin_mean/100, m=5, comm_anc=4)
+    #plt.plot(bin_mean, bw_cm * block_pdf2/100, c="red", label="Double First Cousin", lw=3) # Plot Density Per cM (adjusted for bin width)
+    #plt.plot(bin_mean, bw_cm * block_pdf3/100, c="green", label="Nephew / Full Aunt", lw=3) # Plot Density Per cM (adjusted for bin width)
+    #plt.plot(bin_mean, bw_cm * block_pdf1/100, c="orange", label="First Cousins", lw=3) # Plot Density Per cM (adjusted for bin width)
+    
+    ### DO KDE Plot
     if kde_plot==True:
-        plt.plot(bin_mean, bw_cm * kde(bin_mean) * len(df_roh), "k--", label="KDE of observed ROH", lw=2)
+        kde = gaussian_kde(df_roh["lengthM"]*100) # KDE per cM
+        plt.plot(bin_mean, bw_cm * kde(bin_mean) * len(df_roh), "k--", label="KDE of observed ROH", lw=lw_curve)
 
     plt.xlabel("ROH Length [cm]", fontsize=fs)
     plt.ylabel(f"Number per {bw_cm} cM Bin", fontsize=fs)
-    plt.title(f"Individual: {iid}", fontsize=fs)
-    leg = plt.legend(loc = "upper right", fontsize=fs)
+    plt.title(title, fontsize=fs)
+    leg = plt.legend(loc = leg_loc, fontsize=fs)
     leg.set_title("Parents being...", prop = {'size':fs})
     
     plt.tick_params(axis='both', which='major', labelsize=fs)
     
     if len(savepath)>0:
-        plt.savefig(savepath, bbox_inches = 'tight', pad_inches = 0, dpi=200)
+        plt.savefig(savepath, bbox_inches = 'tight', pad_inches = 0, dpi=300)
         print(f"Saved to {savepath}")
     plt.show()
