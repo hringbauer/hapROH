@@ -69,7 +69,7 @@ def std_Ne_roh(Ns=[400, 800, 1600, 3200, 6400],
 ######################################################################################
 
 def plot_bar_ax(ax, y, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], x_ticks = [], 
-                ec = "silver", fs_l=10, fs_y = 10, fs_x=8, fs_t=10,
+                ec = "silver", fs_l=10, fs_y = 10, fs_x=8, fs_t=10, alpha=1.0,
                 barWidth=0.95, ylim = [0,220], stds = [], 
                 title="", ha_title="left", 
                 yticks=False, ylabel="Sum Inferred ROH>4cM [cM]",
@@ -89,7 +89,7 @@ def plot_bar_ax(ax, y, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], 
     for i in range(len(y[0,:])): # From last to first (For Legend)
         b = np.sum(y[:,:i], axis=1)
         ax.bar(x, y[:,i], bottom=b, color=c[i], edgecolor=ec, width=barWidth, 
-                   label=f"{bins[i,0]}-{bins[i,1]} cM", alpha=0.9)
+                   label=f"{bins[i,0]}-{bins[i,1]} cM", alpha=alpha, zorder=4)
         if len(stds)>0 and i>0: # Plot some standard deviations.
             ax1.errorbar(r, b, yerr=stds[:,i], fmt='none', linewidth=2, color="k")
     
@@ -115,6 +115,26 @@ def plot_bar_ax(ax, y, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], 
     if len(title)>0:
         ax.set_title(title, fontsize=fs_t, rotation=r_title, horizontalalignment=ha_title)
         
+def plot_close_kin(ax, y, y_plot=100,cutoffs=[50,100], c="r", ec="k", lw=1,
+                   ss=[10,14], m_cs=["v", "s"], bin_idx=-1):
+    """Plot Symbols for close kin at height y_symbol
+    ss: Sizes of markers [List]
+    m_cs: marker_colors [List]
+    cutoffs: cutoffs [List]
+    """
+    if len(y)==0:  # Move out if nothing to plot
+        return
+    x = np.arange(len(y))
+    y0 = y[:,bin_idx]
+    
+    cutoffs_t = cutoffs + [4000]
+    
+    for i in range(len(cutoffs)):
+        idx = (y0>cutoffs_t[i]) & (y0<cutoffs_t[i+1])
+        if np.sum(idx)==0:
+            continue
+        ax.scatter(x[idx], [y_plot]*np.sum(idx), c=c, ec=ec, lw=lw, 
+                   marker=m_cs[i], s=ss[i], zorder=5)
         
 def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepath="", 
                    x_labels=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], ylim = [0,250], r_title = 90,
@@ -123,7 +143,9 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
                    cols = ['sum_roh>4', 'sum_roh>8', 'sum_roh>12', 'sum_roh>20'],
                    bins = [[0.04, 0.08], [0.08, 0.12], [0.12, 0.2], [0.2, 3.0]],
                    degrees=[1, 2, 3], Ns=[400, 800, 1600, 3200, 6400],
-                   ticks_c=["1st C.", "2nd C.", "3rd C."]):
+                   ticks_c=["1st C.", "2nd C.", "3rd C."],
+                   cutoffs=[], ec="k", lw=1, ss=[40, 50], 
+                   m_cs=["v", "s"], sym_ofst=-10, bin_idx=-1):
     """Plot row of ROH bin plots from plot_dfs (each df one panel)
     leg_pos = Where to plot legend (if outside range no legend plot)
     r_title: How much to rotate the title
@@ -193,6 +215,12 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
         plot_bar_ax(ax, obs_roh, bins_cM, yticks=ytick, legend=legend, r_title=r_title, c=c,
                     x_ticks = x_ticks0, title=title, ha_title=ha_title,
                     ylim=ylim, hlines=hlines, fs_l=fs_l, fs_y = fs_y, fs_x=fs_x, fs_t=fs_t)
+        
+        if len(cutoffs)>0:
+            c_marker = np.array(c)[bin_idx]
+            plot_close_kin(ax, obs_roh, y_plot=ylim[1]+sym_ofst, cutoffs=cutoffs, 
+                           c=c_marker, ec=ec, lw=lw,
+                           ss=ss, m_cs=m_cs, bin_idx=bin_idx)
     
     ### Make the placeholder axis invisible
     ax_none = plt.subplot(gs[n_plots0])
@@ -281,7 +309,8 @@ def prepare_dfs_plot(df, cms=[4,8,12], col_group="clst", split_modern=True,
     
     if split_modern:
         mod_idx = df["age"]==0  # Pull out modern idx
-        df.loc[mod_idx, col_group]=df.loc[mod_idx, mod_group]
+        if np.sum(mod_idx)>0:
+            df.loc[mod_idx, col_group]=df.loc[mod_idx, mod_group]
         
     plot_dfs = [dft for _, dft in df.groupby(col_group)]
     ### Sort by age

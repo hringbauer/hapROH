@@ -44,7 +44,8 @@ def plot_scatter_by_color(ax, age, roh, colors, labels, s, lw=1.0, ec="k",
             ax.scatter(age[idx], roh[idx], c=c, ec=ec, s=s, 
                    label=labels[idx][0], lw=lw, zorder=zorder)
         else:   # If default coor don't plot label
-            ax.scatter(age[idx], roh[idx], c=c, ec=ec, s=s, zorder=zorder, lw=lw)
+            ax.scatter(age[idx], roh[idx], c=c, ec=ec, 
+                       s=s, zorder=zorder, lw=lw)
             
 def plot_violin_ax(df, x=0, ax=0, figsize=(6,6), cm=4, cm1=0, widths=50, ec="k", c="yellow", 
                    alpha=0.5, zorder=0, col_median="red", lw=0.4):
