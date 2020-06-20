@@ -110,8 +110,8 @@ def plot_bar_ax(ax, y, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], 
     else:
         ax.set_xticklabels([])
     if not yticks:
-        ax.set_yticklabels([])
-        ax.set_ylabel("")
+        ax.axes.yaxis.set_ticks([])
+        #ax.set_yticklabels([])
     if len(title)>0:
         ax.set_title(title, fontsize=fs_t, rotation=r_title, horizontalalignment=ha_title)
         
@@ -141,6 +141,7 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
                    fs_l=10, fs_y = 10, fs_x=8, fs_t=10, ha_title="left", hspace_leg=1,
                    leg_pos = -2, show=True, title_col="clst", titles=[], hlines=[],
                    cols = ['sum_roh>4', 'sum_roh>8', 'sum_roh>12', 'sum_roh>20'],
+                   ylabel="Sum Inferred ROH>4cM [cM]",
                    bins = [[0.04, 0.08], [0.08, 0.12], [0.12, 0.2], [0.2, 3.0]],
                    degrees=[1, 2, 3], Ns=[400, 800, 1600, 3200, 6400],
                    ticks_c=["1st C.", "2nd C.", "3rd C."],
@@ -182,11 +183,6 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
     gs.update(wspace=wspace, hspace=hspace) # set the spacing between axes
 
     for i,df in enumerate(plot_dfs):   
-        if i==0:
-            ytick=True
-        else:
-            ytick=False
-
         if i == (len(plot_dfs) + leg_pos):
             legend=True
         else:
@@ -211,15 +207,23 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
             title=titles[i]
         else:
             title=df[title_col].values[0]
+            
+        if i==0:
+            ylabel1 = ylabel
+            yticks=True
+        else:
+            ylabel1 = ""
+            yticks = False
                   
-        plot_bar_ax(ax, obs_roh, bins_cM, yticks=ytick, legend=legend, r_title=r_title, c=c,
+        plot_bar_ax(ax, obs_roh, bins_cM, legend=legend, r_title=r_title, c=c,
                     x_ticks = x_ticks0, title=title, ha_title=ha_title,
-                    ylim=ylim, hlines=hlines, fs_l=fs_l, fs_y = fs_y, fs_x=fs_x, fs_t=fs_t)
+                    ylim=ylim, hlines=hlines, ylabel=ylabel1, yticks=yticks,
+                    fs_l=fs_l, fs_y = fs_y, fs_x=fs_x, fs_t=fs_t)
         
         if len(cutoffs)>0:
             c_marker = np.array(c)[bin_idx]
             plot_close_kin(ax, obs_roh, y_plot=ylim[1]+sym_ofst, cutoffs=cutoffs, 
-                           c=c_marker, ec=ec, lw=lw,
+                           c=c_marker, ec=ec, lw=lw, 
                            ss=ss, m_cs=m_cs, bin_idx=bin_idx)
     
     ### Make the placeholder axis invisible
@@ -231,9 +235,10 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
     if len(degrees)>0:
         c_roh = create_cousins_roh(degrees = degrees, bins = bins)
         ax_c = plt.subplot(gs[n_plots0+1])    # Get the right axis
-        plot_bar_ax(ax_c, c_roh*100, bins_cM, yticks=False, legend=False, ylim=ylim, c=c, 
-                    hlines=hlines,
-                    x_ticks = ticks_c, 
+        plot_bar_ax(ax_c, c_roh*100, bins_cM, legend=False, ylim=ylim, c=c, 
+                    hlines=hlines,x_ticks = ticks_c, 
+                    yticks=False, ylabel="",
+                    fs_l=fs_l, fs_y = fs_y, fs_x=fs_x, fs_t=fs_t,
                     title="Recent Loops", r_title=r_title)
     
     ### 2) Small Pops    
@@ -242,7 +247,9 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
         pos_leg_N = n_plots0 + 1 + (len(degrees)>0)  # Don't forget Python Indexing
         ax_N = plt.subplot(gs[pos_leg_N])
         ticks_N = [f"2N={i}" for i in Ns]
-        plot_bar_ax(ax_N, ns_roh*100, bins_cM, yticks=False, legend=False, ylim=ylim, c=c,
+        plot_bar_ax(ax_N, ns_roh*100, bins_cM, legend=False, ylim=ylim, c=c,
+                    yticks=False, ylabel="",
+                    fs_l=fs_l, fs_y = fs_y, fs_x=fs_x, fs_t=fs_t, 
                     hlines=hlines, x_ticks = ticks_N, title="Small Pop. Size", r_title=r_title)
 
     if len(savepath)>0:
@@ -279,16 +286,17 @@ def plot_legend_only(figsize=(7,6), wspace=0.05, hspace=0.01, savepath="", hline
     ### Calculate Expectations Ne:
     sum_roh = create_Ne_roh(Ns=Ns, bins = bins) # in Morgan
     
-    plot_bar_ax(ax_cousin, c_roh*100, bins_cM, yticks=True, legend=False, 
+    plot_bar_ax(ax_cousin, c_roh*100, bins_cM, legend=False, 
                 fs_l = fs_l, fs_y = fs_y, fs_x = fs_x, fs_t = fs_t, c = c,
-                ylim = ylim, ylabel = y_label, x_ticks = x_ticks_c,
+                ylim = ylim, ylabel = y_label, yticks=True, x_ticks = x_ticks_c,
                 hlines=hlines, title=title_c, ha_title=ha_title,
                 )
 
     ticks_N = [f"2N={i}" for i in Ns]
-    plot_bar_ax(ax_Ne, sum_roh*100, bins_cM, yticks=False, legend=True, 
+    plot_bar_ax(ax_Ne, sum_roh*100, bins_cM, legend=True, 
                 fs_l=fs_l, fs_y = fs_y, fs_x = fs_x, fs_t = fs_t, c = c, 
-                x_ticks = ticks_N, ylim = ylim,
+                x_ticks = ticks_N, ylim = ylim, 
+                ylabel="", yticks=False,
                 hlines=hlines, title=title_N, ha_title=ha_title)
             
     if len(savepath)>0:
