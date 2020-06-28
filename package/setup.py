@@ -23,10 +23,10 @@ with open("README.md", "r") as fh:
     
 setup(
     name="hapROH",
-    version="0.1a2",  # a means alpha
+    version="0.1a3",  # a means alpha
     author="Harald Ringbauer",
     author_email="harald_ringbauer@hms.harvard.edu",
-    description="Calling ROH in low coverage ancient DNA data (1240k SNPs) using modern reference panel",
+    description="Calling ROH in low coverage ancient DNA data (1240K SNPs) using modern reference panel",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/hringbauer/hapROH",
@@ -38,6 +38,6 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    install_requires=['numpy', 'pandas', 'scipy', 'multiprocessing', 
+    install_requires=['numpy', 'pandas', 'scipy', 
                       'os', 'h5py'],
 )

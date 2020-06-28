@@ -11,12 +11,16 @@ module load python/3.7.0
 ### Create the Source Package 
 Update version in setup.py to next version number (if wanted)
 
-### Update setuptools. If needed, delete previous dist/* (or be specific below what to upload)
+### Update setuptools. 
+If needed, delete previous dist/* (or be specific below what to upload)
+
 python3 setup.py sdist
 
 ### Upload to the Sources (copy into shell, to interactively do it!)
-python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-python3 -m twine upload dist/*   ### for full PyPi serever
+### 1) For test server
+python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* 
+### 2) For full PyPi server
+python3 -m twine upload dist/* 
 
 ## To test whether extensions builds
 python3 setup.py build_ext --inplace

@@ -1,27 +1,24 @@
 Metadata-Version: 2.1
 Name: hapROH
-Version: 0.1a2
+Version: 0.1a3
 Summary: Calling ROH in low coverage ancient DNA data (1240k SNPs) using modern reference panel
 Home-page: https://github.com/hringbauer/hapROH
 Author: Harald Ringbauer
 Author-email: harald_ringbauer@hms.harvard.edu
 License: UNKNOWN
 Description: # hapROH
-        Software to call ROHs in ancient and present-day DNA, using a haplotype reference panel.
-        Author: Harald Ringbauer 2020
+        Software to identify runs of homozygosity (ROH) in ancient and present-day DNA, using a panel of reference haplotypes.
         
-        This package contains functions and wrappers to call ROH for ancient DNA data (for data on 1240k SNPs) and functions to visualize the results.
-        It needs a haplotype reference panel.
+        This package contains functions and wrappers to call ROH and functions for downstream analysis of the results (visualization and analysis).
         
-        For historical reasons and for compatibility, the package uses `hapsburg` as module name, after installation you can import functions via
+        For downward compatibility, the package uses `hapsburg` as module name, after installation you can import functions via
         `from hapsburg.XX import YY`
-        This will be updated in a follow-up release.
         
         A vignette jupyter notebook walking through examples for how to use the core ROH calling function, and functions for plotting various aspects of ROH can be found at:
         https://www.dropbox.com/sh/eq4drs62tu6wuob/AABM41qAErmI2S3iypAV-j2da?dl=0
         
         
-        ### Installation
+        ## Installation
         Youc can install the package using the Package manager pip:
         
         ```
@@ -30,24 +27,21 @@ Description: # hapROH
         (`python3 -m` makes sure you use your python installation)
         
         
-        The package distributes source code. The setup.py contains information that should automatically build the necessary c extension.
-        In case you want to manually build the c extension, find more info in the section below (`c Extension`)
+        The package distributes source code. The setup.py contains information that automatically builds the necessary c extension.
+        If you want to manually build this c extension, find more info in the section below (`c Extension`)
         
-        ### Scope of the Method
-        Standard parameters are tuned for human 1240k capture data (1.2 million SNPs) and using 1000 Genome haplotypes as reference. The software worked for a wide range of test cases, both 1240k data and also whole genome sequencing data downsampled to 1240k. Test cases included 45k year old Ust Ishim man, and both American, Eurasian and Oceanian ancient DNA, showing that the method generally works for split times of reference panel and target up to a few 10k years (Neanderthals and Denisovans do not fall into that range).
+        ## Scope of the Method
+        Standard parameters are tuned for human 1240K capture data (1.2 million SNPs) and using 1000 Genome haplotypes as reference. The software worked for a wide range of test cases, both 1240k data and also whole genome sequencing data downsampled to 1240k. Test cases included 45k year old Ust Ishim man, and both American, Eurasian and Oceanian ancient DNA, showing that the method generally works for split times of reference panel and target up to a few 10k years (Neanderthals and Denisovans do not fall into that range).
         
         In the first version, hapROH works on eigenstrat file (either packed or unpacked, the mode can be set). A future release will add functionality to use diploid genotype calls, or genotype likelihoods from a .vcf.
         
-        If you have whole genome data available, you should downsample to biallelic 1240k SNPs first.
+        If you have whole genome data available, you should downsample an create eigenstrat files for biallelic 1240k SNPs first.
         
-        In case you are planning applications to other kind of SNP or bigger SNP sets, or other organisms, the method parameters have to be updated. You can mirror our procedure (described in the publication), or contact me for assistance at:
-        
-        harald_ringbauer AT hms harvard edu
-        (fill in blanks with dots)
+        In case you are planning applications to other kind of SNP or bigger SNP sets, or even other organisms, the method parameters have to be updated (the default parameters are optimized for human 1240K data). You can mirror our procedure (described in the publication), and if you contact me for assistance - I have a few tricks to share.
         
         
-        ### Get reference Data
-        Hapsburg currently uses global 1000 Genome haplotypes (n=5008), filtered down to bi-allelic 1240k SNPs, including a genetic map. 
+        ## Get reference Data
+        hapROH currently uses global 1000 Genome haplotypes (n=5008), filtered down to bi-allelic 1240k SNPs, including a genetic map. 
         We use .hdf5 format for the reference panel.
         
         You can download the prepared reference data (including a necessary metadata .csv) from:  
@@ -59,31 +53,39 @@ Description: # hapROH
         tar -xvf FILE.tar.gz
         ```
         
-        You then have to link the paths in the hapROH run parameters. 
+        You then have to link the paths in the hapROH run parameters (see vignette)
         
         
-        ### Example Use
-        Please find example notebooks, walking through a typical usecase, at
+        ## Example Use
+        Please find example notebooks, walking through a typical application to an eigenstrat file at
         https://www.dropbox.com/sh/eq4drs62tu6wuob/AABM41qAErmI2S3iypAV-j2da?dl=0
         
-        All you need is a packed or unpacked Eigenstrat file, and the reference data, and you are good to go to run your own application!
+        All you need is a packed or unpacked Eigenstrat file, and the reference data, and you are good to go to run your own ROH calling!
         
         
-        ### Dependencies
-        The basic requirements for calling ROH are minimal. There are extra Python packages that you need to install (e.g. via `pip`) if you want to use the plotting functionality, you should have `matplotlib` installed. For plotting of maps, you will need `basemap` (warning: installing can be tricky on some architectures). If you want to use the effective population size fitting functionality from ROH output, you will need to have `statsmodels` installed.
+        ## Dependencies
+        The basic requirements for calling ROH are kept minimal and only address the core ROH calling. If you want to use extended analysis and plotting functionality: There are extra Python packages that you need to install (e.g. via `pip`). E.g. if you want to use the plotting functionality, you need `matplotlib` installed. For plotting of maps, you will need `basemap` (warning: installing can be tricky on some architectures). If you want to use the effective population size fitting functionality from ROH output, you will need the package `statsmodels`.
         
         
-        ### c Extension
-        The heavy lifting of the algorithm is coded into a cfunction cfunc.c, which is built via cython from cfunc.pyx
+        ## c Extension
+        For performance reasons, the heavy lifting of the algorithm is coded into a cfunction cfunc.c, which is built via cython from cfunc.pyx
         
-        The package is distributed via source. This means the c extension has to be built. Ideally, this is done automatically via the package cython, as CYTHON=True in setup.py by default.
+        This package is distributed via source. which means that a c extension has to be built. Ideally, this is done automatically via the package cython (as CYTHON=True in setup.py by default).
         
-        You can also set CYTHON=FALSE, then the extension is compiled from cfunc.c directly (not tested on all platforms)
+        You can also set CYTHON=FALSE, then the extension is compiled from cfunc.c directly (experimental, not tested on all platforms).
         
         
         ## Citation
-        If you use the software and want to cite it, you can use:
+        If you use the software and want to cite it, use:
         https://www.biorxiv.org/content/10.1101/2020.05.31.126912v1
+        
+        ## Contact
+        If you have any bug reports or comments, I would be happy if you reach out to:
+        harald_ringbauer AT hms harvard edu
+        (fill in blanks with dots)
+        
+        Author:
+        Harald Ringbauer, 2020
         
         
         
