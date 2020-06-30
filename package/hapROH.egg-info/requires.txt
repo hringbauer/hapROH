@@ -1,5 +1,4 @@
 numpy
 pandas
 scipy
-os
 h5py

@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
 Name: hapROH
-Version: 0.1a3
-Summary: Calling ROH in low coverage ancient DNA data (1240k SNPs) using modern reference panel
+Version: 0.1a4
+Summary: Calling ROH in low coverage ancient DNA data (1240K SNPs) using modern reference panel
 Home-page: https://github.com/hringbauer/hapROH
 Author: Harald Ringbauer
 Author-email: harald_ringbauer@hms.harvard.edu
