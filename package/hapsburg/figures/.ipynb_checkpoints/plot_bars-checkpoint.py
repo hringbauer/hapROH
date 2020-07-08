@@ -71,7 +71,7 @@ def std_Ne_roh(Ns=[400, 800, 1600, 3200, 6400],
 def plot_bar_ax(ax, y, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], x_ticks = [], 
                 ec = "silver", fs_l=10, fs_y = 10, fs_x=8, fs_t=10, alpha=1.0,
                 barWidth=0.95, ylim = [0,220], stds = [], 
-                title="", ha_title="left", 
+                title="", ha_title="left", bold_title=False,
                 yticks=False, ylabel="Sum Inferred ROH>4cM [cM]",
                 legend=False, r_title=0, hlines=[]):
     """Plot bars of ROH on Axis.
@@ -112,8 +112,13 @@ def plot_bar_ax(ax, y, bins=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], 
     if not yticks:
         ax.axes.yaxis.set_ticks([])
         #ax.set_yticklabels([])
+    fw = 'normal'
+    if bold_title:
+        fw = "bold"
+        
     if len(title)>0:
-        ax.set_title(title, fontsize=fs_t, rotation=r_title, horizontalalignment=ha_title)
+        ax.set_title(title, fontsize=fs_t, rotation=r_title, 
+                     horizontalalignment=ha_title, fontweight=fw)
         
 def plot_close_kin(ax, y, y_plot=100,cutoffs=[50,100], c="r", ec="k", lw=1,
                    ss=[10,14], m_cs=["v", "s"], bin_idx=-1):
@@ -137,11 +142,11 @@ def plot_close_kin(ax, y, y_plot=100,cutoffs=[50,100], c="r", ec="k", lw=1,
                    marker=m_cs[i], s=ss[i], zorder=5)
         
 def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepath="", 
-                   x_labels=[], c=["#313695", "#abd9e9", "#fee090", "#d7191c"], ylim = [0,250], r_title = 90,
+                   x_labels=[], ylabel="Sum Inferred ROH>4cM [cM]", c=["#313695", "#abd9e9", "#fee090", "#d7191c"], 
+                   ylim = [0,250], r_title = 90, bolds=[],
                    fs_l=10, fs_y = 10, fs_x=8, fs_t=10, ha_title="left", hspace_leg=1,
                    leg_pos = -2, show=True, title_col="clst", titles=[], hlines=[],
                    cols = ['sum_roh>4', 'sum_roh>8', 'sum_roh>12', 'sum_roh>20'],
-                   ylabel="Sum Inferred ROH>4cM [cM]",
                    bins = [[0.04, 0.08], [0.08, 0.12], [0.12, 0.2], [0.2, 3.0]],
                    degrees=[1, 2, 3], Ns=[400, 800, 1600, 3200, 6400],
                    ticks_c=["1st C.", "2nd C.", "3rd C."],
@@ -150,6 +155,7 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
     """Plot row of ROH bin plots from plot_dfs (each df one panel)
     leg_pos = Where to plot legend (if outside range no legend plot)
     r_title: How much to rotate the title
+    bolds: which titles to bold [list of bools]
     ha_title: Horizontal alignment of the titles
     fs_l, fs_y, fs_x, fs_t: Fontsize of legend, y and x labels and titles
     hspace_leg: Horizontol space between data plots and legend
@@ -207,6 +213,10 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
             title=titles[i]
         else:
             title=df[title_col].values[0]
+        if len(bolds)>0:
+            bold=bolds[i]
+        else:
+            bold=False
             
         if i==0:
             ylabel1 = ylabel
@@ -216,7 +226,7 @@ def plot_panel_row(plot_dfs, wspace=0.05, hspace=0.01, figsize=(24,3.5), savepat
             yticks = False
                   
         plot_bar_ax(ax, obs_roh, bins_cM, legend=legend, r_title=r_title, c=c,
-                    x_ticks = x_ticks0, title=title, ha_title=ha_title,
+                    x_ticks = x_ticks0, title=title, ha_title=ha_title, bold_title=bold,
                     ylim=ylim, hlines=hlines, ylabel=ylabel1, yticks=yticks,
                     fs_l=fs_l, fs_y = fs_y, fs_x=fs_x, fs_t=fs_t)
         
