@@ -182,17 +182,37 @@ class EigenstratLoadUnpacked(EigenstratLoad):
         geno=np.genfromtxt(self.base_path + ".geno", dtype='i1', delimiter=1, usecols=i)
         geno[geno == 9] = missing_val
         return geno
-		
+
+#########################################################
+#########################################################
+def is_binary_file(path, extension=".geno"):
+    """Test whether a file at path + extension is binary.
+    Return boolean if the case """
+    binary=False
+    try:
+        with open(path + extension, "r") as f:
+            t = f.read()
+    except UnicodeDecodeError:
+        binary=True
+    return binary
 
 #########################################################
 #########################################################
 #### Factory Method
 
-def load_eigenstrat(base_path, output=True, sep=r"\s+", packed=True):
+def load_eigenstrat(base_path, output=True, sep=r"\s+", packed=-1):
     """Factory Method to Load Eigenstrat object
     sep: What separator to use when loading the File. 
     Default is space seperated (by arbitrary number of spaces)
     Packed: Whether Genotype Data is encoded in binary Format"""
+    
+    ### Determine automatically
+    if packed==-1:
+        packed = is_binary_file(base_path, extension=".geno")
+        if output:
+            print(f"Eigenstrat packed: {packed}")
+    
+    ### Load
     if packed:
     	es = EigenstratLoad(base_path, output=output, sep=sep)
     else:

@@ -347,14 +347,14 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
     for target
     """
     #meta_path_targets = "" # Meta not needed any more, only .ind file
-    path_targets = ""  # Base Path of the Eigenstrat
+    path_targets = ""  # Base Path of the Eigenstrat. Will be set from outside
     # Path of 1000G (without chromosome part):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
-    packed = True  # Whether to use packed or unpacked Eigenstrat
+    packed = -1  # Whether to use packed or unpacked Eigenstrat. -1: Determine
     sep = r"\s+"   # Which Column Separator to use in ind and snp File
     flipstrand = True # Flip Strand if both alleles matching, but flipped
     
-    def __init__(self, save=True, output=True, packed=True, sep= r"\s+"):
+    def __init__(self, save=True, output=True, packed=1, sep= r"\s+"):
         """Initialize Class.
         save: Whether to save the data
         output: Whether to print output
@@ -566,6 +566,9 @@ def load_preprocessing(p_model="SardHDF5", save=True, output=True):
         p_obj = PreProcessingHDF5Sim(save=save, output=output)
     elif p_model == "Folder":
         p_obj = PreProcessingFolder(save=save, output=output)
+    elif p_model == "Eigenstrat":   ### Detects automatically what mode to use
+        p_obj = PreProcessingEigenstrat(save=save, output=output,
+                                        packed=-1, sep=r"\s+") # -1: Unknown 
     elif p_model == "EigenstratPacked":
         p_obj = PreProcessingEigenstrat(save=save, output=output,
                                         packed=True, sep=r"\s+")
