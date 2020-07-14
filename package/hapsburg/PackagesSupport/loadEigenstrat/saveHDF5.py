@@ -9,10 +9,11 @@ import os as os
 import h5py  # Python Package to do the HDF5.
 from hapsburg.PackagesSupport.loadEigenstrat.loadEigenstrat import load_eigenstrat
 
-def save_hdf5(path, gt, ref, alt, pos, chs, sex, clst,
-              rec, samples, compression="gzip",
-              gt_type="int8"):
+def save_hdf5(path, gt, ref, alt, pos, chs,
+              rec, samples, ad=[], sex=[], clst=[],
+              compression="gzip", gt_type="int8"):
         """Create a new HDF5 File with Input Data.
+        Field Names are chosen to integrate with hapROH
         gt: Genotype data [l,k,2]
         ad: Allele depth [l,k,2]
         ref: Reference Allele [l]
@@ -23,7 +24,9 @@ def save_hdf5(path, gt, ref, alt, pos, chs, sex, clst,
         samples: Sample IDs [k].
         Save genotype data as int8, readcount data as int16.
         ad: whether to save allele depth
-        gt_type: What genotype data type save"""
+        gt_type: What genotype data type save.
+        sex: Vector of Sex [k]
+        clst: Vector of Cluster [k]"""
 
         l, k, _ = np.shape(gt)  # Nr loci and Nr of Individuals
 
@@ -34,19 +37,17 @@ def save_hdf5(path, gt, ref, alt, pos, chs, sex, clst,
 
         with h5py.File(path, 'w') as f0:
             ### Create all the Groups
-            f_map = f0.create_dataset("variants/map", (l,), dtype='f')
-            f_ref = f0.create_dataset("variants/ref", (l,), dtype=dt)
-            f_alt = f0.create_dataset("variants/alt", (l,), dtype=dt)
-            f_pos = f0.create_dataset("variants/pos", (l,), dtype='int32')
-            f_ch = f0.create_dataset("variants/ch", (l,), dtype='int8')
-            f_gt = f0.create_dataset("calldata/gt", (l, k, 2), dtype=gt_type, compression=compression)
+            f_map = f0.create_dataset("variants/MAP", (l,), dtype='f')
+            f_ref = f0.create_dataset("variants/REF", (l,), dtype=dt)
+            f_alt = f0.create_dataset("variants/ALT", (l,), dtype=dt)
+            f_pos = f0.create_dataset("variants/POS", (l,), dtype='int32')
+            f_ch = f0.create_dataset("variants/CH", (l,), dtype='int8')
+            f_gt = f0.create_dataset("calldata/GT", (l, k, 2), dtype=gt_type, compression=compression)
             f_samples = f0.create_dataset("inds/samples", (k,), dtype=dt)
-            f_sex = f0.create_dataset("inds/sex", (k,), dtype=dt)
-            f_cls = f0.create_dataset("inds/cls", (k,), dtype=dt)
             
             # Create data types for smaples and cluster strings
             dtype_s = "S" + str(len(max(samples, key=len)))
-            dtype_cls = "S" + str(len(max(clst, key=len)))
+            
             ### Save the Data
             f_map[:] = rec
             f_ref[:] = ref.astype("S1")
@@ -55,8 +56,21 @@ def save_hdf5(path, gt, ref, alt, pos, chs, sex, clst,
             f_gt[:] = gt
             f_ch[:] = chs
             f_samples[:] = np.array(samples).astype(dtype_s)
-            f_sex[:] = sex.astype("S1")
-            f_cls[:] = np.array(clst).astype(dtype_cls)
+            
+            ### Optional Fields
+            if np.shape(ad)[0]>0:
+                f_ad = f0.create_dataset("calldata/AD", (l, k, 2), dtype='i')
+                f_ad[:] = ad
+                
+            if len(sex)>0:
+                f_sex = f0.create_dataset("inds/SEX", (k,), dtype=dt)
+                f_sex[:] = sex.astype("S1")
+                
+            if len(clst)>0:
+                dtype_cls = "S" + str(len(max(clst, key=len)))
+                f_cls = f0.create_dataset("inds/CLS", (k,), dtype=dt)
+                f_cls[:] = np.array(clst).astype(dtype_cls)
+                   
             
 def eigenstrat_to_hdf5(path_es = "", path_hdf5="",
                        packed=True, sep="\s+"):

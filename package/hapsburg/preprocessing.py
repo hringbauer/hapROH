@@ -79,11 +79,13 @@ class PreProcessingHDF5(PreProcessing):
 
     folder_out = "./Empirical/1240k/"  # Base Path of the Output Folder
     prefix_out_data = ""  # Prefix of the Outdata (should be of form "path/")
+    samples_field = "samples" # HDF5 field where to find samples [the "folder"]
 
     readcounts = False    # Whether to return Readcounts
     diploid_ref = True    # Whether to use diploid Reference Individuals
     random_allele = True  # Whether to pick one of two alleles at Target Individual at random
     only_calls = True     # Whether to downsample to markers with no missing data
+    flipstrand = True
     max_mm_rate = 0.9     # Maximal mismatch rate ref/alt alleles between target and ref
 
     def __init__(self, save=True, output=True):
@@ -147,9 +149,9 @@ class PreProcessingHDF5(PreProcessing):
         # Load and Merge the Data
         fs = self.load_h5(self.path_targets)
         f1000 = self.load_h5(h5_path1000g)
-        i1, i2 = self.merge_2hdf(fs, f1000)
+        i1, i2, flipped = self.merge_2hdf(fs, f1000)
 
-        id_obs = self.get_index_iid(iid, fs)
+        id_obs = self.get_index_iid(iid, fs, samples_field=self.samples_field)
         ids_ref = self.get_ref_ids(f1000)
 
         # All 503 EUR Samples as Reference (first Chromosome)
@@ -157,12 +159,21 @@ class PreProcessingHDF5(PreProcessing):
         markers_obs = i1[markers]
         markers_ref = i2[markers]
 
-        # Load Target Dataset
+        ### Load Target Dataset
         gts_ind = self.extract_snps_hdf5(
             fs, [id_obs], markers_obs, diploid=True)
         read_counts = self.extract_rc_hdf5(fs, id_obs, markers_obs)
+        
+        ### Flip target genotypes where flipped
+        if self.flipstrand:
+            if self.output:
+                print(f"Flipping Ref/Alt in target for {np.sum(flipped)} SNPs...")
+            flip_idcs = flipped & (gts_ind[0,:]>=0) # Where Flip AND Genotype Data
+            gts_ind[:,flip_idcs] = 1 - gts_ind[:,flip_idcs]
+            
+            read_counts[0,flipped], read_counts[1,flipped] = read_counts[1,flipped], read_counts[0,flipped]
 
-        # Load Reference Dataset
+        ### Load Reference Dataset
         gts = self.extract_snps_hdf5(
             f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
@@ -257,8 +268,13 @@ class PreProcessingHDF5(PreProcessing):
         ### Sanity Check if Reference is the same
         ref1 = np.array(f["variants/REF"])[i1]
         ref2 = np.array(g["variants/REF"])[i2]
-        alt1 = np.array(f["variants/ALT"])[i1]
         
+        ### load the alternate allele
+        if len(np.shape(f["variants/ALT"]))>1:   # If multiple ALT Alleles
+            alt1 = np.array(f["variants/ALT"])[i1, 0]
+        else:
+            alt1 = np.array(f["variants/ALT"])[i1]
+
         if len(np.shape(g["variants/ALT"]))>1:   # If multiple ALT Alleles
             alt2 = np.array(g["variants/ALT"])[i2, 0]
         else:
@@ -267,20 +283,40 @@ class PreProcessingHDF5(PreProcessing):
         ### Downsample to Site where both Ref and Alt are the same
         same = (ref1 == ref2)
         both_same = (ref1 == ref2) & (alt1 == alt2)
-        i11 = i1[both_same]
-        i22 = i2[both_same]
+        flipped = (ref1 == alt2) & (alt1 == ref2)
+    
+        if self.output:
+            print(f"\nIntersection on Positions: {len(b)}")
+            print(f"Nr of Matching Refs: {np.sum(same)} / {len(same)}")
+            print(f"Ref/Alt Matching: {np.sum(both_same)} / {len(both_same)}")
+            print(f"Flipped Ref/Alt Matching: {np.sum(flipped)}")
+            print(f"Together: {np.sum(flipped|both_same)} / {len(both_same)}")
 
-        if self.output == True:
-            print(f"Nr of Matching Refs: {np.sum(same)} / {len(same)} SNPs")
-            print(f"Both Ref/Alt Identical: {len(i11)} / {len(both_same)}")
+        if self.flipstrand:
+            i11 = i1[both_same | flipped]  # Give the Indices in full array (all ch)
+            i22 = i2[both_same | flipped]
+            ### Identify Flipped SNPs indices in OR indices
+            # Assume both_same and flipped have NO intersection!
+            # Could clip to 1 then intersection possible
+            flipped = (np.cumsum(both_same + flipped))[flipped]-1
+            
+        else:
+            i11 = i1[both_same]
+            i22 = i2[both_same]
+            flipped = [] # Numpy Indices to flip nothing
+            
+        flip = np.zeros(len(i11), dtype="bool")
+        flip[flipped]=True
         
+        
+        #########################
         mm_frac = (len(i11)/len(both_same))
         if mm_frac <= self.max_mm_rate:
-            error = f"Ref/Alt Base Match fraction {mm_frac:.4f} < {self.max_mm_rate}"
-            error1 = " Check genetic map" # Maybe enter what desired version should be
+            error = f"Ref/Alt Match fraction {mm_frac:.4f} < {self.max_mm_rate}"
+            error1 = " Check Ref/Alts Match!" # Maybe enter what desired version should be
             raise RuntimeError(error + error1)
 
-        return i11, i22
+        return i11, i22, flip
 
     def save_info(self, folder, cm_map, gt_individual=[], read_counts=[]):
         """Save Linkage Map, Readcount and Genotype Data per Individual.
@@ -481,7 +517,6 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
             raise RuntimeError(error + error1)
 
         return i11, i22, flip
-
 
 ###########################################
 
