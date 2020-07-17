@@ -517,6 +517,19 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
             raise RuntimeError(error + error1)
 
         return i11, i22, flip
+    
+class PreProcessingEigenstratX(PreProcessingEigenstrat):
+    """Class for PreProcessing Eigenstrat Files
+    Same as Eigenstrat, but will load and combine two
+    X Chromosomes (have to be male ones!!)
+    """
+    #meta_path_targets = "" # Meta not needed any more, only .ind file
+    path_targets = ""  # Base Path of the Eigenstrat. Will be set from outside
+    # Path of 1000G (without chromosome part):
+    h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
+    packed = -1  # Whether to use packed or unpacked Eigenstrat. -1: Determine
+    sep = r"\s+"   # Which Column Separator to use in ind and snp File
+    flipstrand = True # Flip Strand if both alleles matching, but flipped
 
 ###########################################
 
@@ -610,6 +623,9 @@ def load_preprocessing(p_model="SardHDF5", save=True, output=True):
     elif p_model == "EigenstratUnpacked":
         p_obj = PreProcessingEigenstrat(save=save, output=output,
                                         packed=False, sep=r"\s+")
+    elif p_model == "EigenstratX":
+        p_obj = PreProcessingEigenstrat(save=save, output=output,
+                                        packed=-1, sep=r"\s+")
     else:
         raise NotImplementedError(f"Preprocessing Model string {p_model} not found.")
 
