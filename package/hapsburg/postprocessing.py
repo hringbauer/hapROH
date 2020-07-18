@@ -130,6 +130,16 @@ class PostProcessing(object):
         """Load and return the posterior."""
         roh_post = 1 - np.exp(posterior0)  # Go to non-logspace probability
         return roh_post
+    
+    def create_df(self, starts, ends, starts_map, ends_map, 
+                  l, l_map, iid, ch, roh_min_l):
+        """Create and returndthe hapROH dataframe."""
+        
+        full_df = pd.DataFrame({'Start': starts, 'End': ends,
+                                'StartM': starts_map, 'EndM': ends_map, 'length': l,
+                                'lengthM': l_map, 'iid': iid, "ch": ch})
+        df = full_df[full_df["lengthM"] > roh_min_l]  # Cut out long blocks
+        return df
 
     def call_roh(self, ch=0, iid=""):
         """Call ROH of Homozygosity from Posterior Data
@@ -153,11 +163,11 @@ class PostProcessing(object):
         ends_map = r_map[ends - 1]  # -1 to stay within bounds
         starts_map = r_map[starts]
         l_map = ends_map - starts_map
-
-        full_df = pd.DataFrame({'Start': starts, 'End': ends,
-                                'StartM': starts_map, 'EndM': ends_map, 'length': l,
-                                'lengthM': l_map, 'iid': iid, "ch": ch})
-        df = full_df[full_df["lengthM"] > self.roh_min_l]  # Cut out long blocks
+        
+        # Create hapROH Dataframe
+        df = self.create_df(starts, ends, starts_map, ends_map, 
+                            l, l_map, iid, ch, 
+                            roh_min_l=self.roh_min_l)
 
         # Merge Blocks in Postprocessing Step
         if self.merge == True:
@@ -193,7 +203,26 @@ class PostProcessing(object):
             if os.path.isfile(file_path) and (the_file not in keep_files):
                 os.unlink(file_path)   # Delete the File
 
-
+                
+#######################################################
+class PostProcessingX(PostProcessing):
+    """Class to post-process IBD on the X of 
+    two males. Only difference: Two iids,
+    which will get stored seperately."""
+    
+    def create_df(self, starts, ends, starts_map, ends_map, 
+                  l, l_map, iid, ch, roh_min_l):
+        """Create and returndthe hapROH dataframe.
+        Difference: Here it is a IBD, so two iids are saved."""
+        assert(len(iid)==2) # Sanity check
+        
+        full_df = pd.DataFrame({'Start': starts, 'End': ends,
+                                'StartM': starts_map, 'EndM': ends_map, 'length': l,
+                                'lengthM': l_map, 
+                                'iid1': iid[0], "iid2":iid[1], "ch": ch})
+        df = full_df[full_df["lengthM"] > roh_min_l]  # Cut out long blocks
+        return df
+    
 #######################################################
 
 
@@ -216,6 +245,8 @@ def load_Postprocessing(folder="", method="Standard", output=True, save=True):
         pp = PostProcessing(folder, output=output, save=save)
     elif method == "MMR":
         pp = MMR_PostProcessing(folder, output=output, save=save)
+    elif method == "IBD_X":
+        pp = PostProcessingX(folder, output=output, save=save)
     else:
         raise RuntimeError(f"Postprocessing method {method} not available!")
     return pp

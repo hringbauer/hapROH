@@ -170,7 +170,6 @@ class PreProcessingHDF5(PreProcessing):
                 print(f"Flipping Ref/Alt in target for {np.sum(flipped)} SNPs...")
             flip_idcs = flipped & (gts_ind[0,:]>=0) # Where Flip AND Genotype Data
             gts_ind[:,flip_idcs] = 1 - gts_ind[:,flip_idcs]
-            
             read_counts[0,flipped], read_counts[1,flipped] = read_counts[1,flipped], read_counts[0,flipped]
 
         ### Load Reference Dataset
@@ -400,6 +399,17 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         self.output = output
         self.packed = packed
         self.sep = sep
+        
+    def es_get_index_iid(self, es, iid):
+        """Get IID of Indices"""
+        id_obs = es.get_index_iid(iid)  # Get Index from Eigenstrat
+        return id_obs
+    
+    def get_1000G_path(self, h5_path1000g, ch):
+        """Construct and eturn the path 
+        to the 1000 Genome reference panel"""
+        h5_path1000g = h5_path1000g + str(ch) + ".hdf5"
+        return h5_path1000g
 
     def load_data(self, iid="MA89", ch=6):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
@@ -407,13 +417,13 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         Save the loaded data if self.save==True
         Various modifiers in class fields (check also PreProcessingHDF5)"""
         self.ch = ch  # To remember Chromosome
-        if self.output == True:
+        if self.output:
             print(f"Loading Individual: {iid}")
 
         out_folder = self.set_output_folder(iid, ch)
 
         ### Load Reference HDF5 object
-        h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"
+        h5_path1000g = self.get_1000G_path(self.h5_path1000g, ch)
         f1000 = self.load_h5(h5_path1000g)
 
         ### Load Eigenstrat object
@@ -421,8 +431,8 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
                              sep=self.sep, packed=self.packed)
 
         markers_obs, markers_ref, flipped = self.merge_es_hdf5(es, f1000)
-
-        id_obs = es.get_index_iid(iid)  # Get Index from Eigenstrat
+        
+        id_obs = self.es_get_index_iid(es, iid)
         ids_ref = self.get_ref_ids(f1000)
 
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
@@ -438,16 +448,24 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         ### Extraction for target (no RC here)
         gts_ind = self.extract_snps_es(es, id_obs, markers_obs)
         
+        ### Produce readcounts
+        read_counts = []
+        if self.readcounts:
+            read_counts = self.to_read_counts(gts_ind)
+        
         ### Flip target genotypes where flipped
-        if self.flipstrand==True:
+        if self.flipstrand:
             if self.output:
                 print(f"Flipping Ref/Alt in target for {np.sum(flipped)} SNPs...")
             flip_idcs = flipped & (gts_ind[0,:]>=0) # Where Flip AND Genotype Data
             gts_ind[:,flip_idcs] = 1 - gts_ind[:,flip_idcs]
+            
+            if len(read_counts)>0:
+                read_counts[0,flipped], read_counts[1,flipped] = read_counts[1,flipped], read_counts[0,flipped]
 
         ### Do optional Processing Steps (only covered, destroy phase, save)
         gts_ind, gts, r_map, out_folder = self.optional_postprocessing(
-            gts_ind, gts, r_map, out_folder)
+            gts_ind, gts, r_map, out_folder, read_counts)
 
         return gts_ind, gts, r_map, out_folder
 
@@ -518,6 +536,17 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
 
         return i11, i22, flip
     
+    def to_read_counts(self, gts_ind):
+        """Transforms vector of genotypes [2,l] to 
+        vector of read counts [2,l]. Return this 
+        vector of read counts"""
+        read_counts = np.zeros(np.shape(gts_ind))
+        der = np.sum(gts_ind==1, axis=0) 
+        anc = np.sum(gts_ind==0, axis=0) 
+        read_counts[0,:] = anc
+        read_counts[1,:] = der
+        return read_counts
+    
 class PreProcessingEigenstratX(PreProcessingEigenstrat):
     """Class for PreProcessing Eigenstrat Files
     Same as Eigenstrat, but will load and combine two
@@ -530,6 +559,47 @@ class PreProcessingEigenstratX(PreProcessingEigenstrat):
     packed = -1  # Whether to use packed or unpacked Eigenstrat. -1: Determine
     sep = r"\s+"   # Which Column Separator to use in ind and snp File
     flipstrand = True # Flip Strand if both alleles matching, but flipped
+    
+    def set_output_folder(self, iid, ch="X"):
+        """Set the output folder after folder_out.
+        General Structure for HAPSBURG: folder_out/iid1_iid2/chrX/
+        Return this folder"""
+        assert(len(iid)==2) # Sanity Check
+        
+        out_folder = os.path.join(self.folder_out, 
+                                  str(iid[0]) + "_" + str(iid[1]), 
+                                  "chrX", self.prefix_out_data)
+
+        if not os.path.exists(out_folder):   # Create Output Folder if needed
+            if self.output == True:
+                print(f"Creating folder {out_folder}...")
+            os.makedirs(out_folder)
+
+        return out_folder
+    
+    def get_1000G_path(self, h5_path1000g, ch="X"):
+        """Construct and eturn the path 
+        to the 1000 Genome reference panel"""
+        h5_path1000g = h5_path1000g + "X.hdf5"
+        return h5_path1000g
+    
+    def es_get_index_iid(self, es, iid):
+        """Get index of IIDs in eigenstrat.
+        Here for X: iid is a list"""
+        id_obs = [es.get_index_iid(i) for i in iid]
+        return id_obs
+    
+    def extract_snps_es(self, es, id, markers):
+        """Use Eigenstrat object. Extract genotypes for individual index i
+        (integer) for
+        list of markers. Do conversion from Eigenstrat GT to format
+        used here"""
+        assert(len(id)==2) # Sanity Check
+        gts_ind1 = es.extract_snps(id=id[0], markers=markers, conversion=True)
+        gts_ind2 = es.extract_snps(id=id[1], markers=markers, conversion=True)
+        
+        gts_ind = np.concatenate((gts_ind1[[0],:], gts_ind2[[0],:]), axis=0)
+        return gts_ind
 
 ###########################################
 
@@ -602,11 +672,11 @@ class PreProcessingFolder(PreProcessing):
 
 ############################################
 ############################################
-# Do a Factory Method that can be imported.
-
+# Factory Method that can be imported.
 
 def load_preprocessing(p_model="SardHDF5", save=True, output=True):
-    """Load the Transition Model"""
+    """Factory method to load the Transition Model.
+    Return"""
 
     if p_model == "SardHDF5":
         p_obj = PreProcessingHDF5(save=save, output=output)
@@ -624,8 +694,8 @@ def load_preprocessing(p_model="SardHDF5", save=True, output=True):
         p_obj = PreProcessingEigenstrat(save=save, output=output,
                                         packed=False, sep=r"\s+")
     elif p_model == "EigenstratX":
-        p_obj = PreProcessingEigenstrat(save=save, output=output,
-                                        packed=-1, sep=r"\s+")
+        p_obj = PreProcessingEigenstratX(save=save, output=output,
+                                         packed=-1, sep=r"\s+")
     else:
         raise NotImplementedError(f"Preprocessing Model string {p_model} not found.")
 
