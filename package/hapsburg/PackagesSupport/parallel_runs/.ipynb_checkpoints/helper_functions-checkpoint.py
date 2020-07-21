@@ -12,7 +12,9 @@ import multiprocessing as mp
 def prepare_path(base_path, iid, ch, prefix_out, logfile=True):
     """Prepare the path and pipe printing for one Individual.
     Create Path if not already existing.
-    logfile: Whether to pipe output to log-file"""       
+    logfile: Whether to pipe output to log-file"""  
+    if isinstance(iid, list):
+        iid = "_".join(iid) # If multiple individual names given (for X IBD)
     path_out = os.path.join(base_path, iid, "chr" + str(ch), prefix_out, "")
     if not os.path.exists(path_out):
             os.makedirs(path_out)

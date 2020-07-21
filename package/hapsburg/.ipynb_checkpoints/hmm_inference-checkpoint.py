@@ -6,8 +6,8 @@ Main Inference Class for HMM. Wrapper for Inerence of Posterior.
 import numpy as np
 import matplotlib.pyplot as plt
 import os                     # For Saving to Folder
-import psutil                 # For Memory Profiling
-import cProfile               # For Profiling
+#import psutil                 # For Memory Profiling
+#import cProfile               # For Profiling
 # from func import fwd_bkwd    # Import the Python Function
 from hapsburg.cfunc import viterbi_path, fwd_bkwd_fast, fwd_bkwd_lowmem  # Cython Functions
 from hapsburg.func import fwd_bkwd_p, viterbi_path_p, sloppyROH_cumsum  # Python Functions
@@ -33,6 +33,7 @@ class HMM_Analyze(object):
     save = True  # Whether to save output data to disk
     save_fp = True  # Whether to save the full Posterior
     n_ref = 20  # The Size of the Reference Panel [k-1]
+    sanity_checks = True # Can turn off for better performance. Not recomm.
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
     ob_stat = []     # The observed State [l]
 
@@ -116,12 +117,15 @@ class HMM_Analyze(object):
         self.ob_stat = gts_ind
         self.folder = out_folder
 
-        # Do some Post-Processing for summary Parameters
+        ### Do some Post-Processing for summary Parameters
         self.n_ref = np.shape(self.ref_states)[0]
 
-        # Sanity Checks for loading
-        assert(len(self.r_map) == np.shape(self.ob_stat)[1])  # Sanity Check
-        assert(len(self.r_map) == np.shape(self.ref_states)[1])
+        ### Sanity Checks for loaded data
+        if self.sanity_checks:
+            assert(len(self.r_map) == np.shape(self.ob_stat)[1])  # Sanity Check
+            assert(len(self.r_map) == np.shape(self.ref_states)[1])
+            assert(np.min(gts_ind)>=0) # No missing genotypes
+            assert(np.min(gts)>=0)
 
         if self.output:
             print(f"Successfully loaded Data from: {self.folder}")
@@ -163,7 +167,7 @@ class HMM_Analyze(object):
         r_map[1:] = self.r_map[1:] - self.r_map[:-1]  # Calculate Differences
         assert(np.min(r_map) >= 0)
         if cm == True:
-            r_map = r_map / 100     # Normalize to CentiMorgan.
+            r_map = r_map / 100     # Normalize to Morgan if map in cM
         
         max_g = np.max(r_map) 
         # Extend the minimum gap where needed
@@ -272,7 +276,7 @@ class HMM_Analyze(object):
         #assert(np.min(e_mat) > 0)  # For LOG calculation (Assume Error Model)
         #e_mat = np.log(e_mat)
 
-        print_memory_usage()  # For MEMORY_BENCH
+        #print_memory_usage()  # For MEMORY_BENCH
 
         # Precompute the 3x3 Transition Matrix
         t_mat_full = self.pre_compute_transition_matrix(

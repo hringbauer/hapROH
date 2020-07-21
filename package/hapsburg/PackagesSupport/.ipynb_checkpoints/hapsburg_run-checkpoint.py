@@ -13,7 +13,7 @@ from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
 from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data
 
 
-def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[],
+def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], 
                 e_model="EigenstratPacked", p_model="MosaicHDF5", readcounts=True, random_allele=True,
                 post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
                 h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
@@ -39,6 +39,7 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[]
     save: Whether to save the inferred ROH [bool]
     save_fp: Whether to save the full posterior matrix [bool]
     n_ref: Number of (diploid) reference Individuals to use [int]
+    diploid_ref: Use both haplotypes of reference panel [bool]
     exclude_pops: Which populations to exclude from reference [list of str]
     readcounts: Whether to load readcount data [bool]
     random_allele: Whether to pick a random of the two target alleles per locus [bool]
@@ -56,14 +57,14 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, exclude_pops=[]
     
     ### Create Folder if needed, and pipe output if wanted
     _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
-    hmm = HMM_Analyze(cython=2, p_model=p_model, e_model=e_model,
+    hmm = HMM_Analyze(cython=2, p_model=p_model, e_model=e_model, post_model=post_model,
                       manual_load=True, save=save, save_fp=save_fp)
 
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model()              # Load the preprocessing Model
     hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
                          folder_out=folder_out, prefix_out_data=prefix_out, 
-                         excluded=exclude_pops)
+                         excluded=exclude_pops, diploid_ref=diploid_ref)
     
     ### Set the paths to ref & target
     hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
@@ -91,7 +92,7 @@ def hapsb_ind(iid, chs=range(1,23),
               folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
               e_model="haploid", p_model="EigenstratPacked", post_model="Standard",
               processes=1, delete=False, output=True, save=True, save_fp=False, 
-              n_ref=2504, exclude_pops=[], readcounts=True, random_allele=True,
+              n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=True,
               roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
               cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=True, combine=True, 
               file_result="_roh_full.csv"):
@@ -134,10 +135,10 @@ def hapsb_ind(iid, chs=range(1,23),
         print(f"Doing Individual {iid}...")
     
     ### Prepare the Parameters for that Indivdiual
-    prms = [[iid, ch, save, save_fp, n_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
+    prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
             post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
             roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff_post, roh_min_l, logfile] for ch in chs]
-    assert(len(prms[0])==25)   # Sanity Check
+    assert(len(prms[0])==26)   # Sanity Check
                             
     ### Run the analysis in parallel
     multi_run(hapsb_chrom, prms, processes = processes)

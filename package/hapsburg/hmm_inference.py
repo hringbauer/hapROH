@@ -33,6 +33,7 @@ class HMM_Analyze(object):
     save = True  # Whether to save output data to disk
     save_fp = True  # Whether to save the full Posterior
     n_ref = 20  # The Size of the Reference Panel [k-1]
+    sanity_checks = True # Can turn off for better performance. Not recomm.
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
     ob_stat = []     # The observed State [l]
 
@@ -116,12 +117,15 @@ class HMM_Analyze(object):
         self.ob_stat = gts_ind
         self.folder = out_folder
 
-        # Do some Post-Processing for summary Parameters
+        ### Do some Post-Processing for summary Parameters
         self.n_ref = np.shape(self.ref_states)[0]
 
-        # Sanity Checks for loading
-        assert(len(self.r_map) == np.shape(self.ob_stat)[1])  # Sanity Check
-        assert(len(self.r_map) == np.shape(self.ref_states)[1])
+        ### Sanity Checks for loaded data
+        if self.sanity_checks:
+            assert(len(self.r_map) == np.shape(self.ob_stat)[1])  # Sanity Check
+            assert(len(self.r_map) == np.shape(self.ref_states)[1])
+            assert(np.min(gts_ind)>=0) # No missing genotypes
+            assert(np.min(gts)>=0)
 
         if self.output:
             print(f"Successfully loaded Data from: {self.folder}")
