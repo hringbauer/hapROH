@@ -6,10 +6,6 @@ This package contains functions and wrappers to call ROH and functions for downs
 For downward compatibility, the package uses `hapsburg` as module name, after installation you can import functions via
 `from hapsburg.XX import YY`
 
-A vignette jupyter notebook walking through examples for how to use the core ROH calling function, and functions for plotting various aspects of ROH can be found at:
-https://www.dropbox.com/sh/eq4drs62tu6wuob/AABM41qAErmI2S3iypAV-j2da?dl=0
-
-
 ## Installation
 You can install the package using the Package manager pip:
 
@@ -18,9 +14,19 @@ python3 -m pip install hapROH
 ```
 (`python3 -m` makes sure you use your python installation)
 
+The package distributes source code. The setup.py contains information that should automatically install the package.
+For customized installations, find more info in the section below (`c Extension`)
 
-The package distributes source code. The setup.py contains information that automatically builds the necessary c extension.
-If you want to manually build this c extension, find more info in the section below (`c Extension`)
+## Getting Started
+To get started, please find vignette jupyter notebooks:
+https://www.dropbox.com/sh/eq4drs62tu6wuob/AABM41qAErmI2S3iypAV-j2da?dl=0
+
+These are a ressource to do show example usecases, that you can use as template for your own applications.
+
+These notebooks walk you through examples for 
+1) how to use the core functions to call ROH from eigenstrat files, and generate ROH tables from results of multiple individuals ('callROH_vignette')
+2) how to use functions for visualizing ROH results ('plotting_vignette' - warning: Some of these are experimental and require additional packages. You might want to consider creating your own plotting functions for visualizing the results in the way that works best for you)
+3) how to call IBD on the X chromosome between two male X chromosomes ('callIBD_maleX_vignette', warning: experimental)
 
 ## Scope of the Method
 Standard parameters are tuned for human 1240K capture data (ca. 1.2 million SNPs) and using 1000 Genome haplotypes as reference. The software worked for a wide range of test cases, both 1240k data and also whole genome sequencing data downsampled to 1240k. Test cases included 45k year old Ust Ishim man, and a wide range of American, Eurasian and Oceanian ancient DNA, showing that the method generally works for split times of reference panel and target up to a few 10k years (Attention: Neanderthals and Denisovans do not fall into that range).

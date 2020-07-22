@@ -18,7 +18,7 @@ def give_iid_paths(iids, base_folder="./Empirical/HO/", suffix = "_roh_full.csv"
 
 def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100, 
                            gap=0.5, min_len1=2, min_len2=4, output=True, sort=True):
-    """Create the Ancient Sardinian Summary Dataframe
+    """Create ROH Summary Dataframe
     paths: List of .csv Paths to load the Data from
     snp_cm: Minimum SNP Density per cM
     min_cm: Minimal centiMorgan for Postprocessing Postanalysis
@@ -49,17 +49,18 @@ def create_combined_ROH_df(paths, iids, pops, min_cm=[4,8,12], snp_cm=100,
                         output=output, sort=sort)
     return df1
 
-
 def combine_ROH_df(df_rohs, iids=[], pops=[], min_cm=[4,8,12], snp_cm=100, 
                    gap=0.5, min_len1=2, min_len2=4, output=True, sort=True):
     """Takes list of ROH Dataframes, and creates a single
-    summary dataframe. Return single dataframe.
+    summary dataframe that is also post-processed. 
+    Return single combined dataframe.
+    If iids and pops given, add these to the dataframe
     Being wrapped around by create_combined_ROH_df
     which does the path and loading.
     df_rohs: List of individual dataframes
     iids: IIds of the Individuals (filled in columns)
     pops: Populations of the Individuals (filled in column)
-    gap, min_len1/2 are in cM (!!)"""
+    gap, min_len1 and 2 are in cM (!!)"""
                    
     # Create Place Holder Arrays
     n = len(df_rohs)
@@ -74,13 +75,21 @@ def combine_ROH_df(df_rohs, iids=[], pops=[], min_cm=[4,8,12], snp_cm=100,
                                          min_len1=min_len1/100, min_len2=min_len2/100)
 
         for j, m_cm in enumerate(min_cm):
-            df_roh = post_process_roh_df(df_roh, output=output, snp_cm=snp_cm, min_cm=m_cm)  ### Do the Postprocessing
-            max_roh_t, sum_roh[i,j], n_roh[i,j] = individual_roh_statistic(df_roh, output=output)
+            df_roh_t = post_process_roh_df(df_roh, output=output, snp_cm=snp_cm, min_cm=m_cm)  ### Do the Postprocessing
+            max_roh_t, sum_roh[i,j], n_roh[i,j] = individual_roh_statistic(df_roh_t, output=output)
             if j==0:  # Only calcuate maximum for shortest cM category (containing the bigger ones)
                 max_roh[i] = max_roh_t
 
     ### Create the Dataframe with the basic entries:
-    d = {"iid": iids, "pop" : pops, "max_roh": max_roh*100}
+    d = {"max_roh": max_roh*100}
+    
+    ### Add fields if given
+    if len(iids)>0:
+        d['iid'] = iids
+        
+    if len(pops)>0:
+        d['pop'] = pops
+
     df1 = pd.DataFrame(d) 
     
     ### Add Values for varying cM cutoffs:
@@ -130,22 +139,22 @@ def post_process_roh_df(df, min_cm=4, snp_cm=60, output=True):
     """Post Process ROH Dataframe. Filter to rows that are okay.
     min_cm: Minimum Length in CentiMorgan
     snp_cm: How many SNPs per CentiMorgan"""
-    densities = df["length"] / (df["lengthM"] * 100)
-    densities_ok = (densities > snp_cm)
-    
-    df["SNP_Dens"] = densities
-    
-    # Filter for SNP Density:
-    df = df[densities_ok]
-    
+
     # Filter for Length:
     length_okay = (df["lengthM"] * 100) > min_cm
     
-    if output==True:
-        print(f"Min SNPs per cM> {snp_cm}: {np.sum(densities_ok)}/{len(densities_ok)}")
-        print(f"> {min_cm} cM: {np.sum(length_okay)}/{len(length_okay)}")
+    # Filter for SNP Density:
+    densities = df["length"] / (df["lengthM"] * 100)
+    densities_ok = (densities > snp_cm)
+    df["SNP_Dens"] = densities
     
-    df = df[length_okay]
+    df = df[densities_ok & length_okay].copy()
+    
+    if output==True:
+        print(f"> {min_cm} cM: {np.sum(length_okay)}/{len(length_okay)}")
+        print(f"Of these Min SNPs per cM> {snp_cm}: \
+              {np.sum(densities_ok & length_okay)}/{np.sum(length_okay)}")
+        
     return df
 
 def individual_roh_statistic(df, output=True):
@@ -202,6 +211,65 @@ def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv",
     if len(save_path) > 0:
         df1.to_csv(save_path, sep="\t", index=False)
         print(f"Saved to: {save_path}")
+    
+    return df1
+
+##########################################################
+##### Create X ROH dataframes from multiple pairs of Individuals
+
+def pp_X_roh(iids=[], base_folder="./Empirical/Eigenstrat/Reichall/", 
+             folder_ch="chrX/", suffix='roh.csv', 
+             meta_path="", meta_sep=",",
+             clst_col="clst", iid_col="iid",
+             save_path="", min_cm=[4,8,12,20], snp_cm=50, 
+             gap=0.5, min_len1=2.0, min_len2=4.0,
+             output=True, sort=False):
+    """Post-process pairs of X Chromosomes. Return dataframe of X Chromosome IBDs.
+    iids: List of pairs of X Chromosomes. 
+    Use Meta Data from meta_path to set clusters (only if meta_path given)
+    Other parameters see pp_individual_roh"""
+    ### Sanity Checks:
+    assert(len(iids)>0)
+    assert(len(iids[0])==2)
+    
+    iids = np.array(iids) # To ensure proper handling
+    
+    ### Look up Individuals in meta_df and extract relevant sub-table
+    clsts = []
+    if len(meta_path)>0:
+        df = pd.read_csv(meta_path, sep=meta_sep)
+        dct = pd.Series(df[clst_col].values, index=df[iid_col]).to_dict()
+        clsts = np.array([[dct[m], dct[n]] for m,n in iids])
+        
+    ### Produce Paths to Load
+    iid_paths = [("_".join(iid) + "/" + folder_ch) for iid in iids]
+    paths = give_iid_paths(iid_paths, base_folder=base_folder, suffix=suffix)
+    paths = np.array(paths) # For better handling
+    
+    ### Check if paths exist
+    idx = np.array([os.path.exists(p) for p in paths])
+    if output:
+        print(f"Found {np.sum(idx)} of {len(idx)} pairs")
+    
+    ### Load paths
+    df_rohs = [pd.read_csv(p) for p in paths[idx]] ### read all dataframes
+        
+    ### Add IIDs and Populations
+    #return df_rohs
+    df1 = combine_ROH_df(df_rohs, min_cm=min_cm, snp_cm=snp_cm, 
+                   gap=gap, min_len1=min_len1, min_len2=min_len2, output=output, sort=sort)
+    
+    df1["iid1"] = iids[idx, 0]
+    df1["iid2"] = iids[idx, 1]
+    
+    if len(clsts)>0:
+        df1["clst1"] = clsts[idx,0]
+        df1["clst2"] = clsts[idx,1]
+        
+    ### Save if needed
+    if len(save_path) > 0:
+        df1.to_csv(save_path, sep="\t", index=False)
+        print(f"Saved combined ROH (n={len(df1)}) to: {save_path}")
     
     return df1
 

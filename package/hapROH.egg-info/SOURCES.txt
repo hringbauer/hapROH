@@ -1,10 +1,12 @@
 LICENSE
 MANIFEST.in
 README.md
+change_log.md
 setup.py
 upload_instructions.md
 .ipynb_checkpoints/MANIFEST-checkpoint.in
 .ipynb_checkpoints/README-checkpoint.md
+.ipynb_checkpoints/change_log-checkpoint.md
 .ipynb_checkpoints/setup-checkpoint.py
 .ipynb_checkpoints/upload_instructions-checkpoint.md
 hapROH.egg-info/PKG-INFO
@@ -59,6 +61,7 @@ hapsburg/PackagesSupport/__pycache__/sqrt_scale.cpython-36.pyc
 hapsburg/PackagesSupport/__pycache__/sqrt_scale.cpython-37.pyc
 hapsburg/PackagesSupport/h5_python/__init__.py
 hapsburg/PackagesSupport/h5_python/h5_functions.py
+hapsburg/PackagesSupport/h5_python/.ipynb_checkpoints/h5_functions-checkpoint.py
 hapsburg/PackagesSupport/h5_python/__pycache__/h5_functions.cpython-36.pyc
 hapsburg/PackagesSupport/h5_python/__pycache__/h5_functions.cpython-37.pyc
 hapsburg/PackagesSupport/loadEigenstrat/__init__.py

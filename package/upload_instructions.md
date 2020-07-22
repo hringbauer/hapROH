@@ -12,7 +12,7 @@ module load python/3.7.0
 Update version in setup.py to next version number (if wanted)
 
 ### Update setuptools. 
-If needed, delete previous dist/* (or be specific below what to upload)
+Delete previous dist/* (alternatively be specific below what to upload)
 
 python3 setup.py sdist
 

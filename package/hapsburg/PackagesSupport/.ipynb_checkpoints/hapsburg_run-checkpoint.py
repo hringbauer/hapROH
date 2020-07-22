@@ -151,3 +151,36 @@ def hapsb_ind(iid, chs=range(1,23),
                                 prefix_out=prefix_out, file_result=file_result)
     if output:
         print(f"Run finished successfully!")
+        
+        
+############################################################################
+### Run multiple X Chromosomes in parallel
+
+def hapsb_chromXs(iids=[["I15595","I15970"]], ch=23, processes=1, 
+                  path_targets = "/project2/jnovembre/hringbauer/caribbean_roh/data/eigenstrat/v421_CaribIllu1000GancSam_bySite_PAM",
+                  h5_path1000g = "/project2/jnovembre/hringbauer/HAPSBURG/Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
+                  meta_path_ref = "/project2/jnovembre/hringbauer/HAPSBURG/Data/1000Genomes/Individuals/meta_df_all_sex.tsv",
+                  folder_out = "/project2/jnovembre/hringbauer/HAPSBURG/Empirical/dumpster/testx/", prefix_out="",
+                  e_model="readcount", p_model="EigenstratX", post_model="IBD_X",
+                  delete=False, output=True, save=True, save_fp=False, 
+                  n_ref=2504, diploid_ref=False, exclude_pops=[], readcounts=True, random_allele=False,
+                  roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
+                  cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=True, combine=False, 
+                  file_result="_roh_full.csv"):
+    """Run multiple X chromosome pairs. iids is list of two individuals.
+    For parameters see hapsb_chrom. Additional:
+    iids: list of pairs of iids to run [list of lists of len 2]
+    processes: How many processes to use [int]. Think about sufficient memory.
+    """
+    ### Sanity Checks
+    assert(len(iids)>=1)
+    assert(len(iids[0])==2)
+    
+    ### Prepare the Parameters for each Individual pairs
+    prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
+            post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
+            roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff_post, roh_min_l, logfile] for iid in iids]
+    assert(len(prms[0])==26)   # Sanity Check
+                            
+    ### Run the analysis in parallel
+    multi_run(hapsb_chrom, prms, processes = processes)            

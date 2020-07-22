@@ -332,8 +332,8 @@ class PreProcessingHDF5(PreProcessing):
             np.savetxt(folder + "readcounts.csv", read_counts,
                        delimiter=",",  fmt='%i')
 
-        if self.output == True:
-            print(f"Successfully saved to: {folder}")
+        if self.output:
+            print(f"Successfully saved target individual data to: {folder}")
 
     def extract_snps_hdf5(self, h5, ids, markers, diploid=False, dtype=np.int8):
         """Extract from h5 on ids and markers.
