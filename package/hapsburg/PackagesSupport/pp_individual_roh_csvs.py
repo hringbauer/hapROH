@@ -248,8 +248,8 @@ def pp_X_roh(iids=[], base_folder="./Empirical/Eigenstrat/Reichall/",
     
     ### Check if paths exist
     idx = np.array([os.path.exists(p) for p in paths])
-    if output:
-        print(f"Found {np.sum(idx)} of {len(idx)} pairs")
+    
+    print(f"Found {np.sum(idx)} of {len(idx)} pairs output. Combining...")
     
     ### Load paths
     df_rohs = [pd.read_csv(p) for p in paths[idx]] ### read all dataframes

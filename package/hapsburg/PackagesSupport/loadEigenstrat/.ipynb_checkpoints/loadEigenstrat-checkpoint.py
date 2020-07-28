@@ -191,7 +191,7 @@ def is_binary_file(path, extension=".geno"):
     binary=False
     try:
         with open(path + extension, "r") as f:
-            t = f.read()
+            t = f.readline()
     except UnicodeDecodeError:
         binary=True
     return binary

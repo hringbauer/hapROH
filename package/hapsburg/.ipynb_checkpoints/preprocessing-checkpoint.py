@@ -568,7 +568,7 @@ class PreProcessingEigenstratX(PreProcessingEigenstrat):
         
         out_folder = os.path.join(self.folder_out, 
                                   str(iid[0]) + "_" + str(iid[1]), 
-                                  "chrX", self.prefix_out_data)
+                                  "chr"+str(self.ch), self.prefix_out_data)
 
         if not os.path.exists(out_folder):   # Create Output Folder if needed
             if self.output == True:
