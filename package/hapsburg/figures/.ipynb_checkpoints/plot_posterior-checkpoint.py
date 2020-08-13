@@ -69,7 +69,7 @@ def process_read_counts(read_counts, m=1):
 
 def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=True, 
                       plot=True, cm_lim=[], m=1, groundtruth=False, readcount=False, 
-                     plot_hets=True, plot_calls=True, plot_post=True, scale=1.0, min_cm=1.0,
+                      plot_hets=True, plot_calls=True, plot_post=True, scale=1.0, min_cm=1.0,
                       figsize=(14,4), title="", post_c="maroon", het_c="blue"):
     """Plot Viterbi Path of Haplotype copying.
     save: Whether to save the results.
@@ -79,7 +79,8 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
     groundtruth: Whether to plot Ground Truth (saved as csv)
     plot_hets: Whether to plot Heterozygote Markers
     plot_calls: Whether to plot Calls
-    plot_post: Whether to plot posterior"""
+    plot_post: Whether to plot posterior
+    plot: Whether to show the plot in python"""
     
     cmap = cm.get_cmap("viridis")
     norm = plt.Normalize(-8, 0)
