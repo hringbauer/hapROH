@@ -354,3 +354,12 @@ def prep_dfs_plot_exact(df, pops=[], col_group = "pop",
         df_plots = [df.sort_values(by=f"sum_roh>{cm_sort}", ascending=False) for df in df_plots]
     lgths = [len(df) for df in df_plots]
     return df_plots, lgths
+
+def prep_xlabels(plot_dfs, col_age="age"):
+    """Prepare vector of x labels
+    corresponding to ages of individuals"""
+    xlabels = []
+    for df in plot_dfs:
+        lbls = [str(int(x)) + " BP" for x in df[col_age].values]
+        xlabels.append(lbls)
+    return xlabels

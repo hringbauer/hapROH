@@ -14,6 +14,7 @@ from statsmodels.base.model import GenericLikelihoodModel
 from bisect import bisect_left, bisect_right
 import pandas as pd
 from hapsburg.PackagesSupport.roh_expectations import Expected_Roh
+from hapsburg.PackagesSupport.pp_individual_roh_csvs import give_iid_paths
 
 
 class MLE_ROH_Ne(GenericLikelihoodModel):
@@ -30,6 +31,7 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
     min_len, max_len = 4.0, 20.0  # Minimum/maximum bin length actually analyzed    #4-15
     min_ind, max_ind = 0, 0  # Indices for start stop of bins of interest
     mid_bins = []  # Array for the bins
+    chr_lgts=[] # The Lengths of the Chromosome [in centimorgan!]
     
     fp_rate = []  # Array for false positives
     theoretical_shr = []  # Array for theoretical expected sharing per bin
@@ -45,7 +47,8 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
     
     def __init__(self, endog=[], exog=[], start_params=[1000,],
                  min_len=4, max_len = 20.0,
-                 error_model=False, output=False, **kwds):
+                 error_model=False, output=False, 
+                 chr_lgts=[], **kwds):
         '''endog: List of n individual ROH lists [roh_list1, ..., roh_listn]
         output: Whether to plot detailled output strings
         start_params: Where to start the fit
@@ -55,7 +58,7 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
             exog = np.zeros(len(endog), dtype="int8") # Just empty placeholder
         self.initialize_ll_model(endog=endog, exog=exog, **kwds)
         self.set_params(start_params=start_params, error_model=error_model, output=output,
-                        min_len=min_len, max_len=max_len)
+                        min_len=min_len, max_len=max_len, chr_lgts=chr_lgts)
         
         self.create_bins()  # Create the Mid Bin vector
 
@@ -89,15 +92,43 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
     ######################################################################################
 
     def fit(self, start_params=None, maxiter=10000, maxfun=5000, **kwds):
-        # we have one additional parameter and we need to add it for summary
+        """Fit Parameters via fit method of statsmodels"""
         if start_params == None:
             start_params = self.start_params  # Set the starting parameters for the fit
         fit = super(MLE_ROH_Ne, self).fit(start_params=start_params,
                                      maxiter=maxiter, maxfun=maxfun,
                                      **kwds)
         self.estimates = fit.params ### Save the estimates in field
-        self.summary = fit.summary()
+        #self.summary = fit.summary()
+        self.summary = self.get_summ_as_df(summary=fit.summary())
         return fit
+    
+    def fit_ll_profile(self, ns=[],level=1.92):
+        """Fit Parameters via likelihood profile.
+        Only works for 1D search.
+        Return lower, upper Ne supported by 
+        ns: N values to test.
+        level: loglikelihood difference to use."""
+
+        if len(ns)==0:
+            ns = np.logspace(2,5,num=100) # Default parameters
+            
+        ### Calculate Log Likelihoods
+        lls = [self.loglikeobs(params=[n]) for n in ns]
+        i = np.argmax(lls)  # Get Maximum
+        m = ns[i]   # Maximum N
+        l = lls[i] - level  # The ll line for thresholding
+        high = np.where(lls>=l)[0] # All values above threshold
+        c0, c1 = ns[high[0]], ns[high[-1]]
+        
+        ### Save the result as dataframe
+        df_res = get_default_res()
+        df_res["coef"]=m
+        df_res["0.025"]=c0
+        df_res["0.975"]=c1
+        df_res["n"]= len(self.endog)
+        self.summary = df_res  # Set the result dataframe
+        return df_res
     
     ######################################################################################
     
@@ -228,6 +259,24 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
             print("Total Nr. of Blocks within Min and Max Length: %i" % bl_nr)
         return bl_nr
     
+    def ci_li(self, ns=[],level=1.92, update=True):
+        """Get confidence Intervall based on likelihood ration test.
+        Return lower, upper Ne supported by 
+        ns: N values to test.
+        level: loglikelihood difference to use.
+        update: Whether to update Confidence Intervals in the fit"""
+        if len(ns)==0:
+            ns = np.logspace(2,5,num=100)
+        lls = [self.loglikeobs(params=[n]) for n in ns]
+        l = np.max(lls) - level  # The line to find
+        high = np.where(lls>=l)[0] # All values above threshold
+        c0, c1 = ns[high[0]], ns[high[-1]]
+        
+        if update:
+            self.summary["0.025"] = c0
+            self.summary["0.975"] = c1
+        return c0, c1
+    
     ##################################################################################
     ### Block Density Function (Overwrite that for other Models)
     
@@ -237,21 +286,25 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
         l = l / 100 # Switch to Morgan (for formula)
         
         es = Expected_Roh() # Load expected ROH class containing function
-        y = es.roh_pdf_allchr_N(x=l, N=n_e) / 100 # Calculate density per Centimorgan
+        chr_lgts=self.chr_lgts
+        if len(chr_lgts)>0:
+            chr_lgts=np.array(chr_lgts)/100 # Transform to centimorgan
+        y = es.roh_pdf_allchr_N(x=l, N=n_e, chr_lgts=chr_lgts) / 100 # Calculate density per Centimorgan
         return y
     
     ##################################################################################
-    ### Block Density Function (Overwrite that for other Models)
+    ### Output function
     
-    def get_summ_as_df(self, summary=False):
-        """Transforms summary to pandas dataframe.
+    def get_summ_as_df(self, summary):
+        """Transforms statsmodels summary to pandas dataframe.
         If no summary given use the last saved one
         Return that dataframe"""
-        if not summary:
-            summary = self.summary
+        #if not summary:
+        #    summary = self.summary
         results_as_html = summary.tables[1].as_html()
         df = pd.read_html(results_as_html, header=0, index_col=0)[0]
         df.rename(columns={'[0.025':'0.025', "0.975]":"0.975"}, inplace=True)
+        df.drop(columns=["z","P>|z|"], inplace=True)
         return df
     
 ############################################################    
@@ -292,3 +345,24 @@ def inds_roh_from_pdf(n_ind=5, ne=500, bin_range=[0.04, 0.5],
             l=l*100
         roh_vec.append(l)
     return roh_vec
+
+############################################################
+### Helper Functions related to Ne estimation.
+
+def load_roh_vec(iids=[], base_path = "./output/roh/", suffix="_roh_full.csv"):
+    """Load and return ROH length vector """
+    paths = give_iid_paths(iids, base_folder=base_path, suffix=suffix)
+    roh_dfs = [pd.read_csv(p) for p in paths]
+    roh_vec = [df["lengthM"].values*100 for df in roh_dfs]
+    return roh_vec
+
+def get_default_res():
+    """REturn default line of results dataframe.
+    Used for unfittable scenarios"""
+    dct= {"coef":[np.nan],
+          "std err":[np.nan],
+          "0.025":[np.nan],
+          "0.975":[np.nan],
+          "n":[np.nan]}
+    df = pd.DataFrame(dct)
+    return df

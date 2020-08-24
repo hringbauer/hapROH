@@ -1,3 +1,7 @@
+## 0.1a7, August 24th 2020, Harald Ringbauer
+- Added likelihood profile inference for Ne estimator, including for 95% CI intervalls
+- Added support for different chromosome lengths for Ne estimator
+
 ## 0.1a6, July 23th 2020, Harald Ringbauer
 - Fixed bug that for big eigenstrat sizes the automatic eigenstrat is_binary checker got stuck.
 - Minor quality of life improvements for X data. Improved and more consistent output (using chr23 instead of chrX)
