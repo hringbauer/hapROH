@@ -315,6 +315,40 @@ def extract_sub_df_geo_kw(df, lat0, lat1, lon0, lon1, keywords=[], output=True):
         print(f"Found {len(df_m)} Individuals; {len(df1)} from Geography")
     return df_m
 
+################################################################
+##### For post-processing into combined dataframe
+##### with all individual ROH/IBD
+
+def get_post_processed_df(iid, base_path="./PATH/",
+                          suffix="_roh_full.csv", snp_cm=50, gap=0.5, 
+                          min_len1=2, min_len2=4, output=False):
+    """Return fully post-processed Dataframe from standard raw ROH/IBD dataframe. 
+    Lengths are given in cM"""
+    df = pd.read_csv(base_path + iid + suffix)
+    df = merge_called_blocks(df, max_gap=gap/100, 
+                        min_len1=min_len1/100, min_len2=min_len2/100, output=output)
+    df = post_process_roh_df(df, min_cm=2, snp_cm=snp_cm, output=output)
+    return df
+
+def give_pair_iids(meta_path="./PATH.tsv", sep_meta="\t",
+                   col_sex="sex", sex="M", col_iid="iid", n_cov_snp=4e5):
+    """Get list of all pairs of IIDs from metafile.
+    sex: Value in sex column
+    n_cov_snp: Minium Number of covered SNPs
+    """
+    df = pd.read_csv(meta_path, sep=sep_meta)
+    print(f"Loaded {len(df)} Indivdiuals")
+    df_m = df[(df[col_sex]==sex)]
+    print(f"Filtered to {len(df_m)} males")
+    df_m = df_m[df_m["n_cov_snp"] > n_cov_snp]
+    print(f"Filtered to {len(df_m)} with cov > {n_cov_snp} SNPs")
+
+    ### Produce all pairs of iids
+    iids = df_m[col_iid].values
+    iid_pairs = list(it.combinations(iids, 2))
+    iid_pairs = [list(pair) for pair in iid_pairs]
+    return iid_pairs
+
 
 #################################################################
 ##### More utility functions
@@ -331,9 +365,3 @@ def calc_average_roh(df, cms=[4,8,12,20],
     for l in labels:
         df_new[l] = np.mean(df[l])
     return df_new
-
-
-
-
-
-
