@@ -103,7 +103,7 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
         self.summary = self.get_summ_as_df(summary=fit.summary())
         return fit
     
-    def fit_ll_profile(self, ns=[],level=1.92):
+    def fit_ll_profile(self, ns=[],level=1.92,num=1000):
         """Fit Parameters via likelihood profile.
         Only works for 1D search.
         Return lower, upper Ne supported by 
@@ -111,10 +111,10 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
         level: loglikelihood difference to use."""
 
         if len(ns)==0:
-            ns = np.logspace(2,5,num=100) # Default parameters
+            ns = np.logspace(2,5,num=num) # Default parameters
             
         ### Calculate Log Likelihoods
-        lls = [self.loglikeobs(params=[n]) for n in ns]
+        lls = [self.loglike(params=[n]) for n in ns]
         i = np.argmax(lls)  # Get Maximum
         m = ns[i]   # Maximum N
         l = lls[i] - level  # The ll line for thresholding
