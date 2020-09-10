@@ -1,7 +1,7 @@
 # hapROH
 Software to call ROH from ancient and present-day DNA using reference haplotypes.
 Author: Harald Ringbauer, 2020
-@all rights reserved
+@GNU General Public License v3.0
 
 python code/notebooks are all in python3
 
