@@ -244,13 +244,13 @@ def fit_gp(x, y, sqrt=True, in_lengthscale=1000, in_noise=2.0,
 
 ####################################################
 ##### Helper Functions to prepare plotting Dataframes
-def extract_pop(df, age_range=[], pop=""):
+def extract_pop(df, age_range=[], pop="", col="region"):
     """Assumes plotting Dataframe is pre-produced.
     Return Legend as well"""
     mod_idx = (df["age"]==0) ## Ancient Indices
     anc_idx = ~mod_idx
     if len(pop)>0:
-        df = df[df["region"]==pop].copy()
+        df = df[df[col]==pop].copy()
     if len(age_range)>0:
         df = extract_df_age(df, age_range[0], age_range[1]).copy()
     return df
@@ -363,11 +363,11 @@ def plot_map_time(df, figsize=(20,4), width_ratios=[1,10], height_ratios=[20,1],
     cm: Minimum Block length shown
     cm1: Maximum Block length. (if 0 none)
     frac: Fraction for Lowess Smoothin (if 0 no lowess smoothing shown)
-    savepath: Where to save (if given)
+    savepath: Where to save (if empty string, nothing is saved)
     cmap_m, vrange_m: Color Map (Keyword which one to use) and Range for Map Plots
     crs_m: Corners for the Map (Lat0, Lat1, Lon0, Lon1)-Vector
     lgth_s: Length scale of the Kerne to fit
-    std_band: Standard Deviation of Estimate to plot
+    std_band: Standard Deviation of Estimate to plot. If 0, no GP confidence band is shown.
     ec: Edge Color of Scatter Plots
     lw: Line Width of Scatter Plots
     bottomrow: Whether plot is in bottom (plot xlabel then)

@@ -6,7 +6,7 @@ Summary of update and upload instructions from https://packaging.python.org/tuto
 cd /project2/jnovembre/hringbauer/HAPSBURG/package
 
 On Chicago cluster:  
-module load python/3.7.0
+module load python
 
 ### Create the Source Package 
 Update version in setup.py to next version number (if wanted)
@@ -36,3 +36,5 @@ https://packaging.python.org/tutorials/packaging-projects/
 
 ### for version numbers:
 https://www.python.org/dev/peps/pep-0440/
+
+

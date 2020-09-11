@@ -11,7 +11,7 @@
 #SBATCH --error=nb-log-%J.err
 
 # module load python/3.7.0
-module load python/cpython-3.7.0
+module load python
 module load plink
 module load bcftools
 
