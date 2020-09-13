@@ -5,7 +5,6 @@ Class for loading Eigenstrat Genotype Data from geno file.
 import numpy as np
 import pandas as pd
 
-and 
 class EigenstratLoad(object):
     """Class that loads and postprocesses Eigenstrats"""
     base_path = "./Data/ReichLabEigenstrat/Raw/v37.2.1240K"

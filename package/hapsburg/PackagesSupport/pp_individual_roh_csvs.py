@@ -242,7 +242,10 @@ def pp_X_roh(iids=[], base_folder="./Empirical/Eigenstrat/Reichall/",
         clsts = np.array([[dct[m], dct[n]] for m,n in iids])
         
     ### Produce Paths to Load
-    iid_paths = [("_".join(iid) + "/" + folder_ch) for iid in iids]
+    if len(folder_ch)>0:
+        iid_paths = [("_".join(iid) + "/" + folder_ch) for iid in iids]
+    else:
+        iid_paths = [("_".join(iid)) for iid in iids]
     paths = give_iid_paths(iid_paths, base_folder=base_folder, suffix=suffix)
     paths = np.array(paths) # For better handling
     

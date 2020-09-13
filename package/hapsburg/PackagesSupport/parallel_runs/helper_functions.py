@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import sys
 import os
+from shutil import copyfile
 import multiprocessing as mp
 
 def prepare_path(base_path, iid, ch, prefix_out, logfile=True):
@@ -84,6 +85,26 @@ def combine_individual_data(base_path, iid, delete=False, chs=range(1,23),
         os.rmdir(os.path.join(base_path, str(iid), ""))  # Remove the Individual Folder
     
     return full_df
+
+def move_X_to_parent_folder(base_path, iid, delete=False, ch=23, 
+                            prefix_out="", file_result="_roh_full.csv"):
+    """Take ROH result table from X folder, and move it to parent folder. 
+    Delete the original result folder"""
+    iid_file = str(iid[0])+"_"+str(iid[1])
+    path_roh = os.path.join(base_path, iid_file, "chr"+str(ch), prefix_out, "roh.csv") 
+    path_save = os.path.join(base_path, iid_file + file_result)
+    
+    copyfile(path_roh, path_save)  # use shutil version
+    
+    ### Delete files in folder if required
+    if delete == True:
+        path_folder = os.path.join(base_path, iid_file, "chr"+str(ch), prefix_out, "") 
+
+        for root, _, files in os.walk(path_folder):
+            for file in files:
+                os.remove(os.path.join(root, file))
+        os.rmdir(path_folder) # Remove the Chromosome Folders
+        os.rmdir(os.path.join(base_path, iid_file, ""))  # Remove the Individual Folder
 
 ######################################################
 ### For running bcftools & plink

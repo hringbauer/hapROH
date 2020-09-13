@@ -10,7 +10,7 @@ import multiprocessing as mp
 import pandas as pd
 
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
-from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data
+from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data, move_X_to_parent_folder
 
 
 def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], 
@@ -183,4 +183,15 @@ def hapsb_chromXs(iids=[["I15595","I15970"]], ch=23, processes=1,
     assert(len(prms[0])==26)   # Sanity Check
                             
     ### Run the analysis in parallel
-    multi_run(hapsb_chrom, prms, processes = processes)            
+    multi_run(hapsb_chrom, prms, processes = processes)  
+    
+    ### Move results to main folder if needed
+    if len(file_result)>0:
+        for iid in iids:
+            move_X_to_parent_folder(base_path=folder_out, 
+                                    iid=iid, delete=delete, ch=ch, 
+                                    prefix_out=prefix_out, file_result=file_result)
+    
+    
+    
+    

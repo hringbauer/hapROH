@@ -201,7 +201,77 @@ def gl_to_pl(gl):
     pl = np.clip(pl, a_min=0, a_max=99)  # Clip to 99    
     return pl
 
+##################################################
+### Functions for Merging in Maps and other fields
 
+def merge_in_ld_map(path_h5, path_snp1240k, chs=range(1,23)):
+    """Merge in MAP from eigenstrat .snp file into
+    hdf5 file. Save modified h5 in place 
+    path_h5: Path to hdf5 file to modify.
+    path_snp1240k: Path to Eigenstrat .snp file whose map to use
+    chs: Which Chromosomes to merge in HDF5 [list]"""
+    with h5py.File(path_h5, "r") as f:
+        print("Merging in LD Map into HDF5...")
+        print("Loaded %i variants." % np.shape(f["calldata/GT"])[0])
+        print("Loaded %i individuals." % np.shape(f["calldata/GT"])[1])
+
+        ### Load Eigenstrat
+        df_snp = pd.read_csv(path_snp1240k, header=None, sep=r"\s+", engine="python")
+        df_snp.columns = ["SNP", "chr", "map", "pos", "ref", "alt"]
+
+        rec = np.zeros(len(f["variants/POS"]))  # Create the array for vector
+
+        for ch in chs:
+            df_t = df_snp[df_snp["chr"] == ch]
+            print(f"Loaded {len(df_t)} Chr.{ch} 1240K SNPs.")
+
+            idx_f = f["variants/CHROM"][:]==str(ch)
+            if np.sum(idx_f)==0:  # If no markers found jump to next chromosome
+                continue
+            rec_ch = np.zeros(np.sum(idx_f))
+
+            ### Intersect SNP positions
+            its, i1, i2 = np.intersect1d(f["variants/POS"][idx_f], df_t["pos"], return_indices=True)
+
+            l = np.sum(idx_f)
+            print(f"Intersection {len(i2)} out of {l} HDF5 SNPs")
+
+            ### Extract Map positions
+            rec_ch[i1] = df_t["map"].values[i2]  # Fill in the values in Recombination map
+
+            ### Interpolate
+            ids0 = np.where(rec_ch == 0)[0] # Values not filled in yet
+            print(f"Interpolating {np.sum(ids0)} variants.")
+            rec_ch[ids0] = (rec_ch[ids0-1] + rec_ch[ids0+1]) / 2.0 # Interpolate
+
+            ### Make sure that sorted
+            assert(np.all(np.diff(rec_ch)>=0))  # Assert the Recombination Map is sorted! (no 0 left and no funky stuff)
+            rec[idx_f]=rec_ch # Set the Map position for chromosome indices
+            print(f"Finished Chromosome {ch}")
+    
+    ### Now create the new column in hdf5
+    print("Adding map to HDF5...")
+    with h5py.File(path_h5, 'a') as f0:
+        group = f0["variants"]
+        l = len(f0["variants/POS"])
+        group.create_dataset('MAP', (l,), dtype='f')   
+        f0["variants/MAP"][:] = rec[:]
+    print("We did it. Finished.")
+    
+def bring_over_samples(h5_original, h5_target, field="samples", dt="S32"):
+    """Bring over field from one h5 to another. Assume field does not exist in target
+    h5_original: The original hdf5 path
+    h5_target: The target hdf5 path
+    field: Which fielw to copy over 
+    """
+    samples =[]
+    with h5py.File(h5_original, "r") as f:
+        samples = f[field][:]
+    with h5py.File(h5_target, 'a') as f0:
+        f_samples = f0.create_dataset(field, (len(samples),), dtype=dt)
+        f_samples[:] = np.array(samples).astype(dt)
+    print("We did it. Finished.")
+    return
 
 ##################################################################
 ### Example Case, test whether ad_to_genotypeL does what it should
