@@ -68,7 +68,7 @@ def process_read_counts(read_counts, m=1):
 
 
 def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=True, 
-                      plot=True, cm_lim=[], m=1, groundtruth=False, readcount=False, 
+                      plot=True, cm_lim=[], ylim=[-0.1, 1.25], m=1, groundtruth=False, readcount=False, 
                       plot_hets=True, plot_calls=True, plot_post=True, scale=1.0, min_cm=1.0,
                       figsize=(14,4), title="", post_c="maroon", het_c="blue"):
     """Plot Viterbi Path of Haplotype copying.
@@ -125,7 +125,7 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
     ax1.set_xlabel("SNP", fontsize=fs)
     ax1.set_xlabel("CentiMorgan")
     
-    ax1.set_ylim([-0.05, 1.25])
+    ax1.set_ylim(ylim)
     
     if len(cm_lim)==2:
         ax1.set_xlim(cm_lim)
