@@ -1,3 +1,6 @@
+## 0.1a9, October 1st 2020, Harald Ringbauer
+- Add Requirement for psutil package in installation (needed to print memory usage)
+
 ## 0.1a8, September 1st 2020, Harald Ringbauer
 - Added function in pp_individual_roh_csvs to post-process single hapROH ROH data-frame. It creates combined dataframes with every single ROH row.
 - Updated README.md, reflecting that additional vignettes (for calling IBD on the X as well as pop size estimation) have been added.
