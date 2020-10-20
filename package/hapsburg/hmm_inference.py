@@ -37,9 +37,9 @@ class HMM_Analyze(object):
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
     ob_stat = []     # The observed State [l]
 
-    r_map = []     # The Map position of every marker [l]
-
-    v_path = []  # The inferred Viterbi Path [l]
+    r_map = []      # The Map position of every marker [l]
+    pos = []        # The pysical position of every marker [l]
+    v_path = []     # The inferred Viterbi Path [l]
     posterior = []  # The inferred Posterior Matrix [kxl] Log Space
 
     t_obj, e_obj = 0, 0  # Objects for Transition & Emission probabilities
@@ -107,13 +107,14 @@ class HMM_Analyze(object):
 
     def load_data(self, iid="", ch=0):
         """Load the External Data"""
-        gts_ind, gts, r_map, out_folder = self.p_obj.load_data(
+        gts_ind, gts, r_map, pos, out_folder = self.p_obj.load_data(
             iid=iid, ch=ch)
 
         self.ch = ch
         self.iid = iid
         self.ref_states = gts
         self.r_map = r_map
+        self.pos = pos
         self.ob_stat = gts_ind
         self.folder = out_folder
 

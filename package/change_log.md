@@ -1,5 +1,11 @@
+## 0.2a1, October 19th 2020, Harald Ringbauer
+- New additional output (after several requests from users): Give out Physical Positions in coordinates of GRCh37 in hapROH output. 
+  These are additional columns, so they do not change any expected behavior. Upgraded version to have clean cut on output change.
+- Internal: Added tests for some plotting functions to check expected behavior.
+
 ## 0.1a9, October 1st 2020, Harald Ringbauer
 - Add Requirement for psutil package in installation (needed to print memory usage)
+- Fixed bug with a lost string "random" in loadeigenstrat.
 
 ## 0.1a8, September 1st 2020, Harald Ringbauer
 - Added function in pp_individual_roh_csvs to post-process single hapROH ROH data-frame. It creates combined dataframes with every single ROH row.

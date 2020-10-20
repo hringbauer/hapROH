@@ -23,7 +23,7 @@ with open("README.md", "r") as fh:
     
 setup(
     name="hapROH",
-    version="0.1a9",  # a means alpha
+    version="0.2a1",  # a means alpha
     author="Harald Ringbauer",
     author_email="harald_ringbauer@hms.harvard.edu",
     description="Call ROH in low coverage ancient human DNA data (1240K SNPs) using modern reference panel",
