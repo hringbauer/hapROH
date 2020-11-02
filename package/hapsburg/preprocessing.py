@@ -167,7 +167,7 @@ class PreProcessingHDF5(PreProcessing):
         ### Flip target genotypes where flipped
         if self.flipstrand:
             if self.output:
-                print(f"Flipping Ref/Alt in target for {np.sum(flipped)} SNPs...")
+                print(f"Flipping Ref/Alt Allele in target for {np.sum(flipped)} SNPs...")
             flip_idcs = flipped & (gts_ind[0,:]>=0) # Where Flip AND Genotype Data
             gts_ind[:,flip_idcs] = 1 - gts_ind[:,flip_idcs]
             read_counts[0,flipped], read_counts[1,flipped] = read_counts[1,flipped], read_counts[0,flipped]
@@ -176,14 +176,15 @@ class PreProcessingHDF5(PreProcessing):
         gts = self.extract_snps_hdf5(
             f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
+        pos = self.extract_rmap_hdf5(f1000, markers_ref, col="variants/POS")  # Extract Positions
 
         # Do optional Processing Steps (based on boolean flags in class)
-        gts_ind, gts, r_map, out_folder = self.optional_postprocessing(
-            gts_ind, gts, r_map, out_folder, read_counts)
+        gts_ind, gts, r_map, pos, out_folder = self.optional_postprocessing(
+            gts_ind, gts, r_map, pos, out_folder, read_counts)
 
-        return gts_ind, gts, r_map, out_folder
+        return gts_ind, gts, r_map, pos, out_folder
 
-    def optional_postprocessing(self, gts_ind, gts, r_map, out_folder, read_counts=[]):
+    def optional_postprocessing(self, gts_ind, gts, r_map, pos, out_folder, read_counts=[]):
         """Postprocessing steps of gts_ind, gts, r_map, and the folder,
         based on boolean fields of the class."""
 
@@ -192,6 +193,7 @@ class PreProcessingHDF5(PreProcessing):
             gts_ind = gts_ind[:, called]
             gts = gts[:, called]
             r_map = r_map[called]
+            pos = pos[called]
             if len(read_counts) > 0:
                 read_counts = read_counts[:, called]
             if self.output:
@@ -199,7 +201,7 @@ class PreProcessingHDF5(PreProcessing):
                 print(f"Fraction SNPs covered: {np.shape(gts)[1] / len(called):.4f}")
 
         if self.save == True:
-            self.save_info(out_folder, r_map,
+            self.save_info(out_folder, r_map, pos,
                            gt_individual=gts_ind, read_counts=read_counts)
 
         if (self.readcounts == True) and len(read_counts) > 0:   # Switch to Readcount
@@ -214,7 +216,7 @@ class PreProcessingHDF5(PreProcessing):
                 print("Shuffling phase of target...")
             gts_ind = self.destroy_phase_func(gts_ind)
 
-        return gts_ind, gts, r_map, out_folder
+        return gts_ind, gts, r_map, pos, out_folder
 
      ################################################
      # Some Helper Functions
@@ -287,8 +289,8 @@ class PreProcessingHDF5(PreProcessing):
         if self.output:
             print(f"\nIntersection on Positions: {len(b)}")
             print(f"Nr of Matching Refs: {np.sum(same)} / {len(same)}")
-            print(f"Ref/Alt Matching: {np.sum(both_same)} / {len(both_same)}")
-            print(f"Flipped Ref/Alt Matching: {np.sum(flipped)}")
+            print(f"Ref/Alt Allele Matching: {np.sum(both_same)} / {len(both_same)}")
+            print(f"Flipped Ref/Alt Alleles for {np.sum(flipped)} SNPs")
             print(f"Together: {np.sum(flipped|both_same)} / {len(both_same)}")
 
         if self.flipstrand:
@@ -311,19 +313,22 @@ class PreProcessingHDF5(PreProcessing):
         #########################
         mm_frac = (len(i11)/len(both_same))
         if mm_frac <= self.max_mm_rate:
-            error = f"Ref/Alt Match fraction {mm_frac:.4f} < {self.max_mm_rate}"
-            error1 = " Check Ref/Alts Match!" # Maybe enter what desired version should be
+            error = f"Ref/Alt Allele Match fraction {mm_frac:.4f} < {self.max_mm_rate}"
+            error1 = " Check Ref/Alt Allele Match!" # Maybe enter what desired version should be
             raise RuntimeError(error + error1)
 
         return i11, i22, flip
 
-    def save_info(self, folder, cm_map, gt_individual=[], read_counts=[]):
+    def save_info(self, folder, cm_map, pos, gt_individual=[], read_counts=[]):
         """Save Linkage Map, Readcount and Genotype Data per Individual.
         (Needed for latter Plotting)
         Genotypes Individual: If given, save as well"""
 
         # Save the cmap
-        np.savetxt(folder + "map.csv", cm_map, delimiter=",",  fmt='%.8f')
+        if len(cm_map)>0:
+            np.savetxt(folder + "map.csv", cm_map, delimiter=",",  fmt='%.8f')
+        if len(pos)>0:
+            np.savetxt(folder + "pos.csv", pos, delimiter=",",  fmt='%i')
 
         if len(gt_individual) > 0:
             np.savetxt(folder + "hap.csv", gt_individual,
@@ -357,9 +362,10 @@ class PreProcessingHDF5(PreProcessing):
         read_counts = read_counts[markers, :].T
         return read_counts
 
-    def extract_rmap_hdf5(self, h5, markers):
-        """Get the Linkage Map from h5"""
-        r_map = np.array(h5["variants/MAP"])[markers]
+    def extract_rmap_hdf5(self, h5, markers, col="variants/MAP"):
+        """Extract a column like rec map from h5.
+        Can also be used for Positions"""
+        r_map = np.array(h5[col])[markers]
         return r_map
 
     def get_segment(self, r_map, markers_obs, markers_ref):
@@ -436,6 +442,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         ids_ref = self.get_ref_ids(f1000)
 
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
+        pos = self.extract_rmap_hdf5(f1000, markers_ref, col="variants/POS")  # Extract Positions
 
         if len(self.segM) > 0:
             r_map, markers_obs, markers_ref = self.get_segment(
@@ -456,7 +463,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         ### Flip target genotypes where flipped
         if self.flipstrand:
             if self.output:
-                print(f"Flipping Ref/Alt in target for {np.sum(flipped)} SNPs...")
+                print(f"Flipping Ref/Alt Alleles in target for {np.sum(flipped)} SNPs...")
             flip_idcs = flipped & (gts_ind[0,:]>=0) # Where Flip AND Genotype Data
             gts_ind[:,flip_idcs] = 1 - gts_ind[:,flip_idcs]
             
@@ -464,10 +471,10 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
                 read_counts[0,flipped], read_counts[1,flipped] = read_counts[1,flipped], read_counts[0,flipped]
 
         ### Do optional Processing Steps (only covered, destroy phase, save)
-        gts_ind, gts, r_map, out_folder = self.optional_postprocessing(
-            gts_ind, gts, r_map, out_folder, read_counts)
+        gts_ind, gts, r_map, pos, out_folder = self.optional_postprocessing(
+            gts_ind, gts, r_map, pos, out_folder, read_counts)
 
-        return gts_ind, gts, r_map, out_folder
+        return gts_ind, gts, r_map, pos, out_folder
 
     def extract_snps_es(self, es, id, markers):
         """Use Eigenstrat object. Extract genotypes for individual index i

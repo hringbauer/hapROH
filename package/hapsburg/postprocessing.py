@@ -43,7 +43,8 @@ class PostProcessing(object):
             setattr(self, key, value)
 
     def load_data(self, folder=""):
-        """Load and return genetic Map and Posterior0"""
+        """Load and return genetic Map [l], 
+        positions [l] and Posterior0 [l]"""
         if len(folder) == 0:
             folder = self.folder  # Use the Folder of the Class
 
@@ -53,19 +54,27 @@ class PostProcessing(object):
 
         # Load Linkage Map
         map_path = folder + "map.csv"
+        pos_path = folder + "pos.csv"
 
         if os.path.exists(map_path):
             r_map = np.loadtxt(
                 map_path, dtype="float", delimiter=",")
         else:
-            # Eventually: Runtime Warning
             print("No Genetic Map found!!! Defaulting...")
             r_map = np.arange(len(self.posterior0))
+        
+        if os.path.exists(pos_path):
+            pos = np.loadtxt(
+                pos_path, dtype="int", delimiter=",")
+        else:
+            print("No physical Positions found!!! Defaulting...")
+            pos = np.arange(len(self.posterior0))
 
         assert(len(r_map) == len(posterior0))  # Sanity Check
+        assert(len(pos) == len(posterior0))  # Sanity Check
         print(f"Successfully loaded for PP. from {folder}")
 
-        return r_map, posterior0
+        return r_map, pos, posterior0
 
     def merge_called_blocks(self, df, max_gap=0):
         """Merge Blocks in Dataframe df and return merged Dataframe"""
@@ -132,20 +141,26 @@ class PostProcessing(object):
         return roh_post
     
     def create_df(self, starts, ends, starts_map, ends_map, 
-                  l, l_map, iid, ch, roh_min_l):
+                  l, l_map, iid, ch, roh_min_l, 
+                  starts_pos=[], ends_pos=[]):
         """Create and returndthe hapROH dataframe."""
         
-        full_df = pd.DataFrame({'Start': starts, 'End': ends,
+        df_full = pd.DataFrame({'Start': starts, 'End': ends,
                                 'StartM': starts_map, 'EndM': ends_map, 'length': l,
                                 'lengthM': l_map, 'iid': iid, "ch": ch})
-        df = full_df[full_df["lengthM"] > roh_min_l]  # Cut out long blocks
+        ### Add Physical Positions if given
+        if len(starts_pos)>0:
+            df_full["StartPosGRCh37"] = starts_pos
+            df_full["EndPosGRCh37"] = ends_pos    
+            
+        df = df_full[df_full["lengthM"] > roh_min_l]  # Cut out long blocks
         return df
 
     def call_roh(self, ch=0, iid=""):
         """Call ROH of Homozygosity from Posterior Data
         bigger than cutoff
         log: Whether Posterior is given in log space"""
-        r_map, posterior0 = self.load_data()
+        r_map, pos, posterior0 = self.load_data()
         roh_post = self.modify_posterior0(posterior0)
         roh = roh_post > self.cutoff_post
 
@@ -159,15 +174,21 @@ class PostProcessing(object):
         starts = np.where(d == 1)[0]
         ends = np.where(d == -1)[0]
         l = ends - starts
-
+        
+        ### Prepare Map positions
         ends_map = r_map[ends - 1]  # -1 to stay within bounds
         starts_map = r_map[starts]
         l_map = ends_map - starts_map
         
+        ### Prepare physical positions
+        ends_pos = pos[ends - 1]  # -1 to stay within bounds
+        starts_pos = pos[starts]
+        
         # Create hapROH Dataframe
         df = self.create_df(starts, ends, starts_map, ends_map, 
                             l, l_map, iid, ch, 
-                            roh_min_l=self.roh_min_l)
+                            roh_min_l=self.roh_min_l,
+                            starts_pos=starts_pos, ends_pos=ends_pos)
 
         # Merge Blocks in Postprocessing Step
         if self.merge == True:
@@ -211,16 +232,23 @@ class PostProcessingX(PostProcessing):
     which will get stored seperately."""
     
     def create_df(self, starts, ends, starts_map, ends_map, 
-                  l, l_map, iid, ch, roh_min_l):
+                  l, l_map, iid, ch, roh_min_l,
+                  starts_pos=[], ends_pos=[]):
         """Create and returndthe hapROH dataframe.
         Difference: Here it is a IBD, so two iids are saved."""
         assert(len(iid)==2) # Sanity check
         
-        full_df = pd.DataFrame({'Start': starts, 'End': ends,
+        df_full = pd.DataFrame({'Start': starts, 'End': ends,
                                 'StartM': starts_map, 'EndM': ends_map, 'length': l,
                                 'lengthM': l_map, 
                                 'iid1': iid[0], "iid2":iid[1], "ch": ch})
-        df = full_df[full_df["lengthM"] > roh_min_l]  # Cut out long blocks
+        ### Add Physical Positions if given
+        if len(starts_pos)>0:
+            df_full["StartPosGRCh37"] = starts_pos
+            df_full["EndPosGRCh37"] = ends_pos    
+        
+        
+        df = df_full[df_full["lengthM"] > roh_min_l]  # Cut out long blocks
         return df
     
 #######################################################
