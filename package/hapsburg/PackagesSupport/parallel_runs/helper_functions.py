@@ -53,18 +53,35 @@ def split_up_roh_df(base_path, path_out, iid,
     #print(f"Saved to {save_path}")
     return
 
+def get_sep_from_extension(path):
+    """Get Seperator for csv/tsv from file extensions.
+    Either comma or tab. Return delimiter"""
+    ext = os.path.splitext(path)[1]
+    if ext==".tsv":
+        sep="\t"
+    elif ext==".csv":
+        sep=","
+    else:
+        raise RuntimeError(f"Extension {ext} of {path} invalid!")
+    return sep
+    
 def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), 
-                            prefix_out="", file_result="_roh_full.csv"):
+                            prefix_out="", file="roh.csv", file_result="_roh_full.csv"):
     """Function to merge data from one Individual Analysis (all Chromosome)
     chs: Which Chromosomes to combine"
+    file: Which files to combine. Either roh or ibd.csv
     delete: Whether to delete individual folder and contents after combining."""
-    
+    if isinstance(iid, (list, np.ndarray)):
+        assert(len(iid)==2) # Sanity Check
+        iid = "_".join(iid) # If multiple individual names given (for X IBD)
     full_df_vec =[]  # The full dataframe of inferred ROH blocks
+    
+    sep = get_sep_from_extension(file) #Get right seperator
     
     ### Walk through Chromosomes and combine the Dataframes
     for ch in chs:
-        path_roh = os.path.join(base_path, str(iid), "chr"+str(ch), prefix_out, "roh.csv") 
-        df_temp = pd.read_csv(path_roh, sep=",")
+        path_roh = os.path.join(base_path, str(iid), "chr"+str(ch), prefix_out, file) 
+        df_temp = pd.read_csv(path_roh, sep=sep)
         full_df_vec.append(df_temp)
         
     full_df = pd.concat(full_df_vec)
