@@ -111,7 +111,7 @@ def plot_chromosome(ax, l, x_pos, lw=24, df_roh = [], df_low = []):
             
 def plot_roh_individual(iid="MA89", fs=12, figsize=(8,8), savepath="", min_cm=4, snp_cm=50, gap=0.0,
                         folder="./Empirical/1240k/MarcusAncs/", prefix_out="", plot_bad=True,
-                        title=True, output=False):
+                        title="True", output=False):
     """Plot ROH in one ancient Individual.
     gap: What Gap to Merge [in cM!]
     prefix_out: If there is a folder before indivual data, e.g. e01/"""
