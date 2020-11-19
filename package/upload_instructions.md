@@ -12,17 +12,19 @@ module load python
 Use `/Notebooks/Tests/roh_caller_test.ipynb` to run various tests of expected behavior. 
 
 ### Create the Source Package 
-Update version in setup.py to next version number (if wanted)
+Update version in setup.py to next version number
 
 ### Update setuptools. 
 Delete previous ./dist/* (alternatively be specific below what to upload)
+rm ./dist/*
 
+Run the setup file:
 python3 setup.py sdist
 
 ### Upload to the Sources (copy into shell, to interactively do it!)
 ### 1) For full PyPi server
 python3 -m twine upload dist/* 
-### 2) Or for test server
+### 2) Alternatively: Upload on test server (for testing)
 python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* 
 
 

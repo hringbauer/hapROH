@@ -1,3 +1,6 @@
+## 0.2a2, November 18th 2020, Harald Ringbauer
+- Hot fix to deal with issue with new h5py-3.1.0. Now hdf5 char strings from the REF/ALT column are loaded as bytestrings that don't match the strings from eigenstrat. Implemented a conversion to string.
+
 ## 0.2a1, October 19th 2020, Harald Ringbauer
 - New additional output (after several requests from users): Give out Physical Positions in coordinates of GRCh37 in hapROH output. 
   These are additional columns, so they do not change any expected behavior. Upgraded version to have clean cut on output change.

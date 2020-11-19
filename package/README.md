@@ -73,34 +73,34 @@ There is a vignette notebook for...
 
 
 ## Dependencies
-The basic requirements for calling ROH are kept minimal and only sufficient for the core ROH calling. If you want to use extended analysis and plotting functionality: There are extra Python packages that you need to install (e.g. via `pip` or `conda`). 
+The basic requirements for calling ROH are kept minimal and only sufficient for the core ROH calling ('numpy', 'pandas', 'scipy' & 'h5py'). If you want to use extended analysis and plotting functionality: There are extra Python packages that you need to install (e.g. via `pip` or `conda`). 
 
 1) If you want to use the advanced plotting functionality, you need `matplotlib` installed.
 2) For plotting of maps, you will need `basemap` (warning: installing can be tricky on some architectures). 
 3) If you want to use the effective population size fitting functionality from ROH output, you require the package `statsmodels`.
 
 ## c Extension
-For performance reasons, the heavy lifting of the algorithm is coded into a cfunction cfunc.c. This "extension" is built via cython from cfunc.pyx
-
-The pypi package is distributed via source. This means that a c extension has to be built. This should be done automatically via the package cython (as CYTHON=True in setup.py by default).
+For performance reasons, the heavy lifting of the algorithm is coded into a c method (cfunc.c). This "extension" is built via cython from cfunc.pyx This should be done automatically via the package cython (as CYTHON=True in setup.py by default).
 
 You can also set CYTHON=False, then the extension is compiled from cfunc.c directly (experimental, not tested on all platforms).
 
 ## Development
 The code used to develop this package is deposited at the github repository: https://github.com/hringbauer/hapROH
 
-The package is exclusively in the folder `./package/`. In addition, there are a large number of notebooks used to test and extensively use the functionality in `./notebooks/`.
-
-## Contact
-If you have bug reports, suggeestions or general comments, please feel always free to contact me, I am happy to hear from you:
-harald_ringbauer AT hms harvard edu
-(fill in blanks with dots)
+The package is packed in the folder `./package/`. In addition, there are a large number of notebooks used to test and extensively use the functionality in `./notebooks/`.
 
 ## Citation
 If you use the software for a scientific publication and want to cite it, you can use:
 https://www.biorxiv.org/content/10.1101/2020.05.31.126912v1
 
-Bug reports and user suggestions will help me to improve this software - so please do not hesitate to reach out to me!
+## Contact
+If you have bug reports, suggeestions or general comments, please feel always free to contact me. I am happy to hear from you. Bug reports and user suggestions will help me to improve this software - so please do not hesitate to reach out!
+
+harald_ringbauer AT hms harvard edu
+(fill in blanks with dots)
+
+## 	Acknowledgments
+Big thank you to my co-authors Matthias Steinrücken and John Novembre. The project profited immensely from Matthias' deep knowledge about HMMs and from John's extensive experience in developing population genetics software. Countless discussions with both were key for moving forward this project. I also want to thank users who find and report software bugs (Mélanie Pruvost, Ke Wang). Their feedback helped to identify and remove errors in the program.
 
 Author:
 Harald Ringbauer, 2020

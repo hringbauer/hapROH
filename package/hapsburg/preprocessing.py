@@ -500,12 +500,12 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         ref1, alt1 = es.give_ref_alt(ch=self.ch)
         ref1, alt1 = ref1[i1], alt1[i1]  # Subset to intersection
 
-        ref2 = np.array(f_ref["variants/REF"])[i2]
+        ref2 = np.array(f_ref["variants/REF"])[i2].astype("str") # HDF5 bug where this is bytestring
         
         if len(np.shape(f_ref["variants/ALT"]))>1:  # If multiple alt alleles
-            alt2 = np.array(f_ref["variants/ALT"])[i2, 0]
+            alt2 = np.array(f_ref["variants/ALT"])[i2, 0].astype("str")
         else:
-            alt2 = np.array(f_ref["variants/ALT"])[i2]
+            alt2 = np.array(f_ref["variants/ALT"])[i2].astype("str")
 
         # Downsample to Site where both Ref and Alt are identical        
         same = (ref1 == ref2)
