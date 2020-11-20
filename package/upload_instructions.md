@@ -42,5 +42,3 @@ https://packaging.python.org/tutorials/packaging-projects/
 
 ### for version numbers:
 https://www.python.org/dev/peps/pep-0440/
-
-

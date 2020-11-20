@@ -1,3 +1,7 @@
+## 0.2a3, November 18th 2020, Harald Ringbauer
+- Introduced a function to plot a histogram of multiple indiviudals and expectation of multiple indivdiuals (plot_pde_individual can now take a list of individuals as input). 
+- Fixed typo in this function name: It is now plot_pde_individual (previously: plot_pde_indivdiual).
+
 ## 0.2a2, November 18th 2020, Harald Ringbauer
 - Hot fix to deal with issue with new h5py-3.1.0. Now hdf5 char strings from the REF/ALT column are loaded as bytestrings that don't match the strings from eigenstrat. Implemented a conversion to string.
 
