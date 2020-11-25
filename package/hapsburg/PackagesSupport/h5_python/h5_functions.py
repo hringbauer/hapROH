@@ -225,8 +225,9 @@ def merge_in_ld_map(path_h5, path_snp1240k, chs=range(1,23)):
             df_t = df_snp[df_snp["chr"] == ch]
             print(f"Loaded {len(df_t)} Chr.{ch} 1240K SNPs.")
 
-            idx_f = f["variants/CHROM"][:]==str(ch)
+            idx_f = f["variants/CHROM"][:].astype("str")==str(ch)
             if np.sum(idx_f)==0:  # If no markers found jump to next chromosome
+                print("Did not find any markers...")
                 continue
             rec_ch = np.zeros(np.sum(idx_f))
 
@@ -247,7 +248,7 @@ def merge_in_ld_map(path_h5, path_snp1240k, chs=range(1,23)):
             ### Make sure that sorted
             assert(np.all(np.diff(rec_ch)>=0))  # Assert the Recombination Map is sorted! (no 0 left and no funky stuff)
             rec[idx_f]=rec_ch # Set the Map position for chromosome indices
-            print(f"Finished Chromosome {ch}")
+            print(f"Finished Chromosome {ch}.")
     
     ### Now create the new column in hdf5
     print("Adding map to HDF5...")
