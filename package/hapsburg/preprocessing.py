@@ -341,8 +341,10 @@ class PreProcessingHDF5(PreProcessing):
             print(f"Successfully saved target individual data to: {folder}")
 
     def extract_snps_hdf5(self, h5, ids, markers, diploid=False, dtype=np.int8):
-        """Extract from h5 on ids and markers.
-        If diploid, concatenate haplotypes"""
+        """Extract genotypes from h5 on ids and markers.
+        If diploid, concatenate haplotypes along 0 axis.
+        Extract indivuals first, and then subset to SNPs
+        in Memory"""
         # Extract Reference Individuals (first haplo)
         gts = h5["calldata/GT"][:, ids, 0].astype(dtype)  # Only first IID
         gts = gts[markers, :].T       # Important: Swap of Dimensions!!

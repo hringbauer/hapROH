@@ -204,14 +204,14 @@ def gl_to_pl(gl):
 ##################################################
 ### Functions for Merging in Maps and other fields
 
-def merge_in_ld_map(path_h5, path_snp1240k, chs=range(1,23)):
+def merge_in_ld_map(path_h5, path_snp1240k, chs=range(1,23), write_mode="a"):
     """Merge in MAP from eigenstrat .snp file into
     hdf5 file. Save modified h5 in place 
     path_h5: Path to hdf5 file to modify.
     path_snp1240k: Path to Eigenstrat .snp file whose map to use
     chs: Which Chromosomes to merge in HDF5 [list]"""
     with h5py.File(path_h5, "r") as f:
-        print("Merging in LD Map into HDF5...")
+        print("Lifting LD Map from eigenstrat to HDF5...")
         print("Loaded %i variants." % np.shape(f["calldata/GT"])[0])
         print("Loaded %i individuals." % np.shape(f["calldata/GT"])[1])
 
@@ -229,7 +229,7 @@ def merge_in_ld_map(path_h5, path_snp1240k, chs=range(1,23)):
             if np.sum(idx_f)==0:  # If no markers found jump to next chromosome
                 print("Did not find any markers...")
                 continue
-            rec_ch = np.zeros(np.sum(idx_f))
+            rec_ch = np.zeros(len(idx_f), dtype="float")
 
             ### Intersect SNP positions
             its, i1, i2 = np.intersect1d(f["variants/POS"][idx_f], df_t["pos"], return_indices=True)
@@ -240,11 +240,15 @@ def merge_in_ld_map(path_h5, path_snp1240k, chs=range(1,23)):
             ### Extract Map positions
             rec_ch[i1] = df_t["map"].values[i2]  # Fill in the values in Recombination map
 
-            ### Interpolate
-            ids0 = np.where(rec_ch == 0)[0] # Values not filled in yet
-            print(f"Interpolating {np.sum(ids0)} variants.")
-            rec_ch[ids0] = (rec_ch[ids0-1] + rec_ch[ids0+1]) / 2.0 # Interpolate
-
+            ### Interpolate if Needed (map position still 0)
+            itp_idx = (rec_ch == 0)
+            if np.sum(itp_idx) > 0:   # In case we have to interpolate
+                print(f"Interpolating {np.sum(itp_idx)} variants.")
+                x = df_t["pos"] 
+                y = df_t["map"]   
+                x1 = f["variants/POS"][:][idx_f]  # Extract all positions of interest
+                rec_ch = np.interp(x1, x, y) 
+            
             ### Make sure that sorted
             assert(np.all(np.diff(rec_ch)>=0))  # Assert the Recombination Map is sorted! (no 0 left and no funky stuff)
             rec[idx_f]=rec_ch # Set the Map position for chromosome indices
@@ -252,10 +256,11 @@ def merge_in_ld_map(path_h5, path_snp1240k, chs=range(1,23)):
     
     ### Now create the new column in hdf5
     print("Adding map to HDF5...")
-    with h5py.File(path_h5, 'a') as f0:
+    with h5py.File(path_h5, write_mode) as f0:
         group = f0["variants"]
         l = len(f0["variants/POS"])
-        group.create_dataset('MAP', (l,), dtype='f')   
+        if write_mode == "a":  # If appending new data
+            group.create_dataset('MAP', (l,), dtype='f')   
         f0["variants/MAP"][:] = rec[:]
     print("We did it. Finished.")
     
