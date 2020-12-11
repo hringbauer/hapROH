@@ -188,7 +188,7 @@ class PreProcessingHDF5(PreProcessing):
         """Postprocessing steps of gts_ind, gts, r_map, and the folder,
         based on boolean fields of the class."""
 
-        if self.only_calls == True:
+        if self.only_calls:
             called = self.markers_called(gts_ind, read_counts)
             gts_ind = gts_ind[:, called]
             gts = gts[:, called]
@@ -340,21 +340,27 @@ class PreProcessingHDF5(PreProcessing):
         if self.output:
             print(f"Successfully saved target individual data to: {folder}")
 
-    def extract_snps_hdf5(self, h5, ids, markers, diploid=False, dtype=np.int8):
+    def extract_snps_hdf5(self, h5, ids, markers, diploid=False, dtype="int8"):
         """Extract genotypes from h5 on ids and markers.
         If diploid, concatenate haplotypes along 0 axis.
         Extract indivuals first, and then subset to SNPs
-        in Memory"""
-        # Extract Reference Individuals (first haplo)
-        gts = h5["calldata/GT"][:, ids, 0].astype(dtype)  # Only first IID
-        gts = gts[markers, :].T       # Important: Swap of Dimensions!!
+        in Memory.
+        Return 2D array [# haplotypes, # markers]"""
+        # Important: Swap of Dimensions [loci<->individuals]
+        if diploid:
+            gts = h5["calldata/GT"][:, ids, :] #.astype(dtype)  # Only first IID
+            print("Exctraction of hdf5 done. Subsetting...!")
+            gts = gts[markers, :, :]   
+            l, k, h = np.shape(gts)
+            assert(h==2)  #  Sanity check that diploid data
+            gts = gts.reshape((l, 2*k)) # Reduces 3D to 2D array
+            gts = gts.T # Transpose the data to right format
+        
+        else: # only first haplotype
+            gts = h5["calldata/GT"][:, ids, 0].astype(dtype)  # Only first IID
+            gts = gts[markers, :].T     
 
-        if diploid == True:   # In case diploid: Second Alllele
-            gts1 = h5["calldata/GT"][:, ids, 1].astype(dtype)
-            gts1 = gts1[markers, :].T
-            gts = np.concatenate((gts, gts1), axis=0)  # Combine dataframes
-
-        if self.output == True:
+        if self.output:
             print(f"Extraction of {len(gts)} Haplotypes complete")
         return gts
 
@@ -449,11 +455,9 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         if len(self.segM) > 0:
             r_map, markers_obs, markers_ref = self.get_segment(
                 r_map, markers_obs, markers_ref)
-
-        ### Do Extraction for Reference
-        gts = self.extract_snps_hdf5(
-            f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
-
+            
+        ######################################################
+        ### Extract genotypes: 1) For target 2) For Ref (where target covered)
         ### Extraction for target (no RC here)
         gts_ind = self.extract_snps_es(es, id_obs, markers_obs)
         
@@ -461,6 +465,26 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         read_counts = []
         if self.readcounts:
             read_counts = self.to_read_counts(gts_ind)
+        
+        ### Subset to markers called in target
+        if self.only_calls:
+            called = self.markers_called(gts_ind, read_counts)
+            gts_ind = gts_ind[:, called]
+            r_map = r_map[called]
+            pos = pos[called]
+            flipped=flipped[called]   # Where to flip markers
+            markers_ref = markers_ref[called] # Subset to IIDs to actually extract from Ref
+             
+            if len(read_counts) > 0:
+                read_counts = read_counts[:, called]
+            if self.output:
+                print(f"Reduced to markers with data: {np.sum(called)} / {len(called)}")
+                print(f"Fraction SNPs covered: {np.sum(called) / len(called):.4f}")
+            self.only_calls=False # To avoid doing it in final step again
+        
+        #### Extract the reference genotype
+        gts = self.extract_snps_hdf5(
+            f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
         
         ### Flip target genotypes where flipped
         if self.flipstrand:
@@ -555,6 +579,10 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         read_counts[0,:] = anc
         read_counts[1,:] = der
         return read_counts
+    
+########################################################################################    
+########################################################################################
+##### Processing of Chromosome X
     
 class PreProcessingEigenstratX(PreProcessingEigenstrat):
     """Class for PreProcessing Eigenstrat Files

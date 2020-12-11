@@ -33,8 +33,15 @@ def multi_run(fun, prms, processes = 4):
     processes: How many Processes to use"""
     print(f"Running {len(prms)} total jobs; {processes} in parallel.")
     
-    with mp.Pool(processes = processes) as pool:
-        results = pool.starmap(fun, prms)
+    if len(prms)>1:
+        print("Starting Pool of multiple workers...")    
+        with mp.Pool(processes = processes) as pool:
+            results = pool.starmap(fun, prms)
+    elif len(prms)==1:
+        print("Running single process...")
+        results = fun(*prms[0])
+    else:
+        raise RuntimeWarning("Nothing to run! Please check input.")
 
 def split_up_roh_df(base_path, path_out, iid, 
                     file_in="roh_info.csv", file_out="roh_gt.csv"):
@@ -159,13 +166,3 @@ def postprocess_iid(df_plink, input_base_folder, iids, ch=3, prefix_out=""):
         path_inferred = os.path.join(path_out, "roh.csv")
         split_up_inferred_roh(df_plink, iid, save_path=path_inferred)   # Split up Inferred ROH
         split_up_roh_df(input_base_folder, path_out, iid)  # Split up Ground Truth ROH
-
-
-
-
-
-
-
-
-
-
