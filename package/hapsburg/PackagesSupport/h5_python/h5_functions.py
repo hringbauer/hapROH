@@ -71,8 +71,8 @@ def save_h5(gt, ad, ref, alt, pos,
             f_gt[:] = gt
             f_samples[:] = np.array(samples).astype("S10")
 
-        if self.output:
-            print(f"Successfully saved {k} individuals to: {path}")
+        
+        print(f"Successfully saved {k} individuals to: {path}")
 
 
 def to_vcf(chrom, pos, ref, alt, gt, iids, vcf_path, header=[], pl=[]):
