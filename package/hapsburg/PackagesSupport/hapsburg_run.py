@@ -57,7 +57,7 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
     
     ### Create Folder if needed, and pipe output if wanted
     _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
-    hmm = HMM_Analyze(cython=2, p_model=p_model, e_model=e_model, post_model=post_model,
+    hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, post_model=post_model,
                       manual_load=True, save=save, save_fp=save_fp)
 
     ### Load and prepare the pre-processing Model

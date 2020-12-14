@@ -137,7 +137,8 @@ class PostProcessing(object):
 
     def modify_posterior0(self, posterior0):
         """Load and return the posterior."""
-        roh_post = 1 - np.exp(posterior0)  # Go to non-logspace probability
+        #roh_post = 1 - np.exp(posterior0)  # Go to non-logspace probability
+        roh_post = 1 - posterior0  # Go to non-logspace probability
         return roh_post
     
     def create_df(self, starts, ends, starts_map, ends_map, 

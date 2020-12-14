@@ -80,7 +80,7 @@ class Model_Emissions(Emissions):
         e_mat[e_mat == 1] = 1 - self.e_rate
         return e_mat
 
-    def give_emission_log(self, ob_stat):
+    def give_emission(self, ob_stat):
         """Return the full emission Probability directly in Log Space.
         ob_stat: Observed Genotypes [2,l] (only use 1st row)"""
         ob_stat = ob_stat[0, :]  # Do ONLY first observed Haplotype
@@ -88,16 +88,16 @@ class Model_Emissions(Emissions):
 
         n_loci = np.shape(self.ref_haps)[1]
         n_ref = np.shape(self.ref_haps)[0]
-        e_mat0 = np.zeros((n_ref + 1, n_loci), dtype=np.float)
+        e_mat = np.zeros((n_ref + 1, n_loci), dtype=np.float)
 
         # Do the HW
-        e_mat0[0, :] = np.log(self.p * (1 - self.e_rate) + (1 - self.p) * self.e_rate) * (
-            ob_stat == 1) + np.log((1 - self.p) * (1 - self.e_rate) + self.p * self.e_rate) * (ob_stat == 0)
-        e_mat0[1:, :] = np.log(self.e_rate) * (self.ref_haps != ob_stat[None, :]) + \
-            np.log(1 - self.e_rate) * (self.ref_haps == ob_stat[None, :])
-        assert(np.max(e_mat0) < 0)  # Sanity Check (In Log Space Pr. <0)
-
-        return e_mat0
+        e_mat[0, :] = (ob_stat == 1) * (self.p * (1 - self.e_rate) + (1 - self.p) * self.e_rate) + \
+                      (ob_stat == 0) * ((1 - self.p) * (1 - self.e_rate) + self.p * self.e_rate)
+        e_mat[1:, :] = (self.ref_haps != ob_stat[None, :]) * self.e_rate  + \
+                       (self.ref_haps == ob_stat[None, :]) * (1 - self.e_rate)
+        assert(np.min(e_mat) >= 0)  # Sanity Check (In Normal Space Pr. >=0)
+        assert(np.max(e_mat) <= 1)  # Sanity Check (In Normal Space Pr. <=1)
+        return e_mat
 
 ###############################
 ###############################
@@ -169,12 +169,13 @@ class RC_Model_Emissions(Model_Emissions):
         p_full = np.sum(e_mat * prob_binom[None, :, :], axis=2)
         return p_full
 
-    def give_emission_log(self, ob_stat):
+    def give_emission(self, ob_stat):
         """Return the full emission Probability directly in Log Space.
         ob_stat: Observed Readcounts [2,l] array of 0/1 """
         e_mat = self.give_emission_matrix()
-        e_mat = np.log(self.give_emission_state(ob_stat=ob_stat, e_mat=e_mat))
-        assert(np.max(e_mat) < 0)  # In LOG Space (Assume Error Model)
+        e_mat = self.give_emission_state(ob_stat=ob_stat, e_mat=e_mat)
+        assert(np.min(e_mat) >= 0)  # Sanity Check (In Log Space Pr. <0)
+        #assert(np.max(e_mat) < 0)  # In LOG Space (Assume Error Model)
         return e_mat
 
 ###############################
@@ -215,7 +216,7 @@ class Diploid_GT_Emissions(RC_Model_Emissions):
         p_full = np.sum(e_mat * prob_gt[None, :, :], axis=2)
         return p_full
 
-    def give_emission_log(self, ob_stat, dtype=np.float):
+    def give_emission(self, ob_stat, dtype=np.float):
         """Return the full emission Probability directly in Log Space.
         ob_stat: Observed Readcounts [2,l] array of 0/1 """
         ref_haps = self.ref_haps
@@ -226,21 +227,21 @@ class Diploid_GT_Emissions(RC_Model_Emissions):
         n_ref = np.shape(self.ref_haps)[0]
         assert(len(derived_gt) == n_loci)  # Sanity Check
 
-        e_mat0 = np.zeros((n_ref + 1, n_loci), dtype=dtype)
+        e_mat = np.zeros((n_ref + 1, n_loci), dtype=dtype)
 
         ### HW State
-        e_mat0[0, :] = (1 - self.p) * (1 - self.p) * (derived_gt == 0) + \
+        e_mat[0, :] = (1 - self.p) * (1 - self.p) * (derived_gt == 0) + \
             (1 - self.p) * self.p * 2 * (derived_gt == 1) + \
             self.p * self.p * (derived_gt == 2)
         ### Copying States
-        e_mat0[1:, :] = (derived_gt == 0) * (ref_haps == 0) + \
+        e_mat[1:, :] = (derived_gt == 0) * (ref_haps == 0) + \
                        (derived_gt == 2) * (ref_haps == 1)
 
         ### Do the bleeding from other states:
-        e_mat0 = e_mat0 * (1 - e_rate) + (1 - e_mat0) * e_rate / 2.0
-        e_mat0 = np.log(e_mat0)  # Go to Log Space
+        e_mat = e_mat * (1 - e_rate) + (1 - e_mat0) * e_rate / 2.0
+        #e_mat0 = np.log(e_mat0)  # Go to Log Space
 
-        return e_mat0
+        return e_mat
 
 ###############################
 ###############################
