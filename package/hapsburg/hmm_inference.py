@@ -9,7 +9,7 @@ import os                     # For Saving to Folder
 #import psutil                 # For Memory Profiling
 #import cProfile               # For Profiling
 # from func import fwd_bkwd    # Import the Python Function
-from hapsburg.cfunc import fwd_bkwd_fast, fwd_bkwd_lowmem, fwd_bkwd_scaled  # Cython Functions
+from hapsburg.cfunc import fwd_bkwd_fast, fwd_bkwd_lowmem, fwd_bkwd_scaled, fwd_bkwd_scaled_lowmem  # Cython Functions
 from hapsburg.func import fwd_bkwd_p, sloppyROH_cumsum  # Python Functions
 from hapsburg.emissions import load_emission_model     # Factory Methods
 from hapsburg.transitions import load_transition_model
@@ -90,7 +90,7 @@ class HMM_Analyze(object):
             if self.output == True:
                 print("Using Rescaled HMM.")
 
-            self.fwd_bkwd = fwd_bkwd_scaled #fwd_bkwd_lowmem
+            self.fwd_bkwd = fwd_bkwd_scaled_lowmem #fwd_bkwd_scaled
 
         else:
             self.fwd_bkwd = fwd_bkwd_p

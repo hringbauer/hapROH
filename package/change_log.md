@@ -1,3 +1,9 @@
+## 0.3a1, December 14th 2020, Harald Ringbauer
+Major update:
+- The HMM is now rescaling every SNP instead of working in SNP space. This makes the HMM 8x, and the overall runtime ~60% faster. The main bottleneck now is loading the reference data. 
+- For backward compatibility, the posterior plotting function automatically detects log/non-log space.
+- Implemented that all reference SNPs are loaded into RAM (fast for HDF5), but that only the SNPs that are covered are extracted, in a one-step downsampling (instead of two step downsampling before.)
+
 ## 0.2a3, November 18th 2020, Harald Ringbauer
 - Introduced a function to plot a histogram of multiple indiviudals and expectation of multiple indivdiuals (plot_pde_individual can now take a list of individuals as input). 
 - Fixed typo in this function name: It is now plot_pde_individual (previously: plot_pde_indivdiual).

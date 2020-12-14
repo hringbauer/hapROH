@@ -1,7 +1,7 @@
 # hapROH
-Software to identify runs of homozygosity (ROH) in ancient and present-day DNA, using a panel of reference haplotypes.
+A program to identify runs of homozygosity (ROH) in ancient and present-day DNA, using a panel of reference haplotypes. It works on data for 1240K SNPs and in the `eigenstrat` format (widely used in ancient DNA). Recommended is at least 0.3x coverage - and the software works assuming pseudo-haploid data.
 
-This package contains functions and wrappers to call ROH and functions for downstream analysis of the results (visualization and analysis).
+This package contains functions and wrappers to call ROH and functions for downstream analysis of the results (visualization and analysis). 
 
 For downward compatibility, the package uses `hapsburg` as module name, after installation you can import functions via
 `from hapsburg.XX import YY`
@@ -100,7 +100,7 @@ harald_ringbauer AT hms harvard edu
 (fill in blanks with dots)
 
 ## 	Acknowledgments
-Big thank you to my co-authors Matthias Steinrücken and John Novembre. The project profited immensely from Matthias' deep knowledge about HMMs and from John's extensive experience in developing population genetics software. Countless discussions with both were key for moving forward this project. I also want to thank users who find and report software bugs (Mélanie Pruvost, Ke Wang). Their feedback helped to identify and remove errors in the program.
+Big thank you to my co-authors Matthias Steinrücken and John Novembre. The project profited immensely from Matthias' deep knowledge about HMMs and from John's extensive experience in developing population genetics software. Countless discussions with both were key for moving forward this project. Another big thanks goes to Nick Patterson, who informed me about the benefits of working with rescaled HMMs - substantially improving the runtime of hapROH. I also want to thank users who find and report software bugs (Mélanie Pruvost, Ke Wang). Their feedback helped to identify and remove errors in the program.
 
 Author:
 Harald Ringbauer, 2020

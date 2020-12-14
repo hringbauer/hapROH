@@ -114,7 +114,11 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
     #ax.set_ylabel("Het", fontsize=fs)
     #ax.set_title("Hetorzygosity", fontsize=fs)
     if plot_post:
-        ax1.plot(gmap*100, np.exp(posterior)*scale, linewidth=2, color=post_c, label="State 0", zorder=1)
+        if posterior[0]<0: # IF ON LOG SCALE
+            print(f"Log Scale Detected for Posterior [hapROH version <0.3]. Rescaling.")
+            posterior=np.exp(posterior)
+        
+        ax1.plot(gmap*100, posterior*scale, linewidth=2, color=post_c, label="State 0", zorder=1)
         ax1.set_ylabel("Post. Probability", fontsize=fs, color=post_c)
     
     if plot_calls:
