@@ -38,14 +38,18 @@ def give_sub_df(df, pop1="La Caleta", pop2="La Caleta", col="clst",
         print(f"Found: {np.sum(idx)}\n")
     return df[idx]
 
-def give_stats_cm_bin(df, cms = [4,6,8,10,12,
-                                 14,16,18,20], output=True):
-    """print some stats about IBD dataframe df"""
+def give_stats_cm_bin(df, cms = [4,6,8,10,12], col_b="n_roh>", output=True):
+    """print some stats about IBD dataframe df
+    col_b: Start of IBD/ROH column. If one of cms 0 use open
+    upper bound"""
     counts = np.zeros(len(cms)-1)
     for i in range(len(cms)-1):
         cm1, cm2 = cms[i], cms[i+1]
-        col1, col2 = f"n_roh>{cm1}", f"n_roh>{cm2}"
-        cts = df[col1].values-df[col2].values
+        col1, col2 = f"{col_b}{cm1}", f"{col_b}{cm2}"
+        if cm2>0:
+            cts = df[col1].values-df[col2].values
+        else:
+            cts = df[col1].values
         tot_cts = np.sum(cts)
         counts[i] = tot_cts
         frac = np.mean(cts)
@@ -59,35 +63,37 @@ def give_stats_cm_bin(df, cms = [4,6,8,10,12,
 #################################################################################
 #### Plotting Functions
 
-def get_IBD_stats(df, pop1="", pop2="", col="clade", 
+def get_IBD_stats(df, pop1="", pop2="", col="clade", col_b="n_roh>",
                   cms=[4,6,8,10,12], output=False, a=0.05):
     """Get IBD fraction statistics.
     a: Signficance level
     Return fractions, confidence intervalls as well as 
-    number of pairsise comparisons"""
+    number of pairsise comparisons
+    col_b: Start of IBD/ROH column"""
     if len(pop1)>0 or len(pop2)>0:
         df1 = give_sub_df(df, pop1=pop1, pop2=pop2, col=col, output=output)
     else:
         df1 = df
     
-    counts, n = give_stats_cm_bin(df1, output=output, cms=cms)
+    counts, n = give_stats_cm_bin(df1, output=output, cms=cms, col_b=col_b)
     fracs = counts/n
     cis = get_ci_counts(counts, n, a=a)
     #stds = np.sqrt(counts)/n
     return fracs, cis, n
 
-def get_IBD_stats_pops(df, pops1=[], pops2=[], col="clade", 
+def get_IBD_stats_pops(df, pops1=[], pops2=[], col="clade", col_b="n_roh>", 
                        cms=[4,6,8,10,12], output=False, a=0.05):
     """Get IBD fraction statistics for list of pop pairs.
     Returns lists of fractions, confidence intervalls as well as 
     number of pairsise comparisons.
-    a: Significance Level"""
+    a: Significance Level
+    col_b: Start of IBD/ROH column"""
     assert(len(pops1)==len(pops2)) # Sanity Check
     fracss, ciss, ns = [], [], []
     
     for i in range(len(pops1)):
-        fracs, cis, n = get_IBD_stats(df, pop1=pops1[i], pop2=pops2[i], col=col, 
-                                      cms=cms, output=output, a=a)
+        fracs, cis, n = get_IBD_stats(df, pop1=pops1[i], pop2=pops2[i], col=col,
+                                      col_b=col_b, cms=cms, output=output, a=a)
         fracss.append(fracs)
         ciss.append(cis)
         ns.append(n)

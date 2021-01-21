@@ -28,20 +28,21 @@ def load_h5(path, output=True):
     
     return f
 
-
-def save_h5(gt, ad, ref, alt, pos, 
-            rec, samples, path, compression="gzip", ad_group=True,
-            gt_type="int8"):
-        """Create a new HDF5 File from Input Data on path.
+def save_data_h5(gt, ad, ref, alt, pos, 
+              rec, samples, path, gp=[], af=[],
+              compression="gzip", ad_group=True, gt_type="int8"):
+        """Create a new HDF5 File with Input Data.
         gt: Genotype data [l,k,2]
         ad: Allele depth [l,k,2]
         ref: Reference Allele [l]
         alt: Alternate Allele [l]
         pos: Position  [l]
         m: Map position [l]
-        samples: Sample IDs [k].
-        ad_group: whether to save allele depth [boolean]
-        gt_type: What genotype data type save [string, int8, int16...]"""
+        af: Allele Frequencies [l]
+        samples: Sample IDs [k]
+        Save genotype data as int8, readcount data as int16.
+        ad_group: whether to save allele depth
+        gt_type: What genotype data type save"""
 
         l, k, _ = np.shape(gt)  # Nr loci and Nr of Individuals
 
@@ -49,7 +50,6 @@ def save_h5(gt, ad, ref, alt, pos,
             os.remove(path)
 
         dt = h5py.special_dtype(vlen=str)  # To have no problem with saving
-
         with h5py.File(path, 'w') as f0:
             ### Create all the Groups
             f_map = f0.create_dataset("variants/MAP", (l,), dtype='f')
@@ -59,6 +59,11 @@ def save_h5(gt, ad, ref, alt, pos,
             f_alt = f0.create_dataset("variants/ALT", (l,), dtype=dt)
             f_pos = f0.create_dataset("variants/POS", (l,), dtype='int32')
             f_gt = f0.create_dataset("calldata/GT", (l, k, 2), dtype=gt_type, compression=compression)
+            if len(gp)>0:
+                f_gp = f0.create_dataset("calldata/GP", (l, k, 3), dtype="f", compression=compression) 
+            if len(af)>0:
+                f_af = f0.create_dataset("variants/AF_ALL", (l,), dtype="f", compression=compression) 
+                
             f_samples = f0.create_dataset("samples", (k,), dtype=dt)
 
             ### Save the Data
@@ -66,12 +71,21 @@ def save_h5(gt, ad, ref, alt, pos,
             if ad_group:
                 f_ad[:] = ad
             f_ref[:] = ref.astype("S1")
-            f_alt[:] = alt.astype("S1")
+            ### Alternative Allele cases:
+            if alt.ndim==2:
+                f_alt[:] = alt[:,0].astype("S1")
+            elif af.ndim==1:
+                f_alt[:] = alt.astype("S1")
+            else: 
+                raise RuntimeWarning("Allele Frequencies do not line up")          
             f_pos[:] = pos
             f_gt[:] = gt
-            f_samples[:] = np.array(samples).astype("S10")
-
-        
+            if len(gp)>0:
+                f_gp[:] = gp
+            if len(af)>0:
+                f_af[:] = af
+            max_s = np.max([len(s) for s in samples])
+            f_samples[:] = np.array(samples).astype(f"S{max_s+1}")
         print(f"Successfully saved {k} individuals to: {path}")
 
 
@@ -268,7 +282,7 @@ def bring_over_samples(h5_original, h5_target, field="samples", dt="S32"):
     """Bring over field from one h5 to another. Assume field does not exist in target
     h5_original: The original hdf5 path
     h5_target: The target hdf5 path
-    field: Which fielw to copy over 
+    field: Which field to copy over 
     """
     samples =[]
     with h5py.File(h5_original, "r") as f:
@@ -291,9 +305,28 @@ if __name__ == '__main__':
 	print(ad[i, j, :])
 	print(gl[i, j, :])
 	print(pl[i, j, :])
+    
+    
+##################################################################
+### Functions to merge two hdf5s into one genotype hdf5
 
-
-
+def concat_fields(f, f2, field1, field2, axis=0):
+    """Concatenate two hdf5 fields and return data"""
+    d=np.concatenate((f[field1][:], f2[field2][:]), axis=axis)
+    return d
+        
+def combine_hdf5s(f,g, path_new):
+    """Combine Genotype hdf5s and save at path_new
+    f,g: Genotzpe hdf5s. g will be appended to f
+    path_new: Where to save the new masive hdf5"""
+    samples = concat_fields(f, g, field1='samples', field2='samples')
+    gts = concat_fields(f, g, field1='calldata/GT', field2='calldata/GT', axis=1)
+    gp = concat_fields(f, g, field1='calldata/GP', field2='calldata/GP', axis=1)
+    
+    print("Combined... Saving the hdf5.")
+    save_data_h5(gts, [], f["variants/REF"][:], f["variants/ALT"][:], f["variants/POS"], 
+             f["variants/MAP"], samples, path_new, gp=gp, af=f["variants/AF_ALL"][:],
+              compression="gzip", ad_group=False, gt_type="int8")
 
 
 
