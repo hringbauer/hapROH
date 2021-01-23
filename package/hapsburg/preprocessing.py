@@ -113,19 +113,22 @@ class PreProcessingHDF5(PreProcessing):
         iid to extract. fs reference HDF5"""
         assert(len(f[samples_field]) == np.shape(f["calldata/GT"])[1])  # Sanity Check
 
-        id_obs = np.where(f[samples_field][:] == iid)[0]
+        id_obs = np.where(f[samples_field][:].astype("str") == iid)[0]  # Hack to convert byte string
         if len(id_obs) == 0:
-            raise RuntimeError(f"Individual {iid} not found in H5 field {samples_field}!")
+            raise RuntimeError(f"Individual {iid} not found in target H5 field {samples_field}!")
         return id_obs[0]
 
-    def get_ref_ids(self, f):
+    def get_ref_ids(self, f, samples_field="samples"):
         """OVERWRITE: Get the Indices of the individuals
         in the HDF5 to extract. Here: Allow to subset for Individuals from
-        different 100G Populations"""
+        different 100G Populations
+        samples_field: Field of all sample iids in hdf5"""
 
         # Load Meta Population File
         meta_df = pd.read_csv(self.meta_path_ref, sep="\t")
         assert(len(meta_df) == np.shape(f["calldata/GT"])[1])  # Sanity Check
+        ### Sanity check whether IIDs in Meta and HDF5 identical:
+        assert((meta_df["sample"].values == f["samples"][:].astype("str")).all())
 
         iids = np.where(~meta_df["pop"].isin(self.excluded))[0]
         if self.output:
