@@ -152,7 +152,6 @@ class RC_Model_Emissions(Model_Emissions):
         Return emission matrix [n_ref+1, n_loci] of each
         ob_stat: [2, n_loci] Matrix with Nr Ref/Alt Reads in Row0/Row1 (!)
         e_mat: Probabilities of genotypes [n_ref+1, n_loci, 3]"""
-
         e_rate = self.e_rate  # Load the error rate per read
 
         # What's the probability of observing a dervided read given hidden genotypes 00 01 11
@@ -166,7 +165,11 @@ class RC_Model_Emissions(Model_Emissions):
             rc_der[:, None], rc_tot[:, None], p_read[None, :])
 
         # Sum over each of the 3 possible genotypes
-        p_full = np.sum(e_mat * prob_binom[None, :, :], axis=2)
+        
+        ### Original Implementation
+        #p_full = np.sum(e_mat * prob_binom[None, :, :], axis=2)
+        
+        p_full = np.einsum('ijk,jk->ij', e_mat, prob_binom[:, :])
         return p_full
 
     def give_emission(self, ob_stat):

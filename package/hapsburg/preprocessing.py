@@ -197,11 +197,13 @@ class PreProcessingHDF5(PreProcessing):
             gts = gts[:, called]
             r_map = r_map[called]
             pos = pos[called]
+            
+            if self.output:
+                print(f"Reduced to markers called: {np.shape(gts)[1]} / {len(called)}")
+                print(f"Fraction SNPs covered: {np.shape(gts)[1] / len(called):.4f}")
+                
             if len(read_counts) > 0:
                 read_counts = read_counts[:, called]
-            if self.output:
-                print(f"Reduced to markers called {np.shape(gts)[1]} / {len(called)}")
-                print(f"Fraction SNPs covered: {np.shape(gts)[1] / len(called):.4f}")
 
         if self.save == True:
             self.save_info(out_folder, r_map, pos,
@@ -210,7 +212,7 @@ class PreProcessingHDF5(PreProcessing):
         if (self.readcounts == True) and len(read_counts) > 0:   # Switch to Readcount
             if self.output:
                 print(f"Loading Readcounts...")
-                print(f"Mean Readcount markers loaded: {np.mean(read_counts) * 2:.5f}")
+                print(f"Mean Readcount on markers with data: {np.mean(read_counts) * 2:.5f}")
             gts_ind = read_counts
         
         ### Shuffle Target Allele     
@@ -224,14 +226,14 @@ class PreProcessingHDF5(PreProcessing):
      ################################################
      # Some Helper Functions
 
-    def destroy_phase_func(self, gts_ind):
+    def destroy_phase_func(self, gts_ind, dtype="int8"):
         """Randomly shuffles phase for gts [2,n_loci]"""
         assert(np.shape(gts_ind)[0] == 2)
 
         n_loci = np.shape(gts_ind)[1]
         phases = np.random.randint(2, size=n_loci)  # Do the random shuffling
 
-        gts_ind_new = np.zeros(np.shape(gts_ind), dtype="int")
+        gts_ind_new = np.zeros(np.shape(gts_ind), dtype=dtype)
         gts_ind_new[0, :] = gts_ind[phases, np.arange(n_loci)]
         gts_ind_new[1, :] = gts_ind[1 - phases, np.arange(n_loci)]
         return gts_ind_new
@@ -367,8 +369,9 @@ class PreProcessingHDF5(PreProcessing):
             print(f"Extraction of {len(gts)} Haplotypes complete")
         return gts
 
-    def extract_rc_hdf5(self, h5, ids, markers, dtype=np.int16):
-        """Extract Readcount data from from h5 on single (!) id and markers"""
+    def extract_rc_hdf5(self, h5, ids, markers, dtype=np.int8):
+        """Extract Readcount data from from h5 on single (!) id and markers
+        int8: Watch out - limited to max RC 127!"""
         read_counts = h5["calldata/AD"][:, ids, :].astype(dtype)
         read_counts = read_counts[markers, :].T
         return read_counts
@@ -680,10 +683,10 @@ class PreProcessingFolder(PreProcessing):
         as well as linkage Map [l]"""
 
         gts = np.loadtxt(
-            folder + "refs.csv", dtype="int", delimiter=",")
+            folder + "refs.csv", dtype="int8", delimiter=",")
 
         gts_ind = np.loadtxt(
-            folder + "hap.csv", dtype="int", delimiter=",")
+            folder + "hap.csv", dtype="int8", delimiter=",")
 
         n_snps = np.shape(gts_ind)[1]
         r_map = self.load_linkage_map(folder, n_snps)
