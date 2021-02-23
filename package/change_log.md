@@ -1,5 +1,10 @@
+## 0.3a2, TO BE PUBLISHED, Harald Ringbauer
+Minor improvements and quality of life updates:
+- The hapsb_chrom now plots all of its function variables. This will be printed into the logfile - the idea is to have better reproducibiliyt.
+- Implemented some runtime updates for the read count model. There is now an Einstein sum done when summing over the latent genotypes. This prevents extra space being used. Moreover, readcount data are now int8 by default. Attention: This limits the maximal read count for each locus to 127!
+
 ## 0.3a1, December 14th 2020, Harald Ringbauer
-Major update:
+Major runtime update:
 - The HMM is now rescaling every SNP instead of working in SNP space. This makes the HMM 8x, and the overall runtime ~60% faster. The main bottleneck now is loading the reference data. 
 - For backward compatibility, the posterior plotting function automatically detects log/non-log space.
 - Implemented that all reference SNPs are loaded into RAM (fast for HDF5), but that only the SNPs that are covered are extracted, in a one-step downsampling (instead of two step downsampling before.)

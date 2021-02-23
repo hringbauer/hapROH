@@ -54,6 +54,7 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
     logfile: Whether to use logfile [bool]
     combine: Wether to combine output of all chromosomes [bool]
     file_result: Appendix to individual results [string]"""
+    parameters = locals() # Gets dictionary of all local variables at this point
     
     ### Create Folder if needed, and pipe output if wanted
     _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
@@ -71,6 +72,9 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
                          meta_path_ref = meta_path_ref, n_ref=n_ref)
     hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
     hmm.load_secondary_objects()
+    
+    ### Print out the Parameters used in run:
+    print("\n".join("{}\t{}".format(k, v) for k, v in parameters.items()))
 
     ### Set the Parameters
     hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
