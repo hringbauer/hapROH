@@ -74,7 +74,9 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
     hmm.load_secondary_objects()
     
     ### Print out the Parameters used in run:
+    print("\nParameters in hapsb_chrom:")
     print("\n".join("{}\t{}".format(k, v) for k, v in parameters.items()))
+    print("\n")
 
     ### Set the Parameters
     hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
