@@ -199,7 +199,7 @@ class PreProcessingHDF5(PreProcessing):
             pos = pos[called]
             
             if self.output:
-                print(f"Reduced to markers called: {np.shape(gts)[1]} / {len(called)}")
+                print(f"Subset to markers with data: {np.shape(gts)[1]} / {len(called)}")
                 print(f"Fraction SNPs covered: {np.shape(gts)[1] / len(called):.4f}")
                 
             if len(read_counts) > 0:
@@ -216,7 +216,7 @@ class PreProcessingHDF5(PreProcessing):
             gts_ind = read_counts
         
         ### Shuffle Target Allele     
-        if self.random_allele == True:     
+        if (self.random_allele == True) and (self.readcounts == False):     
             if self.output == True:
                 print("Shuffling phase of target...")
             gts_ind = self.destroy_phase_func(gts_ind)
@@ -239,15 +239,17 @@ class PreProcessingHDF5(PreProcessing):
         return gts_ind_new
 
     def markers_called(self, gts_ind, read_counts):
-        """Return boolean array of markers which are called"""
+        """Return boolean array of markers which are called.
+        If read_counts exist, use that for downsampling.
+        Otherwise Use Genotype Field"""
         called = []
-        if (self.readcounts == False) or (len(read_counts) == 0):
-            called = (gts_ind[0, :] > -1)  # Only Markers with calls
-        elif self.readcounts == True:
+        if (self.readcounts == False) and (len(read_counts) == 0):
+            called = (gts_ind[0, :] > -1)  # Genotypes with calls
+        elif len(read_counts)>0:
             read_depth = np.sum(read_counts, axis=0)
-            called = read_depth > 0
+            called = read_depth > 0 # Markers with Reads
         else:
-            raise RuntimeError("Invalid Mode")
+            raise RuntimeError("No Readcount Data found!")
         return called
 
     def load_h5(self, path):
@@ -467,7 +469,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         ### Extraction for target (no RC here)
         gts_ind = self.extract_snps_es(es, id_obs, markers_obs)
         
-        ### Produce readcounts
+        ### Produce empty readcounts
         read_counts = []
         if self.readcounts:
             read_counts = self.to_read_counts(gts_ind)

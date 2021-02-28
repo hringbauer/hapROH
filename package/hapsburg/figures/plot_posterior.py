@@ -70,12 +70,14 @@ def process_read_counts(read_counts, m=1):
 def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=True, 
                       plot=True, cm_lim=[], ylim=[-0.1, 1.25], m=1, groundtruth=False, readcount=False, 
                       plot_hets=True, plot_calls=True, plot_post=True, scale=1.0, min_cm=1.0,
+                      yticks=[0.0,0.2,0.4,0.6,0.8,1.0], xlabel="Map position [centimorgan]",
                       figsize=(14,4), title="", post_c="maroon", het_c="blue"):
     """Plot Viterbi Path of Haplotype copying.
     save: Whether to save the results.
     empirical: If true, do not load and plot latent states
     cm_lim: What Area to Zoom In (CentiMorgan)
     m: How many reads for ref and alt
+    yticks: Where to place the Y ticks
     groundtruth: Whether to plot Ground Truth (saved as csv)
     plot_hets: Whether to plot Heterozygote Markers
     plot_calls: Whether to plot Calls
@@ -127,9 +129,11 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
                         colors="blue", linewidth=lw)
     
     ax1.set_xlabel("SNP", fontsize=fs)
-    ax1.set_xlabel("CentiMorgan")
+    ax1.set_xlabel(xlabel)
     
     ax1.set_ylim(ylim)
+    ax1.set_yticks(yticks)
+    #ax1.set_yticklabels([0.0,1.0])
     
     if len(cm_lim)==2:
         ax1.set_xlim(cm_lim)
@@ -149,7 +153,8 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
         ax2.set_ylim(ax1.get_ylim())
         ax2.set_yticks(np.array([1,0]) * 1.1 - 0.05)
         ax2.set_yticklabels([])
-        ax1.set_yticklabels([])
+        #ax1.set_yticks([0,1])
+        #ax1.set_yticklabels([])
         if readcount:
             ylabel = f"$\geq/\geq$ {m} Ref/Alt Reads"
         else:
@@ -253,7 +258,7 @@ def plot_posterior(folder = "../Simulated/Test20r/", save=True, empirical=False)
 
     # Do the Reference SNP
     ax1.imshow(ob_stat, cmap='Greys',  aspect='auto')
-    ax1.set_yticks([])
+    ax1.set_yticks()
     ax1.set_ylabel("Copy")
     ax1.set_xlabel("SNP", fontsize=fs, labelpad=-10)
     

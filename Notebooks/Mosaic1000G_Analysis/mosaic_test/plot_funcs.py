@@ -11,7 +11,7 @@ import matplotlib.cm as cm
 from matplotlib import gridspec
 
 def plot_power(bl_lens, df_call_vec1, powers, df_fp=[], 
-               xlim=(0,12.5), figsize=(10,6), n=100, ylim_pow=[0.5, 1.05],
+               xlim=(0,12.5), ylim=[], figsize=(10,6), n=100, ylim_pow=[0.5, 1.05],
                leg_loc="upper right", fs_l=12, fs = 12, fs_t=10, hspace=0.04,
                lw_power=1.2, color_fp="red", ec="silver", cmap="viridis_r",
                pw_yticks=[0.5,0.75,1.0], s=100,
@@ -56,6 +56,9 @@ def plot_power(bl_lens, df_call_vec1, powers, df_fp=[],
                 alpha=1.0, label= "FP", ec=ec)
         
     ax.set_xlim(xlim)
+    if len(ylim)>0:
+        ax.set_ylim(ylim)
+        
     ax.set_xlabel("Inferred ROH Length [cM]", fontsize = fs)
     ax.set_ylabel("# Inferred \nROH blocks", fontsize = fs)
     if len(leg_loc)>0:
@@ -80,8 +83,9 @@ def plot_power(bl_lens, df_call_vec1, powers, df_fp=[],
     plt.show()
     
     
-def plot_fp_distribution(df_call_fp, fs = 14, fs_l = 12, bins = np.linspace(1, 3, 26), xlim = (0, 13), figsize = (10, 4),
-                        title = "100 Mosaic Tuscany Samples - Reference: Rest EUR 1000G"):
+def plot_fp_distribution(df_call_fp, fs = 14, fs_l = 12, bins = np.linspace(1, 3, 26), 
+                         xlim = [], figsize = (10, 4),
+                         title = "100 Mosaic Tuscany Samples - Reference: Rest EUR 1000G"):
     """ Plot the Distribution of false positive ROH calls"""
     ### The Actual Plot
     plt.figure(figsize=figsize)
@@ -91,9 +95,12 @@ def plot_fp_distribution(df_call_fp, fs = 14, fs_l = 12, bins = np.linspace(1, 3
     ax.set_xlabel("Inferred block Length [cm]", fontsize=fs)
     ax.set_ylabel("Count", fontsize=fs)
     roh1cm = np.sum(df_call_fp["lengthM"]>0.01)
-    ax.text(x=0.6, y=0.8, s=f"Tot. #ROH > 1cM: {roh1cm}", transform=ax.transAxes, fontsize=fs)  
+    ax.text(x=0.6, y=0.8, s=f"Tot. #ROH > 1cM: {roh1cm}", transform=ax.transAxes, fontsize=fs) 
     
     plt.title(title, fontsize=fs)
+    
+    if len(xlim)>0:
+        ax.set_xlim(xlim)
     plt.show()
     
     
