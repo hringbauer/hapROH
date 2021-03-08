@@ -1,0 +1,86 @@
+Using Rescaled HMM.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: I2534
+
+Loaded 29314 variants
+Loaded 2504 individuals
+HDF5 loaded from ./Data/1000Genomes/HDF5/1240kHDF5/all1240int8/chr17.hdf5
+Eigenstrat packed: True
+3 Eigenstrat Files with 6676 Individuals and 1233013 SNPs
+
+Intersection on Positions: 29314
+Nr of Matching Refs: 29314 / 29314
+Ref/Alt Matching: 29292 / 29314
+Flipped Ref/Alt Matching: 0
+Together: 29292 / 29314
+2504 / 2504 Individuals included in Reference
+Extracting up to 2504 Individuals
+Reduced to markers with data: 12865 / 29292
+Fraction SNPs covered: 0.4392
+Exctraction of hdf5 done. Subsetting...!
+Extraction of 5008 Haplotypes complete
+Flipping Ref/Alt Alleles in target for 0 SNPs...
+Successfully saved target individual data to: ./sandbox/testout/I2534/chr17/
+Shuffling phase of target...
+Successfully loaded Data from: ./sandbox/testout/I2534/chr17/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+
+Parameters in hapsb_chrom:
+iid	I2534
+ch	17
+save	True
+save_fp	False
+n_ref	2504
+diploid_ref	True
+exclude_pops	[]
+e_model	haploid
+p_model	Eigenstrat
+readcounts	False
+random_allele	True
+post_model	Standard
+path_targets	./Data/ReichLabEigenstrat/Raw.v42.4/v42.4.1240K
+h5_path1000g	./Data/1000Genomes/HDF5/1240kHDF5/all1240int8/chr
+meta_path_ref	./Data/1000Genomes/Individuals/meta_df_all.csv
+folder_out	./sandbox/testout/
+prefix_out	
+roh_in	1
+roh_out	20
+roh_jump	300
+e_rate	0.01
+e_rate_ref	0.0
+max_gap	0
+cutoff_post	0.999
+roh_min_l	0.01
+logfile	True
+
+
+Minimum Genetic Map: 0.0004 Morgan
+Maximum Genetic Map: 1.2846 Morgan
+Gaps bigger than 0.1 cM: 252
+Maximum Gap: 1.4231 cM
+Upper Gap Cutoff: 5.0000 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 12865)
+Loaded Observations:
+(2, 12865)
+Reference Number: 5008
+Memory Usage at end of HMM:
+Memory Usage: 905.863168 mB
+Total Log likelihood: -4819.078
+Finished Calculation State Posteriors
+Saved Zero State Posterior to folder ./sandbox/testout/I2534/chr17/.
+Successfully loaded for PP. from ./sandbox/testout/I2534/chr17/
+Fraction Markers in ROH: 0.2609
+Merged n=0 gaps < 0 M
+Called n=8 ROH Blocks > 1.0 cM
+Longest Block: 4.27 cM
+Successfully saved to ./sandbox/testout/I2534/chr17/roh.csv
+Run finished successfully!
+Ruuning I2534, Chromosomes [18]
+Doing Individual I2534...
+Running 1 total jobs; 1 in parallel.
+Running single process...
+Set Output Log path: ./sandbox/testout/I2534/chr18/hmm_run_log.txt
