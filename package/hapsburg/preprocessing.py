@@ -165,7 +165,10 @@ class PreProcessingHDF5(PreProcessing):
         ### Load Target Dataset
         gts_ind = self.extract_snps_hdf5(
             fs, [id_obs], markers_obs, diploid=True)
-        read_counts = self.extract_rc_hdf5(fs, id_obs, markers_obs)
+        if self.readcounts:
+            read_counts = self.extract_rc_hdf5(fs, id_obs, markers_obs)
+        else:
+            read_counts = []
         
         ### Flip target genotypes where flipped
         if self.flipstrand:
@@ -173,7 +176,8 @@ class PreProcessingHDF5(PreProcessing):
                 print(f"Flipping Ref/Alt Allele in target for {np.sum(flipped)} SNPs...")
             flip_idcs = flipped & (gts_ind[0,:]>=0) # Where Flip AND Genotype Data
             gts_ind[:,flip_idcs] = 1 - gts_ind[:,flip_idcs]
-            read_counts[0,flipped], read_counts[1,flipped] = read_counts[1,flipped], read_counts[0,flipped]
+            if self.readcounts:
+                read_counts[0,flipped], read_counts[1,flipped] = read_counts[1,flipped], read_counts[0,flipped]
 
         ### Load Reference Dataset
         gts = self.extract_snps_hdf5(

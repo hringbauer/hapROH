@@ -103,4 +103,4 @@ harald_ringbauer AT hms harvard edu
 Big thank you to my co-authors Matthias Steinrücken and John Novembre. The project profited immensely from Matthias' deep knowledge about HMMs and from John's extensive experience in developing population genetics software. Countless discussions with both were key for moving forward this project. Another big thanks goes to Nick Patterson, who informed me about the benefits of working with rescaled HMMs - substantially improving the runtime of hapROH. I also want to thank users who find and report software bugs (Mélanie Pruvost, Ke Wang). Their feedback helped to identify and remove errors in the program.
 
 Author:
-Harald Ringbauer, 2020
+Harald Ringbauer, 2021

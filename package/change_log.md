@@ -2,6 +2,7 @@
 Minor improvements and quality of life updates:
 - The hapsb_chrom now plots all of its function variables. This will be printed into the logfile - the idea is to have better reproducibiliyt.
 - Implemented some runtime updates for the read count model. There is now an Einstein sum done when summing over the latent genotypes. This prevents extra space being used. Moreover, readcount data are now int8 by default. Attention: This limits the maximal read count for each locus to 127!
+- Fixed a bug in the diploid_gt emission mode where an undefined e_mat0 was used.
 
 ## 0.3a1, December 14th 2020, Harald Ringbauer
 Major runtime update:

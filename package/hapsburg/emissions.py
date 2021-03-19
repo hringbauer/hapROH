@@ -241,7 +241,7 @@ class Diploid_GT_Emissions(RC_Model_Emissions):
                        (derived_gt == 2) * (ref_haps == 1)
 
         ### Do the bleeding from other states:
-        e_mat = e_mat * (1 - e_rate) + (1 - e_mat0) * e_rate / 2.0
+        e_mat = e_mat * (1 - e_rate) + (1 - e_mat) * e_rate / 2.0
         #e_mat0 = np.log(e_mat0)  # Go to Log Space
 
         return e_mat

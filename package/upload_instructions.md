@@ -9,7 +9,7 @@ On Chicago cluster:
 module load python
 
 ### Run Tests of Expected Behavior
-Use `/Notebooks/Tests/roh_caller_test.ipynb` to run various tests of expected behavior. 
+Use `/Notebooks/Tests/roh_caller_test.ipynb` to run tests of expected behavior. 
 
 ### Create the Source Package 
 Update version in setup.py to next version number
