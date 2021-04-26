@@ -89,6 +89,13 @@ The code used to develop this package is deposited at the github repository: htt
 
 The package is packed in the folder `./package/`. In addition, there are a large number of notebooks used to test and extensively use the functionality in `./notebooks/`.
 
+
+## Frequently asked questions
+
+### I have a .bam, what should I do?
+For empirical ancient DNA data, `hapROH` takes pseudo-haploid eigenstrat files as input (https://reich.hms.harvard.edu/software/InputFileFormats). As of 2021, this data type is widely used in human ancient DNA data analysis and also used for many other analysis (such as calculating PCA projections or f-statistics). To produce such files, you will have to generate pseudo-haploid genotype calls from the raw `.bam` file. A common tool used for this purpose is `pileupCaller` distributed via the software `sequenceTools` (described in detail at https://github.com/stschiff/sequenceTools). Ideally, this pseudo-haploid genotype calling is done in a way adjusted to the data generation process (e.g. UDG treatment).
+
+
 ## Citation
 If you use the software for a scientific publication and want to cite it, you can use:
 https://www.biorxiv.org/content/10.1101/2020.05.31.126912v1
