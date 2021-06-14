@@ -509,7 +509,7 @@ def fwd_bkwd_scaled_lowmem(double[:, :] e_mat, double[:, :, :] t_mat,
             
     #############################
     ### Do the Backward Algorithm
-    post_view[n_loci-1] = post_view[n_loci-1] + bwd[0] # The lat one
+    post_view[n_loci-1] = post_view[n_loci-1] * bwd[0] # The lat one
     
     for i in range(n_loci-1, 0, -1):  # Run backward recursion
         stay = t[i, 1, 1] - t[i, 1, 2]

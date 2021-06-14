@@ -9561,7 +9561,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_8fwd_bkwd_scaled_lowmem(CYTHON_UNUSED
   /* "hapsburg/cfunc.pyx":512
  *     #############################
  *     ### Do the Backward Algorithm
- *     post_view[n_loci-1] = post_view[n_loci-1] + bwd[0] # The lat one             # <<<<<<<<<<<<<<
+ *     post_view[n_loci-1] = post_view[n_loci-1] * bwd[0] # The lat one             # <<<<<<<<<<<<<<
  * 
  *     for i in range(n_loci-1, 0, -1):  # Run backward recursion
  */
@@ -9592,10 +9592,10 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_8fwd_bkwd_scaled_lowmem(CYTHON_UNUSED
     __Pyx_RaiseBufferIndexError(__pyx_t_7);
     __PYX_ERR(0, 512, __pyx_L1_error)
   }
-  *((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_24 * __pyx_v_post_view.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_15 * __pyx_v_post_view.strides[0]) ))) + (*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_23 * __pyx_v_bwd.strides[0]) ))));
+  *((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_24 * __pyx_v_post_view.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_15 * __pyx_v_post_view.strides[0]) ))) * (*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_23 * __pyx_v_bwd.strides[0]) ))));
 
   /* "hapsburg/cfunc.pyx":514
- *     post_view[n_loci-1] = post_view[n_loci-1] + bwd[0] # The lat one
+ *     post_view[n_loci-1] = post_view[n_loci-1] * bwd[0] # The lat one
  * 
  *     for i in range(n_loci-1, 0, -1):  # Run backward recursion             # <<<<<<<<<<<<<<
  *         stay = t[i, 1, 1] - t[i, 1, 2]

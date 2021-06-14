@@ -3,6 +3,7 @@ zip/
 
 Empirical/
 Simulated/
+Diverse/
 Diverse/nosync/
 Diverse/bcftools/
 TablesOut/
@@ -16,7 +17,8 @@ Python3/cfunc.c
 Python3/cfunc.html
 Python3/cfunc.cpython-37m-x86_64-linux-gnu.so
 MatthiasCode/
-
+Sandbox/
+Notebooks/AnalyzeData/other_work/
 
 cluster_runs/ES_callROH/logs/
 cluster_runs/HO_callROH/logs/

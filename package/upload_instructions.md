@@ -15,16 +15,17 @@ Use `/Notebooks/Tests/roh_caller_test.ipynb` to run tests of expected behavior.
 Update version in setup.py to next version number
 
 ### Update setuptools. 
-Delete previous ./dist/* (alternatively be specific below what to upload)
+Delete previous ./dist/* (alternatively be specific below what to upload):  
+
 rm ./dist/*
 
 Run the setup file:
 python3 setup.py sdist
 
 ### Upload to the Sources (copy into shell, to interactively do it!)
-### 1) For full PyPi server
+### For full PyPi server
 python3 -m twine upload dist/* 
-### 2) Alternatively: Upload on test server (for testing)
+### Alternatively: Upload on test server (for testing)
 python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* 
 
 
@@ -33,7 +34,7 @@ python3 setup.py build_ext --inplace
 
 # Further Documentation 
 ### To install via pip:
-Look at instructions on pypi site
+Follow instructions on pypi site of `hapROH`.
 
 ### for packaging: 
 https://packaging.python.org/tutorials/packaging-projects/

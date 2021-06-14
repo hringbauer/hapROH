@@ -23,9 +23,9 @@ with open("README.md", "r") as fh:
     
 setup(
     name="hapROH",
-    version="0.3a2",  # a means alpha
+    version="0.3a4",  # a means alpha
     author="Harald Ringbauer",
-    author_email="harald_ringbauer@hms.harvard.edu",
+    author_email="harald_ringbauer@eva.mpg.de",
     description="Identify runs of homozygosity (ROH) in low coverage ancient human DNA data (1240K SNPs) using modern reference panel",
     long_description=long_description,
     long_description_content_type="text/markdown",

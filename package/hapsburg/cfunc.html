@@ -5792,7 +5792,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_8fwd_bkwd_scaled_lowmem(CYTHON_UNUSED
 </pre><pre class="cython line score-0">&#xA0;<span class="">509</span>: </pre>
 <pre class="cython line score-0">&#xA0;<span class="">510</span>:     <span class="c">#############################</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">511</span>:     <span class="c">### Do the Backward Algorithm</span></pre>
-<pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">512</span>:     <span class="n">post_view</span><span class="p">[</span><span class="n">n_loci</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">post_view</span><span class="p">[</span><span class="n">n_loci</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bwd</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="c"># The lat one</span></pre>
+<pre class="cython line score-6" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">512</span>:     <span class="n">post_view</span><span class="p">[</span><span class="n">n_loci</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">post_view</span><span class="p">[</span><span class="n">n_loci</span><span class="o">-</span><span class="mf">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">bwd</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span> <span class="c"># The lat one</span></pre>
 <pre class='cython code score-6 '>  __pyx_t_15 = (__pyx_v_n_loci - 1);
   __pyx_t_7 = -1;
   if (__pyx_t_15 &lt; 0) {
@@ -5820,7 +5820,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_8fwd_bkwd_scaled_lowmem(CYTHON_UNUSED
     <span class='pyx_c_api'>__Pyx_RaiseBufferIndexError</span>(__pyx_t_7);
     <span class='error_goto'>__PYX_ERR(0, 512, __pyx_L1_error)</span>
   }
-  *((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_24 * __pyx_v_post_view.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_15 * __pyx_v_post_view.strides[0]) ))) + (*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_23 * __pyx_v_bwd.strides[0]) ))));
+  *((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_24 * __pyx_v_post_view.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_post_view.data + __pyx_t_15 * __pyx_v_post_view.strides[0]) ))) * (*((double *) ( /* dim=0 */ (__pyx_v_bwd.data + __pyx_t_23 * __pyx_v_bwd.strides[0]) ))));
 </pre><pre class="cython line score-0">&#xA0;<span class="">513</span>: </pre>
 <pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">514</span>:     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_loci</span><span class="o">-</span><span class="mf">1</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1</span><span class="p">):</span>  <span class="c"># Run backward recursion</span></pre>
 <pre class='cython code score-0 '>  for (__pyx_t_11 = (__pyx_v_n_loci - 1); __pyx_t_11 &gt; 0; __pyx_t_11-=1) {

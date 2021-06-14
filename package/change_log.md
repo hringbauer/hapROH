@@ -1,4 +1,10 @@
-## 0.3a2, TO BE PUBLISHED, Harald Ringbauer
+## 0.3a4, June 14th 2021, Harald Ringbauer
+- Fixed minor bug leading to posterior for last locus on target chromosome not being normalized probably.
+
+## 0.3a3, April 26th 2021, Harald Ringbauer
+- Updates to the README, including a new FAQ section.
+
+## 0.3a2, March 19th 2021, Harald Ringbauer
 Minor improvements and quality of life updates:
 - The hapsb_chrom now plots all of its function variables. This will be printed into the logfile - the idea is to have better reproducibiliyt.
 - Implemented some runtime updates for the read count model. There is now an Einstein sum done when summing over the latent genotypes. This prevents extra space being used. Moreover, readcount data are now int8 by default. Attention: This limits the maximal read count for each locus to 127!

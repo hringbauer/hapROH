@@ -83,13 +83,11 @@ class HMM_Analyze(object):
         elif cython == 2:   # To test the "fast algorithm". Remove later
             if self.output == True:
                 print("Using Low-Mem Cython Linear Speed Up.")
-
             self.fwd_bkwd = fwd_bkwd_lowmem #fwd_bkwd_lowmem
             
         elif cython == 3:   # To test the "fast algorithm". Remove later
             if self.output == True:
                 print("Using Rescaled HMM.")
-
             self.fwd_bkwd = fwd_bkwd_scaled_lowmem #fwd_bkwd_scaled
 
         else:
