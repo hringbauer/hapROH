@@ -1,0 +1,7 @@
+### Define Pedigree for full sib offspring
+### First three generations would not be necessary 
+### (default 1->2 -> 2 braches)
+def c0 1000 3
+1 0 1
+2 0 2
+3 1 1 1:1_2

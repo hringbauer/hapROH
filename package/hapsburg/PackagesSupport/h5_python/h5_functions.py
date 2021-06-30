@@ -52,7 +52,6 @@ def save_data_h5(gt, ad, ref, alt, pos,
         dt = h5py.special_dtype(vlen=str)  # To have no problem with saving
         with h5py.File(path, 'w') as f0:
             ### Create all the Groups
-            f_map = f0.create_dataset("variants/MAP", (l,), dtype='f')
             if ad_group:
                 f_ad = f0.create_dataset("calldata/AD", (l, k, 2), dtype='int8', compression=compression)
             f_ref = f0.create_dataset("variants/REF", (l,), dtype=dt)
@@ -63,11 +62,12 @@ def save_data_h5(gt, ad, ref, alt, pos,
                 f_gp = f0.create_dataset("calldata/GP", (l, k, 3), dtype="f", compression=compression) 
             if len(af)>0:
                 f_af = f0.create_dataset("variants/AF_ALL", (l,), dtype="f", compression=compression) 
+            if len(rec)>0:
+                f_map = f0.create_dataset("variants/MAP", (l,), dtype='f')
                 
             f_samples = f0.create_dataset("samples", (k,), dtype=dt)
 
             ### Save the Data
-            f_map[:] = rec
             if ad_group:
                 f_ad[:] = ad
             f_ref[:] = ref.astype("S1")
@@ -80,6 +80,8 @@ def save_data_h5(gt, ad, ref, alt, pos,
                 raise RuntimeWarning("Allele Frequencies do not line up")          
             f_pos[:] = pos
             f_gt[:] = gt
+            if len(rec)>0:
+                f_map[:] = rec
             if len(gp)>0:
                 f_gp[:] = gp
             if len(af)>0:

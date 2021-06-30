@@ -1,0 +1,11 @@
+### Define Pedigree for first cousin offspring
+### First three generations would not be necessary 
+### (default 1->2 -> 2 braches)
+def c4 1000 7
+1 0 1
+2 0 2
+3 0 2 
+4 0 2
+5 0 2
+6 0 2
+7 1 1 1:1_2
