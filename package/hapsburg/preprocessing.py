@@ -164,7 +164,7 @@ class PreProcessingHDF5(PreProcessing):
 
         ### Load Target Dataset
         gts_ind = self.extract_snps_hdf5(
-            fs, [id_obs], markers_obs, diploid=True)
+            fs, [id_obs], markers_obs, diploid=True, removeIncompleteHap=False)
         if self.readcounts:
             read_counts = self.extract_rc_hdf5(fs, id_obs, markers_obs)
         else:
@@ -351,7 +351,7 @@ class PreProcessingHDF5(PreProcessing):
         if self.output:
             print(f"Successfully saved target individual data to: {folder}")
 
-    def extract_snps_hdf5(self, h5, ids, markers, diploid=False, dtype="int8"):
+    def extract_snps_hdf5(self, h5, ids, markers, diploid=False, dtype="int8", removeIncompleteHap=True):
         """Extract genotypes from h5 on ids and markers.
         If diploid, concatenate haplotypes along 0 axis.
         Extract indivuals first, and then subset to SNPs
@@ -366,7 +366,15 @@ class PreProcessingHDF5(PreProcessing):
             assert(h==2)  #  Sanity check that diploid data
             gts = gts.reshape((l, 2*k)) # Reduces 3D to 2D array
             gts = gts.T # Transpose the data to right format
-        
+            print(f'size of gts matrix: {gts.shape}')
+
+            # get rid of haplotypes with missing data
+            # eg. male sample's only has one chrX
+            if removeIncompleteHap:
+                nhaps = gts.shape[0]
+                missed = np.where(gts == -1)
+                gts = gts[np.setdiff1d(np.arange(nhaps), missed[0]), :]
+            
         else: # only first haplotype
             gts = h5["calldata/GT"][:, ids, 0].astype(dtype)  # Only first IID
             gts = gts[markers, :].T     
@@ -432,7 +440,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         return id_obs
     
     def get_1000G_path(self, h5_path1000g, ch):
-        """Construct and eturn the path 
+        """Construct and return the path 
         to the 1000 Genome reference panel"""
         h5_path1000g = h5_path1000g + str(ch) + ".hdf5"
         return h5_path1000g
