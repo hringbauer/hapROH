@@ -93,16 +93,16 @@ class HMM_Analyze(object):
         else:
             self.fwd_bkwd = fwd_bkwd_p
 
-    def load_objects(self, iid="", ch=0):
+    def load_objects(self, iid="", ch=0, c=0.0):
         """Load all the required Objects in right order"""
         self.load_preprocessing_model()
         self.load_data(iid, ch)
         self.load_secondary_objects()
 
-    def load_secondary_objects(self):
+    def load_secondary_objects(self, c=0.0):
         """Load all secondary objects
         (but not the pre-processing one)"""
-        self.load_emission_model()
+        self.load_emission_model(c)
         self.load_transition_model()
         self.load_postprocessing_model()
 
@@ -132,9 +132,9 @@ class HMM_Analyze(object):
         if self.output:
             print(f"Successfully loaded Data from: {self.folder}")
 
-    def load_emission_model(self):
+    def load_emission_model(self, c=0.0):
         """Method to load an Emission Model"""
-        self.e_obj = load_emission_model(self.ref_states, e_model=self.e_model)
+        self.e_obj = load_emission_model(self.ref_states, e_model=self.e_model, c=c)
 
         if self.output:
             print(f"Loaded Emission Model: {self.e_model}")

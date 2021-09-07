@@ -250,28 +250,35 @@ class Diploid_GT_Emissions(RC_Model_Emissions):
 ###############################
 
 class RC_Model_Emissions_withContamination(RC_Model_Emissions):
-    def give_emission_state(self, ob_stat, e_mat, c):
+
+    c = 0.0 # contamination rate
+
+    def __init__(self, ref_haps=[], c=0.0):
+        RC_Model_Emissions.__init__(self, ref_haps)
+        self.c = c
+
+    def give_emission_state(self, ob_stat, e_mat):
         """Gives the emission matrix of observed states
         Return emission matrix [n_ref+1, n_loci] of each
         ob_stat: [2, n_loci] Matrix with Nr Ref/Alt Reads in Row0/Row1 (!)
         e_mat: Probabilities of genotypes [n_ref+1, n_loci, 3]"""
         e_rate = self.e_rate  # Load the error rate per read
         p = self.p # load reference population allele freq
+        c = self.c # load contamination rate
 
         # What's the probability of observing a dervided read given hidden genotypes 00 01 11
         # p_read = np.array([e_rate, 0.5, 1 - e_rate]) # original emission model with no contamination
         assert(len(p) == ob_stat.shape[1]) # sanity check
         p_read = np.zeros((ob_stat.shape[1], 3))
-        p_read[:, 0] = (1-c)*e_rate + c*p
-        p_read[:, 1] = 0.5*(1-c)*(1-e_rate) + c*p
-        p_read[:, 2] = (1-c)*(1-e_rate) + c*p
+        p_read[:, 0] = (1-c)*e_rate + c*p*(1-e_rate)
+        p_read[:, 1] = 0.5*(1-c)*(1-e_rate) + c*p*(1-e_rate)
+        p_read[:, 2] = (1-c)*(1-e_rate) + c*p*(1-e_rate)
 
         # Calculate the Binomial Likelihoods of RC Data
         rc_tot = np.sum(ob_stat, axis=0)
         rc_der = ob_stat[1, :]
 
-        prob_binom = binom.pmf(
-            rc_der[:, None], rc_tot[:, None], p_read[None, :])
+        prob_binom = binom.pmf(rc_der[:, None], rc_tot[:, None], p_read)
 
         # Sum over each of the 3 possible genotypes
         
@@ -281,12 +288,12 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
         p_full = np.einsum('ijk,jk->ij', e_mat, prob_binom[:, :])
         return p_full
 
-    def give_emission(self, ob_stat, c):
+    def give_emission(self, ob_stat):
         """Return the full emission Probability directly in Log Space.
         ob_stat: Observed Readcounts [2,l] array of 0/1 
         c: contamination rate """
         e_mat = self.give_emission_matrix()
-        e_mat = self.give_emission_state(ob_stat, e_mat, c)
+        e_mat = self.give_emission_state(ob_stat, e_mat)
         assert(np.min(e_mat) >= 0)  # Sanity Check (In Log Space Pr. <0)
         return e_mat
 
@@ -296,7 +303,7 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
 # Factory method
 
 
-def load_emission_model(ref_states, e_model="haploid"):
+def load_emission_model(ref_states, e_model="haploid", c=0.0):
     """Load the Emission Model"""
     if e_model == "haploid":
         e_obj = Model_Emissions(ref_states)
@@ -305,7 +312,7 @@ def load_emission_model(ref_states, e_model="haploid"):
     elif e_model == "diploid_gt":
         e_obj = Diploid_GT_Emissions(ref_states)
     elif e_model == "readcount_contam":
-        e_obj = RC_Model_Emissions_withContamination(ref_states)
+        e_obj = RC_Model_Emissions_withContamination(ref_states, c)
     else:
         raise NotImplementedError("Emission Model not found!")
     return e_obj
