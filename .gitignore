@@ -162,3 +162,5 @@ dmypy.json
 
 # Yilei's specific
 /test_output
+/simulated
+

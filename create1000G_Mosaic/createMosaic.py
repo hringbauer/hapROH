@@ -35,6 +35,7 @@ class Mosaic_1000G(object):
 
         # Set Path of 1000G (without chromosome part)
         self.path1000G = path1000G + str(ch) + ".hdf5"
+        print(f'constructor of Mosaic_1000G: {path1000G}')
         self.pop_path = pop_path
 
         # Load some Data:

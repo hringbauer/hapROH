@@ -5,8 +5,10 @@ Save the created Data to HDF 5, and the ROH block info to a csv in the same fold
 @ Author: Harald Ringbauer, 2019, All rights reserved
 """
 
+from ast import get_docstring
 import h5py                            # For Processing HDF5s
 import numpy as np
+from numpy.core.numeric import _isclose_dispatcher
 import pandas as pd
 import os                              # To delete File
 
@@ -26,16 +28,23 @@ class Mosaic_1000G_Multi(object):
     n = 3       # Nr of individuals to simulate
 
     path1000G = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
-    pop_path = "./Data/1000Genomes/integrated_call_samples_v3.20130502.ALL.panel"
+    pop_path = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv"
     # Where to save the new HDF5 to by default
     save_path = "./Simulated/1000G_Mosaic/TSI/ch3_5cm/"
 
     output = True  # whether to Print Output
     m_object = 0  # The Mosaic object
 
-    def __init__(self):
+    # parameters for faking readcount data
+    cov = 0.0 # genome wide coverage
+    con = 0.0 # contamination rate
+    err_rate = 1e-3 # sequencing err rate
+
+    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3):
         """Initialize"""
-        pass  # Just go on
+        self.cov = cov
+        self.con = con
+        self.err_rate = err_rate
 
     def load_m_object(self):
         """Load the Mosaic Object"""
@@ -178,7 +187,10 @@ class Mosaic_1000G_Multi(object):
         f: HDF5 File with Matching entries for Meta Data per Locus
         gts: Genotype Matrix [l,k,2]
         samples: List of sample IIDs [k]
-        Path: Where to save to"""
+        Path: Where to save to
+        cov: genome wide coverage
+        con: contamination rate
+        err: sequencing error rate"""
 
         if len(path) == 0:
             path = self.save_path
@@ -191,6 +203,44 @@ class Mosaic_1000G_Multi(object):
         ref, alt = f["variants/REF"][:], f["variants/ALT"][:, 0]
         pos = f["variants/POS"]
         rec = f["variants/MAP"]
+        print(f'shape of gt: {gt.shape}')
+
+        # add (artificial) readcount coverage data
+        cov = self.cov
+        con = self.con
+        err_rate = self.err_rate
+
+        gt_ref = np.array(self.m_object.f["calldata/GT"])
+        nloci_ref, nind_ref, _ = gt_ref.shape
+        gt_ref = gt_ref.reshape((nloci_ref, 2*nind_ref))
+        assert(nloci_ref == gt.shape[0])
+        p = np.mean(gt_ref, axis=1)
+
+        if cov > 0:
+            ad = np.zeros_like(gt)
+            nloci, nind, _ = ad.shape
+            nreads = np.random.poisson(cov, (nloci, nind)) # using Poisson random number to model the number of reads that cover each site
+            for i in range(nloci):
+                allele_freq = p[i]
+                for j in range(nind):
+                    gt_ij = gt[i, j]
+                    nread_ij = nreads[i, j]
+                    # sample reads from 1) the genotype or 2) the reference panel based on contamination rate
+                    for read in range(nread_ij):
+                        isCon = np.random.rand() <= con
+                        if not isCon:
+                            # sample reads based on the genotype
+                            ret = np.random.choice(gt_ij)
+                            if np.random.rand() <= err_rate:
+                                ret = abs(1 - ret) # simulate sequencing error
+                            ad[i, j, ret] += 1
+                        else:
+                            # sample reads based on the reference panel
+                            ret == 1 if np.random.rand() <= allele_freq else 0
+                            if np.random.rand() <= err_rate:
+                                ret = abs(1 - ret)
+                            ad[i, j, ret] += 1
+
 
         # Maybe filter for Loci here
         self.save_hdf5(gt, ad, ref, alt, pos, rec, samples, path)
