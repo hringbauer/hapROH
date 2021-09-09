@@ -3,7 +3,6 @@
 #$ -N hapCon #Name of the command that will be listed in the queue
 #$ -cwd #change to current directory
 #$ -j y #join error and standard output in one file, no error file will be written
-#$ -o output #standard output file or directory (joined with error because of -j y)
 #$ -q archgen.q #queue
 #$ -m e #send an email at the end of the job
 #$ -M yilei_huang@eva.mpg.de #send email to this address
@@ -16,4 +15,5 @@
 #"S1250" "MA138" "MA81" "COR002" "MA100" "MA112" "S1249" "ORC006")
 
 
-python3 runSingleSample.py -i SUC005
+#python3 runSingleSample.py -i SUA001 # run on a real Sardinian ancient sample
+python3 runSingleSample.py -i iid0 -t /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/chr1_12cM/data.h5 --chr 1

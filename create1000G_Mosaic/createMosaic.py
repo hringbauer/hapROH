@@ -9,6 +9,7 @@ import h5py   # For Processing HDF5s
 import numpy as np
 import pandas as pd
 import os as os
+import sys
 
 
 class Mosaic_1000G(object):
@@ -37,7 +38,7 @@ class Mosaic_1000G(object):
         self.path1000G = path1000G + str(ch) + ".hdf5"
         print(f'constructor of Mosaic_1000G: {path1000G}')
         self.pop_path = pop_path
-
+        self.ch = ch
         # Load some Data:
         self.f = self.load_h5()
         # Load the Individual Names and merge in Population Data
@@ -92,7 +93,11 @@ class Mosaic_1000G(object):
         iids = self.give_iids(meta_df, pop_list)
         l = len(iids)   # Nr of Fitting Individuals
 
-        gts_new, rec = self.create_chunked_gts(chunk_length, iids)
+        print(f'the chromosome to simulate is: {self.ch}')
+        if self.ch in ['X', 'x']:
+            gts_new, rec = self.create_chunked_gts_X(chunk_length, iids)
+        else:
+            gts_new, rec = self.create_chunked_gts(chunk_length, iids)
         copy_inds = np.random.randint(l, size=len(roh_list))
         copy_ids = iids[copy_inds]  # Indexes of the Individuals to copy from
 
@@ -106,6 +111,49 @@ class Mosaic_1000G(object):
         copy_iids = meta_df["sample"].values[copy_ids]
 
         return gts_new, copy_iids
+
+    def create_chunked_gts_X(self, chunk_length, iids):
+        # for X chromosome simulation only
+        f = self.f
+        nloci, nind, _ = np.shape(f["calldata/GT"])
+        gts_ref = np.array(f["calldata/GT"]).reshape((nloci, 2*nind))
+
+        # load recombination map in morgan
+        rec = np.array(f["variants/MAP"]).astype("float")
+        ch_min, ch_max = np.min(rec) - 1e-10, np.max(rec)
+        nr_chunks = np.ceil((ch_max-ch_min)/chunk_length).astype("int")
+
+        # create all copying indices
+        # identify columns that are not the second copy of maleX, which is all missing data
+        notMissing = np.intersect1d(np.where(np.min(gts_ref, axis=0) != -1)[0], iids)
+        #print(f'not missing: {notMissing}')
+        #print(f'number of non-missing haplotype: {len(notMissing)}')
+        copy_id = np.random.choice(notMissing, size=2*nr_chunks)
+        # Create Length Bin Vector
+        len_bins = np.arange(ch_min, ch_max, chunk_length)
+        len_bins = np.append(len_bins, ch_max)  # Append the last Value
+
+        if self.output == True:
+            print("Setting new Genotypes...")
+
+        # Initialize with invalid Value
+        gts_new = -np.ones((nloci, 2), dtype="int")
+
+        for i in range(len(len_bins) - 1):  # Iterate over all Length Bins
+            c_min, c_max = len_bins[i], len_bins[i + 1]
+
+            i_min, i_max = np.searchsorted(rec, [c_min, c_max])
+            hap1, hap2 = copy_id[2*i], copy_id[2*i+1]
+            gts_new[i_min:i_max+1, 1] = gts_ref[i_min:i_max+1, hap1]
+            gts_new[i_min:i_max+1, 0] = gts_ref[i_min:i_max+1, hap2]
+
+        if self.output == True:
+            print("Finished chunked Genotypes")
+
+        assert(nloci == len(rec))  # Sanity Check
+        assert(np.min(gts_new) > -1)  # Sanity Check
+        return gts_new, rec
+
 
     def create_chunked_gts(self, chunk_length, iids):
         """Create Chunked indiviual from Genotype Matrix f.
@@ -172,8 +220,10 @@ class Mosaic_1000G(object):
 
         assert(np.shape(gts)[0] == len(rec))  # Sanity Check
 
-        gts_copy = f["calldata/GT"][i_min:i_max + \
-            1, id_copy, 1]  # The Stretch to copy in
+        if np.min(f["calldata/GT"][i_min:i_max+1, id_copy, 1]) == -1:
+            gts_copy = f["calldata/GT"][i_min:i_max + 1, id_copy, 0]  # The Stretch to copy in
+        else:
+            gts_copy = f["calldata/GT"][i_min:i_max + 1, id_copy, 1]  # The Stretch to copy in
         gts[i_min:i_max + 1, :] = gts_copy[:, None]  # Copy in the Stretch
 
         return gts

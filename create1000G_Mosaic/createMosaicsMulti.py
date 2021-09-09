@@ -11,6 +11,7 @@ import numpy as np
 from numpy.core.numeric import _isclose_dispatcher
 import pandas as pd
 import os                              # To delete File
+import sys
 
 from createMosaic import Mosaic_1000G  # Import the
 
@@ -109,6 +110,13 @@ class Mosaic_1000G_Multi(object):
 
         l = len(m.f["variants/MAP"])
         c_min, c_max = np.min(m.f["variants/MAP"]), np.max(m.f["variants/MAP"])
+        
+        ########################## for debugging purpose ######################
+        print(f'c_min: {c_min}, c_max: {c_max}')
+
+
+        ##########################  end #######################################
+
 
         gts = -np.ones((l, n, 2), dtype="int")
 
@@ -122,17 +130,25 @@ class Mosaic_1000G_Multi(object):
             if self.output == True:
                 print(f"\nDoing Individual {iids[i]}")
 
+        if self.ch in ['X', 'x']:
+            # for male x, we ignore the user input (the number of ROH blocks and the length of each block)
+            roh_list = np.array([[c_min, c_max]]) # male X should be ROH everywhere
+        else:
             roh_list = self.create_roh_list(roh_lengths, c_min, c_max)
-            gts_roh, copy_ids = m.create_chunked_roh_individual(
-                chunk_length=chunk_length, roh_list=roh_list, pop_list=pop_list)
+        
+        print(f'###### roh length: {roh_lengths} ####')
+        print(f'##### roh list: {roh_list} #####')
+            
+        gts_roh, copy_ids = m.create_chunked_roh_individual(
+            chunk_length=chunk_length, roh_list=roh_list, pop_list=pop_list)
 
-            gts[:, i, :] = gts_roh
+        gts[:, i, :] = gts_roh
 
-            # Append ROH information to save
-            roh_begins += list(roh_list[:, 0])
-            roh_ends += list(roh_list[:, 1])
-            iid_list += [iids[i], ] * len(roh_list)
-            copy_iids += list(copy_ids)
+        # Append ROH information to save
+        roh_begins += list(roh_list[:, 0])
+        roh_ends += list(roh_list[:, 1])
+        iid_list += [iids[i], ] * len(roh_list)
+        copy_iids += list(copy_ids)
 
         # Save the ROH Information:
         if self.output == True:
@@ -316,6 +332,72 @@ def copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
     t.save_path = base_path + "ch" + str(t.ch) + "/"
     t.load_m_object()  # Load the inner Mosaic Object
     t.extract_individuals()
+
+
+
+
+#############################################
+#############################################
+# some helper functions to aid simulation
+# helper function for the simulation
+
+def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/", 
+                             path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
+                    pop_list=["TSI"], n=2, ch=3, chunk_length=0.005, l = 1, n_blocks=5,
+                    cov=0.0, con=0.0, err_rate=1e-3):
+    """Create Multiple ROH runs and saves combined data into base_path hdf5 and roh_info df
+    base_path:  Start of SavePaths
+    path1000G: Where to find the 1000 Genome Data
+    pop_list: The Reference Populations for Mosaic
+    n: Number of Individuals to simulate
+    chunk_length: Lenths of the Chunks to mosaic
+    ch: Chromosome to use
+    l: Length of the ROH blocks
+    n_blocks: The NR of the Blocks to copy in
+    cov: genome wide coverage
+    con: contamination rate
+    err_rate: sequencing err rate"""
+    
+    ########### Pipe the output
+    save_path = base_path + "chr" + str(ch) + "_" + str(int(l)) + "cM/"
+    
+    if not os.path.exists(save_path):
+            os.makedirs(save_path)
+    
+    print(f"Setting save path...: {save_path}")
+    sys.stdout = open(save_path + "mosaic_out.txt", 'w')
+    
+    t = Mosaic_1000G_Multi(cov, con, err_rate)  # Create the MltiRUn Object
+    
+    ##################################
+    ### Set the parameters for the run
+    t.pop_list = pop_list
+    t.path1000G = path1000G
+    t.n = n
+    t.chunk_length = chunk_length
+    t.ch = ch  # The Chromosome
+    t.roh_lengths = np.ones(n_blocks) * 0.01 * l  # Set the Lengths
+    t.save_path = save_path
+    t.load_m_object()
+    t.create_individuals()
+
+def multi_run(fun, prms, processes = 4):
+    """Implementation of running in Parallel.
+    fun: Function
+    prms: The Parameter Files
+    processes: How many Processes to use"""
+    print(f"Running {len(prms)} jobs in parallel.")
+    
+    with mp.Pool(processes = processes) as pool:
+        results = pool.starmap(fun, prms)
+
+
+
+
+
+
+
+
 
 
 #########################################
