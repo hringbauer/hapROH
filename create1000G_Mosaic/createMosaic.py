@@ -254,11 +254,13 @@ class Mosaic_1000G(object):
             iids = self.give_iids("", conPop) # Just use the existing meta_df, so empty string here
             gts = f["calldata/GT"][:, iids, :] # extract genotypes of relevant individuals
         else:
-            gts = f["calldata/GT"]
+            gts = np.array(f["calldata/GT"])
         nloci, nind, _ = gts.shape
         gts = gts.reshape(nloci, nind*2)
-        print(f'shape of contaminating population genotype matrix: {gts.shape}')
-        return np.mean(gts, axis=1)
+        # exclude haplotypes with missing genotypes (for male x chromosome, one column is always -1, for example)
+        gts = gts.astype(np.float32)
+        gts[gts == -1] = np.nan
+        return np.nanmean(gts, axis=1)
 
 
 

@@ -204,7 +204,7 @@ def hapsb_chromXs(iids=[["I15595","I15970"]], ch=23, processes=1,
 ##################################################################################
 ######################## contamination code starts here ##########################
 
-def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], 
+def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], 
                 e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
                 post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
                 h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
@@ -232,6 +232,7 @@ def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True
     n_ref: Number of (diploid) reference Individuals to use [int]
     diploid_ref: Use both haplotypes of reference panel [bool]
     exclude_pops: Which populations to exclude from reference [list of str]
+    conPop: use which population in the ref panel as the contaminating pop. If empty list, then use all samples in the ref panel to cauclate allele freq.
     readcounts: Whether to load readcount data [bool]
     random_allele: Whether to pick a random of the two target alleles per locus [bool]
     c: contamination rate
@@ -296,7 +297,7 @@ def hapCon_ind(iid, chs=range(1,23),
             folder_out='./tools/hapROH/test_output/contaminate/first_try/', prefix_out="",
             e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
             processes=1, delete=False, output=True, save=True, save_fp=False, 
-            n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False,
+            n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], readcounts=True, random_allele=False,
             c=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
             cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=False):
     """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel
@@ -339,7 +340,7 @@ def hapCon_ind(iid, chs=range(1,23),
         print(f"Doing Individual {iid}...")
     
     ### Prepare the Parameters for that Indivdiual
-    prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
+    prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, conPop, e_model, p_model, readcounts, random_allele,
             post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out, c, 
             roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff_post, roh_min_l, logfile] for ch in chs]
     assert(len(prms[0])==27)   # Sanity Check

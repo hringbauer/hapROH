@@ -221,11 +221,6 @@ class Mosaic_1000G_Multi(object):
         con = self.con
         err_rate = self.err_rate
         p = self.m_object.give_popfreq_by_pop(self.conPop)
-        # gt_ref = np.array(self.m_object.f["calldata/GT"])
-        # nloci_ref, nind_ref, _ = gt_ref.shape
-        # gt_ref = gt_ref.reshape((nloci_ref, 2*nind_ref))
-        # assert(nloci_ref == gt.shape[0])
-        # p = np.mean(gt_ref, axis=1)
 
         if cov > 0:
             ad = np.zeros_like(gt)
