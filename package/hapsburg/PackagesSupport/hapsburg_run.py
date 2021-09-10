@@ -282,13 +282,13 @@ def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True
     
     # calculate the posterior. Should set full=True later as there is no need to store posterior in a file for contamination purpose
     # for debugging purpose now, leave full=False as is defaulted
-    #*_, tot_ll = hmm.calc_posterior(save=save, full=True) # Calculate the Posterior.
-    hmm.calc_posterior(save=save)
+    *_, tot_ll = hmm.calc_posterior(save=save, full=True) # Calculate the Posterior.
+    #hmm.calc_posterior(save=save)
     # Do the Post-Processing. Just here for sanity check of called ROH region. 
     # Not needed for estimating contamination purpose. TO BE REMOVED LATER.
-    hmm.post_processing(save=save)             
+    #hmm.post_processing(save=save)             
     #print(f'hapcon_chr returns result: {tot_ll}')
-    #return tot_ll
+    return tot_ll
 
 def hapCon_ind(iid, chs=range(1,23), 
             path_targets='/mnt/archgen/users/yilei/Data/SA_1240KHDF5/marcus2020.h5',
@@ -343,7 +343,7 @@ def hapCon_ind(iid, chs=range(1,23),
     prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, conPop, e_model, p_model, readcounts, random_allele,
             post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out, c, 
             roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff_post, roh_min_l, logfile] for ch in chs]
-    assert(len(prms[0])==27)   # Sanity Check
+    assert(len(prms[0]) == 28)   # Sanity Check
                             
     ### Run the analysis in parallel
     #results = multi_run(hapCon_chrom, prms, processes = processes)

@@ -21,6 +21,8 @@ if __name__ == '__main__':
                         help="output path")
     parser.add_argument('--chr', action="store", dest="chr", type=str, required=False,
                         help="chromosomes to run hapCon on. In the format 1-22,X for example.")
+    parser.add_argument('--er', action="store", dest="e_rate_ref", type=float, required=False, default=0.0,
+                        help="Reference panel error rate. Used to emulate mutation since common ancestry with the copied haplotype.")
     args = parser.parse_args()
 
     print(f"CPU Count: {mp.cpu_count()}")
@@ -56,8 +58,8 @@ if __name__ == '__main__':
             folder_out=args.o, prefix_out="",
             e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
             processes=1, delete=False, output=False, save=True, save_fp=False, 
-            n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False,
-            c=con, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.001, e_rate_ref=0.00, 
+            n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], readcounts=True, random_allele=False,
+            c=con, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.001, e_rate_ref=args.e_rate_ref, 
             cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=False)
         loglls.append(ll)
     

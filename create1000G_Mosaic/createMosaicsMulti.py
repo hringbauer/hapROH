@@ -40,6 +40,7 @@ class Mosaic_1000G_Multi(object):
     cov = 0.0 # genome wide coverage
     con = 0.0 # contamination rate
     err_rate = 1e-3 # sequencing err rate
+    e_rate_ref = 1e-3 # err rate when copied from the ref panel (eg., to emulate mutation since common ancestry)
     conPop = []
 
     def __init__(self, cov=0.0, con=0.0, err_rate=1e-3, conPop=[]):
@@ -220,6 +221,7 @@ class Mosaic_1000G_Multi(object):
         cov = self.cov
         con = self.con
         err_rate = self.err_rate
+        e_rate_ref = self.e_rate_ref
         p = self.m_object.give_popfreq_by_pop(self.conPop)
 
         if cov > 0:
@@ -230,6 +232,14 @@ class Mosaic_1000G_Multi(object):
                 allele_freq = p[i]
                 for j in range(nind):
                     gt_ij = gt[i, j]
+
+                    # to emulate mutation since common ancestry
+                    # allele1, allel2 = gt_ij[0], gt_ij[1]
+                    # allele1 = abs(1 - allele1) if np.random.rand() <= e_rate_ref else allele1
+                    # allele2 = abs(1 - allele2) if np.random.rand() <= e_rate_ref else allele2
+                    # gt_ij = [allele1, allele2]
+                    # END actually this seems a incorrect way to simulate ref err
+
                     nread_ij = nreads[i, j]
                     # sample reads from 1) the genotype or 2) the reference panel based on contamination rate
                     for read in range(nread_ij):

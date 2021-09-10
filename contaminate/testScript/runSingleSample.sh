@@ -22,27 +22,30 @@
 i=$SGE_TASK_ID
 i=$(($i-1))
 
+# maleX1: scenario 1
+# maleX2: scenario 2
+
 # contamination rate 0.05
-prefix="/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX/con5"
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov5/data.h5 --chr X -o $prefix/chrX_cov5
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov2/data.h5 --chr X -o $prefix/chrX_cov2
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1/data.h5 --chr X -o $prefix/chrX_cov1
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1over2/data.h5 --chr X -o $prefix/chrX_cov1over2
+prefix="/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX1/con5"
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov5/data.h5 --chr X -o $prefix/chrX_cov5
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov2/data.h5 --chr X -o $prefix/chrX_cov2
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1/data.h5 --chr X -o $prefix/chrX_cov1
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1over2/data.h5 --chr X -o $prefix/chrX_cov1over2
 python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1over10/data.h5 --chr X -o $prefix/chrX_cov1over10
 
 
 # contamination rate 0
-prefix="/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX/con0"
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov5/data.h5 --chr X -o $prefix/chrX_cov5
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov2/data.h5 --chr X -o $prefix/chrX_cov2
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1/data.h5 --chr X -o $prefix/chrX_cov1
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1over2/data.h5 --chr X -o $prefix/chrX_cov1over2
+prefix="/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX1/con0"
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov5/data.h5 --chr X -o $prefix/chrX_cov5
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov2/data.h5 --chr X -o $prefix/chrX_cov2
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1/data.h5 --chr X -o $prefix/chrX_cov1
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1over2/data.h5 --chr X -o $prefix/chrX_cov1over2
 python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1over10/data.h5 --chr X -o $prefix/chrX_cov1over10
 
 # contamination rate 0.1
-prefix="/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX/con10"
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov5/data.h5 --chr X -o $prefix/chrX_cov5
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov2/data.h5 --chr X -o $prefix/chrX_cov2
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1/data.h5 --chr X -o $prefix/chrX_cov1
-# python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1over2/data.h5 --chr X -o $prefix/chrX_cov1over2
+prefix="/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX1/con10"
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov5/data.h5 --chr X -o $prefix/chrX_cov5
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov2/data.h5 --chr X -o $prefix/chrX_cov2
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1/data.h5 --chr X -o $prefix/chrX_cov1
+python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1over2/data.h5 --chr X -o $prefix/chrX_cov1over2
 python3 runSingleSample.py -i iid$i -t $prefix/chrX_cov1over10/data.h5 --chr X -o $prefix/chrX_cov1over10
