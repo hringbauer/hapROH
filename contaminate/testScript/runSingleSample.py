@@ -40,7 +40,10 @@ if __name__ == '__main__':
                 start, end = int(item[:i]), int(item[i+1:])
                 chs.extend(range(start, 1+end))
             else:
-                chs.append(int(item))
+                if item in ['X', 'x']:
+                    chs.append(23)
+                else:
+                    chs.append(int(item))
     print(f'running hapCon on chromosome {chs}')
 
     loglls = []

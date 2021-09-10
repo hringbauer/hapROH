@@ -281,13 +281,13 @@ def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True
     
     # calculate the posterior. Should set full=True later as there is no need to store posterior in a file for contamination purpose
     # for debugging purpose now, leave full=False as is defaulted
-    *_, tot_ll = hmm.calc_posterior(save=save, full=True) # Calculate the Posterior.
-    #hmm.calc_posterior(save=save)
+    #*_, tot_ll = hmm.calc_posterior(save=save, full=True) # Calculate the Posterior.
+    hmm.calc_posterior(save=save)
     # Do the Post-Processing. Just here for sanity check of called ROH region. 
     # Not needed for estimating contamination purpose. TO BE REMOVED LATER.
-    #hmm.post_processing(save=save)             
+    hmm.post_processing(save=save)             
     #print(f'hapcon_chr returns result: {tot_ll}')
-    return tot_ll
+    #return tot_ll
 
 def hapCon_ind(iid, chs=range(1,23), 
             path_targets='/mnt/archgen/users/yilei/Data/SA_1240KHDF5/marcus2020.h5',

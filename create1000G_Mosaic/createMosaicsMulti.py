@@ -40,12 +40,14 @@ class Mosaic_1000G_Multi(object):
     cov = 0.0 # genome wide coverage
     con = 0.0 # contamination rate
     err_rate = 1e-3 # sequencing err rate
+    conPop = []
 
-    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3):
+    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3, conPop=[]):
         """Initialize"""
         self.cov = cov
         self.con = con
         self.err_rate = err_rate
+        self.conPop = conPop
 
     def load_m_object(self):
         """Load the Mosaic Object"""
@@ -110,13 +112,6 @@ class Mosaic_1000G_Multi(object):
 
         l = len(m.f["variants/MAP"])
         c_min, c_max = np.min(m.f["variants/MAP"]), np.max(m.f["variants/MAP"])
-        
-        ########################## for debugging purpose ######################
-        print(f'c_min: {c_min}, c_max: {c_max}')
-
-
-        ##########################  end #######################################
-
 
         gts = -np.ones((l, n, 2), dtype="int")
 
@@ -130,25 +125,25 @@ class Mosaic_1000G_Multi(object):
             if self.output == True:
                 print(f"\nDoing Individual {iids[i]}")
 
-        if self.ch in ['X', 'x']:
-            # for male x, we ignore the user input (the number of ROH blocks and the length of each block)
-            roh_list = np.array([[c_min, c_max]]) # male X should be ROH everywhere
-        else:
-            roh_list = self.create_roh_list(roh_lengths, c_min, c_max)
+            if self.ch in ['X', 'x']:
+                # for male x, we ignore the user input (the number of ROH blocks and the length of each block)
+                roh_list = np.array([[c_min, c_max]]) # male X should be ROH everywhere
+            else:
+                roh_list = self.create_roh_list(roh_lengths, c_min, c_max)
         
-        print(f'###### roh length: {roh_lengths} ####')
-        print(f'##### roh list: {roh_list} #####')
+            print(f'###### roh length: {roh_lengths} ####')
+            print(f'##### roh list: {roh_list} #####')
             
-        gts_roh, copy_ids = m.create_chunked_roh_individual(
-            chunk_length=chunk_length, roh_list=roh_list, pop_list=pop_list)
+            gts_roh, copy_ids = m.create_chunked_roh_individual(
+                chunk_length=chunk_length, roh_list=roh_list, pop_list=pop_list)
 
-        gts[:, i, :] = gts_roh
+            gts[:, i, :] = gts_roh
 
-        # Append ROH information to save
-        roh_begins += list(roh_list[:, 0])
-        roh_ends += list(roh_list[:, 1])
-        iid_list += [iids[i], ] * len(roh_list)
-        copy_iids += list(copy_ids)
+            # Append ROH information to save
+            roh_begins += list(roh_list[:, 0])
+            roh_ends += list(roh_list[:, 1])
+            iid_list += [iids[i], ] * len(roh_list)
+            copy_iids += list(copy_ids)
 
         # Save the ROH Information:
         if self.output == True:
@@ -225,12 +220,12 @@ class Mosaic_1000G_Multi(object):
         cov = self.cov
         con = self.con
         err_rate = self.err_rate
-
-        gt_ref = np.array(self.m_object.f["calldata/GT"])
-        nloci_ref, nind_ref, _ = gt_ref.shape
-        gt_ref = gt_ref.reshape((nloci_ref, 2*nind_ref))
-        assert(nloci_ref == gt.shape[0])
-        p = np.mean(gt_ref, axis=1)
+        p = self.m_object.give_popfreq_by_pop(self.conPop)
+        # gt_ref = np.array(self.m_object.f["calldata/GT"])
+        # nloci_ref, nind_ref, _ = gt_ref.shape
+        # gt_ref = gt_ref.reshape((nloci_ref, 2*nind_ref))
+        # assert(nloci_ref == gt.shape[0])
+        # p = np.mean(gt_ref, axis=1)
 
         if cov > 0:
             ad = np.zeros_like(gt)
@@ -252,7 +247,7 @@ class Mosaic_1000G_Multi(object):
                             ad[i, j, ret] += 1
                         else:
                             # sample reads based on the reference panel
-                            ret == 1 if np.random.rand() <= allele_freq else 0
+                            ret = 1 if np.random.rand() <= allele_freq else 0
                             if np.random.rand() <= err_rate:
                                 ret = abs(1 - ret)
                             ad[i, j, ret] += 1
@@ -344,7 +339,7 @@ def copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
 def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/", 
                              path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
                     pop_list=["TSI"], n=2, ch=3, chunk_length=0.005, l = 1, n_blocks=5,
-                    cov=0.0, con=0.0, err_rate=1e-3):
+                    cov=0.0, con=0.0, err_rate=1e-3, conPop=[]):
     """Create Multiple ROH runs and saves combined data into base_path hdf5 and roh_info df
     base_path:  Start of SavePaths
     path1000G: Where to find the 1000 Genome Data
@@ -356,7 +351,8 @@ def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/",
     n_blocks: The NR of the Blocks to copy in
     cov: genome wide coverage
     con: contamination rate
-    err_rate: sequencing err rate"""
+    err_rate: sequencing err rate
+    conPop: list of populations to draw contaminating sequence from."""
     
     ########### Pipe the output
     save_path = base_path + "chr" + str(ch) + "_" + str(int(l)) + "cM/"
@@ -367,7 +363,7 @@ def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/",
     print(f"Setting save path...: {save_path}")
     sys.stdout = open(save_path + "mosaic_out.txt", 'w')
     
-    t = Mosaic_1000G_Multi(cov, con, err_rate)  # Create the MltiRUn Object
+    t = Mosaic_1000G_Multi(cov, con, err_rate, conPop)  # Create the MltiRUn Object
     
     ##################################
     ### Set the parameters for the run

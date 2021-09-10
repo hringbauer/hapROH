@@ -223,9 +223,11 @@ class Mosaic_1000G(object):
         if np.min(f["calldata/GT"][i_min:i_max+1, id_copy, 1]) == -1:
             gts_copy = f["calldata/GT"][i_min:i_max + 1, id_copy, 0]  # The Stretch to copy in
         else:
+            assert(np.min(f["calldata/GT"][i_min:i_max+1, id_copy, 1]) != -1)
             gts_copy = f["calldata/GT"][i_min:i_max + 1, id_copy, 1]  # The Stretch to copy in
         gts[i_min:i_max + 1, :] = gts_copy[:, None]  # Copy in the Stretch
 
+        assert(np.min(gts) > -1)
         return gts
 
     def give_iids(self, meta_df="", pop_list=["TSI"]):
@@ -234,9 +236,31 @@ class Mosaic_1000G(object):
             meta_df = self.meta_df
 
         iids = np.where(meta_df["pop"].isin(pop_list))[0]
+        if len(iids) == 0:
+            iids = np.where(meta_df["super_pop"].isin(pop_list))[0]
+        
+        if len(iids) == 0:
+            print(f"No individuals in population {pop_list} is found. Please check your input!")
+            sys.exit()
+
         if self.output == True:
             print(f"Found {len(iids)} Individuals in {pop_list}")
         return iids
+
+    def give_popfreq_by_pop(self, conPop):
+        """Return allele frequency of the specified population."""
+        f = self.f
+        if len(conPop) != 0:
+            iids = self.give_iids("", conPop) # Just use the existing meta_df, so empty string here
+            gts = f["calldata/GT"][:, iids, :] # extract genotypes of relevant individuals
+        else:
+            gts = f["calldata/GT"]
+        nloci, nind, _ = gts.shape
+        gts = gts.reshape(nloci, nind*2)
+        print(f'shape of contaminating population genotype matrix: {gts.shape}')
+        return np.mean(gts, axis=1)
+
+
 
     def get_gts_pop(self, pop_list, meta_df=""):
         """Find all Individuals from a Population.
