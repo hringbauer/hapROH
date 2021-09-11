@@ -17,6 +17,7 @@ class Mosaic_1000G(object):
     Given some Parameters it creates the Mosaic individuals and returns their genotypes"""
 
     ch = 0  # Which Chromosome to analyze
+    e_rate_ref = 1e-3
     path1000G = ""  # Path to the 1000 Genome Data
     pop_path = ""  # Path to Population Information
     save_path = ""  # Where to save the new HDF5 to
@@ -25,7 +26,7 @@ class Mosaic_1000G(object):
     f = 0          # HDF5 with 1000 Genome Data
     meta_df = 0    # Meta_df with Meta Information of the 1000 Genome Data
 
-    def __init__(self, ch=3, path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
+    def __init__(self, ch=3, e_rate_ref=1e-3, path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
                  pop_path="./Data/1000Genomes/integrated_call_samples_v3.20130502.ALL.panel",
                  save_path=""):
         """ch: Which chromosome to loadself.
@@ -34,6 +35,7 @@ class Mosaic_1000G(object):
         print("\nStarted Mosaic Object. Working Directory:")
         print(os.getcwd()) # Show the current working directory)
 
+        self.e_rate_ref = e_rate_ref
         # Set Path of 1000G (without chromosome part)
         self.path1000G = path1000G + str(ch) + ".hdf5"
         print(f'constructor of Mosaic_1000G: {path1000G}')
@@ -225,6 +227,7 @@ class Mosaic_1000G(object):
         else:
             assert(np.min(f["calldata/GT"][i_min:i_max+1, id_copy, 1]) != -1)
             gts_copy = f["calldata/GT"][i_min:i_max + 1, id_copy, 1]  # The Stretch to copy in
+
         gts[i_min:i_max + 1, :] = gts_copy[:, None]  # Copy in the Stretch
 
         assert(np.min(gts) > -1)

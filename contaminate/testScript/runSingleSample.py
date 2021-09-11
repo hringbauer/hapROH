@@ -59,7 +59,7 @@ if __name__ == '__main__':
             e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
             processes=1, delete=False, output=False, save=True, save_fp=False, 
             n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], readcounts=True, random_allele=False,
-            c=con, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.001, e_rate_ref=args.e_rate_ref, 
+            c=con, roh_in=1, roh_out=0, roh_jump=300, e_rate=0.001, e_rate_ref=args.e_rate_ref, 
             cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=False)
         loglls.append(ll)
     

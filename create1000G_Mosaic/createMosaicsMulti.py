@@ -43,11 +43,12 @@ class Mosaic_1000G_Multi(object):
     e_rate_ref = 1e-3 # err rate when copied from the ref panel (eg., to emulate mutation since common ancestry)
     conPop = []
 
-    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3, conPop=[]):
+    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[]):
         """Initialize"""
         self.cov = cov
         self.con = con
         self.err_rate = err_rate
+        self.e_rate_ref = e_rate_ref
         self.conPop = conPop
 
     def load_m_object(self):
@@ -58,7 +59,7 @@ class Mosaic_1000G_Multi(object):
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
 
-        self.m_object = Mosaic_1000G(ch=self.ch, path1000G=self.path1000G,
+        self.m_object = Mosaic_1000G(ch=self.ch, e_rate_ref=self.e_rate_ref, path1000G=self.path1000G,
                                      pop_path=self.pop_path, save_path=self.save_path)
 
     def save_hdf5(self, gt, ad, ref, alt, pos, rec, samples, path):
@@ -128,7 +129,8 @@ class Mosaic_1000G_Multi(object):
 
             if self.ch in ['X', 'x']:
                 # for male x, we ignore the user input (the number of ROH blocks and the length of each block)
-                roh_list = np.array([[c_min, c_max]]) # male X should be ROH everywhere
+                #roh_list = np.array([[c_min, c_max]]) # male X should be ROH everywhere
+                roh_list = self.create_roh_list_maleX(np.array(m.f["variants/MAP"]))
             else:
                 roh_list = self.create_roh_list(roh_lengths, c_min, c_max)
         
@@ -193,6 +195,46 @@ class Mosaic_1000G_Multi(object):
         roh_list = np.array([roh_begin, roh_end]).T
 
         return roh_list
+
+    def create_roh_list_maleX(self, recmap):
+        """
+        each ROH block is exponentially distributed with mean 1/300 morgen = 1/3 centi-morgen
+        They should cover the entire chromosome as maleX is haploid everywhere.
+        """
+        print(f'length of recomb map: {len(recmap)}')
+        print(f'recombination map: {recmap}')
+        cmin, cmax = recmap[0], recmap[-1]
+        print(f'cmin: {cmin}, cmax: {cmax}')
+        start = cmin
+        end = start
+        nloci = len(recmap)
+        starts = []
+        ends = []
+        while end < cmax:
+            wait_time = np.random.exponential(scale=1/300)
+            i = np.searchsorted(recmap, start + wait_time)
+            if i == nloci:
+                end = cmax # we have reached chromosome end, done!
+            else:
+                dist2left = start + wait_time - recmap[i-1]
+                dist2right = recmap[i] - (start + wait_time)
+                if dist2left <= dist2right:
+                    end = recmap[i-1]
+                else:
+                    end = recmap[i]
+            starts.append(start)
+            ends.append(end)
+            start = end
+
+        print(f'total number of ROH blocks: {len(starts)}')
+        print(f'first ROH block: {starts[0]} - {ends[0]}')
+        print(f'last ROH block: {starts[-1]} - {ends[-1]}')
+        print(f'average block length: {np.mean(np.array(ends) - np.array(starts))}')
+        roh_list = np.zeros((len(starts), 2))
+        roh_list[:,0] = starts
+        roh_list[:,1] = ends
+        return roh_list
+
 
     def save_genotypes(self, f, gts, samples, path=""):
         """Save the full genotype Matrix
@@ -344,7 +386,7 @@ def copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
 def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/", 
                              path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
                     pop_list=["TSI"], n=2, ch=3, chunk_length=0.005, l = 1, n_blocks=5,
-                    cov=0.0, con=0.0, err_rate=1e-3, conPop=[]):
+                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[]):
     """Create Multiple ROH runs and saves combined data into base_path hdf5 and roh_info df
     base_path:  Start of SavePaths
     path1000G: Where to find the 1000 Genome Data
@@ -368,7 +410,7 @@ def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/",
     print(f"Setting save path...: {save_path}")
     sys.stdout = open(save_path + "mosaic_out.txt", 'w')
     
-    t = Mosaic_1000G_Multi(cov, con, err_rate, conPop)  # Create the MltiRUn Object
+    t = Mosaic_1000G_Multi(cov, con, err_rate, e_rate_ref, conPop)  # Create the MltiRUn Object
     
     ##################################
     ### Set the parameters for the run
