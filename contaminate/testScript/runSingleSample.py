@@ -54,11 +54,11 @@ if __name__ == '__main__':
         ll = hapCon_ind(args.iid, chs=chs, 
             path_targets=args.target,
             h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
-            meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/meta_df_all.csv', 
+            meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.custom.csv', 
             folder_out=args.o, prefix_out="",
             e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
             processes=1, delete=False, output=False, save=True, save_fp=False, 
-            n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], readcounts=True, random_allele=False,
+            n_ref=2504, diploid_ref=True, exclude_pops=["TSI0"], conPop=[], readcounts=True, random_allele=False,
             c=con, roh_in=1, roh_out=0, roh_jump=300, e_rate=0.001, e_rate_ref=args.e_rate_ref, 
             cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=False)
         loglls.append(ll)

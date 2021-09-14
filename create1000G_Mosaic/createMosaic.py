@@ -228,6 +228,12 @@ class Mosaic_1000G(object):
             assert(np.min(f["calldata/GT"][i_min:i_max+1, id_copy, 1]) != -1)
             gts_copy = f["calldata/GT"][i_min:i_max + 1, id_copy, 1]  # The Stretch to copy in
 
+        # introduce copying errors
+        errWhere = np.where(np.random.rand(i_max + 1 - i_min) <= self.e_rate_ref)[0]
+        gts_copy[errWhere] = np.abs(1 - gts_copy[errWhere])
+        if len(errWhere)>0:
+            print(f'adding {len(errWhere)} errors when copying')
+
         gts[i_min:i_max + 1, :] = gts_copy[:, None]  # Copy in the Stretch
 
         assert(np.min(gts) > -1)

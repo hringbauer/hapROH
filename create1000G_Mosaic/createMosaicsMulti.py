@@ -29,7 +29,7 @@ class Mosaic_1000G_Multi(object):
     n = 3       # Nr of individuals to simulate
 
     path1000G = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
-    pop_path = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv"
+    pop_path = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.custom.csv"
     # Where to save the new HDF5 to by default
     save_path = "./Simulated/1000G_Mosaic/TSI/ch3_5cm/"
 
