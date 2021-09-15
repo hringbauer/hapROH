@@ -301,7 +301,6 @@ class HMM_Analyze(object):
         """
         grid search for MLE of contamination rate, return a list of loglikelihoods, mle estimate and the confidence interval.
         """
-
         lls = []
         for con in cons:
             tot_ll = self.compute_tot_likelihood(con)
@@ -312,9 +311,6 @@ class HMM_Analyze(object):
         h, info = Hfun(conMLE)
         h = h[0][0]
         se = math.sqrt(1/(-h))
-        print(f'loglikelihood: {lls}')
-        #print(f'mle for contamination: {conMLE}')
-        #print(f'CI for contamination: [{conMLE - 1.96*se}, {conMLE + 1.96*se}]')
         return lls, conMLE, conMLE - 1.96*se, conMLE + 1.96*se
 
     def post_processing(self, save=True):

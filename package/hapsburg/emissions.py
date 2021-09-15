@@ -255,10 +255,15 @@ class Diploid_GT_Emissions(RC_Model_Emissions):
 class RC_Model_Emissions_withContamination(RC_Model_Emissions):
 
     c = 0.0 # contamination rate
+    emission_matrix = [] # an array of dimension [n_ref+1, n_loci, 3]
+    # I moved the call to give_emission_matrix to the constructor as this needs only to be computed once
+    # different contamination rates give different emission matrices, but that only happens in the call to give_emission_state
+    # this gives about 5x speed-up when computing total likelihood for a given contamination rate
 
     def __init__(self, ref_haps=[], c=0.0):
         RC_Model_Emissions.__init__(self, ref_haps)
         self.c = c
+        self.emission_matrix = self.give_emission_matrix()
 
     def give_emission_state(self, ob_stat, e_mat):
         """Gives the emission matrix of observed states
@@ -295,19 +300,9 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
         """Return the full emission Probability directly in Log Space.
         ob_stat: Observed Readcounts [2,l] array of 0/1 
         c: contamination rate """
-        t1 = time.time()
-        e_mat = self.give_emission_matrix()
-        print(f'give emission_matrix takes: {time.time()-t1}')
-        t1 = time.time()
-        e_mat = self.give_emission_state(ob_stat, e_mat)
-        print(f'give emission state takes: {time.time()-t1}')
+        e_mat = self.give_emission_state(ob_stat, self.emission_matrix)
         assert(np.min(e_mat) >= 0)  # Sanity Check (In Log Space Pr. <0)
         return e_mat
-
-    def set_params(self, **kwargs):
-        """Set the Values."""
-        for key, value in kwargs.items():
-            setattr(self, key, value)
 
 ###############################
 ###############################
