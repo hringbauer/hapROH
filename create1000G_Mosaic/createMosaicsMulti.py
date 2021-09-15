@@ -29,7 +29,7 @@ class Mosaic_1000G_Multi(object):
     n = 3       # Nr of individuals to simulate
 
     path1000G = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
-    pop_path = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.custom.csv"
+    pop_path = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv"
     # Where to save the new HDF5 to by default
     save_path = "./Simulated/1000G_Mosaic/TSI/ch3_5cm/"
 
@@ -386,7 +386,7 @@ def copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
 def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/", 
                              path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
                     pop_list=["TSI"], n=2, ch=3, chunk_length=0.005, l = 1, n_blocks=5,
-                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[]):
+                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], prefix=""):
     """Create Multiple ROH runs and saves combined data into base_path hdf5 and roh_info df
     base_path:  Start of SavePaths
     path1000G: Where to find the 1000 Genome Data
@@ -402,7 +402,11 @@ def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/",
     conPop: list of populations to draw contaminating sequence from."""
     
     ########### Pipe the output
-    save_path = base_path + "chr" + str(ch) + "_" + str(int(l)) + "cM/"
+    save_path = base_path
+    if len(prefix) == 0:
+        save_path += "chr" + str(ch) + "_" + str(int(l)) + "cM/"
+    else:
+        save_path += prefix
     
     if not os.path.exists(save_path):
             os.makedirs(save_path)

@@ -297,6 +297,11 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
         assert(np.min(e_mat) >= 0)  # Sanity Check (In Log Space Pr. <0)
         return e_mat
 
+    def set_params(self, **kwargs):
+        """Set the Values."""
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
 ###############################
 ###############################
 

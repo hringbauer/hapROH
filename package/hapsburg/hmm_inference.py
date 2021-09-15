@@ -9,6 +9,11 @@ import os                     # For Saving to Folder
 #import psutil                 # For Memory Profiling
 #import cProfile               # For Profiling
 # from func import fwd_bkwd    # Import the Python Function
+import time
+import sys
+import numdifftools as ndt
+import math
+from hapsburg.cfunc import fwd # fwd only computes total likelihood
 from hapsburg.cfunc import fwd_bkwd_fast, fwd_bkwd_lowmem, fwd_bkwd_scaled, fwd_bkwd_scaled_lowmem  # Cython Functions
 from hapsburg.func import fwd_bkwd_p, sloppyROH_cumsum  # Python Functions
 from hapsburg.emissions import load_emission_model     # Factory Methods
@@ -257,6 +262,25 @@ class HMM_Analyze(object):
             np.savetxt(path, post[0, :],
                        delimiter=",",  fmt='%f')
             print(f"Saved Zero State Posterior to folder {self.folder}.")
+    
+    def compute_tot_likelihood(self, c, in_val=1e-4):
+        """Calculate the poserior for each path
+        FULL: Wether to return fwd, bwd as well as tot_ll (Mode for postprocessing)
+        in_val: The Initial Probability to copy from one Ind."""
+        t_mat = self.t_obj.give_transitions()
+        ob_stat = self.ob_stat
+        r_map = self.prepare_rmap()  # Get the Recombination Map
+
+        self.e_obj.set_params(c=c)
+        e_mat = self.e_obj.give_emission(ob_stat=ob_stat)
+        n_states = np.shape(e_mat)[0]
+        n_loci = np.shape(e_mat)[1]
+
+        # Precompute the 3x3 Transition Matrix
+        t_mat_full = self.pre_compute_transition_matrix(
+            t_mat, r_map, self.n_ref)
+        return fwd(e_mat, t_mat_full, in_val)
+
 
     def optimze_ll_transition_param(self, roh_trans_params):
         """Calculate and return the log likelihoods for Transitions Parameters
@@ -272,6 +296,37 @@ class HMM_Analyze(object):
             ll_hoods.append(tot_ll)
 
         return np.array(ll_hoods)
+
+    def optimize_ll_contamination(self, cons):
+        """
+        grid search for MLE of contamination rate, return a list of loglikelihoods, mle estimate and the confidence interval.
+        """
+
+        # lls1 = []
+        # t1 = time.time()
+        # for con in cons:
+        #     self.e_obj.set_params(c=con)
+        #     _, _, _, tot_ll = self.calc_posterior(save=False, full=True)
+        #     lls1.append(tot_ll)
+        # t2 = time.time()
+        # print(f'average time to run forward & backward once: {(t2-t1)/len(cons)}')
+
+        lls2 = []
+        t1 = time.time()
+        for con in cons:
+            tot_ll = self.compute_tot_likelihood(con)
+            lls2.append(tot_ll)
+        t2 = time.time()
+        print(f'average time to run forward: {(t2-t1)/len(cons)}')
+
+        conMLE = cons[np.argmax(lls2)]
+        Hfun = ndt.Hessian(self.compute_tot_likelihood, step=1e-4, full_output=True)
+        h, info = Hfun(conMLE)
+        h = h[0][0]
+        se = math.sqrt(1/(-h))
+        print(f'mle for contamination: {conMLE}')
+        print(f'CI for contamination: [{conMLE - 1.96*se}, {conMLE + 1.96*se}]')
+        return lls2, conMLE, conMLE - 1.96*se, conMLE + 1.96*se
 
     def post_processing(self, save=True):
         """Do the Postprocessing of ROH Blocks

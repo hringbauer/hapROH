@@ -210,7 +210,7 @@ def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True
                 h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
                 meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
                 folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
-                c=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
+                c=np.arange(0, 0.2, 0.005), roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
                 max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True):
     """Run HapCon analysis for one chromosome on hdf5 data
     Wrapper for HMM Class.
@@ -268,7 +268,7 @@ def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True
     hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
                          meta_path_ref = meta_path_ref, n_ref=n_ref)
     hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
-    hmm.load_secondary_objects(c)
+    hmm.load_secondary_objects()
     
     ### Print out the Parameters used in run:
     print("\nParameters in hapCon_chrom:")
@@ -279,16 +279,21 @@ def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True
     hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
     hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
     hmm.post_obj.set_params(max_gap=max_gap, cutoff_post=cutoff_post, roh_min_l = roh_min_l)
+
+
+    lls, con_mle, lower, upper = hmm.optimize_ll_contamination(c)
+    return lls, con_mle, lower, upper
+
     
     # calculate the posterior. Should set full=True later as there is no need to store posterior in a file for contamination purpose
     # for debugging purpose now, leave full=False as is defaulted
-    *_, tot_ll = hmm.calc_posterior(save=save, full=True) # Calculate the Posterior.
+    #*_, tot_ll = hmm.calc_posterior(save=save, full=True) # Calculate the Posterior.
     #hmm.calc_posterior(save=save)
     # Do the Post-Processing. Just here for sanity check of called ROH region. 
     # Not needed for estimating contamination purpose. TO BE REMOVED LATER.
     #hmm.post_processing(save=save)             
     #print(f'hapcon_chr returns result: {tot_ll}')
-    return tot_ll
+    #return tot_ll
 
 def hapCon_ind(iid, chs=range(1,23), 
             path_targets='/mnt/archgen/users/yilei/Data/SA_1240KHDF5/marcus2020.h5',

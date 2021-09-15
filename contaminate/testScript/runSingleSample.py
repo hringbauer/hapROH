@@ -21,7 +21,7 @@ if __name__ == '__main__':
                         help="output path")
     parser.add_argument('--chr', action="store", dest="chr", type=str, required=False,
                         help="chromosomes to run hapCon on. In the format 1-22,X for example.")
-    parser.add_argument('--er', action="store", dest="e_rate_ref", type=float, required=False, default=0.0,
+    parser.add_argument('--er', action="store", dest="e_rate_ref", type=float, required=False, default=1e-3,
                         help="Reference panel error rate. Used to emulate mutation since common ancestry with the copied haplotype.")
     args = parser.parse_args()
 
@@ -48,28 +48,24 @@ if __name__ == '__main__':
                     chs.append(int(item))
     print(f'running hapCon on chromosome {chs}')
 
-    loglls = []
     cons = np.arange(0, 0.2, 0.005)
-    for con in cons:
-        ll = hapCon_ind(args.iid, chs=chs, 
+    lls, con_mle, lower, upper = hapCon_chrom(args.iid, ch='X', 
             path_targets=args.target,
             h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
-            meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.custom.csv', 
-            folder_out=args.o, prefix_out="",
-            e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
-            processes=1, delete=False, output=False, save=True, save_fp=False, 
-            n_ref=2504, diploid_ref=True, exclude_pops=["TSI0"], conPop=[], readcounts=True, random_allele=False,
-            c=con, roh_in=1, roh_out=0, roh_jump=300, e_rate=0.001, e_rate_ref=args.e_rate_ref, 
+            meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
+            folder_out=args.o, prefix_out="fast_",
+            e_model="readcount_contam", p_model="SardHDF5", post_model="Standard", save=True, save_fp=False, 
+            n_ref=2504, diploid_ref=True, exclude_pops=["TSI"], conPop=[], readcounts=True, random_allele=False,
+            c=cons, roh_in=1, roh_out=0, roh_jump=300, e_rate=0.001, e_rate_ref=args.e_rate_ref, 
             cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=False)
-        loglls.append(ll)
     
     # plotting loglikelihood versus con rate
-    plt.plot(cons, loglls)
+    plt.plot(cons, lls)
     plt.xlabel('contamination rate')
     plt.ylabel('loglikelihoods')
-    argmax = np.argmax(loglls)
-    con_mle = cons[argmax]
     plt.axvline(con_mle, linestyle='dashed')
+    plt.axvline(lower, linestyle='dashed', color='red')
+    plt.axvline(upper, linestyle='dashed', color='red')
     plt.title(f'{args.iid}\t{con_mle}')
     plt.savefig(f'{args.o}/{args.iid}.png', dpi=300)
 

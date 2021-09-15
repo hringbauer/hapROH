@@ -10,7 +10,7 @@
 #$ -l h_vmem=15G #request 4Gb of memory
 #$ -V # load personal profile
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
-#$ -t 1-10:1
+#$ -t 1:10:1
 
 #iids=("ORC008" "SUC005" "SUA003" "S1252" "S1253" "SEC002" "ORC002" "SUC009" "ORC003" "MA110" "ISB001"
 #"MA78" "MA73" "SUA001" "ORC007" "MA89" "ISC001" "SEC001" "SUA002" "SUC006" "SUC007" "SUC003" "ORC004"
