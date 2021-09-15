@@ -273,13 +273,13 @@ class HMM_Analyze(object):
 
         self.e_obj.set_params(c=c)
         e_mat = self.e_obj.give_emission(ob_stat=ob_stat)
-        n_states = np.shape(e_mat)[0]
-        n_loci = np.shape(e_mat)[1]
 
         # Precompute the 3x3 Transition Matrix
         t_mat_full = self.pre_compute_transition_matrix(
             t_mat, r_map, self.n_ref)
-        return fwd(e_mat, t_mat_full, in_val)
+        
+        logll = fwd(e_mat, t_mat_full, in_val)
+        return logll
 
 
     def optimze_ll_transition_param(self, roh_trans_params):
@@ -302,31 +302,20 @@ class HMM_Analyze(object):
         grid search for MLE of contamination rate, return a list of loglikelihoods, mle estimate and the confidence interval.
         """
 
-        # lls1 = []
-        # t1 = time.time()
-        # for con in cons:
-        #     self.e_obj.set_params(c=con)
-        #     _, _, _, tot_ll = self.calc_posterior(save=False, full=True)
-        #     lls1.append(tot_ll)
-        # t2 = time.time()
-        # print(f'average time to run forward & backward once: {(t2-t1)/len(cons)}')
-
-        lls2 = []
-        t1 = time.time()
+        lls = []
         for con in cons:
             tot_ll = self.compute_tot_likelihood(con)
-            lls2.append(tot_ll)
-        t2 = time.time()
-        print(f'average time to run forward: {(t2-t1)/len(cons)}')
+            lls.append(tot_ll)
 
-        conMLE = cons[np.argmax(lls2)]
+        conMLE = cons[np.argmax(lls)]
         Hfun = ndt.Hessian(self.compute_tot_likelihood, step=1e-4, full_output=True)
         h, info = Hfun(conMLE)
         h = h[0][0]
         se = math.sqrt(1/(-h))
-        print(f'mle for contamination: {conMLE}')
-        print(f'CI for contamination: [{conMLE - 1.96*se}, {conMLE + 1.96*se}]')
-        return lls2, conMLE, conMLE - 1.96*se, conMLE + 1.96*se
+        print(f'loglikelihood: {lls}')
+        #print(f'mle for contamination: {conMLE}')
+        #print(f'CI for contamination: [{conMLE - 1.96*se}, {conMLE + 1.96*se}]')
+        return lls, conMLE, conMLE - 1.96*se, conMLE + 1.96*se
 
     def post_processing(self, save=True):
         """Do the Postprocessing of ROH Blocks

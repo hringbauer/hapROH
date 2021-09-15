@@ -6,6 +6,7 @@ Contains Sub-Classes, as well as factory Method.
 
 import numpy as np
 from scipy.stats import binom  # Binomial Likelihood
+import time
 
 ###############################
 ###############################
@@ -139,9 +140,11 @@ class RC_Model_Emissions(Model_Emissions):
             (ref_haps == 0) * e_rate_ref / 2
 
         # Sanity Check if genotype probabilities sum up to (approx.) 1
-        assert(np.all(np.isclose(np.sum(p_hgeno, axis=2), 1)))
-        assert((np.min(p_hgeno) >= 0) & (
-            np.max(p_hgeno) <= 1))   # Sanity Check
+        # I commented out the following 2 assert statements to save runtime
+        # turns out it takes ~7s on chrX, too slow!
+        # assert(np.all(np.isclose(np.sum(p_hgeno, axis=2), 1)))
+        # assert((np.min(p_hgeno) >= 0) & (
+        #     np.max(p_hgeno) <= 1))   # Sanity Check
 
         if remember == True:
             self.e_mat = p_hgeno
@@ -292,8 +295,12 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
         """Return the full emission Probability directly in Log Space.
         ob_stat: Observed Readcounts [2,l] array of 0/1 
         c: contamination rate """
+        t1 = time.time()
         e_mat = self.give_emission_matrix()
+        print(f'give emission_matrix takes: {time.time()-t1}')
+        t1 = time.time()
         e_mat = self.give_emission_state(ob_stat, e_mat)
+        print(f'give emission state takes: {time.time()-t1}')
         assert(np.min(e_mat) >= 0)  # Sanity Check (In Log Space Pr. <0)
         return e_mat
 
