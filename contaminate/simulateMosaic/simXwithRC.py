@@ -18,8 +18,11 @@ if __name__ == '__main__':
                         help="genotyping error.")
     parser.add_argument('--eref', action="store", dest="eref", type=float, required=True,
                         help="error rate when copied from the reference panel.")
-    # parser.add_argument('--prefix', action="store", dest="prefix", type=str, required=False, default="",
-    #                     help="Prefix for the output file.")
+    parser.add_argument('--prefix', action="store", dest="prefix", type=str, required=False, default="",
+                        help="Prefix for the output file.")
+    parser.add_argument('-b', action="store", dest="b", type=str, required=False,
+                        default="/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX/",
+                        help="output base path")
     args = parser.parse_args()
 
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/create1000G_Mosaic")
@@ -29,7 +32,7 @@ if __name__ == '__main__':
     os.chdir(path)  # Set the right Path (in line with Atom default)
     
     # actual simulation
-    base_path="./simulated/1000G_Mosaic/TSI/maleX/" 
+    base_path=args.b
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/chX1240/chr"
     pop_list=["TSI"]
     conPop=[]
@@ -52,21 +55,19 @@ if __name__ == '__main__':
     elif con == 0.1:
         base_path += "con10/"
     
-    prefix = ""
     if cov == 0.05:
-        prefix = "chrX_cov1over20"
+        base_path += "chrX_cov1over20/"
     elif cov == 0.1:
-        prefix = "chrX_cov1over10"
+        base_path += "chrX_cov1over10/"
     elif cov == 0.5:
-        prefix = "chrX_cov1over2"
+        base_path += "chrX_cov1over2/"
     elif cov == 1.0:
-        prefix = "chrX_cov1"
+        base_path += "chrX_cov1/"
     elif cov == 2.0:
-        prefix = "chrX_cov2"
+        base_path += "chrX_cov2/"
     elif cov == 5.0:
-        prefix = "chrX_cov5"
+        base_path += "chrX_cov5/"
 
     print(f'simulating {n} maleX chromosomes')
     print(f'output basepath: {base_path}')
-    print(f'output prefix: {prefix}')
-    create_individual_mosaic(base_path, path1000G, pop_list, n, ch, chunk_length, l, n_blocks, cov, con, err_rate, e_rate_ref, conPop, prefix)
+    create_individual_mosaic(base_path, path1000G, pop_list, n, ch, chunk_length, l, n_blocks, cov, con, err_rate, e_rate_ref, conPop, args.prefix)
