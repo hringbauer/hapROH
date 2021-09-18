@@ -23,7 +23,7 @@ def readResult(filePath):
 
 if __name__ == '__main__':
     for contamination in [0.0, 0.05, 0.1]:
-        prefix = "/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX/"
+        prefix = "/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX5/"
         confix = ""
         if contamination == 0.0:
             confix += "con0"

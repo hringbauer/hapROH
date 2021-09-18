@@ -12,16 +12,12 @@
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
 #$ -t 1:6:1
 
-#iids=("ORC008" "SUC005" "SUA003" "S1252" "S1253" "SEC002" "ORC002" "SUC009" "ORC003" "MA110" "ISB001"
-#"MA78" "MA73" "SUA001" "ORC007" "MA89" "ISC001" "SEC001" "SUA002" "SUC006" "SUC007" "SUC003" "ORC004"
-#"S1250" "MA138" "MA81" "COR002" "MA100" "MA112" "S1249" "ORC006")
-
 
 i=$SGE_TASK_ID
 i=$(($i-1))
 coverages=(0.05 0.1 0.5 1.0 2.0 5.0)
 cov=${coverages[$i]}
 
-python3 simXwithRC.py -n 100 --cov $cov --con 0.0 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX5/
-python3 simXwithRC.py -n 100 --cov $cov --con 0.05 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX5/
-python3 simXwithRC.py -n 100 --cov $cov --con 0.1 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX5/
+python3 simXwithRC.py -n 100 --cov $cov --con 0.0 --err 2e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX7/
+python3 simXwithRC.py -n 100 --cov $cov --con 0.05 --err 2e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX7/
+python3 simXwithRC.py -n 100 --cov $cov --con 0.1 --err 2e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX7/

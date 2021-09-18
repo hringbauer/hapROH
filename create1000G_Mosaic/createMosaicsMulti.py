@@ -42,14 +42,16 @@ class Mosaic_1000G_Multi(object):
     err_rate = 1e-3 # sequencing err rate
     e_rate_ref = 1e-3 # err rate when copied from the ref panel (eg., to emulate mutation since common ancestry)
     conPop = []
+    downsample = False # whether to downsample the number of reads at each site to 1 read only (especially make it pseudohaploid)
 
-    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[]):
+    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], downsample=False):
         """Initialize"""
         self.cov = cov
         self.con = con
         self.err_rate = err_rate
         self.e_rate_ref = e_rate_ref
         self.conPop = conPop
+        self.downsample = downsample
 
     def load_m_object(self):
         """Load the Mosaic Object"""
@@ -246,6 +248,10 @@ class Mosaic_1000G_Multi(object):
         con: contamination rate
         err: sequencing error rate"""
 
+        downsample = self.downsample
+        if downsample:
+            print(f'Downsample reads at each site to be 1 read only...')
+
         if len(path) == 0:
             path = self.save_path
 
@@ -274,14 +280,6 @@ class Mosaic_1000G_Multi(object):
                 allele_freq = p[i]
                 for j in range(nind):
                     gt_ij = gt[i, j]
-
-                    # to emulate mutation since common ancestry
-                    # allele1, allel2 = gt_ij[0], gt_ij[1]
-                    # allele1 = abs(1 - allele1) if np.random.rand() <= e_rate_ref else allele1
-                    # allele2 = abs(1 - allele2) if np.random.rand() <= e_rate_ref else allele2
-                    # gt_ij = [allele1, allele2]
-                    # END actually this seems a incorrect way to simulate ref err
-
                     nread_ij = nreads[i, j]
                     # sample reads from 1) the genotype or 2) the reference panel based on contamination rate
                     for read in range(nread_ij):
@@ -298,6 +296,8 @@ class Mosaic_1000G_Multi(object):
                             if np.random.rand() <= err_rate:
                                 ret = abs(1 - ret)
                             ad[i, j, ret] += 1
+                        if downsample:
+                            break # only sample one read if downsample
 
 
         # Maybe filter for Loci here
@@ -386,7 +386,7 @@ def copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
 def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/", 
                              path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
                     pop_list=["TSI"], n=2, ch=3, chunk_length=0.005, l = 1, n_blocks=5,
-                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], prefix=""):
+                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], downsample=False, prefix=""):
     """Create Multiple ROH runs and saves combined data into base_path hdf5 and roh_info df
     base_path:  Start of SavePaths
     path1000G: Where to find the 1000 Genome Data
@@ -414,7 +414,7 @@ def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/",
     print(f"Setting save path...: {save_path}")
     sys.stdout = open(save_path + "mosaic_out.txt", 'w')
     
-    t = Mosaic_1000G_Multi(cov, con, err_rate, e_rate_ref, conPop)  # Create the MltiRUn Object
+    t = Mosaic_1000G_Multi(cov, con, err_rate, e_rate_ref, conPop, downsample)  # Create the MltiRUn Object
     
     ##################################
     ### Set the parameters for the run

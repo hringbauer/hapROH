@@ -22,8 +22,13 @@ if __name__ == '__main__':
         right = -3 + 0.25*(2/9)
         for i in range(1, 11):
             conMLE, errBar = readResult(f'{prefix}/err{i}/batchresults.txt')
-            plt.scatter(np.logspace(left, right, len(conMLE)), conMLE, marker='o', c='blue', s=5, zorder=3)
-            plt.errorbar(np.logspace(left, right, len(conMLE)), conMLE, yerr=errBar, fmt='none', ecolor='#8c8c8c', zorder=1)
+            if i == 1:
+                plt.scatter(np.logspace(left, right, len(conMLE)), conMLE, marker='o', c='blue', s=5, zorder=3, label="MLE for contamination rate")
+                plt.errorbar(np.logspace(left, right, len(conMLE)), conMLE, yerr=errBar, fmt='none', ecolor='#8c8c8c', zorder=1, label="95% CI")
+            else:
+                plt.scatter(np.logspace(left, right, len(conMLE)), conMLE, marker='o', c='blue', s=5, zorder=3)
+                plt.errorbar(np.logspace(left, right, len(conMLE)), conMLE, yerr=errBar, fmt='none', ecolor='#8c8c8c', zorder=1)
+
             left += 2/9
             right += 2/9
 
@@ -31,8 +36,7 @@ if __name__ == '__main__':
         plt.ylabel('estimated contamination')
         plt.xlabel('simulated genotyping error rate')
         plt.axhline(y=0.075, xmin=0, xmax=1, zorder=2, c='red', linestyle='-', label="true contamination rate")
-        #plt.legend(loc="upper right")
-        #plt.xticks([5, 15, 25, 35, 45, 55, 65, 75, 85, 95])
+        plt.legend(loc="upper left")
         plt.xscale('log', basex=10)
         plt.savefig(f'{prefix}/{confix}.png', dpi=300)
         plt.clf()

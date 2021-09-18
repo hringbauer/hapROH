@@ -56,18 +56,19 @@ if __name__ == '__main__':
         base_path += "con10/"
     
     if cov == 0.05:
-        base_path += "chrX_cov1over20/"
+        prefix = "chrX_cov1over20"
     elif cov == 0.1:
-        base_path += "chrX_cov1over10/"
+        prefix = "chrX_cov1over10"
     elif cov == 0.5:
-        base_path += "chrX_cov1over2/"
+        prefix = "chrX_cov1over2"
     elif cov == 1.0:
-        base_path += "chrX_cov1/"
+        prefix = "chrX_cov1"
     elif cov == 2.0:
-        base_path += "chrX_cov2/"
+        prefix = "chrX_cov2"
     elif cov == 5.0:
-        base_path += "chrX_cov5/"
+        prefix = "chrX_cov5"
 
+    base_path += prefix + "/"
     print(f'simulating {n} maleX chromosomes')
     print(f'output basepath: {base_path}')
-    create_individual_mosaic(base_path, path1000G, pop_list, n, ch, chunk_length, l, n_blocks, cov, con, err_rate, e_rate_ref, conPop, args.prefix)
+    create_individual_mosaic(base_path=base_path, path1000G=path1000G, pop_list=pop_list, n=n, ch=ch, cov=cov, con=con, err_rate=err_rate, e_rate_ref=e_rate_ref, conPop=conPop, downsample=False, prefix=prefix)
