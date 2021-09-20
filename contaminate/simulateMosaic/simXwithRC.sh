@@ -18,6 +18,6 @@ i=$(($i-1))
 coverages=(0.05 0.1 0.5 1.0 2.0 5.0)
 cov=${coverages[$i]}
 
-python3 simXwithRC.py -n 100 --cov $cov --con 0.0 --err 2e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX7/
-python3 simXwithRC.py -n 100 --cov $cov --con 0.05 --err 2e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX7/
-python3 simXwithRC.py -n 100 --cov $cov --con 0.1 --err 2e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX7/
+python3 simXwithRC.py -n 100 --cov $cov --con 0.0 --err 5e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX8/
+python3 simXwithRC.py -n 100 --cov $cov --con 0.05 --err 5e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX8/
+python3 simXwithRC.py -n 100 --cov $cov --con 0.1 --err 5e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX8/

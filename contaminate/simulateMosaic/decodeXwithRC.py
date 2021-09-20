@@ -24,7 +24,7 @@ if __name__ == '__main__':
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")  # hack to get local package first in path [FROM HARALD - DELETE!!!]
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom  # Need this import
     
-    base_path="./simulated/1000G_Mosaic/TSI/maleX7/" 
+    base_path="./simulated/1000G_Mosaic/TSI/maleX8/" 
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/chX1240/chr"
     ch='X'
 
