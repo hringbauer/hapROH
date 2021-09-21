@@ -42,15 +42,17 @@ class Mosaic_1000G_Multi(object):
     err_rate = 1e-3 # sequencing err rate
     e_rate_ref = 1e-3 # err rate when copied from the ref panel (eg., to emulate mutation since common ancestry)
     conPop = []
+    jump = 300.0
     downsample = False # whether to downsample the number of reads at each site to 1 read only (especially make it pseudohaploid)
 
-    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], downsample=False):
+    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], jump=300.0, downsample=False):
         """Initialize"""
         self.cov = cov
         self.con = con
         self.err_rate = err_rate
         self.e_rate_ref = e_rate_ref
         self.conPop = conPop
+        self.jump = jump
         self.downsample = downsample
 
     def load_m_object(self):
@@ -212,8 +214,9 @@ class Mosaic_1000G_Multi(object):
         nloci = len(recmap)
         starts = []
         ends = []
+        jump = self.jump
         while end < cmax:
-            wait_time = np.random.exponential(scale=1/300)
+            wait_time = np.random.exponential(scale=1/jump)
             i = np.searchsorted(recmap, start + wait_time)
             if i == nloci:
                 end = cmax # we have reached chromosome end, done!
@@ -386,7 +389,7 @@ def copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
 def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/", 
                              path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
                     pop_list=["TSI"], n=2, ch=3, chunk_length=0.005, l = 1, n_blocks=5,
-                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], downsample=False, prefix=""):
+                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], jump=300.0, downsample=False, prefix=""):
     """Create Multiple ROH runs and saves combined data into base_path hdf5 and roh_info df
     base_path:  Start of SavePaths
     path1000G: Where to find the 1000 Genome Data

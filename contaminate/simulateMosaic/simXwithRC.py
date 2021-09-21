@@ -20,6 +20,8 @@ if __name__ == '__main__':
                         help="error rate when copied from the reference panel.")
     parser.add_argument('--prefix', action="store", dest="prefix", type=str, required=False, default="",
                         help="Prefix for the output file.")
+    parser.add_argument('-j', action="store", dest="jump", type=float, required=False, default=300,
+                        help="copying jump rate, default to 300.")
     parser.add_argument('-b', action="store", dest="b", type=str, required=False,
                         default="/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX/",
                         help="output base path")
@@ -47,6 +49,7 @@ if __name__ == '__main__':
     con = args.con
     err_rate = args.err
     e_rate_ref = args.eref
+    jump = args.jump
 
     if con == 0:
         base_path += "con0/"
@@ -71,4 +74,4 @@ if __name__ == '__main__':
     base_path += prefix + "/"
     print(f'simulating {n} maleX chromosomes')
     print(f'output basepath: {base_path}')
-    create_individual_mosaic(base_path=base_path, path1000G=path1000G, pop_list=pop_list, n=n, ch=ch, cov=cov, con=con, err_rate=err_rate, e_rate_ref=e_rate_ref, conPop=conPop, downsample=False, prefix=prefix)
+    create_individual_mosaic(base_path=base_path, path1000G=path1000G, pop_list=pop_list, n=n, ch=ch, cov=cov, con=con, err_rate=err_rate, e_rate_ref=e_rate_ref, conPop=conPop, jump=jump, downsample=False, prefix=prefix)
