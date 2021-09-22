@@ -19,5 +19,6 @@ i=$(($i-1))
 jumps=(100 129 167 215 278 359 464 599 774 1000)
 jump=${jumps[$i]}
 
-python3 simXwithRC.py -n 100 --cov 0.5 --con 0.075 --err 1e-2 --eref 1e-3 --prefix jump$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXjumpErr/
-python3 simXwithRC.py -n 100 --cov 0.1 --con 0.075 --err 1e-2 --eref 1e-3 --prefix jump$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXjumpErr/
+#python3 simXwithRC.py -n 100 --cov 0.5 --con 0.075 --err 1e-2 --eref 1e-3 --prefix jump$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXjump/ -j $jump
+#python3 simXwithRC.py -n 100 --cov 0.1 --con 0.075 --err 1e-2 --eref 1e-3 --prefix jump$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXjump/ -j $jump
+python3 simXwithRC.py -n 100 --cov 1.0 --con 0.075 --err 1e-2 --eref 1e-3 --prefix jump$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXjump/ -j $jump

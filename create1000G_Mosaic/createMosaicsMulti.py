@@ -417,7 +417,7 @@ def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/",
     print(f"Setting save path...: {save_path}")
     sys.stdout = open(save_path + "mosaic_out.txt", 'w')
     
-    t = Mosaic_1000G_Multi(cov, con, err_rate, e_rate_ref, conPop, downsample)  # Create the MltiRUn Object
+    t = Mosaic_1000G_Multi(cov, con, err_rate, e_rate_ref, conPop, jump, downsample)  # Create the MltiRUn Object
     
     ##################################
     ### Set the parameters for the run

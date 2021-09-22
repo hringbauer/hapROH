@@ -72,6 +72,8 @@ if __name__ == '__main__':
         prefix = "chrX_cov5"
 
     base_path += prefix + "/"
+    
+    prefix = args.prefix
     print(f'simulating {n} maleX chromosomes')
     print(f'output basepath: {base_path}')
     create_individual_mosaic(base_path=base_path, path1000G=path1000G, pop_list=pop_list, n=n, ch=ch, cov=cov, con=con, err_rate=err_rate, e_rate_ref=e_rate_ref, conPop=conPop, jump=jump, downsample=False, prefix=prefix)

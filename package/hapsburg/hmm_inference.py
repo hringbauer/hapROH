@@ -13,6 +13,8 @@ import time
 import sys
 import numdifftools as ndt
 import math
+from scipy.optimize import minimize
+
 from hapsburg.cfunc import fwd # fwd only computes total likelihood
 from hapsburg.cfunc import fwd_bkwd_fast, fwd_bkwd_lowmem, fwd_bkwd_scaled, fwd_bkwd_scaled_lowmem  # Cython Functions
 from hapsburg.func import fwd_bkwd_p, sloppyROH_cumsum  # Python Functions
@@ -281,6 +283,24 @@ class HMM_Analyze(object):
         logll = fwd(e_mat, t_mat_full, in_val)
         return logll
 
+    def compute_tot_likelihood_2d(self, args, in_val=1e-4):
+        # args = [contamination rate, genotyping error rate]
+        print(f'##### args: {args} #####')
+        t_mat = self.t_obj.give_transitions()
+        ob_stat = self.ob_stat
+        r_map = self.prepare_rmap()  # Get the Recombination Map
+
+        self.e_obj.set_params(c=args[0], e_rate=args[1])
+        e_mat = self.e_obj.give_emission(ob_stat=ob_stat)
+
+        # Precompute the 3x3 Transition Matrix
+        t_mat_full = self.pre_compute_transition_matrix(
+            t_mat, r_map, self.n_ref)
+        
+        logll = fwd(e_mat, t_mat_full, in_val)
+        # return -logll here because optimizer usually minimize the target function instead of maximize
+        return -logll
+
 
     def optimze_ll_transition_param(self, roh_trans_params):
         """Calculate and return the log likelihoods for Transitions Parameters
@@ -312,6 +332,16 @@ class HMM_Analyze(object):
         h = h[0][0]
         se = math.sqrt(1/(-h))
         return lls, conMLE, conMLE - 1.96*se, conMLE + 1.96*se
+
+    def optimize_ll_contamANDerr(self, init_c, init_err):
+        # use powell's optimization to search for MLE of contamination rate and genotyping error rate
+        guess = np.array([init_c, init_err])
+        bnds = [(0.0, 0.5), (0.0, 0.1)]
+        res = minimize(self.compute_tot_likelihood_2d, guess, method='L-BFGS-B', bounds=bnds)
+        Hfun = ndt.Hessian(self.compute_tot_likelihood_2d, step=1e-4, full_output=True)
+        h, info = Hfun(res.x)
+        se = np.sqrt(np.diag(np.linalg.inv(h)))
+        return res.x, se
 
     def post_processing(self, save=True):
         """Do the Postprocessing of ROH Blocks
