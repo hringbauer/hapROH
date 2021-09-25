@@ -44,8 +44,9 @@ class Mosaic_1000G_Multi(object):
     conPop = []
     jump = 300.0
     downsample = False # whether to downsample the number of reads at each site to 1 read only (especially make it pseudohaploid)
+    heterogeneous = False # whether to simulate heterogeneous coverage at each of the 1240k target site
 
-    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], jump=300.0, downsample=False):
+    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], jump=300.0, downsample=False, heterogeneous=False):
         """Initialize"""
         self.cov = cov
         self.con = con
@@ -54,6 +55,7 @@ class Mosaic_1000G_Multi(object):
         self.conPop = conPop
         self.jump = jump
         self.downsample = downsample
+        self.heterogeneous = heterogeneous
 
     def load_m_object(self):
         """Load the Mosaic Object"""
@@ -252,8 +254,12 @@ class Mosaic_1000G_Multi(object):
         err: sequencing error rate"""
 
         downsample = self.downsample
+        heterogeneous = self.heterogeneous
         if downsample:
             print(f'Downsample reads at each site to be 1 read only...')
+        if heterogeneous:
+            print('simulate heterogeneous coverage at 1240k target site')
+        
 
         if len(path) == 0:
             path = self.save_path
@@ -278,7 +284,17 @@ class Mosaic_1000G_Multi(object):
         if cov > 0:
             ad = np.zeros_like(gt)
             nloci, nind, _ = ad.shape
-            nreads = np.random.poisson(cov, (nloci, nind)) # using Poisson random number to model the number of reads that cover each site
+            if not heterogeneous:
+                nreads = np.random.poisson(cov, (nloci, nind)) # using Poisson random number to model the number of reads that cover each site
+            else:
+                ratios = []
+                with open(f'/mnt/archgen/users/yilei/Data/iberian_BAM/1240kChrX_coverage.ratio', 'r') as f:
+                    for line in f:
+                        _, _, ratio = line.strip().split()
+                        ratios.append(float(ratio))
+                assert(len(ratios) == nloci)
+                nreads = np.random.poisson(cov*np.array(ratios).reshape(nloci, 1), (nloci, nind))
+                print(f'mean number of reads per site: {np.mean(nreads, axis=1)}')
             for i in range(nloci):
                 allele_freq = p[i]
                 for j in range(nind):
@@ -389,7 +405,7 @@ def copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
 def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/", 
                              path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
                     pop_list=["TSI"], n=2, ch=3, chunk_length=0.005, l = 1, n_blocks=5,
-                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], jump=300.0, downsample=False, prefix=""):
+                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], jump=300.0, downsample=False, heterogeneous=False, prefix=""):
     """Create Multiple ROH runs and saves combined data into base_path hdf5 and roh_info df
     base_path:  Start of SavePaths
     path1000G: Where to find the 1000 Genome Data
@@ -406,18 +422,18 @@ def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/",
     
     ########### Pipe the output
     save_path = base_path
-    if len(prefix) == 0:
-        save_path += "chr" + str(ch) + "_" + str(int(l)) + "cM/"
-    else:
-        save_path += prefix
-    
+    # if len(prefix) == 0:
+    #     save_path += "chr" + str(ch) + "_" + str(int(l)) + "cM/"
+    # else:
+    #     save_path += prefix
+
     if not os.path.exists(save_path):
             os.makedirs(save_path)
     
     print(f"Setting save path...: {save_path}")
     sys.stdout = open(save_path + "mosaic_out.txt", 'w')
     
-    t = Mosaic_1000G_Multi(cov, con, err_rate, e_rate_ref, conPop, jump, downsample)  # Create the MltiRUn Object
+    t = Mosaic_1000G_Multi(cov, con, err_rate, e_rate_ref, conPop, jump, downsample, heterogeneous)  # Create the MltiRUn Object
     
     ##################################
     ### Set the parameters for the run

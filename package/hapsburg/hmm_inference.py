@@ -336,10 +336,15 @@ class HMM_Analyze(object):
     def optimize_ll_contamANDerr(self, init_c, init_err):
         # use powell's optimization to search for MLE of contamination rate and genotyping error rate
         guess = np.array([init_c, init_err])
-        bnds = [(0.0, 0.5), (0.0, 0.1)]
+        bnds = [(0, 0.5), (0, 0.1)]
         res = minimize(self.compute_tot_likelihood_2d, guess, method='L-BFGS-B', bounds=bnds)
+        print(f'----------- res: {res} --------------')
         Hfun = ndt.Hessian(self.compute_tot_likelihood_2d, step=1e-4, full_output=True)
-        h, info = Hfun(res.x)
+        try:
+            h, info = Hfun(res.x)
+        except AssertionError:
+            print(f'cannot estimate the Hessian of the loglikelihood around {res.x}')
+            return res.x, np.array([np.nan, np.nan])
         se = np.sqrt(np.diag(np.linalg.inv(h)))
         return res.x, se
 

@@ -25,6 +25,9 @@ if __name__ == '__main__':
     parser.add_argument('-b', action="store", dest="b", type=str, required=False,
                         default="/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX/",
                         help="output base path")
+    parser.add_argument('--downsample', action="store_true", help="whether to downsample numer of reads at each site to 1.")
+    parser.add_argument('--hetero', action="store_true", help="whether to simulate uneven coverage of 1240k targets.")
+
     args = parser.parse_args()
 
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/create1000G_Mosaic")
@@ -35,7 +38,7 @@ if __name__ == '__main__':
     
     # actual simulation
     base_path=args.b
-    path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/chX1240/chr"
+    path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
     pop_list=["TSI"]
     conPop=[]
     n = args.n  # Number of Individuals
@@ -76,4 +79,4 @@ if __name__ == '__main__':
     prefix = args.prefix
     print(f'simulating {n} maleX chromosomes')
     print(f'output basepath: {base_path}')
-    create_individual_mosaic(base_path=base_path, path1000G=path1000G, pop_list=pop_list, n=n, ch=ch, cov=cov, con=con, err_rate=err_rate, e_rate_ref=e_rate_ref, conPop=conPop, jump=jump, downsample=False, prefix=prefix)
+    create_individual_mosaic(base_path=base_path, path1000G=path1000G, pop_list=pop_list, n=n, ch=ch, cov=cov, con=con, err_rate=err_rate, e_rate_ref=e_rate_ref, conPop=conPop, jump=jump, downsample=args.downsample, heterogeneous=args.hetero, prefix=prefix)

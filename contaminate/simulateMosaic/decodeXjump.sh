@@ -1,6 +1,6 @@
 #!/bin/bash
 #$ -S /bin/bash #defines bash as the shell for execution
-#$ -N hapCon #Name of the command that will be listed in the queue
+#$ -N hapCon_jump #Name of the command that will be listed in the queue
 #$ -cwd #change to current directory
 #$ -j y #join error and standard output in one file, no error file will be written
 #$ -q archgen.q #queue
@@ -12,5 +12,6 @@
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
 #$ -t 1:10:1
 
-python3 decodeXjump.py -j $SGE_TASK_ID --cov 0.1
-python3 decodeXjump.py -j $SGE_TASK_ID --cov 0.5
+#python3 decodeXjump.py -j $SGE_TASK_ID --cov 0.1
+#python3 decodeXjump.py -j $SGE_TASK_ID --cov 0.5
+python3 decodeXjump.py -j $SGE_TASK_ID --cov 1.0

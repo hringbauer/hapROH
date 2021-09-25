@@ -24,8 +24,8 @@ if __name__ == '__main__':
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")  # hack to get local package first in path [FROM HARALD - DELETE!!!]
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom  # Need this import
     
-    base_path="./simulated/1000G_Mosaic/TSI/maleX8/" 
-    path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/chX1240/chr"
+    base_path="./simulated/1000G_Mosaic/TSI/maleX9/" 
+    path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
     ch='X'
 
     # parameters for readcount data  
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     for i in range(100):
         iid = "iid" + str(i)
         _, conMLE, lower95, upper95 = hapCon_chrom(iid, ch='X', 
-            path_targets=f"{outFolder}/{prefix}data.h5",
+            path_targets=f"{outFolder}/data.h5",
             h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
             meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
             folder_out=outFolder, prefix_out="",
