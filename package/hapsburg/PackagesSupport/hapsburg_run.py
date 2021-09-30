@@ -444,7 +444,48 @@ def hapCon_chrom_2d(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=T
     mle, se = hmm.optimize_ll_contamANDerr(c, e_rate)
     return mle, se
 
+
+def hapCon_chrom_BFGS(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], 
+    e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
+    post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
+    h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
+    meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
+    folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
+    c=0.025, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
+    max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True):
+
+    parameters = locals() # Gets dictionary of all local variables at this point
     
+    ### Create Folder if needed, and pipe output if wanted
+    _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
+    hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, post_model=post_model,
+                      manual_load=True, save=save, save_fp=save_fp)
+
+    ### Load and prepare the pre-processing Model
+    hmm.load_preprocessing_model()              # Load the preprocessing Model
+    hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
+                         folder_out=folder_out, prefix_out_data=prefix_out, 
+                         excluded=exclude_pops, diploid_ref=diploid_ref)
+    
+    ### Set the paths to ref & target
+    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
+                         meta_path_ref = meta_path_ref, n_ref=n_ref)
+    hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
+    hmm.load_secondary_objects()
+    
+    ### Print out the Parameters used in run:
+    print("\nParameters in hapCon_chrom_BFGS:")
+    print("\n".join("{}\t{}".format(k, v) for k, v in parameters.items()))
+    print("\n")
+
+    ### Set the Parameters
+    hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
+    hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
+    hmm.post_obj.set_params(max_gap=max_gap, cutoff_post=cutoff_post, roh_min_l = roh_min_l)
+
+
+    con_mle, lower, upper = hmm.optimize_ll_contamination_BFGS(c)
+    return con_mle, lower, upper
 
 
 ##################################################################################

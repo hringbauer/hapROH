@@ -265,7 +265,7 @@ class HMM_Analyze(object):
                        delimiter=",",  fmt='%f')
             print(f"Saved Zero State Posterior to folder {self.folder}.")
     
-    def compute_tot_likelihood(self, c, in_val=1e-4):
+    def compute_tot_neg_likelihood(self, c, in_val=1e-4):
         """Calculate the poserior for each path
         FULL: Wether to return fwd, bwd as well as tot_ll (Mode for postprocessing)
         in_val: The Initial Probability to copy from one Ind."""
@@ -281,9 +281,9 @@ class HMM_Analyze(object):
             t_mat, r_map, self.n_ref)
         
         logll = fwd(e_mat, t_mat_full, in_val)
-        return logll
+        return -logll #RETURN THE NEGATIVE OF LOGLL SO THAT THIS COULD WORK WITH STANDARD OPTIMIZATION METHOD
 
-    def compute_tot_likelihood_2d(self, args, in_val=1e-4):
+    def compute_tot_neg_likelihood_2d(self, args, in_val=1e-4):
         # args = [contamination rate, genotyping error rate]
         print(f'##### args: {args} #####')
         t_mat = self.t_obj.give_transitions()
@@ -323,23 +323,35 @@ class HMM_Analyze(object):
         """
         lls = []
         for con in cons:
-            tot_ll = self.compute_tot_likelihood(con)
-            lls.append(tot_ll)
+            tot_ll = self.compute_tot_neg_likelihood(con)
+            lls.append(-tot_ll) # NOTE: MY COMPUTE_TOT_LIKELIHOOD RETURNS THE NEGATIVE OF LIKELIHOOD
 
         conMLE = cons[np.argmax(lls)]
-        Hfun = ndt.Hessian(self.compute_tot_likelihood, step=1e-4, full_output=True)
+        Hfun = ndt.Hessian(self.compute_tot_neg_likelihood, step=1e-4, full_output=True)
         h, info = Hfun(conMLE)
         h = h[0][0]
-        se = math.sqrt(1/(-h))
+        se = math.sqrt(1/(h))
         return lls, conMLE, conMLE - 1.96*se, conMLE + 1.96*se
+
+    def optimize_ll_contamination_BFGS(self, init_c):
+        """
+        Find MLE of contamination rate by L-BFGS-B.
+        """
+        bnds = [(0, 0.5)]
+        res = minimize(self.compute_tot_neg_likelihood, init_c, method='L-BFGS-B', bounds=bnds)
+        Hfun = ndt.Hessian(self.compute_tot_neg_likelihood, step=1e-4, full_output=True)
+        h, info = Hfun(res.x)
+        h = h[0][0]
+        se = math.sqrt(1/(h))
+        return res.x, res.x - 1.96*se, res.x + 1.96*se
+
 
     def optimize_ll_contamANDerr(self, init_c, init_err):
         # use powell's optimization to search for MLE of contamination rate and genotyping error rate
         guess = np.array([init_c, init_err])
         bnds = [(0, 0.5), (0, 0.1)]
-        res = minimize(self.compute_tot_likelihood_2d, guess, method='L-BFGS-B', bounds=bnds)
-        print(f'----------- res: {res} --------------')
-        Hfun = ndt.Hessian(self.compute_tot_likelihood_2d, step=1e-4, full_output=True)
+        res = minimize(self.compute_tot_neg_likelihood_2d, guess, method='L-BFGS-B', bounds=bnds)
+        Hfun = ndt.Hessian(self.compute_tot_neg_likelihood_2d, step=1e-4, full_output=True)
         try:
             h, info = Hfun(res.x)
         except AssertionError:

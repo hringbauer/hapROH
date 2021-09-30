@@ -23,7 +23,7 @@ def readResult(filePath):
 
 if __name__ == '__main__':
     for contamination in [0.0, 0.05, 0.1]:
-        prefix = "/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX8/"
+        prefix = "/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX11/"
         confix = ""
         if contamination == 0.0:
             confix += "con0"
@@ -33,12 +33,12 @@ if __name__ == '__main__':
             confix += "con10"
 
         prefix += confix
-        conMLE_cov1over20, errBars_cov1over20 = readResult(f'{prefix}/chrX_cov1over20/batchresults.txt')
-        conMLE_cov1over10, errBars_cov1over10 = readResult(f'{prefix}/chrX_cov1over10/batchresults.txt')
-        conMLE_cov1over2, errBars_cov1over2 = readResult(f'{prefix}/chrX_cov1over2/batchresults.txt')
-        conMLE_cov1, errBars_cov1 = readResult(f'{prefix}/chrX_cov1/batchresults.txt')
-        conMLE_cov2, errBars_cov2 = readResult(f'{prefix}/chrX_cov2/batchresults.txt')
-        conMLE_cov5, errBars_cov5 = readResult(f'{prefix}/chrX_cov5/batchresults.txt')
+        conMLE_cov1over20, errBars_cov1over20 = readResult(f'{prefix}/chrX_cov1over20/batchresults_bfgs.txt')
+        conMLE_cov1over10, errBars_cov1over10 = readResult(f'{prefix}/chrX_cov1over10/batchresults_bfgs.txt')
+        conMLE_cov1over2, errBars_cov1over2 = readResult(f'{prefix}/chrX_cov1over2/batchresults_bfgs.txt')
+        conMLE_cov1, errBars_cov1 = readResult(f'{prefix}/chrX_cov1/batchresults_bfgs.txt')
+        conMLE_cov2, errBars_cov2 = readResult(f'{prefix}/chrX_cov2/batchresults_bfgs.txt')
+        conMLE_cov5, errBars_cov5 = readResult(f'{prefix}/chrX_cov5/batchresults_bfgs.txt')
 
         xs_cov1over20 = np.linspace(2.5, 7.5, num=len(conMLE_cov1over20))
         xs_cov1over10 = np.linspace(12.5, 17.5, num=len(conMLE_cov1over10))
@@ -71,7 +71,7 @@ if __name__ == '__main__':
         plt.axhline(y=contamination, xmin=0, xmax=1, zorder=2, c='red', linestyle='-', label="true contamination rate")
         plt.legend(loc="upper right")
         plt.xticks([5, 15, 25, 35, 45, 55], ["0.05", "0.1", "0.5", "1", "2", "5"])
-        plt.savefig(f'{prefix}/{confix}.png', dpi=300)
+        plt.savefig(f'{prefix}/{confix}_bfgs.png', dpi=300)
         plt.clf()
 
 

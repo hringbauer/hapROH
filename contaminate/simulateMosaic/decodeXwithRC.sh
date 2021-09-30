@@ -17,6 +17,7 @@ i=$(($i-1))
 coverages=(0.05 0.1 0.5 1.0 2.0 5.0)
 cov=${coverages[$i]}
 
-python3 decodeXwithRC.py --cov $cov --con 0.05 --err 1e-2 --eref 1e-3
-python3 decodeXwithRC.py --cov $cov --con 0.0 --err 1e-2 --eref 1e-3 
-python3 decodeXwithRC.py --cov $cov --con 0.1 --err 1e-2 --eref 1e-3 
+python3 decodeXwithRC.py --cov $cov --con 0.05 --err 5e-2 --eref 1e-3
+python3 decodeXwithRC.py --cov $cov --con 0.0 --err 5e-2 --eref 1e-3 
+python3 decodeXwithRC.py --cov $cov --con 0.1 --err 5e-2 --eref 1e-3 
+

@@ -23,8 +23,10 @@ if __name__ == '__main__':
 
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")  # hack to get local package first in path [FROM HARALD - DELETE!!!]
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom  # Need this import
-    
-    base_path="./simulated/1000G_Mosaic/TSI/maleX9/" 
+    from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS  # Need this import
+
+
+    base_path="./simulated/1000G_Mosaic/TSI/maleX11/" 
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
     ch='X'
 
@@ -60,19 +62,31 @@ if __name__ == '__main__':
     results = np.zeros((100, 3))
     for i in range(100):
         iid = "iid" + str(i)
-        _, conMLE, lower95, upper95 = hapCon_chrom(iid, ch='X', 
+        # _, conMLE, lower95, upper95 = hapCon_chrom(iid, ch='X', 
+        #     path_targets=f"{outFolder}/data.h5",
+        #     h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
+        #     meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
+        #     folder_out=outFolder, prefix_out="",
+        #     e_model="readcount_contam", p_model="SardHDF5", post_model="Standard", save=False, save_fp=False, 
+        #     n_ref=2504, diploid_ref=True, exclude_pops=["TSI"], conPop=[], readcounts=True, random_allele=False,
+        #     c=np.arange(0, 0.2, 0.005), roh_in=1, roh_out=0, roh_jump=300, e_rate=err_rate, e_rate_ref=e_rate_ref, 
+        #     cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=False)
+
+        conMLE, lower95, upper95 = hapCon_chrom_BFGS(iid, ch='X', save=False, save_fp=False, 
+            n_ref=2504, diploid_ref=True, exclude_pops=["TSI"], conPop=[], 
+            e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
+            post_model="Standard", 
             path_targets=f"{outFolder}/data.h5",
             h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
             meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
             folder_out=outFolder, prefix_out="",
-            e_model="readcount_contam", p_model="SardHDF5", post_model="Standard", save=False, save_fp=False, 
-            n_ref=2504, diploid_ref=True, exclude_pops=["TSI"], conPop=[], readcounts=True, random_allele=False,
-            c=np.arange(0, 0.2, 0.005), roh_in=1, roh_out=0, roh_jump=300, e_rate=err_rate, e_rate_ref=e_rate_ref, 
-            cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=False)
+            c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err_rate, e_rate_ref=e_rate_ref,
+            max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
+
         results[i, :] = (conMLE, lower95, upper95)
     
     # write output to a file
-    with open(f'{outFolder}/batchresults.txt', 'w') as out:
+    with open(f'{outFolder}/batchresults_bfgs.txt', 'w') as out:
         out.write(f'###contamination={con}, coverage={cov}, genotyping error={err_rate}, ref err={e_rate_ref}\n')
         out.write(f'###sampleID\tconMLE\tlower95CI\tupper95CI\n')
         for i in range(100):
