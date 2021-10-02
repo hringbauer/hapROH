@@ -259,7 +259,7 @@ def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True
                       manual_load=True, save=save, save_fp=save_fp)
 
     ### Load and prepare the pre-processing Model
-    hmm.load_preprocessing_model()              # Load the preprocessing Model
+    hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
     hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
                          folder_out=folder_out, prefix_out_data=prefix_out, 
                          excluded=exclude_pops, diploid_ref=diploid_ref)
@@ -419,7 +419,7 @@ def hapCon_chrom_2d(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=T
                       manual_load=True, save=save, save_fp=save_fp)
 
     ### Load and prepare the pre-processing Model
-    hmm.load_preprocessing_model()              # Load the preprocessing Model
+    hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
     hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
                          folder_out=folder_out, prefix_out_data=prefix_out, 
                          excluded=exclude_pops, diploid_ref=diploid_ref)
@@ -462,7 +462,7 @@ def hapCon_chrom_BFGS(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref
                       manual_load=True, save=save, save_fp=save_fp)
 
     ### Load and prepare the pre-processing Model
-    hmm.load_preprocessing_model()              # Load the preprocessing Model
+    hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
     hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
                          folder_out=folder_out, prefix_out_data=prefix_out, 
                          excluded=exclude_pops, diploid_ref=diploid_ref)
@@ -471,6 +471,7 @@ def hapCon_chrom_BFGS(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref
     hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
                          meta_path_ref = meta_path_ref, n_ref=n_ref)
     hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
+    print(hmm.pCon)
     hmm.load_secondary_objects()
     
     ### Print out the Parameters used in run:

@@ -7,6 +7,7 @@ Contains Sub-Classes, as well as factory Method.
 import numpy as np
 from scipy.stats import binom  # Binomial Likelihood
 import time
+import sys
 
 ###############################
 ###############################
@@ -127,10 +128,10 @@ class RC_Model_Emissions(Model_Emissions):
         n_ref = np.shape(ref_haps)[0]
         p_hgeno = -np.ones((n_ref + 1, n_loci, 3))
 
-        # Do the HW State 0
-        p_hgeno[0, :, 0] = (1 - p) ** 2
-        p_hgeno[0, :, 1] = 2 * p * (1 - p)
-        p_hgeno[0, :, 2] = p ** 2
+        # Do the HW State 0 (i.e, non-ROH state)
+        p_hgeno[0, :, 0] = (1 - p) ** 2 # genotype 00
+        p_hgeno[0, :, 1] = 2 * p * (1 - p) # genotype 01
+        p_hgeno[0, :, 2] = p ** 2 # genotype 11
 
         # Do the copying states (add some error)
         p_hgeno[1:, :, 1] = e_rate_ref / 2
@@ -259,11 +260,14 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
     # I moved the call to give_emission_matrix to the constructor as this needs only to be computed once
     # different contamination rates give different emission matrices, but that only happens in the call to give_emission_state
     # this gives about 5x speed-up when computing total likelihood for a given contamination rate
+    pCon = [] # allele freq of the contamination population
 
-    def __init__(self, ref_haps=[], c=0.0):
+    def __init__(self, ref_haps=[], c=0.0, pCon=[]):
         RC_Model_Emissions.__init__(self, ref_haps)
         self.c = c
         self.emission_matrix = self.give_emission_matrix()
+        assert(ref_haps.shape[1] == len(pCon))
+        self.pCon = pCon
 
     def give_emission_state(self, ob_stat, e_mat):
         """Gives the emission matrix of observed states
@@ -271,16 +275,16 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
         ob_stat: [2, n_loci] Matrix with Nr Ref/Alt Reads in Row0/Row1 (!)
         e_mat: Probabilities of genotypes [n_ref+1, n_loci, 3]"""
         e_rate = self.e_rate  # Load the error rate per read
-        p = self.p # load reference population allele freq
+        pCon = self.pCon # load contamination population allele freq
         c = self.c # load contamination rate
 
         # What's the probability of observing a dervided read given hidden genotypes 00 01 11
         # p_read = np.array([e_rate, 0.5, 1 - e_rate]) # original emission model with no contamination
-        assert(len(p) == ob_stat.shape[1]) # sanity check
+        assert(len(pCon) == ob_stat.shape[1]) # sanity check
         p_read = np.zeros((ob_stat.shape[1], 3))
-        p_read[:, 0] = (1-c)*e_rate + c*p*(1-e_rate)
-        p_read[:, 1] = 0.5*(1-c) + c*p*(1-e_rate)
-        p_read[:, 2] = (1-c)*(1-e_rate) + c*p*(1-e_rate)
+        p_read[:, 0] = (1-c)*e_rate + c*pCon*(1-e_rate)
+        p_read[:, 1] = 0.5*(1-c) + c*pCon*(1-e_rate)
+        p_read[:, 2] = (1-c)*(1-e_rate) + c*pCon*(1-e_rate)
 
         # Calculate the Binomial Likelihoods of RC Data
         rc_tot = np.sum(ob_stat, axis=0)
@@ -310,7 +314,7 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
 # Factory method
 
 
-def load_emission_model(ref_states, e_model="haploid", c=0.0):
+def load_emission_model(ref_states, e_model="haploid", c=0.0, pCon=[]):
     """Load the Emission Model"""
     if e_model == "haploid":
         e_obj = Model_Emissions(ref_states)
@@ -319,7 +323,7 @@ def load_emission_model(ref_states, e_model="haploid", c=0.0):
     elif e_model == "diploid_gt":
         e_obj = Diploid_GT_Emissions(ref_states)
     elif e_model == "readcount_contam":
-        e_obj = RC_Model_Emissions_withContamination(ref_states, c)
+        e_obj = RC_Model_Emissions_withContamination(ref_states, c, pCon)
     else:
         raise NotImplementedError("Emission Model not found!")
     return e_obj

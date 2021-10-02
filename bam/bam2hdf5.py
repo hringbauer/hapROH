@@ -5,12 +5,14 @@ import pysam
 import os
 import sys
 
-def bam2hdf5(path2bam, refHDF5, iid="", minMapQual = 30, minBaseQual = 20, outPath = ""):
+def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, outPath="", trim=0):
     f = h5py.File(refHDF5, 'r')
-    pos = f['variants/POS']
-    rec = f['variants/MAP']
-    ref = f['variants/REF'][:]
-    alt = f['variants/ALT'][:, 0]
+    pos = np.array(f['variants/POS'])
+    subset = np.logical_and(pos >= 5000000, pos <= 154900000)
+    pos = pos[subset]
+    rec = f['variants/MAP'][subset]
+    ref = f['variants/REF'][subset]
+    alt = f['variants/ALT'][subset, 0]
     assert(len(ref) == len(pos))
     assert(len(alt) == len(pos))
     assert(len(rec) == len(pos))
@@ -27,13 +29,13 @@ def bam2hdf5(path2bam, refHDF5, iid="", minMapQual = 30, minBaseQual = 20, outPa
     sf = pysam.AlignmentFile(path2bam, "rb")
     print(f'total number of mapped reads: {sf.mapped}')
     for i, p in enumerate(pos):
-        for pileupcolumn in sf.pileup('X', p-4, p+5, min_mapping_quality=minMapQual, min_base_quality=minBaseQual, truncate=True):
+        for pileupcolumn in sf.pileup(ch, p-4, p+5, min_mapping_quality=minMapQual, min_base_quality=minBaseQual, truncate=True):
             basePos = pileupcolumn.pos
             rc = np.zeros(4)
             for pileupread in pileupcolumn.pileups:
                 query_pos = pileupread.query_position
                 seqlen = pileupread.alignment.query_alignment_length
-                if not pileupread.is_del and not pileupread.is_refskip and query_pos >= 5 and query_pos < seqlen-5 :
+                if not pileupread.is_del and not pileupread.is_refskip and query_pos >= trim and query_pos < seqlen - trim :
                     baseCall = pileupread.alignment.query_sequence[query_pos]
                     rc[base2index[baseCall]] += 1
                     if basePos == p:
@@ -68,23 +70,20 @@ def bam2hdf5(path2bam, refHDF5, iid="", minMapQual = 30, minBaseQual = 20, outPa
     # now write a hdf5 file for read count at target sites
     l = len(pos)
     k = 1 # 1 bam = 1 sample
-    rec = f['variants/MAP']
     gt = np.zeros((l, k, 2)) # dummy gt matrix, won't be used for inference
     dt = h5py.special_dtype(vlen=str)  # To have no problem with saving
     
-    if len(outPath) != 0:
-        hdf5Name = outPath
-    else:
-        bamFileName = os.path.basename(path2bam)
-        hdf5Name = bamFileName[:bamFileName.find(".bam")] + ".hdf5"
-    
-    if len(iid) == 0:
-        bamFileName = os.path.basename(path2bam)
-        iid = bamFileName[:bamFileName.find(".bam")]
+    if len(outPath) != 0 and not outPath.endswith("/"):
+        outPath += "/"
+    bamFileName = os.path.basename(path2bam)
+    hdf5Name = outPath + bamFileName[:bamFileName.find(".bam")] + "." + ch + ".hdf5"
+
     if os.path.exists(hdf5Name):  # Do a Deletion of existing File there
         os.remove(hdf5Name)
     
-    
+    # iid is the sample ID name in the hdf5 file
+    if len(iid) == 0:
+        iid = bamFileName[:bamFileName.find(".bam")]
     
     with h5py.File(hdf5Name, 'w') as f0:
     # Create all the Groups
@@ -104,7 +103,7 @@ def bam2hdf5(path2bam, refHDF5, iid="", minMapQual = 30, minBaseQual = 20, outPa
         f_pos[:] = pos + 1 # add one back
         f_gt[:] = gt
         f_samples[:] = np.array([iid]).astype("S10")
-        print(f'saving sample as {iid}')
+        print(f'saving sample as {iid} in {hdf5Name}')
 
     # the second return value is the number of sites covered by at least 1 read
     return minor_adj/(minor_adj + major_adj), np.sum(np.sum(np.sum(ad, axis=1), axis=1) > 0), hdf5Name
@@ -120,6 +119,8 @@ if __name__ == '__main__':
                         help="path to the hdf5 file output")
     parser.add_argument('-i', action="store", dest="iid", type=str, required=False, default="",
                         help="IID of the target individual. If unspecified, will use the prefix of the bam file.")
+    parser.add_argument('-t', action="store", dest="trim", required=False, default=0, 
+                        help="trim certain number of bases from both ends.")
     args = parser.parse_args()
 
     iid = args.iid
@@ -127,8 +128,8 @@ if __name__ == '__main__':
         bamName = os.path.basename(args.bam)
         iid = bamName[:bamName.find(".bam")]
 
-    err, numSitesCovered, path2hdf5 = bam2hdf5(args.bam, args.ref, iid=iid, outPath=args.out)
-    if numSitesCovered < 500:
+    err, numSitesCovered, path2hdf5 = bam2hdf5(args.bam, args.ref, iid=iid, outPath=args.out, trim=args.trim)
+    if numSitesCovered < 1500:
         print(f'not enough sites covered to make inference...')
         sys.exit()
 
@@ -138,43 +139,45 @@ if __name__ == '__main__':
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_2d
 
-    _, mle, low95, up95 = hapCon_chrom(iid, 'X', save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
-        exclude_pops=[], conPop=[], e_model="readcount_contam", p_model="SardHDF5", 
-        readcounts=True, random_allele=False, post_model="Standard", path_targets = path2hdf5, 
-        folder_out='/mnt/archgen/users/yilei/Data/iberian_BAM/hapCon/',
-        h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
-        meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
-        prefix_out=iid, c=np.arange(0, 0.2, 0.005), roh_in=1, roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=0.0,
-        max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
+    err = err/3.0
+
+    # _, mle, low95, up95 = hapCon_chrom(iid, 'X', save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
+    #     exclude_pops=[], conPop=["EUR"], e_model="readcount_contam", p_model="SardHDF5", 
+    #     readcounts=True, random_allele=False, post_model="Standard", path_targets = path2hdf5, 
+    #     folder_out='/mnt/archgen/users/yilei/Data/iberian_BAM/hapCon/',
+    #     h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
+    #     meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
+    #     prefix_out=iid, c=np.arange(0, 0.2, 0.005), roh_in=1, roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-3,
+    #     max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
 
     mle_bfgs, low95_bfgs, up95_bfgs = hapCon_chrom_BFGS(iid, 'X', save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
-        exclude_pops=[], conPop=[], e_model="readcount_contam", p_model="SardHDF5", 
+        exclude_pops=[], conPop=["CEU"], e_model="readcount_contam", p_model="SardHDF5", 
         readcounts=True, random_allele=False, post_model="Standard", path_targets = path2hdf5, 
         folder_out='/mnt/archgen/users/yilei/Data/iberian_BAM/hapCon/',
         h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
         meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
-        prefix_out=iid, c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=0.0,
+        prefix_out=iid, c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-3,
         max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
 
-    mle2, se = hapCon_chrom_2d(iid, 'X', save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
-        exclude_pops=[], conPop=[], e_model="readcount_contam", p_model="SardHDF5", 
-        readcounts=True, random_allele=False, post_model="Standard", path_targets = path2hdf5,
-        folder_out='/mnt/archgen/users/yilei/Data/iberian_BAM/hapCon/',
-        h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
-        meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv',
-        prefix_out=iid, c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, 
-        e_rate_ref=0.0, max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
+    # mle2, se = hapCon_chrom_2d(iid, 'X', save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
+    #     exclude_pops=[], conPop=["EUR"], e_model="readcount_contam", p_model="SardHDF5", 
+    #     readcounts=True, random_allele=False, post_model="Standard", path_targets = path2hdf5,
+    #     folder_out='/mnt/archgen/users/yilei/Data/iberian_BAM/hapCon/',
+    #     h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
+    #     meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv',
+    #     prefix_out=iid, c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, 
+    #     e_rate_ref=1e-3, max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
     
 
-    with open(f'{iid}.hapcon.trim5.txt', 'w') as out:
+    with open(f'{iid}.hapcon.CEU.txt', 'w') as out:
         out.write(f'Number of target sites covered by at least one read: {numSitesCovered}\n')
         out.write(f'Method1: Fixing genotyping error rate\n')
-        out.write(f'\tEstimated genotyping error via flanking region: {round(err, 6)}\n')
-        out.write(f'\tMLE for contamination using grid search: {round(mle, 6)} ({round(low95, 6)} - {round(up95, 6)})\n')
-        out.write(f'\tMLE for contamination using BFGS: {round(mle_bfgs[0], 6)} ({round(low95_bfgs[0], 6)} - {round(up95_bfgs[0], 6)})\n')
-        out.write("\n")
-        out.write(f'Method2: BFGS on contamination and genotyping error jointly\n')
-        out.write(f'\tcontamination: {round(mle2[0], 6)}({round(mle2[0] - 1.96*se[0], 6)} - {round(mle2[0] + 1.96*se[0], 6)})\n')
-        out.write(f'\tgenotyping error: {round(mle2[1], 6)}({round(mle2[1] - 1.96*se[1], 6)} - {round(mle2[1] + 1.96*se[1], 6)})\n')
-        out.write("\n")
+        out.write(f'\tEstimated genotyping error via flanking region: {round(3.0*err, 6)}\n')
+        #out.write(f'\tMLE for contamination using grid search: {round(mle, 6)} ({round(low95, 6)} - {round(up95, 6)})\n')
+        out.write(f'\tMLE for contamination using BFGS: {round(mle_bfgs, 6)} ({round(low95_bfgs, 6)} - {round(up95_bfgs, 6)})\n')
+        # out.write("\n")
+        # out.write(f'Method2: BFGS on contamination and genotyping error jointly\n')
+        # out.write(f'\tcontamination: {round(mle2[0], 6)}({round(mle2[0] - 1.96*se[0], 6)} - {round(mle2[0] + 1.96*se[0], 6)})\n')
+        # out.write(f'\tgenotyping error: {round(mle2[1], 6)}({round(mle2[1] - 1.96*se[1], 6)} - {round(mle2[1] + 1.96*se[1], 6)})\n')
+        # out.write("\n")
 

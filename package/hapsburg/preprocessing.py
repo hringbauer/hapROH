@@ -12,6 +12,7 @@ import h5py   # For Processing HDF5s
 import numpy as np
 import pandas as pd
 import os   # For creating folders
+import sys # for debugging
 
 
 #Assume hapsburg directory is in root
@@ -76,6 +77,7 @@ class PreProcessingHDF5(PreProcessing):
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
     meta_path_ref = "./Data/1000Genomes/Individuals/meta_df.csv"
     excluded = ["TSI", ]  # List of excluded Populations in Meta
+    conPop = [] # specify the contamination population used to calculate allele freq
 
     folder_out = "./Empirical/1240k/"  # Base Path of the Output Folder
     prefix_out_data = ""  # Prefix of the Outdata (should be of form "path/")
@@ -88,14 +90,14 @@ class PreProcessingHDF5(PreProcessing):
     flipstrand = True
     max_mm_rate = 0.9     # Maximal mismatch rate ref/alt alleles between target and ref
 
-    def __init__(self, save=True, output=True):
+    def __init__(self, conPop=[], save=True, output=True):
         """Initialize Class.
         Ind_Folder: Where to find individual
         iid & chr: Individual and Chromosome.
         save: """
         self.save = save
         self.output = output
-        # print(os.getcwd()) # Show the current working directory
+        self.conPop = conPop
 
     def get_index_iid_legacy(self, iid, fs=0):
         """Get the Index of IID in fs
@@ -121,7 +123,7 @@ class PreProcessingHDF5(PreProcessing):
     def get_ref_ids(self, f, samples_field="samples"):
         """OVERWRITE: Get the Indices of the individuals
         in the HDF5 to extract. Here: Allow to subset for Individuals from
-        different 100G Populations
+        different 1000G Populations
         samples_field: Field of all sample iids in hdf5"""
 
         # Load Meta Population File
@@ -130,11 +132,21 @@ class PreProcessingHDF5(PreProcessing):
         ### Sanity check whether IIDs in Meta and HDF5 identical:
         assert((meta_df["sample"].values == f["samples"][:].astype("str")).all())
 
-        iids = np.where(~meta_df["pop"].isin(self.excluded))[0]
+        iids = np.where(np.logical_and(~meta_df["pop"].isin(self.excluded), ~meta_df["super_pop"].isin(self.excluded)))[0]
         if self.output:
             print(f"{len(iids)} / {len(meta_df)} Individuals included in Reference")
             print(f"Extracting up to {self.n_ref} Individuals")
-        return iids[:self.n_ref]   # Return up to n_ref Individual Indices
+
+        # get iids of contaminating population
+        if len(self.conPop) > 0:
+            iids_con = np.where(np.logical_or(meta_df["pop"].isin(self.conPop), meta_df["super_pop"].isin(self.conPop)))[0]
+            print(f'{len(iids_con)} / {len(meta_df)} individuals included in contamination population')
+        else:
+            iids_con = np.arange(len(meta_df))
+            print('including all individuals from the reference panel as the contamination population')
+
+        return iids[:self.n_ref], iids_con   # Return up to n_ref Individual Indices
+    
 
     def load_data(self, iid="MA89", ch=6):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
@@ -155,7 +167,7 @@ class PreProcessingHDF5(PreProcessing):
         i1, i2, flipped = self.merge_2hdf(fs, f1000)
 
         id_obs = self.get_index_iid(iid, fs, samples_field=self.samples_field)
-        ids_ref = self.get_ref_ids(f1000)
+        ids_ref, ids_con = self.get_ref_ids(f1000)
 
         # All 503 EUR Samples as Reference (first Chromosome)
         markers = np.arange(0, len(i1))  # Which Markers to Slice out
@@ -185,13 +197,17 @@ class PreProcessingHDF5(PreProcessing):
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
         pos = self.extract_rmap_hdf5(f1000, markers_ref, col="variants/POS")  # Extract Positions
 
+        # get pCon: allele frequency from the specified contamination population
+        gts_con = self.extract_snps_contaminationPop(f1000, ids_con, markers_ref)
+        pCon = np.mean(gts_con, axis=0)
+
         # Do optional Processing Steps (based on boolean flags in class)
-        gts_ind, gts, r_map, pos, out_folder = self.optional_postprocessing(
-            gts_ind, gts, r_map, pos, out_folder, read_counts)
+        gts_ind, gts, r_map, pos, pCon, out_folder = self.optional_postprocessing(
+            gts_ind, gts, r_map, pos, out_folder, pCon, read_counts)
 
-        return gts_ind, gts, r_map, pos, out_folder
+        return gts_ind, gts, r_map, pos, pCon, out_folder
 
-    def optional_postprocessing(self, gts_ind, gts, r_map, pos, out_folder, read_counts=[]):
+    def optional_postprocessing(self, gts_ind, gts, r_map, pos, out_folder, pCon, read_counts=[]):
         """Postprocessing steps of gts_ind, gts, r_map, and the folder,
         based on boolean fields of the class."""
 
@@ -201,6 +217,7 @@ class PreProcessingHDF5(PreProcessing):
             gts = gts[:, called]
             r_map = r_map[called]
             pos = pos[called]
+            pCon = pCon[called]
             
             if self.output:
                 print(f"Subset to markers with data: {np.shape(gts)[1]} / {len(called)}")
@@ -224,8 +241,8 @@ class PreProcessingHDF5(PreProcessing):
             if self.output == True:
                 print("Shuffling phase of target...")
             gts_ind = self.destroy_phase_func(gts_ind)
-
-        return gts_ind, gts, r_map, pos, out_folder
+        
+        return gts_ind, gts, r_map, pos, pCon, out_folder
 
      ################################################
      # Some Helper Functions
@@ -351,7 +368,19 @@ class PreProcessingHDF5(PreProcessing):
         if self.output:
             print(f"Successfully saved target individual data to: {folder}")
 
-    def extract_snps_hdf5(self, h5, ids, markers, diploid=False, dtype="int8", removeIncompleteHap=True):
+    def extract_snps_contaminationPop(self, h5, ids_con, markers):
+        gts_con = h5["calldata/GT"][:, ids_con, :]
+        gts_con = gts_con[markers, :, :]
+        print(f'size of gts_con matrix: {gts_con.shape}')
+        l, k, _ = np.shape(gts_con)
+        gts_con = gts_con.reshape((l, 2*k)).T
+        nhaps = gts_con.shape[0]
+        missed = np.where(gts_con == -1)[0]
+        gts_con = gts_con[np.setdiff1d(np.arange(nhaps), missed), :]
+        print(f'size of gts_con matrix: {gts_con.shape}')
+        return gts_con
+
+    def extract_snps_hdf5(self, h5, ids_ref, markers, diploid=False, dtype="int8", removeIncompleteHap=True):
         """Extract genotypes from h5 on ids and markers.
         If diploid, concatenate haplotypes along 0 axis.
         Extract indivuals first, and then subset to SNPs
@@ -359,7 +388,7 @@ class PreProcessingHDF5(PreProcessing):
         Return 2D array [# haplotypes, # markers]"""
         # Important: Swap of Dimensions [loci<->individuals]
         if diploid:
-            gts = h5["calldata/GT"][:, ids, :] #.astype(dtype)  # Only first IID
+            gts = h5["calldata/GT"][:, ids_ref, :] #.astype(dtype)  # Only first IID
             print("Exctraction of hdf5 done. Subsetting...!")
             gts = gts[markers, :, :]   
             l, k, h = np.shape(gts)
@@ -374,9 +403,9 @@ class PreProcessingHDF5(PreProcessing):
                 nhaps = gts.shape[0]
                 missed = np.where(gts == -1)
                 gts = gts[np.setdiff1d(np.arange(nhaps), missed[0]), :]
-            
+
         else: # only first haplotype
-            gts = h5["calldata/GT"][:, ids, 0].astype(dtype)  # Only first IID
+            gts = h5["calldata/GT"][:, ids_ref, 0].astype(dtype)  # Only first IID
             gts = gts[markers, :].T     
 
         if self.output:
@@ -505,7 +534,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         #### Extract the reference genotype
         gts = self.extract_snps_hdf5(
             f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
-        
+                
         ### Flip target genotypes where flipped
         if self.flipstrand:
             if self.output:
@@ -731,12 +760,12 @@ class PreProcessingFolder(PreProcessing):
 ############################################
 # Factory Method that can be imported.
 
-def load_preprocessing(p_model="SardHDF5", save=True, output=True):
+def load_preprocessing(p_model="SardHDF5", conPop=[], save=True, output=True):
     """Factory method to load the Transition Model.
     Return"""
 
     if p_model == "SardHDF5":
-        p_obj = PreProcessingHDF5(save=save, output=output)
+        p_obj = PreProcessingHDF5(conPop, save=save, output=output)
     elif p_model == "MosaicHDF5":
         p_obj = PreProcessingHDF5Sim(save=save, output=output)
     elif p_model == "Folder":

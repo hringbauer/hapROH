@@ -1,0 +1,6 @@
+nblocks1
+coverage5.0
+contamination0.1
+simulating 100 chr1. Each with 1 length 8.0cM ROH blocks.
+output basepath: /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/Autosome/con10/1blocks/cov5/
+Setting save path...: /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/Autosome/con10/1blocks/cov5/

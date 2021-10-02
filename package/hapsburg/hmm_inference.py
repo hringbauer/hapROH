@@ -43,6 +43,7 @@ class HMM_Analyze(object):
     sanity_checks = True # Can turn off for better performance. Not recomm.
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
     ob_stat = []     # The observed State [l]
+    pCon = [] # allele freq of the contamination population
 
     r_map = []      # The Map position of every marker [l]
     pos = []        # The pysical position of every marker [l]
@@ -109,14 +110,13 @@ class HMM_Analyze(object):
     def load_secondary_objects(self, c=0.0):
         """Load all secondary objects
         (but not the pre-processing one)"""
-        self.load_emission_model(c)
+        self.load_emission_model(c, self.pCon)
         self.load_transition_model()
         self.load_postprocessing_model()
 
     def load_data(self, iid="", ch=0):
         """Load the External Data"""
-        gts_ind, gts, r_map, pos, out_folder = self.p_obj.load_data(
-            iid=iid, ch=ch)
+        gts_ind, gts, r_map, pos, pCon, out_folder = self.p_obj.load_data(iid=iid, ch=ch)
 
         self.ch = ch
         self.iid = iid
@@ -125,6 +125,7 @@ class HMM_Analyze(object):
         self.pos = pos
         self.ob_stat = gts_ind
         self.folder = out_folder
+        self.pCon = pCon
 
         ### Do some Post-Processing for summary Parameters
         self.n_ref = np.shape(self.ref_states)[0]
@@ -139,9 +140,9 @@ class HMM_Analyze(object):
         if self.output:
             print(f"Successfully loaded Data from: {self.folder}")
 
-    def load_emission_model(self, c=0.0):
+    def load_emission_model(self, c=0.0, pCon=[]):
         """Method to load an Emission Model"""
-        self.e_obj = load_emission_model(self.ref_states, e_model=self.e_model, c=c)
+        self.e_obj = load_emission_model(self.ref_states, e_model=self.e_model, c=c, pCon=pCon)
 
         if self.output:
             print(f"Loaded Emission Model: {self.e_model}")
@@ -153,9 +154,9 @@ class HMM_Analyze(object):
         if self.output:
             print(f"Loaded Transition Model: {self.t_model}")
 
-    def load_preprocessing_model(self):
+    def load_preprocessing_model(self, conPop=[]):
         self.p_obj = load_preprocessing(
-            p_model=self.p_model, save=self.save, output=self.output)
+            p_model=self.p_model, conPop=conPop, save=self.save, output=self.output)
 
         if self.output:
             print(f"Loaded Pre Processing Model: {self.p_model}")
@@ -340,10 +341,15 @@ class HMM_Analyze(object):
         bnds = [(0, 0.5)]
         res = minimize(self.compute_tot_neg_likelihood, init_c, method='L-BFGS-B', bounds=bnds)
         Hfun = ndt.Hessian(self.compute_tot_neg_likelihood, step=1e-4, full_output=True)
-        h, info = Hfun(res.x)
+        try:
+            h, info = Hfun(res.x)
+        except AssertionError:
+            print(f'cannot estimate the Hessian of the loglikelihood around {res.x}')
+            return res.x[0], np.nan, np.nan
         h = h[0][0]
         se = math.sqrt(1/(h))
-        return res.x, res.x - 1.96*se, res.x + 1.96*se
+        x = res.x[0]
+        return x, x - 1.96*se, x + 1.96*se
 
 
     def optimize_ll_contamANDerr(self, init_c, init_err):
