@@ -399,6 +399,8 @@ class PreProcessingHDF5(PreProcessing):
 
             # get rid of haplotypes with missing data
             # eg. male sample's only has one chrX
+            # this is problematic for large reference panel as it takes toooo much memory
+            # TODO: fix this later
             if removeIncompleteHap:
                 nhaps = gts.shape[0]
                 missed = np.where(gts == -1)

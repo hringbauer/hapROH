@@ -12,7 +12,14 @@ def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, o
     pos = pos[subset]
     rec = f['variants/MAP'][subset]
     ref = f['variants/REF'][subset]
-    alt = f['variants/ALT'][subset, 0]
+    
+    alt = f['variants/ALT']
+    is1D = len(alt.shape) == 1 # the 1240k hdf5's alt is a 2d array, while the new full 1000Genome hdf5 is 1d array
+    if is1D:
+        alt = alt[subset]
+    else:
+        alt = alt[subset, 0]
+
     assert(len(ref) == len(pos))
     assert(len(alt) == len(pos))
     assert(len(rec) == len(pos))
@@ -76,7 +83,7 @@ def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, o
     if len(outPath) != 0 and not outPath.endswith("/"):
         outPath += "/"
     bamFileName = os.path.basename(path2bam)
-    hdf5Name = outPath + bamFileName[:bamFileName.find(".bam")] + "." + ch + ".hdf5"
+    hdf5Name = outPath + bamFileName[:bamFileName.find(".bam")] + ".hdf5"
 
     if os.path.exists(hdf5Name):  # Do a Deletion of existing File there
         os.remove(hdf5Name)
@@ -150,11 +157,11 @@ if __name__ == '__main__':
     #     prefix_out=iid, c=np.arange(0, 0.2, 0.005), roh_in=1, roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-3,
     #     max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
 
-    mle_bfgs, low95_bfgs, up95_bfgs = hapCon_chrom_BFGS(iid, 'X', save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
+    mle_bfgs, low95_bfgs, up95_bfgs = hapCon_chrom_BFGS(iid, 'X', save=False, save_fp=False, n_ref=2504, diploid_ref=False, 
         exclude_pops=[], conPop=["CEU"], e_model="readcount_contam", p_model="SardHDF5", 
         readcounts=True, random_allele=False, post_model="Standard", path_targets = path2hdf5, 
         folder_out='/mnt/archgen/users/yilei/Data/iberian_BAM/hapCon/',
-        h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
+        h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/maf02_filter_chr',
         meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
         prefix_out=iid, c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-3,
         max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
@@ -169,7 +176,7 @@ if __name__ == '__main__':
     #     e_rate_ref=1e-3, max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
     
 
-    with open(f'{iid}.hapcon.CEU.txt', 'w') as out:
+    with open(f'{iid}.hapcon.maf02CEU.txt', 'w') as out:
         out.write(f'Number of target sites covered by at least one read: {numSitesCovered}\n')
         out.write(f'Method1: Fixing genotyping error rate\n')
         out.write(f'\tEstimated genotyping error via flanking region: {round(3.0*err, 6)}\n')
