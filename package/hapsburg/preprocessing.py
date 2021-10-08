@@ -378,6 +378,7 @@ class PreProcessingHDF5(PreProcessing):
         missed = np.where(gts_con == -1)[0]
         gts_con = gts_con[np.setdiff1d(np.arange(nhaps), missed), :]
         print(f'size of gts_con matrix: {gts_con.shape}')
+        assert(np.min(gts_con) >= 0)
         return gts_con
 
     def extract_snps_hdf5(self, h5, ids_ref, markers, diploid=False, dtype="int8", removeIncompleteHap=True):

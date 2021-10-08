@@ -405,7 +405,7 @@ def copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
 def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/", 
                              path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
                     pop_list=["TSI"], n=2, ch=3, chunk_length=0.005, l = 1, n_blocks=5,
-                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], jump=300.0, downsample=False, heterogeneous=False, prefix=""):
+                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], jump=300.0, downsample=False, heterogeneous=False):
     """Create Multiple ROH runs and saves combined data into base_path hdf5 and roh_info df
     base_path:  Start of SavePaths
     path1000G: Where to find the 1000 Genome Data

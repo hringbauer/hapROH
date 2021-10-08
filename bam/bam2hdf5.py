@@ -2,6 +2,7 @@ import numpy as np
 import h5py
 import argparse
 import pysam
+import time
 import os
 import sys
 
@@ -109,7 +110,7 @@ def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, o
         f_alt[:] = alt.astype("S1")
         f_pos[:] = pos + 1 # add one back
         f_gt[:] = gt
-        f_samples[:] = np.array([iid]).astype("S10")
+        f_samples[:] = np.array([iid]).astype("S50")
         print(f'saving sample as {iid} in {hdf5Name}')
 
     # the second return value is the number of sites covered by at least 1 read
@@ -135,13 +136,15 @@ if __name__ == '__main__':
         bamName = os.path.basename(args.bam)
         iid = bamName[:bamName.find(".bam")]
 
+    t1 = time.time()
     err, numSitesCovered, path2hdf5 = bam2hdf5(args.bam, args.ref, iid=iid, outPath=args.out, trim=args.trim)
     if numSitesCovered < 1500:
         print(f'not enough sites covered to make inference...')
         sys.exit()
+    print(f'finished reading bam file, takes {time.time()-t1}.')
+    print(f'hdf5 file saved to {path2hdf5}')
 
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
-
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_2d
@@ -159,9 +162,9 @@ if __name__ == '__main__':
 
     mle_bfgs, low95_bfgs, up95_bfgs = hapCon_chrom_BFGS(iid, 'X', save=False, save_fp=False, n_ref=2504, diploid_ref=False, 
         exclude_pops=[], conPop=["CEU"], e_model="readcount_contam", p_model="SardHDF5", 
-        readcounts=True, random_allele=False, post_model="Standard", path_targets = path2hdf5, 
-        folder_out='/mnt/archgen/users/yilei/Data/iberian_BAM/hapCon/',
-        h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/maf02_filter_chr',
+        readcounts=True, random_allele=False, post_model="Standard", path_targets=path2hdf5, 
+        folder_out='/mnt/archgen/users/yilei/Data/iberian_BAM/hapCon/', 
+        h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/maf1_filter_chr',
         meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
         prefix_out=iid, c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-3,
         max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
@@ -176,7 +179,7 @@ if __name__ == '__main__':
     #     e_rate_ref=1e-3, max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
     
 
-    with open(f'{iid}.hapcon.maf02CEU.txt', 'w') as out:
+    with open(f'{iid}.hapcon.maf1CEU.txt', 'w') as out:
         out.write(f'Number of target sites covered by at least one read: {numSitesCovered}\n')
         out.write(f'Method1: Fixing genotyping error rate\n')
         out.write(f'\tEstimated genotyping error via flanking region: {round(3.0*err, 6)}\n')

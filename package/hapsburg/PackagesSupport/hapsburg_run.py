@@ -19,7 +19,7 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
                 h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
                 meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
                 folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
-                roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
+                c=0.0, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
                 max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True):
     """Run Hapsburg analysis for one chromosome on eigenstrat data
     Wrapper for HMM Class.
@@ -71,7 +71,7 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
     hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
                          meta_path_ref = meta_path_ref, n_ref=n_ref)
     hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
-    hmm.load_secondary_objects()
+    hmm.load_secondary_objects(c=c)
     
     ### Print out the Parameters used in run:
     print("\nParameters in hapsb_chrom:")
@@ -86,7 +86,7 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
     ### hmm.calc_viterbi_path(save=save)           # Calculate the Viterbi Path.
     hmm.calc_posterior(save=save)              # Calculate the Posterior.
     hmm.post_processing(save=save)             # Do the Post-Processing.
-         
+
 
 #########################################################
 ### Run Hapsburg for one Individual (wrap for Chr.)
@@ -487,6 +487,7 @@ def hapCon_chrom_BFGS(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref
 
     con_mle, lower, upper = hmm.optimize_ll_contamination_BFGS(c)
     return con_mle, lower, upper
+
 
 
 ##################################################################################
