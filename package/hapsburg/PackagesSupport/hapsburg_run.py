@@ -8,6 +8,7 @@ Function for running on single chromsome, with all relevant keywords.
 import numpy as np
 import multiprocessing as mp
 import pandas as pd
+import sys
 
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
 from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data, move_X_to_parent_folder
@@ -91,15 +92,15 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
 #########################################################
 ### Run Hapsburg for one Individual (wrap for Chr.)
 
-def hapsb_ind(iid, chs=range(1,23), 
-              path_targets = "./Data/ReichLabEigenstrat/Raw/v37.2.1240K",
+def hapsb_ind(iid, chs=range(1,23),
+              path_targets_prefix="", path_targets = "",
               h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240int8/chr", 
               meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
               folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
               e_model="haploid", p_model="Eigenstrat", post_model="Standard",
               processes=1, delete=False, output=True, save=True, save_fp=False, 
               n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=True,
-              roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
+              c=0.0, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
               cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=True, combine=True, 
               file_result="_roh_full.csv"):
     """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel
@@ -141,10 +142,18 @@ def hapsb_ind(iid, chs=range(1,23),
         print(f"Doing Individual {iid}...")
     
     ### Prepare the Parameters for that Indivdiual
-    prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
+    if len(path_targets) != 0:
+        prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
             post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
-            roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff_post, roh_min_l, logfile] for ch in chs]
-    assert(len(prms[0])==26)   # Sanity Check
+            c, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff_post, roh_min_l, logfile] for ch in chs]
+    elif len(path_targets_prefix) != 0:
+        prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
+            post_model, f'{path_targets_prefix}/{iid}.chr{ch}.hdf5', h5_path1000g, meta_path_ref, folder_out, prefix_out,
+            c, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff_post, roh_min_l, logfile] for ch in chs]
+    else:
+        print(f'You need to at least specify one of path_targets or path_targets_prefix...')
+        sys.exit()
+    assert(len(prms[0])==27)   # Sanity Check
                             
     ### Run the analysis in parallel
     multi_run(hapsb_chrom, prms, processes = processes)
