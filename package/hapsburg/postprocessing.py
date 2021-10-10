@@ -175,18 +175,11 @@ class PostProcessing(object):
         starts = np.where(d == 1)[0]
         ends = np.where(d == -1)[0]
         l = ends - starts
-        #### for debugging ####
-        print(f'roh min length: {self.roh_min_l}')
-        print(f'roh starts: {starts}')
-        print(f'roh ends: {ends}')
-        print(f'roh length: {l}')
-        ### end of debugging ###
         
         ### Prepare Map positions
         ends_map = r_map[ends - 1]  # -1 to stay within bounds
         starts_map = r_map[starts]
         l_map = ends_map - starts_map
-        print(f'l_map: {l_map}')
         
         ### Prepare physical positions
         ends_pos = pos[ends - 1]  # -1 to stay within bounds

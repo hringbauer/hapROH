@@ -3,10 +3,10 @@ import os
 import pysam
 import numpy as np
 
-def mpileup2hdf5(path2mpileup, refHDF5, iid="", outPath=""):
+def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath=""):
     f = h5py.File(refHDF5, 'r')
     pos = np.array(f['variants/POS'])
-    subset = np.logical_and(pos >= 5000000, pos <= 154900000)
+    subset = np.logical_and(pos >= s, pos <= e)
     pos = pos[subset]
     rec = f['variants/MAP'][subset]
     ref = f['variants/REF'][subset]
@@ -112,10 +112,10 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", outPath=""):
     # the second return value is the number of sites covered by at least 1 read
     return minor_adj/(minor_adj + major_adj), np.sum(np.sum(np.sum(ad, axis=1), axis=1) > 0), hdf5Name
 
-def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, outPath="", trim=0):
+def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, s=-np.inf, e=np.inf, outPath="", trim=0):
     f = h5py.File(refHDF5, 'r')
     pos = np.array(f['variants/POS'])
-    subset = np.logical_and(pos >= 5000000, pos <= 154900000)
+    subset = np.logical_and(pos >= s, pos <= e)
     pos = pos[subset]
     rec = f['variants/MAP'][subset]
     ref = f['variants/REF'][subset]

@@ -148,7 +148,7 @@ class PreProcessingHDF5(PreProcessing):
         return iids[:self.n_ref], iids_con   # Return up to n_ref Individual Indices
     
 
-    def load_data(self, iid="MA89", ch=6):
+    def load_data(self, iid="MA89", ch=6, start=0, end=-1):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l]"""
 
@@ -164,12 +164,11 @@ class PreProcessingHDF5(PreProcessing):
         # Load and Merge the Data
         fs = self.load_h5(self.path_targets)
         f1000 = self.load_h5(h5_path1000g)
-        i1, i2, flipped = self.merge_2hdf(fs, f1000)
+        i1, i2, flipped = self.merge_2hdf(fs, f1000, start, end)
 
         id_obs = self.get_index_iid(iid, fs, samples_field=self.samples_field)
         ids_ref, ids_con = self.get_ref_ids(f1000)
 
-        # All 503 EUR Samples as Reference (first Chromosome)
         markers = np.arange(0, len(i1))  # Which Markers to Slice out
         markers_obs = i1[markers]
         markers_ref = i2[markers]
@@ -283,16 +282,24 @@ class PreProcessingHDF5(PreProcessing):
         print(f"HDF5 loaded from {path}")
         return f   
         
-    def merge_2hdf(self, f, g):
+    def merge_2hdf(self, f, g, start=0, end=-1):
         """ Merge two HDF 5 f and g. Return Indices of Overlap Individuals.
         f is Sardinian HDF5,
         g the Reference HDF5"""
 
         pos1 = f["variants/POS"]
+        if start != 0 or end != -1:
+            print(f"subsetting reference genotype... starting from {start}th marker until {end}th marker.")
         pos2 = g["variants/POS"]
 
         # Check if in both Datasets
         b, i1, i2 = np.intersect1d(pos1, pos2, return_indices=True)
+        print(f'i1: {i1}')
+        print(f'i2: {i2}')
+        if end < 0:
+            end += 1 + len(pos2)
+        kept = np.where(np.logical_and(i2 >= start, i2 < end))[0]
+        b, i1, i2 = b[kept], i1[kept], i2[kept]
 
         ### Sanity Check if Reference is the same
         ref1 = np.array(f["variants/REF"])[i1]
@@ -381,7 +388,7 @@ class PreProcessingHDF5(PreProcessing):
         assert(np.min(gts_con) >= 0)
         return gts_con
 
-    def extract_snps_hdf5(self, h5, ids_ref, markers, diploid=False, dtype="int8", removeIncompleteHap=True):
+    def extract_snps_hdf5(self, h5, ids_ref, markers, diploid=False, dtype="int8", removeIncompleteHap=True, start=0, end=-1):
         """Extract genotypes from h5 on ids and markers.
         If diploid, concatenate haplotypes along 0 axis.
         Extract indivuals first, and then subset to SNPs
@@ -389,6 +396,7 @@ class PreProcessingHDF5(PreProcessing):
         Return 2D array [# haplotypes, # markers]"""
         # Important: Swap of Dimensions [loci<->individuals]
         if diploid:
+
             gts = h5["calldata/GT"][:, ids_ref, :] #.astype(dtype)  # Only first IID
             print("Exctraction of hdf5 done. Subsetting...!")
             gts = gts[markers, :, :]   

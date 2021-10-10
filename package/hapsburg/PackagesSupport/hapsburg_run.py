@@ -13,6 +13,37 @@ import sys
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
 from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data, move_X_to_parent_folder
 
+def hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
+                folder_out, c, roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
+                save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
+                exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
+                readcounts=True, random_allele=False,
+                post_model="Standard", prefix_out="", logfile=False):
+    parameters = locals() # Gets dictionary of all local variables at this point
+    
+    ### Create Folder if needed, and pipe output if wanted
+    _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
+    hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, post_model=post_model,
+                      manual_load=True, save=save, save_fp=save_fp, start=start, end=end)
+
+    ### Load and prepare the pre-processing Model
+    hmm.load_preprocessing_model()              # Load the preprocessing Model
+    hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
+                         folder_out=folder_out, prefix_out_data=prefix_out, 
+                         excluded=exclude_pops, diploid_ref=diploid_ref)
+    
+    ### Set the paths to ref & target
+    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
+                         meta_path_ref = meta_path_ref, n_ref=n_ref)
+    hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
+    hmm.load_secondary_objects(c=c)
+    
+    ### Set the Parameters
+    hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
+    hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
+    return hmm.compute_tot_neg_likelihood(c)
+
+
 
 def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], 
                 e_model="EigenstratPacked", p_model="MosaicHDF5", readcounts=True, random_allele=True,

@@ -55,6 +55,11 @@ class HMM_Analyze(object):
 
     iid = ""  # Remember the Individual
     ch = 0    # Which Chromosome
+    # allows analysis on only a chunk of the given chromosome 
+    # (the marker index is given as in the provided reference panel)
+    # default is to analyze the entire chromosome
+    start = 0
+    end = -1
 
     fwd_bkwd = 0  # Function for the fwd-bkwd Algorithm
 
@@ -66,7 +71,7 @@ class HMM_Analyze(object):
     def __init__(self, folder="./Simulated/Example0/",
                  t_model="model", e_model="haploid", p_model="SardHDF5", post_model="Standard",
                  output=True, save=True, cython=True, manual_load=False,
-                 save_fp=True):
+                 save_fp=True, start=0, end=-1):
         """Initialize Class. output: Boolean whether to print
         Cython: Whether to use Cython.
         Manual_Load: Whether to skip automatic loading of data"""
@@ -78,6 +83,8 @@ class HMM_Analyze(object):
         self.output = output
         self.save = save
         self.save_fp = save_fp
+        self.start = start
+        self.end = end
 
         if manual_load == False:
             self.load_objects()
@@ -105,7 +112,7 @@ class HMM_Analyze(object):
         """Load all the required Objects in right order"""
         self.load_preprocessing_model()
         self.load_data(iid, ch)
-        self.load_secondary_objects()
+        self.load_secondary_objects(c)
 
     def load_secondary_objects(self, c=0.0):
         """Load all secondary objects
@@ -116,7 +123,7 @@ class HMM_Analyze(object):
 
     def load_data(self, iid="", ch=0):
         """Load the External Data"""
-        gts_ind, gts, r_map, pos, pCon, out_folder = self.p_obj.load_data(iid=iid, ch=ch)
+        gts_ind, gts, r_map, pos, pCon, out_folder = self.p_obj.load_data(iid=iid, ch=ch, start=self.start, end=self.end)
 
         self.ch = ch
         self.iid = iid
