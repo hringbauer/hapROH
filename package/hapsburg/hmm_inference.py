@@ -56,10 +56,10 @@ class HMM_Analyze(object):
     iid = ""  # Remember the Individual
     ch = 0    # Which Chromosome
     # allows analysis on only a chunk of the given chromosome 
-    # (the marker index is given as in the provided reference panel)
     # default is to analyze the entire chromosome
-    start = 0
-    end = -1
+    # position is given in Morgen (not cM!)
+    start = -np.inf
+    end = np.inf
 
     fwd_bkwd = 0  # Function for the fwd-bkwd Algorithm
 
@@ -71,7 +71,7 @@ class HMM_Analyze(object):
     def __init__(self, folder="./Simulated/Example0/",
                  t_model="model", e_model="haploid", p_model="SardHDF5", post_model="Standard",
                  output=True, save=True, cython=True, manual_load=False,
-                 save_fp=True, start=0, end=-1):
+                 save_fp=True, start=-np.inf, end=np.inf):
         """Initialize Class. output: Boolean whether to print
         Cython: Whether to use Cython.
         Manual_Load: Whether to skip automatic loading of data"""

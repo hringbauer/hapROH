@@ -282,24 +282,25 @@ class PreProcessingHDF5(PreProcessing):
         print(f"HDF5 loaded from {path}")
         return f   
         
-    def merge_2hdf(self, f, g, start=0, end=-1):
+    def merge_2hdf(self, f, g, start=-np.inf, end=np.inf):
         """ Merge two HDF 5 f and g. Return Indices of Overlap Individuals.
         f is Sardinian HDF5,
         g the Reference HDF5"""
 
         pos1 = f["variants/POS"]
-        if start != 0 or end != -1:
-            print(f"subsetting reference genotype... starting from {start}th marker until {end}th marker.")
         pos2 = g["variants/POS"]
+        rec = np.array(g["variants/MAP"])
 
         # Check if in both Datasets
         b, i1, i2 = np.intersect1d(pos1, pos2, return_indices=True)
         print(f'i1: {i1}')
         print(f'i2: {i2}')
-        if end < 0:
-            end += 1 + len(pos2)
-        kept = np.where(np.logical_and(i2 >= start, i2 < end))[0]
-        b, i1, i2 = b[kept], i1[kept], i2[kept]
+        if start != -np.inf or end != np.inf:
+            assert(len(rec) == len(pos2))
+            assert(end > start)
+            print(f'subsetting reference panel to between {start} and {end}, chunk length: {end-start}M')
+            kept = np.where(np.logical_and(rec >= start, rec <= end))[0]
+            b, i1, i2 = b[kept], i1[kept], i2[kept]
 
         ### Sanity Check if Reference is the same
         ref1 = np.array(f["variants/REF"])[i1]
