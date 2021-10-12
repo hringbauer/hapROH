@@ -31,7 +31,7 @@ if __name__ == '__main__':
         err, numSitesCovered, path2hdf5 = mpileup2hdf5(args.mpileup, args.ref, iid=iid, s=5000000, e=154900000, outPath=args.out)
         print(f'finished reading mpileup file, takes {round(time.time()-t1, 3)}.')
     if args.bam != None:
-        err, numSitesCovered, path2hdf5 = bam2hdf5(args.bam, args.ref, iid=iid, outPath=args.out, trim=args.trim)
+        err, numSitesCovered, path2hdf5 = bam2hdf5(args.bam, args.ref, iid=iid, s=5000000, e=154900000, outPath=args.out, trim=args.trim)
         print(f'finished reading bam file, takes {round(time.time()-t1, 3)}.')
         
     print(f'number of sites covered by at least one read: {numSitesCovered}')

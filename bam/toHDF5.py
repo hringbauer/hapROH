@@ -1,9 +1,11 @@
 import h5py
 import os
 import pysam
+import time
 import numpy as np
 
-def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath=""):
+def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="", output=True):
+    t1 = time.time()
     f = h5py.File(refHDF5, 'r')
     pos = np.array(f['variants/POS'])
     subset = np.logical_and(pos >= s, pos <= e)
@@ -63,12 +65,13 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="")
                     major_adj += np.max(rc)
                     minor_adj += np.sum(rc) - np.max(rc)
 
-    print(f'number of major reads at flanking sites: {major_adj}')
-    print(f'number of minor reads at flanking sites: {minor_adj}')
-    print(f'number of major reads at focal sites: {major_foc}')
-    print(f'number of minor reads at focal sites: {minor_foc}')
-    print(f'err rate at flanking sites: {minor_adj/(minor_adj + major_adj)}')
-    print(f'err rate at focal sites: {minor_foc/(minor_foc + major_foc)}')
+    if output:
+        print(f'number of major reads at flanking sites: {major_adj}')
+        print(f'number of minor reads at flanking sites: {minor_adj}')
+        print(f'number of major reads at focal sites: {major_foc}')
+        print(f'number of minor reads at focal sites: {minor_foc}')
+        print(f'err rate at flanking sites: {minor_adj/(minor_adj + major_adj)}')
+        print(f'err rate at focal sites: {minor_foc/(minor_foc + major_foc)}')
 
     # finished reading bam file and we have made an estimate for genotyping error
     # now write a hdf5 file for read count at target sites
@@ -110,7 +113,13 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="")
         print(f'saving sample as {iid} in {hdf5Name}')
 
     # the second return value is the number of sites covered by at least 1 read
-    return minor_adj/(minor_adj + major_adj), np.sum(np.sum(np.sum(ad, axis=1), axis=1) > 0), hdf5Name
+    err = minor_adj/(minor_adj + major_adj)
+    numSitesCovered = np.sum(np.sum(np.sum(ad, axis=1), axis=1) > 0)
+    print(f'finished reading mpileup file {path2mpileup}, takes {round(time.time()-t1, 3)}.')
+    print(f'estimated genotyping error by flanking sites: {round(err, 6)}')
+    print(f'number of sites covered by at least one read: {numSitesCovered}, fraction covered: {round(numSitesCovered/len(pos), 3)}')
+    print(f'hdf5 file saved to {hdf5Name}')
+    return err, numSitesCovered, hdf5Name
 
 def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, s=-np.inf, e=np.inf, outPath="", trim=0):
     f = h5py.File(refHDF5, 'r')

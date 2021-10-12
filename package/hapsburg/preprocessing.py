@@ -293,14 +293,13 @@ class PreProcessingHDF5(PreProcessing):
 
         # Check if in both Datasets
         b, i1, i2 = np.intersect1d(pos1, pos2, return_indices=True)
-        print(f'i1: {i1}')
-        print(f'i2: {i2}')
         if start != -np.inf or end != np.inf:
             assert(len(rec) == len(pos2))
             assert(end > start)
             print(f'subsetting reference panel to between {start} and {end}, chunk length: {end-start}M')
-            kept = np.where(np.logical_and(rec >= start, rec <= end))[0]
-            b, i1, i2 = b[kept], i1[kept], i2[kept]
+            chunk = np.where(np.logical_and(rec >= start, rec <= end))[0]
+            i2, _, kept_index = np.intersect1d(chunk, i2, return_indices=True)
+            b, i1 = b[kept_index], i1[kept_index]
 
         ### Sanity Check if Reference is the same
         ref1 = np.array(f["variants/REF"])[i1]

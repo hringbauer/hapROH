@@ -9,25 +9,26 @@ import numpy as np
 import multiprocessing as mp
 import pandas as pd
 import sys
+from scipy.optimize import minimize
+
 
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
 from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data, move_X_to_parent_folder
 
 def hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
-                folder_out, c, roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
+                folder_out, c, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
                 save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
                 exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
-                readcounts=True, random_allele=False,
-                post_model="Standard", prefix_out="", logfile=False):
+                readcounts=True, random_allele=False, prefix_out="", logfile=False):
     parameters = locals() # Gets dictionary of all local variables at this point
     
     ### Create Folder if needed, and pipe output if wanted
     _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
-    hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, post_model=post_model,
+    hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, output=False,
                       manual_load=True, save=save, save_fp=save_fp, start=start, end=end)
 
     ### Load and prepare the pre-processing Model
-    hmm.load_preprocessing_model()              # Load the preprocessing Model
+    hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
     hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
                          folder_out=folder_out, prefix_out_data=prefix_out, 
                          excluded=exclude_pops, diploid_ref=diploid_ref)
@@ -42,6 +43,48 @@ def hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_
     hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
     hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
     return hmm.compute_tot_neg_likelihood(c)
+
+def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_path_ref,
+                folder_out, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
+                save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
+                exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
+                readcounts=True, random_allele=False, prefix_out="", logfile=False):
+    # chunks is a dictionary: chrom -> (start of ROH, end of ROH)
+    tot_neg_loglik = 0
+    for ch, (start, end) in chunks.items():
+        path_targets = path_targets_prefix + f"{iid}.chr{ch}.hdf5"
+        tot_neg_loglik += hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
+                folder_out, c, conPop=conPop, roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump, e_rate=e_rate, e_rate_ref=e_rate_ref,
+                save=save, save_fp=save_fp, n_ref=n_ref, diploid_ref=diploid_ref, 
+                exclude_pops=exclude_pops, e_model=e_model, p_model=p_model, 
+                readcounts=readcounts, random_allele=random_allele, prefix_out=prefix_out, logfile=logfile)
+    return tot_neg_loglik
+
+def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta_path_ref,
+                folder_out, init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
+                save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
+                exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
+                readcounts=True, random_allele=False, prefix_out="", logfile=False):
+    chunks = {}
+    with open(roh_list) as f:
+        f.readline()
+        line = f.readline()
+        while line:
+            _, _, StartM, EndM, _, lengthM, _, ch, _, _ = line.strip().split(',')
+            StartM, EndM, lengthM = float(StartM), float(EndM), float(lengthM)
+            if lengthM >= minLen:
+                chunks[ch] = (StartM + trim, EndM - trim)
+            line = f.readline()
+    if len(chunks) > 0:
+        print(f'a total of {len(chunks)} ROH blocks found.')
+        res = minimize(hapsb_multiChunk, init_c, 
+            args=(chunks, iid, path_targets_prefix, h5_path1000g, meta_path_ref, folder_out,
+                conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, save, save_fp, n_ref, diploid_ref, 
+                exclude_pops, e_model, p_model, readcounts, random_allele, prefix_out, logfile),
+            method='L-BFGS-B', bounds=[(0, 0.5)])
+        print(res)
+    else:
+        print(f'not engouh ROH blocks found to estimate contamination...')
 
 
 
