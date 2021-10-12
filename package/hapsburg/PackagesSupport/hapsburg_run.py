@@ -46,23 +46,35 @@ def hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_
 
 def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_path_ref,
                 folder_out, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
-                save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
+                processes=1, save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
                 exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
                 readcounts=True, random_allele=False, prefix_out="", logfile=False):
     # chunks is a dictionary: chrom -> (start of ROH, end of ROH)
     tot_neg_loglik = 0
-    for ch, (start, end) in chunks.items():
-        path_targets = path_targets_prefix + f"{iid}.chr{ch}.hdf5"
-        tot_neg_loglik += hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
+    if processes == 1:
+        print(f'running using single process...')
+        for ch, (start, end) in chunks.items():
+            path_targets = path_targets_prefix + f"{iid}.chr{ch}.hdf5"
+            tot_neg_loglik += hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
                 folder_out, c, conPop=conPop, roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump, e_rate=e_rate, e_rate_ref=e_rate_ref,
                 save=save, save_fp=save_fp, n_ref=n_ref, diploid_ref=diploid_ref, 
                 exclude_pops=exclude_pops, e_model=e_model, p_model=p_model, 
                 readcounts=readcounts, random_allele=random_allele, prefix_out=prefix_out, logfile=logfile)
+    else:
+        print(f'running using {processes} processes...')
+        prms = [ [iid, ch, start, end, path_targets_prefix + f"{iid}.chr{ch}.hdf5", 
+                h5_path1000g, meta_path_ref, folder_out, 
+                c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref,
+                save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, 
+                readcounts, random_allele, prefix_out, logfile] 
+                for ch, (start, end) in chunks.items()]
+        results = multi_run(hapsb_chunk_negloglik, prms, processes = processes)
+        tot_neg_loglik += sum(results)
     return tot_neg_loglik
 
 def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta_path_ref,
                 folder_out, init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
-                save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
+                processes=1, save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
                 exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
                 readcounts=True, random_allele=False, prefix_out="", logfile=False):
     chunks = {}
@@ -77,9 +89,11 @@ def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta
             line = f.readline()
     if len(chunks) > 0:
         print(f'a total of {len(chunks)} ROH blocks found.')
+        if not path_targets_prefix.endswith('/'):
+            path_targets_prefix += "/"
         res = minimize(hapsb_multiChunk, init_c, 
             args=(chunks, iid, path_targets_prefix, h5_path1000g, meta_path_ref, folder_out,
-                conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, save, save_fp, n_ref, diploid_ref, 
+                conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, processes, save, save_fp, n_ref, diploid_ref, 
                 exclude_pops, e_model, p_model, readcounts, random_allele, prefix_out, logfile),
             method='L-BFGS-B', bounds=[(0, 0.5)])
         print(res)

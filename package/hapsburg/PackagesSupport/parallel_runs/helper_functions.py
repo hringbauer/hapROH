@@ -42,6 +42,7 @@ def multi_run(fun, prms, processes = 4):
         results = fun(*prms[0])
     else:
         raise RuntimeWarning("Nothing to run! Please check input.")
+    return results
 
 def split_up_roh_df(base_path, path_out, iid, 
                     file_in="roh_info.csv", file_out="roh_gt.csv"):
