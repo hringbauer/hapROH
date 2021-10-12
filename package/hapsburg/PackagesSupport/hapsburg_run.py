@@ -5,11 +5,13 @@ Function for running on single chromsome, with all relevant keywords.
 @Author: Harald Ringbauer, 2019
 """
 
+import math
 import numpy as np
 import multiprocessing as mp
 import pandas as pd
 import sys
 from scipy.optimize import minimize
+import numdifftools as ndt
 
 
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
@@ -42,6 +44,7 @@ def hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_
     ### Set the Parameters
     hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
     hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
+    print(f'chunk_negloglik: {c}')
     return hmm.compute_tot_neg_likelihood(c)
 
 def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_path_ref,
@@ -50,6 +53,7 @@ def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_pat
                 exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
                 readcounts=True, random_allele=False, prefix_out="", logfile=False):
     # chunks is a dictionary: chrom -> (start of ROH, end of ROH)
+    print(f'contamination rate: {c}')
     tot_neg_loglik = 0
     if processes == 1:
         print(f'running using single process...')
@@ -91,12 +95,19 @@ def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta
         print(f'a total of {len(chunks)} ROH blocks found.')
         if not path_targets_prefix.endswith('/'):
             path_targets_prefix += "/"
-        res = minimize(hapsb_multiChunk, init_c, 
-            args=(chunks, iid, path_targets_prefix, h5_path1000g, meta_path_ref, folder_out,
+        kargs = (chunks, iid, path_targets_prefix, h5_path1000g, meta_path_ref, folder_out,
                 conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, processes, save, save_fp, n_ref, diploid_ref, 
-                exclude_pops, e_model, p_model, readcounts, random_allele, prefix_out, logfile),
-            method='L-BFGS-B', bounds=[(0, 0.5)])
-        print(res)
+                exclude_pops, e_model, p_model, readcounts, random_allele, prefix_out, logfile)
+        res = minimize(hapsb_multiChunk, init_c, args=kargs, method='L-BFGS-B', bounds=[(0, 0.5)])
+        if res.success:
+            Hfun = ndt.Hessian(hapsb_multiChunk, step=1e-4, full_output=True)
+            h, info = Hfun(res.x[0], *kargs)
+            h = h[0][0]
+            se = math.sqrt(1/(h))
+            return res.x[0], se
+        else:
+            print('L-BFGS-B does not converge...')
+            print('Cannot estimate contamination rate from the given data, maybe coverage is too low')
     else:
         print(f'not engouh ROH blocks found to estimate contamination...')
 
