@@ -140,10 +140,12 @@ class PreProcessingHDF5(PreProcessing):
         # get iids of contaminating population
         if len(self.conPop) > 0:
             iids_con = np.where(np.logical_or(meta_df["pop"].isin(self.conPop), meta_df["super_pop"].isin(self.conPop)))[0]
-            print(f'{len(iids_con)} / {len(meta_df)} individuals included in contamination population')
+            if self.output:
+                print(f'{len(iids_con)} / {len(meta_df)} individuals included in contamination population')
         else:
             iids_con = np.arange(len(meta_df))
-            print('including all individuals from the reference panel as the contamination population')
+            self.output:
+                print('including all individuals from the reference panel as the contamination population')
 
         return iids[:self.n_ref], iids_con   # Return up to n_ref Individual Indices
     
@@ -275,11 +277,10 @@ class PreProcessingHDF5(PreProcessing):
     def load_h5(self, path):
         """Load and return the HDF5 File from Path"""
         f = h5py.File(path, "r")  # Load for Sanity Check. See below!
-        print("\nLoaded %i variants" % np.shape(f["calldata/GT"])[0])
-        print("Loaded %i individuals" % np.shape(f["calldata/GT"])[1])
-        # print(list(f["calldata"].keys()))
-        # print(list(f["variants"].keys()))
-        print(f"HDF5 loaded from {path}")
+        if self.output:
+            print("\nLoaded %i variants" % np.shape(f["calldata/GT"])[0])
+            print("Loaded %i individuals" % np.shape(f["calldata/GT"])[1])
+            print(f"HDF5 loaded from {path}")
         return f   
         
     def merge_2hdf(self, f, g, start=-np.inf, end=np.inf):
@@ -378,13 +379,11 @@ class PreProcessingHDF5(PreProcessing):
     def extract_snps_contaminationPop(self, h5, ids_con, markers):
         gts_con = h5["calldata/GT"][:, ids_con, :]
         gts_con = gts_con[markers, :, :]
-        print(f'size of gts_con matrix: {gts_con.shape}')
         l, k, _ = np.shape(gts_con)
         gts_con = gts_con.reshape((l, 2*k)).T
         nhaps = gts_con.shape[0]
         missed = np.where(gts_con == -1)[0]
         gts_con = gts_con[np.setdiff1d(np.arange(nhaps), missed), :]
-        print(f'size of gts_con matrix: {gts_con.shape}')
         assert(np.min(gts_con) >= 0)
         return gts_con
 
@@ -398,13 +397,13 @@ class PreProcessingHDF5(PreProcessing):
         if diploid:
 
             gts = h5["calldata/GT"][:, ids_ref, :] #.astype(dtype)  # Only first IID
-            print("Exctraction of hdf5 done. Subsetting...!")
+            if self.output:
+                print("Exctraction of hdf5 done. Subsetting...!")
             gts = gts[markers, :, :]   
             l, k, h = np.shape(gts)
             assert(h==2)  #  Sanity check that diploid data
             gts = gts.reshape((l, 2*k)) # Reduces 3D to 2D array
             gts = gts.T # Transpose the data to right format
-            print(f'size of gts matrix: {gts.shape}')
 
             # get rid of haplotypes with missing data
             # eg. male sample's only has one chrX

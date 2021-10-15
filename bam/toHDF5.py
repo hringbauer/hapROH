@@ -115,10 +115,11 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
     # the second return value is the number of sites covered by at least 1 read
     err = minor_adj/(minor_adj + major_adj)
     numSitesCovered = np.sum(np.sum(np.sum(ad, axis=1), axis=1) > 0)
-    print(f'finished reading mpileup file {path2mpileup}, takes {round(time.time()-t1, 3)}.')
-    print(f'estimated genotyping error by flanking sites: {round(err, 6)}')
-    print(f'number of sites covered by at least one read: {numSitesCovered}, fraction covered: {round(numSitesCovered/len(pos), 3)}')
-    print(f'hdf5 file saved to {hdf5Name}')
+    if output:
+        print(f'finished reading mpileup file {path2mpileup}, takes {round(time.time()-t1, 3)}.')
+        print(f'estimated genotyping error by flanking sites: {round(err, 6)}')
+        print(f'number of sites covered by at least one read: {numSitesCovered}, fraction covered: {round(numSitesCovered/len(pos), 3)}')
+        print(f'hdf5 file saved to {hdf5Name}')
     return err, numSitesCovered, hdf5Name
 
 def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, s=-np.inf, e=np.inf, outPath="", trim=0):

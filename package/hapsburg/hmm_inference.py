@@ -402,7 +402,7 @@ class HMM_Analyze(object):
 def prep_3x3matrix(t, n_ref):
     """Prepares the grouped 3x3 Matrix (3rd State: Everything in OTHER ROH State)"""
     n = n_ref
-    print(f"Reference Number: {n}")
+    # print(f"Reference Number: {n}")
     # Initiate to -1 (for later Sanity Check if everything is filled)
     t_simple = -np.ones((3, 3))
     t_simple[:2, :2] = t[:2, :2]

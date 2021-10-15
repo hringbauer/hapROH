@@ -293,10 +293,6 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
         prob_binom = binom.pmf(rc_der[:, None], rc_tot[:, None], p_read)
 
         # Sum over each of the 3 possible genotypes
-        
-        ### Original Implementation
-        #p_full = np.sum(e_mat * prob_binom[None, :, :], axis=2)
-        
         p_full = np.einsum('ijk,jk->ij', e_mat, prob_binom[:, :])
         return p_full
 
