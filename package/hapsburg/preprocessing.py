@@ -144,7 +144,7 @@ class PreProcessingHDF5(PreProcessing):
                 print(f'{len(iids_con)} / {len(meta_df)} individuals included in contamination population')
         else:
             iids_con = np.arange(len(meta_df))
-            self.output:
+            if self.output:
                 print('including all individuals from the reference panel as the contamination population')
 
         return iids[:self.n_ref], iids_con   # Return up to n_ref Individual Indices

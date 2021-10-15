@@ -52,10 +52,10 @@ def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_pat
                 exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
                 readcounts=True, random_allele=False, prefix_out="", logfile=False):
     # chunks is a dictionary: chrom -> (start of ROH, end of ROH)
-    print(f'contamination rate: {c}')
+    # print(f'contamination rate: {c}')
     tot_neg_loglik = 0
     if processes == 1:
-        print(f'running using single process...')
+        # print(f'running using single process...')
         for ch, (start, end) in chunks.items():
             path_targets = path_targets_prefix + f"{iid}.chr{ch}.hdf5"
             tot_neg_loglik += hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
@@ -64,7 +64,7 @@ def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_pat
                 exclude_pops=exclude_pops, e_model=e_model, p_model=p_model, 
                 readcounts=readcounts, random_allele=random_allele, prefix_out=prefix_out, logfile=logfile)
     else:
-        print(f'running using {processes} processes...')
+        # print(f'running using {processes} processes...')
         prms = [ [iid, ch, start, end, path_targets_prefix + f"{iid}.chr{ch}.hdf5", 
                 h5_path1000g, meta_path_ref, folder_out, 
                 c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref,
@@ -72,7 +72,7 @@ def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_pat
                 readcounts, random_allele, prefix_out, logfile] 
                 for ch, (start, end) in chunks.items()]
         results = multi_run(hapsb_chunk_negloglik, prms, processes = processes)
-        print(f'results is: {results}')
+        # print(f'results is: {results}')
         if isinstance(results, float):
             tot_neg_loglik = results
         else:
@@ -80,7 +80,7 @@ def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_pat
     return tot_neg_loglik
 
 def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta_path_ref,
-                folder_out, init_c=0.025, trim=0.0025, minLen=0.045, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
+                folder_out, init_c=0.025, trim=0.0025, minLen=0.055, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
                 processes=1, save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
                 exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
                 readcounts=True, random_allele=False, prefix_out="", logfile=False):

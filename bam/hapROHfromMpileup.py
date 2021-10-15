@@ -131,7 +131,7 @@ if __name__ == '__main__':
         if converged:
             print(f'contamination rate converged after {niter} iterations.')
         else:
-            print(f'contamination rate did converge. Try increase the maxIter param.')
+            print(f'contamination rate did not converge. Try increase the maxIter param.')
     else:
         converged = True
 
