@@ -27,9 +27,10 @@ if __name__ == '__main__':
 
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")  # hack to get local package first in path [FROM HARALD - DELETE!!!]
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS  # Need this import
+    from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind # Need this import
 
 
-    base_path="./simulated/1000G_Mosaic/TSI/Autosome/" 
+    base_path="./simulated/1000G_Mosaic/CHB/Autosome/" 
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
     ch=args.chr
 
@@ -47,15 +48,14 @@ if __name__ == '__main__':
         base_path += "con5/"
     elif con == 0.1:
         base_path += "con10/"
-
-    if nblocks == 1:
-        base_path += "1blocks/"
-    elif nblocks == 2:
-        base_path += "2blocks/"
-    elif nblocks == 4:
-        base_path += "4blocks/"
-    elif nblocks == 8:
-        base_path += "8blocks/"
+    elif con == 0.15:
+        base_path += "con15/"
+    elif con == 0.2:
+        base_path += "con20/"
+    elif con == 0.25:
+        base_path += "con25/"
+    
+    base_path += f'{nblocks}blocks/'
     
     prefix = ""
     if cov == 0.05:
@@ -73,27 +73,43 @@ if __name__ == '__main__':
 
     outFolder = base_path + prefix
 
-    results = np.zeros((100, 3))
+    # results = np.zeros((100, 3))
+
     for i in range(100):
         iid = "iid" + str(i)
-        conMLE, lower95, upper95 = hapCon_chrom_BFGS(iid, ch=ch, save=False, save_fp=False, 
-            n_ref=2504, diploid_ref=True, exclude_pops=["TSI"], conPop=[], 
-            e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
-            post_model="Standard", 
-            path_targets=f"{outFolder}/data.h5",
-            h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
-            meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
-            folder_out=outFolder, prefix_out="",
-            c=0.025, roh_in=1, roh_out=20, roh_jump=300, e_rate=err_rate, e_rate_ref=e_rate_ref,
-            max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
+        hapsb_ind(iid, chs=range(1,2), 
+        path_targets = f"{outFolder}/data.h5",
+        h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
+        meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
+        folder_out=f"{outFolder}/hapRoh/", prefix_out="",
+        e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
+        processes=1, delete=True, output=True, save=True, save_fp=False, 
+        c=con, conPop=["CEU"],
+        n_ref=2504, diploid_ref=True, exclude_pops=["CHB"], readcounts=True, random_allele=False,
+        roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3, 
+        cutoff_post = 0.999, max_gap=0.005, roh_min_l = 0.04, logfile=False, combine=True, 
+        file_result="_roh_full.csv")
 
-        results[i, :] = (conMLE, lower95, upper95)
+    # for i in range(100):
+    #     iid = "iid" + str(i)
+    #     conMLE, lower95, upper95 = hapCon_chrom_BFGS(iid, ch=ch, save=False, save_fp=False, 
+    #         n_ref=2504, diploid_ref=True, exclude_pops=["CHB"], conPop=["CEU"], 
+    #         e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
+    #         post_model="Standard", 
+    #         path_targets=f"{outFolder}/data.h5",
+    #         h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
+    #         meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
+    #         folder_out=outFolder, prefix_out="",
+    #         c=0.025, roh_in=1, roh_out=20, roh_jump=300, e_rate=err_rate, e_rate_ref=e_rate_ref,
+    #         max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
+
+    #     results[i, :] = (conMLE, lower95, upper95)
     
-    # write output to a file
-    with open(f'{outFolder}/batchresults_bfgs.txt', 'w') as out:
-        out.write(f'###contamination={con}, coverage={cov}, genotyping error={err_rate}, ref err={e_rate_ref}, nblocks={nblocks}\n')
-        out.write(f'###sampleID\tconMLE\tlower95CI\tupper95CI\n')
-        for i in range(100):
-            iid = "iid" + str(i)
-            conMLE, lower95, upper95 = results[i]
-            out.write(f'{iid}\t{conMLE}\t{lower95}\t{upper95}\n')
+    # # write output to a file
+    # with open(f'{outFolder}/batchresults_bfgs.txt', 'w') as out:
+    #     out.write(f'###contamination={con}, coverage={cov}, genotyping error={err_rate}, ref err={e_rate_ref}, nblocks={nblocks}\n')
+    #     out.write(f'###sampleID\tconMLE\tlower95CI\tupper95CI\n')
+    #     for i in range(100):
+    #         iid = "iid" + str(i)
+    #         conMLE, lower95, upper95 = results[i]
+    #         out.write(f'{iid}\t{conMLE}\t{lower95}\t{upper95}\n')

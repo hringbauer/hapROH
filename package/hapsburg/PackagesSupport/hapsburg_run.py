@@ -93,6 +93,7 @@ def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta
             StartM, EndM, lengthM = float(StartM), float(EndM), float(lengthM)
             if lengthM >= minLen:
                 chunks[ch] = (StartM + trim, EndM - trim)
+                print(f'chr{ch}\t{round(startM, 6)}\t{round(endM, 6)}')
             line = f.readline()
             
     if len(chunks) > 0:
@@ -125,7 +126,7 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
                 meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
                 folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
                 c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
-                max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True):
+                max_gap=0.005, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True):
     """Run Hapsburg analysis for one chromosome on eigenstrat data
     Wrapper for HMM Class.
     iid: IID of the Target Individual, as found in Eigenstrat [str]
@@ -205,7 +206,7 @@ def hapsb_ind(iid, chs=range(1,23),
               processes=1, delete=False, output=True, save=True, save_fp=False, 
               n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=True,
               c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
-              cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=True, combine=True, 
+              cutoff_post = 0.999, max_gap=0.005, roh_min_l = 0.01, logfile=True, combine=True, 
               file_result="_roh_full.csv"):
     """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel
     Wrapper for hapsb_chrom

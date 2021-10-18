@@ -35,10 +35,10 @@ if __name__ == '__main__':
     os.chdir(path)  # Set the right Path (in line with Atom default)
     
     # actual simulation
-    base_path='/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/Autosome/'
+    base_path='/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/CHB/Autosome/'
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
-    pop_list=["TSI"]
-    conPop=[]
+    pop_list=["CHB"]
+    conPop=["CEU"]
     n = args.n  # Number of Individuals
     ch=args.chr
     chunk_length=0.0025
@@ -57,6 +57,12 @@ if __name__ == '__main__':
         base_path += "con5/"
     elif con == 0.1:
         base_path += "con10/"
+    elif con == 0.15:
+        base_path += "con15/"
+    elif con == 0.2:
+        base_path += "con20/"
+    elif con == 0.25:
+        base_path += "con25/"
     
     base_path += f'{n_blocks}blocks/'
     if cov == 0.05:

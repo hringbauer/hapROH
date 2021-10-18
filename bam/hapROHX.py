@@ -54,10 +54,10 @@ if __name__ == '__main__':
     #     max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
 
     mle_bfgs, low95_bfgs, up95_bfgs = hapCon_chrom_BFGS(iid, 'X', save=False, save_fp=False, n_ref=2504, diploid_ref=False, 
-        exclude_pops=[], conPop=["EUR"], e_model="readcount_contam", p_model="SardHDF5", 
+        exclude_pops=[], conPop=["CEU"], e_model="readcount_contam", p_model="SardHDF5", 
         readcounts=True, random_allele=False, post_model="Standard", path_targets=path2hdf5, 
         folder_out='/mnt/archgen/users/yilei/Data/iberian_BAM/hapCon/', 
-        h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/maf1_filter_chr',
+        h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/maf20_filter_chr',
         meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
         prefix_out=iid, c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-3,
         max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     #     e_rate_ref=1e-3, max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
     
 
-    with open(f'{iid}.hapcon.maf1EUR.txt', 'w') as out:
+    with open(f'{iid}.hapcon.maf20CEU.txt', 'w') as out:
         out.write(f'Number of target sites covered by at least one read: {numSitesCovered}\n')
         out.write(f'Method1: Fixing genotyping error rate\n')
         out.write(f'\tEstimated genotyping error via flanking region: {round(3.0*err, 6)}\n')

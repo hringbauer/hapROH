@@ -26,6 +26,9 @@ if __name__ == '__main__':
     from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind
     from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam
     from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
+    from multiprocessing import set_start_method
+    set_start_method("spawn")
+
 
     iid = args.iid
     p = args.processes
@@ -71,10 +74,10 @@ if __name__ == '__main__':
         meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
         folder_out=f"{basepath}/hapRoh/", prefix_out="",
         e_model="readcount", p_model="SardHDF5", post_model="Standard",
-        processes=args.processes, delete=False, output=True, save=True, save_fp=False, 
+        processes=args.processes, delete=True, output=True, save=True, save_fp=False, 
         n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False,
         roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3, 
-        cutoff_post = 0.999, max_gap=0, roh_min_l = 0.04, logfile=True, combine=True, 
+        cutoff_post = 0.999, max_gap=0.005, roh_min_l = 0.04, logfile=True, combine=True, 
         file_result="_roh_full.csv")
     
     ######################################################################################
@@ -101,17 +104,16 @@ if __name__ == '__main__':
         contam_prev = contam
         tol = args.tol
         while diff > tol and niter < maxIter:
-            print(f'iteration {niter}: current diff: {diff}')
             hapsb_ind(iid, chs=range(1,23), 
                 path_targets_prefix = f"{basepath}/hdf5",
                 h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
                 meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
                 folder_out=f"{basepath}/hapRoh/", prefix_out="",
                 e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
-                processes=p, delete=False, output=True, save=True, save_fp=False, 
+                processes=p, delete=True, output=True, save=True, save_fp=False, 
                 n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False,
                 c=contam_prev, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3, 
-                cutoff_post = 0.999, max_gap=0, roh_min_l = 0.04, logfile=True, combine=True, 
+                cutoff_post = 0.999, max_gap=0.005, roh_min_l = 0.04, logfile=True, combine=True, 
                 file_result="_roh_full.csv")
             contam, se = hapsb_femaleROHcontam(iid, f"{basepath}/hapRoh/{iid}_roh_full.csv",
                 f"{basepath}/hdf5",
@@ -125,6 +127,7 @@ if __name__ == '__main__':
                 readcounts=True, random_allele=False, prefix_out="", logfile=False)
             niter += 1
             diff = abs(contam_prev - contam)
+            print(f'iteration {niter} done, prev contam: {round(contam_prev, 6)}, current contam: {round(contam, 6)}')
             contam_prev = contam
 
         converged = diff <= tol
