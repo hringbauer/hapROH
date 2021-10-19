@@ -80,7 +80,7 @@ def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_pat
     return tot_neg_loglik
 
 def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta_path_ref,
-                folder_out, init_c=0.025, trim=0.0025, minLen=0.055, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
+                folder_out, init_c=0.025, trim=0.0025, minLen=0.05, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
                 processes=1, save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
                 exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
                 readcounts=True, random_allele=False, prefix_out="", logfile=False):
@@ -93,7 +93,7 @@ def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta
             StartM, EndM, lengthM = float(StartM), float(EndM), float(lengthM)
             if lengthM >= minLen:
                 chunks[ch] = (StartM + trim, EndM - trim)
-                print(f'chr{ch}\t{round(startM, 6)}\t{round(endM, 6)}')
+                print(f'chr{ch}\t{round(StartM, 6)}\t{round(EndM, 6)}')
             line = f.readline()
             
     if len(chunks) > 0:

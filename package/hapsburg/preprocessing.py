@@ -297,7 +297,7 @@ class PreProcessingHDF5(PreProcessing):
         if start != -np.inf or end != np.inf:
             assert(len(rec) == len(pos2))
             assert(end > start)
-            print(f'subsetting reference panel to between {start} and {end}, chunk length: {end-start}M')
+            # print(f'subsetting reference panel to between {start} and {end}, chunk length: {end-start}M')
             chunk = np.where(np.logical_and(rec >= start, rec <= end))[0]
             i2, _, kept_index = np.intersect1d(chunk, i2, return_indices=True)
             b, i1 = b[kept_index], i1[kept_index]
