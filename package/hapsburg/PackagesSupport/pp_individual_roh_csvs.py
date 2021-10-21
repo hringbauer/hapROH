@@ -98,8 +98,8 @@ def combine_ROH_df(df_rohs, iids=[], pops=[], min_cm=[4,8,12], snp_cm=100,
         df1[f"n_roh>{m_cm}"]=n_roh[:,j]
     if sort:
         df1 = df1.sort_values(by=f"sum_roh>{min_cm[0]}", ascending=False)  # Sort output by minimal Cutoff                    
-    return df1                 
-                      
+    return df1         
+
 def merge_called_blocks(df, max_gap=0, min_len1=0.02, 
                         min_len2=0.04, output=False):
         """Merge Blocks in Dataframe df and return merged Dataframe.
@@ -133,6 +133,41 @@ def merge_called_blocks(df, max_gap=0, min_len1=0.02,
 
         if output == True:
             print(f"Merged n={len(df) - len(df_n)} gaps < {max_gap} M")
+        return df_n        
+                      
+def merge_called_blocks_custom(df, max_gap=0.005, min_len1=0.02, 
+                        min_len2=0.04, roh_min_l_final=0.05, output=False):
+        """Merge Blocks in Dataframe df and return merged Dataframe.
+        Gap is given in Morgan"""
+        if len(df) == 0:
+            return df  # In case of empty dataframe don't do anything
+
+        df_n = df.drop(df.index)  # Create New Data frame with all raws removed
+        row_c = df.iloc[0, :].copy()
+
+        # Iterate over all further rows, update blocks if gaps small enough
+        for index, row in df.iloc[1:,:].iterrows():
+            ### Calculate Conditions
+            short_b = np.min([row_c["lengthM"], row["lengthM"]])>=min_len1
+            long_b = np.max([row_c["lengthM"], row["lengthM"]])>=min_len2
+            short_g = (row["StartM"] - row_c["EndM"] < max_gap)
+            same_c = (row["ch"] == row_c["ch"])
+            
+            if short_b and long_b and short_g and same_c:
+                row_c["End"] = row["End"]
+                row_c["EndM"] = row["EndM"]
+                row_c["length"] = row_c["End"] - row_c["Start"]
+                row_c["lengthM"] = row_c["EndM"] - row_c["StartM"]
+
+            else:  # Save and go to next row
+                df_n.loc[len(df_n)] = row_c  # Append a row to new df
+                row_c = row.copy()
+
+        df_n.loc[len(df_n)] = row_c   # Append the last row
+
+        if output == True:
+            print(f"Merged n={len(df) - len(df_n)} gaps < {max_gap} M")
+        df_n = df_n[df_n["lengthM"] > roh_min_l_final]
         return df_n
     
 def post_process_roh_df(df, min_cm=4, snp_cm=60, output=True):

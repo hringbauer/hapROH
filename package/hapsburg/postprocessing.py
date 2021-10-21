@@ -9,6 +9,7 @@ Pls always change parameters with set_params method!
 import numpy as np
 import pandas as pd
 import os
+from hapsburg.PackagesSupport.pp_individual_roh_csvs import merge_called_blocks_custom
 
 
 class PostProcessing(object):
@@ -17,14 +18,19 @@ class PostProcessing(object):
     folder = ""          # The Folder to operate in
     roh_df = []          # Dataframe for Runs of Homozygosity
 
-    cutoff_post = 0.8  # Cutoff Probability for ROH State
-    roh_min_l = 0.01  # Cutoff [in Morgan]
-    max_gap = 0.01  # The Maximum Gap Length to be Merged [in Morgan]
+    cutoff_post = 0.999  # Cutoff Probability for ROH State
+    roh_min_l_initial = 0.02  # Cutoff [in Morgan] for the initial ROH calling
+    roh_min_l_final = 0.05 # cutoff [in Morgan] for the final ROH report
+    min_len1 = 0.02
+    min_len2 = 0.04
+    max_gap = 0.005  # The Maximum Gap Length to be Merged [in Morgan]
     snps_extend = 0  # SNPs to snip on either side of blocks (after merge)
+    
 
     merge = True  # Whether to Merge ROH Blocks
     output = True
     save = True  # Whether to save output into Folder
+    post = True
 
     def __init__(self, folder="", load=False, output=True, save=True):
         """Initialize Class.
@@ -188,18 +194,25 @@ class PostProcessing(object):
         # Create hapROH Dataframe
         df = self.create_df(starts, ends, starts_map, ends_map, 
                             l, l_map, iid, ch, 
-                            roh_min_l=self.roh_min_l,
+                            roh_min_l=self.roh_min_l_initial,
                             starts_pos=starts_pos, ends_pos=ends_pos)
 
         # Merge Blocks in Postprocessing Step
-        if self.merge == True:
-            df = self.merge_called_blocks(df)
+        # if self.merge == True:
+        #     df = self.merge_called_blocks(df)
 
         if self.snps_extend != 0:   # Extend by Nr of SNPs if needed
             df = self.snp_extend(df, r_map)
 
+        # do post postprocessing
+        if self.post:
+            df = merge_called_blocks_custom(df, max_gap=self.max_gap, \
+                    min_len1=self.min_len1, min_len2=self.min_len2, \
+                    roh_min_l_final=self.roh_min_l_final)
+
+
         if self.output == True:
-            print(f"Called n={len(df)} ROH Blocks > {self.roh_min_l * 100} cM")
+            print(f"Called n={len(df)} ROH Blocks > {self.roh_min_l_final * 100} cM")
             l = np.max(df["lengthM"])
             print(f"Longest Block: {l *100:.2f} cM")
 

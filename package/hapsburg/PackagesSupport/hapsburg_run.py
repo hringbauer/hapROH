@@ -80,7 +80,7 @@ def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_pat
     return tot_neg_loglik
 
 def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta_path_ref,
-                folder_out, init_c=0.025, trim=0.0025, minLen=0.05, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
+                folder_out, init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
                 processes=1, save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
                 exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
                 readcounts=True, random_allele=False, prefix_out="", logfile=False):
@@ -104,16 +104,15 @@ def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta
                 conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, processes, save, save_fp, n_ref, diploid_ref, 
                 exclude_pops, e_model, p_model, readcounts, random_allele, prefix_out, logfile)
         res = minimize(hapsb_multiChunk, init_c, args=kargs, method='L-BFGS-B', bounds=[(0, 0.5)])
-        if res.success:
-            Hfun = ndt.Hessian(hapsb_multiChunk, step=1e-4, full_output=True)
-            h, info = Hfun(res.x[0], *kargs)
-            h = h[0][0]
-            se = math.sqrt(1/(h))
-            return res.x[0], se
-        else:
-            print('L-BFGS-B does not converge...')
-            print('Cannot estimate contamination rate from the given data, maybe coverage is too low')
-            sys.exit()
+        if not res.success:
+            print('L-BFGS-B does not converge. Printing its result log for diagnostic purpose.')
+            print(res)
+            print('please take the final estimate with caution.')
+        Hfun = ndt.Hessian(hapsb_multiChunk, step=1e-4, full_output=True)
+        h, info = Hfun(res.x[0], *kargs)
+        h = h[0][0]
+        se = math.sqrt(1/(h))
+        return res.x[0], se
     else:
         print(f'not enough ROH blocks found to estimate contamination...')
         sys.exit()
@@ -126,7 +125,8 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
                 meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
                 folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
                 c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
-                max_gap=0.005, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True):
+                max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.05,
+                min_len1 = 0.02, min_len2 = 0.04, cutoff_post = 0.999, logfile=True):
     """Run Hapsburg analysis for one chromosome on eigenstrat data
     Wrapper for HMM Class.
     iid: IID of the Target Individual, as found in Eigenstrat [str]
@@ -187,7 +187,9 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
     ### Set the Parameters
     hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
     hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
-    hmm.post_obj.set_params(max_gap=max_gap, cutoff_post=cutoff_post, roh_min_l = roh_min_l)
+    hmm.post_obj.set_params(max_gap=max_gap, cutoff_post=cutoff_post,\
+                roh_min_l_initial=roh_min_l_initial, roh_min_l_final=roh_min_l_final,\
+                min_len1=min_len1, min_len2=min_len2)
     
     ### hmm.calc_viterbi_path(save=save)           # Calculate the Viterbi Path.
     hmm.calc_posterior(save=save)              # Calculate the Posterior.
@@ -206,8 +208,8 @@ def hapsb_ind(iid, chs=range(1,23),
               processes=1, delete=False, output=True, save=True, save_fp=False, 
               n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=True,
               c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
-              cutoff_post = 0.999, max_gap=0.005, roh_min_l = 0.01, logfile=True, combine=True, 
-              file_result="_roh_full.csv"):
+              cutoff_post = 0.999, max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.05,
+                min_len1 = 0.02, min_len2 = 0.04, logfile=True, combine=True, file_result="_roh_full.csv"):
     """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel
     Wrapper for hapsb_chrom
     iid: IID of the Target Individual, as found in Eigenstrat [str]
@@ -250,15 +252,17 @@ def hapsb_ind(iid, chs=range(1,23),
     if len(path_targets) != 0:
         prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
             post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
-            c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff_post, roh_min_l, logfile] for ch in chs]
+            c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial, 
+            roh_min_l_final, min_len1, min_len2, cutoff_post, logfile] for ch in chs]
     elif len(path_targets_prefix) != 0:
         prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
             post_model, f'{path_targets_prefix}/{iid}.chr{ch}.hdf5', h5_path1000g, meta_path_ref, folder_out, prefix_out,
-            c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff_post, roh_min_l, logfile] for ch in chs]
+            c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial, roh_min_l_final, 
+            min_len1, min_len2, cutoff_post, logfile] for ch in chs]
     else:
         print(f'You need to at least specify one of path_targets or path_targets_prefix...')
         sys.exit()
-    assert(len(prms[0])==28)   # Sanity Check
+    assert(len(prms[0])==31)   # Sanity Check
                             
     ### Run the analysis in parallel
     multi_run(hapsb_chrom, prms, processes = processes)
@@ -566,14 +570,14 @@ def hapCon_chrom_BFGS(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref
     meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
     folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
     c=0.025, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
-    max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True):
+    max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True, output=False):
 
     parameters = locals() # Gets dictionary of all local variables at this point
     
     ### Create Folder if needed, and pipe output if wanted
     _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
     hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, post_model=post_model,
-                      manual_load=True, save=save, save_fp=save_fp)
+                      manual_load=True, save=save, save_fp=save_fp, output=output)
 
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
@@ -585,7 +589,6 @@ def hapCon_chrom_BFGS(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref
     hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
                          meta_path_ref = meta_path_ref, n_ref=n_ref)
     hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
-    print(hmm.pCon)
     hmm.load_secondary_objects()
     
     ### Print out the Parameters used in run:

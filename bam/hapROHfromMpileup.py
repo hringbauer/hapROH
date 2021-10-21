@@ -73,12 +73,11 @@ if __name__ == '__main__':
         h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
         meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
         folder_out=f"{basepath}/hapRoh/", prefix_out="",
-        e_model="readcount", p_model="SardHDF5", post_model="Standard",
+        e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
         processes=args.processes, delete=True, output=True, save=True, save_fp=False, 
         n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False,
-        roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3, 
-        cutoff_post = 0.999, max_gap=0.005, roh_min_l = 0.04, logfile=True, combine=True, 
-        file_result="_roh_full.csv")
+        c=0.05, roh_min_l_final=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
+        logfile=True, combine=True, file_result="_roh_full.csv")
     
     ######################################################################################
 
@@ -112,9 +111,8 @@ if __name__ == '__main__':
                 e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
                 processes=p, delete=True, output=True, save=True, save_fp=False, 
                 n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False,
-                c=contam_prev, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3, 
-                cutoff_post = 0.999, max_gap=0.005, roh_min_l = 0.04, logfile=True, combine=True, 
-                file_result="_roh_full.csv")
+                c=contam_prev, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
+                logfile=True, combine=True, file_result="_roh_full.csv")
             contam, se = hapsb_femaleROHcontam(iid, f"{basepath}/hapRoh/{iid}_roh_full.csv",
                 f"{basepath}/hdf5",
                 "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 

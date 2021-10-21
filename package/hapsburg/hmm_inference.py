@@ -349,15 +349,29 @@ class HMM_Analyze(object):
         res = minimize(self.compute_tot_neg_likelihood, init_c, method='L-BFGS-B', bounds=bnds)
         Hfun = ndt.Hessian(self.compute_tot_neg_likelihood, step=1e-4, full_output=True)
         try:
-            h, info = Hfun(res.x)
+            x = res.x[0]
+            if x > 0:
+                h, info = Hfun(x)
+                h = h[0][0]
+                if h < 0:
+                    print('WARNING: Cannot estimate standard error because the likelihood curve is concave up...')
+                    se = np.nan
+                else:
+                    se = math.sqrt(1/(h))
+                return x, x - 1.96*se, x + 1.96*se
+            else:
+                # hessian does not work well at the boundary, use a different approach
+                print(f'use likelihood confidence interval...')
+                step = 1e-6
+                grad = (self.compute_tot_neg_likelihood(step) - self.compute_tot_neg_likelihood(0))/step
+                assert(grad > 0)
+                width = 1.92/grad
+                print(f'grad: {grad}')
+                return x, x-width, x+width
         except AssertionError:
             print(f'cannot estimate the Hessian of the loglikelihood around {res.x}')
             return res.x[0], np.nan, np.nan
-        h = h[0][0]
-        se = math.sqrt(1/(h))
-        x = res.x[0]
-        return x, x - 1.96*se, x + 1.96*se
-
+        
 
     def optimize_ll_contamANDerr(self, init_c, init_err):
         # use powell's optimization to search for MLE of contamination rate and genotyping error rate
