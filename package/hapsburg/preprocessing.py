@@ -158,7 +158,10 @@ class PreProcessingHDF5(PreProcessing):
             print(f"Loading Individual: {iid}")
 
         # Attach Part for the right Chromosome
-        h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"
+        if self.h5_path1000g.endswith(".hdf5"):
+            h5_path1000g = self.h5_path1000g
+        else:
+            h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"
 
         # Def Set the output folder:
         out_folder = self.set_output_folder(iid, ch)
