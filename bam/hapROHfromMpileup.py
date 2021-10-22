@@ -76,7 +76,7 @@ if __name__ == '__main__':
         e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
         processes=args.processes, delete=True, output=True, save=True, save_fp=False, 
         n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False,
-        c=0.05, roh_min_l_final=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
+        c=0.05, roh_min_l_final=0.06, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
         logfile=True, combine=True, file_result="_roh_full.csv")
     
     ######################################################################################

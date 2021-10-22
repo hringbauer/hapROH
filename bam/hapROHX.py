@@ -62,7 +62,7 @@ if __name__ == '__main__':
         exclude_pops=[], conPop=["CEU"], e_model="readcount_contam", p_model="SardHDF5", 
         readcounts=True, random_allele=False, post_model="Standard", path_targets=path2hdf5, 
         folder_out='/mnt/archgen/users/yilei/Data/iberian_BAM/hapCon/', 
-        h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
+        h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/maf5_filter_chr',
         meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
         prefix_out=iid, c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-3,
         max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)

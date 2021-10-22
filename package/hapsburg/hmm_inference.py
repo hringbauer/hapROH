@@ -14,6 +14,7 @@ import sys
 import numdifftools as ndt
 import math
 from scipy.optimize import minimize
+from scipy.optimize import newton
 
 from hapsburg.cfunc import fwd # fwd only computes total likelihood
 from hapsburg.cfunc import fwd_bkwd_fast, fwd_bkwd_lowmem, fwd_bkwd_scaled, fwd_bkwd_scaled_lowmem  # Cython Functions
@@ -350,24 +351,25 @@ class HMM_Analyze(object):
         Hfun = ndt.Hessian(self.compute_tot_neg_likelihood, step=1e-4, full_output=True)
         try:
             x = res.x[0]
-            if x > 0:
-                h, info = Hfun(x)
-                h = h[0][0]
-                if h < 0:
-                    print('WARNING: Cannot estimate standard error because the likelihood curve is concave up...')
-                    se = np.nan
-                else:
-                    se = math.sqrt(1/(h))
-                return x, x - 1.96*se, x + 1.96*se
+            h, info = Hfun(x)
+            h = h[0][0]
+            if h < 0:
+                print('WARNING: Cannot estimate standard error because the likelihood curve is concave up...')
+                se = np.nan
             else:
-                # hessian does not work well at the boundary, use a different approach
-                print(f'use likelihood confidence interval...')
-                step = 1e-6
-                grad = (self.compute_tot_neg_likelihood(step) - self.compute_tot_neg_likelihood(0))/step
-                assert(grad > 0)
-                width = 1.92/grad
-                print(f'grad: {grad}')
-                return x, x-width, x+width
+                if x > 0:
+                    se = math.sqrt(1/(h))
+                    return x, x - 1.96*se, x + 1.96*se
+                else:
+                    # hessian does not work well at the boundary, use a different approach
+                    print(f'use quadracitc interpolation to obtain likelihood confidence interval...')
+                    step = 1e-6
+                    grad = (self.compute_tot_neg_likelihood(step) - self.compute_tot_neg_likelihood(0))/step
+                    assert(grad > 0)
+                    findroot = lambda x, x0, grad, hess: hess*(x-x0)**2/2.0 + (x-x0)*grad - 1.92
+                    findroot_prime = lambda x, x0, grad, hess: (x-x0)*hess + grad
+                    res = newton(findroot, x, fprime=findroot_prime, args=(x, grad, h))
+                    return x, x-res, x+res
         except AssertionError:
             print(f'cannot estimate the Hessian of the loglikelihood around {res.x}')
             return res.x[0], np.nan, np.nan
