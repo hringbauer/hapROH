@@ -74,7 +74,7 @@ def save_data_h5(gt, ad, ref, alt, pos,
             ### Alternative Allele cases:
             if alt.ndim==2:
                 f_alt[:] = alt[:,0].astype("S1")
-            elif af.ndim==1:
+            elif alt.ndim==1:
                 f_alt[:] = alt.astype("S1")
             else: 
                 raise RuntimeWarning("Allele Frequencies do not line up")          
@@ -225,7 +225,8 @@ def merge_in_ld_map(path_h5, path_snp1240k, chs=range(1,23), write_mode="a"):
     hdf5 file. Save modified h5 in place 
     path_h5: Path to hdf5 file to modify.
     path_snp1240k: Path to Eigenstrat .snp file whose map to use
-    chs: Which Chromosomes to merge in HDF5 [list]"""
+    chs: Which Chromosomes to merge in HDF5 [list].
+    write_mode: Which mode to use on hdf5. a: New field. r+: Change Field"""
     with h5py.File(path_h5, "r") as f:
         print("Lifting LD Map from eigenstrat to HDF5...")
         print("Loaded %i variants." % np.shape(f["calldata/GT"])[0])
