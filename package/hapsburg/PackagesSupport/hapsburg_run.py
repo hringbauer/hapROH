@@ -10,8 +10,10 @@ import numpy as np
 import multiprocessing as mp
 import pandas as pd
 import sys
+import time
 from scipy.optimize import minimize
 import numdifftools as ndt
+
 
 
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
@@ -46,13 +48,45 @@ def hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_
     hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
     return hmm.compute_tot_neg_likelihood(c)
 
+def preload(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
+                folder_out, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
+                save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
+                exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
+                readcounts=True, random_allele=False, prefix_out="", logfile=False):
+    # reference panel needed only to be loaded once for each optimization phase
+    # so we preload here to reduce run time
+    parameters = locals() # Gets dictionary of all local variables at this point
+    
+    ### Create Folder if needed, and pipe output if wanted
+    _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
+    hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, output=False,
+                      manual_load=True, save=save, save_fp=save_fp, start=start, end=end)
+
+    ### Load and prepare the pre-processing Model
+    hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
+    hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
+                         folder_out=folder_out, prefix_out_data=prefix_out, 
+                         excluded=exclude_pops, diploid_ref=diploid_ref)
+    
+    ### Set the paths to ref & target
+    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
+                         meta_path_ref = meta_path_ref, n_ref=n_ref)
+    hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
+    hmm.load_secondary_objects()
+    
+    ### Set the Parameters
+    hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
+    hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
+    return hmm
+    
+
 def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_path_ref,
                 folder_out, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
                 processes=1, save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
                 exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
                 readcounts=True, random_allele=False, prefix_out="", logfile=False):
     # chunks is a dictionary: chrom -> (start of ROH, end of ROH)
-    # print(f'contamination rate: {c}')
+    t1 = time.time()
     tot_neg_loglik = 0
     if processes == 1:
         # print(f'running using single process...')
@@ -77,7 +111,30 @@ def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_pat
             tot_neg_loglik = results
         else:
             tot_neg_loglik += sum(results)
+    print(f'hapsb_multichunk takes {time.time()-t1}')
     return tot_neg_loglik
+
+def hapsb_chunk_negloglik_preload(hmm, c):
+    ret = hmm.compute_tot_neg_likelihood(c)
+    return ret
+
+def hapsb_multiChunk_preload(c, hmms, processes=1):
+    t1 = time.time()
+    tot_neg_loglik = 0
+    if processes == 1:
+        for hmm in hmms:
+            tot_neg_loglik += hmm.compute_tot_neg_likelihood(c)
+    else:
+        prms = [[hmm, c] for hmm in hmms ]
+        results = multi_run(hapsb_chunk_negloglik_preload, prms, processes=processes)
+        if isinstance(results, float):
+            tot_neg_loglik = results
+        else:
+            tot_neg_loglik += sum(results)
+    print(f"hapsb_multiChunk_preload takes {time.time()-t1}")
+    return tot_neg_loglik
+
+
 
 def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta_path_ref,
                 folder_out, init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
@@ -109,6 +166,61 @@ def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta
             print(res)
             print('please take the final estimate with caution.')
         Hfun = ndt.Hessian(hapsb_multiChunk, step=1e-4, full_output=True)
+        h, info = Hfun(res.x[0], *kargs)
+        h = h[0][0]
+        se = math.sqrt(1/(h))
+        return res.x[0], se
+    else:
+        print(f'not enough ROH blocks found to estimate contamination...')
+        sys.exit()
+
+def hapsb_femaleROHcontam_preload(iid, roh_list, path_targets_prefix, h5_path1000g, meta_path_ref,
+                folder_out, init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
+                processes=1, save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
+                exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
+                readcounts=True, random_allele=False, prefix_out="", logfile=False):
+    # should be the same as hapsb_femaleROHcontam, but a faster implementation
+    chunks = {}
+    with open(roh_list) as f:
+        f.readline()
+        line = f.readline()
+        while line:
+            _, _, StartM, EndM, _, lengthM, _, ch, _, _ = line.strip().split(',')
+            StartM, EndM, lengthM = float(StartM), float(EndM), float(lengthM)
+            if lengthM >= minLen:
+                chunks[ch] = (StartM + trim, EndM - trim)
+                print(f'chr{ch}\t{round(StartM, 6)}\t{round(EndM, 6)}')
+            line = f.readline()
+            
+    if len(chunks) > 0:
+        print(f'a total of {len(chunks)} ROH blocks found.')
+        if not path_targets_prefix.endswith('/'):
+            path_targets_prefix += "/"
+
+        # preload hmm models
+        t1 = time.time()
+        hmms = []
+        for ch, (start, end) in chunks.items():
+            path_targets = path_targets_prefix + f"{iid}.chr{ch}.hdf5"
+            hmm = preload(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
+                folder_out, conPop=conPop, roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump, 
+                e_rate=e_rate, e_rate_ref=e_rate_ref,
+                save=save, save_fp=save_fp, n_ref=n_ref, diploid_ref=diploid_ref, 
+                exclude_pops=exclude_pops, e_model=e_model, p_model=p_model, 
+                readcounts=readcounts, random_allele=random_allele, 
+                prefix_out=prefix_out, logfile=logfile)
+            hmms.append(hmm)
+        print(f'{len(chunks)} hmm models loaded, takes {round(time.time()-t1, 3)}s')
+
+        # the actual optimization part
+        kargs = (hmms, processes)
+        res = minimize(hapsb_multiChunk_preload, init_c, args=kargs, method='L-BFGS-B', bounds=[(0, 0.5)])
+        
+        if not res.success:
+            print('L-BFGS-B does not converge. Printing its result log for diagnostic purpose.')
+            print(res)
+            print('please take the final estimate with caution.')
+        Hfun = ndt.Hessian(hapsb_multiChunk_preload, step=1e-4, full_output=True)
         h, info = Hfun(res.x[0], *kargs)
         h = h[0][0]
         se = math.sqrt(1/(h))

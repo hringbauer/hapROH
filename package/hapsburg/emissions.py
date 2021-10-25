@@ -143,9 +143,10 @@ class RC_Model_Emissions(Model_Emissions):
         # Sanity Check if genotype probabilities sum up to (approx.) 1
         # I commented out the following 2 assert statements to save runtime
         # turns out it takes ~7s on chrX, too slow!
-        # assert(np.all(np.isclose(np.sum(p_hgeno, axis=2), 1)))
-        # assert((np.min(p_hgeno) >= 0) & (
-        #     np.max(p_hgeno) <= 1))   # Sanity Check
+        assert(np.min(p_hgeno) >= 0)
+        assert(np.max(p_hgeno) <= 1)
+        assert(np.all(np.isclose(np.sum(p_hgeno, axis=2), 1)))
+        
 
         if remember == True:
             self.e_mat = p_hgeno
@@ -281,6 +282,7 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
         # What's the probability of observing a dervided read given hidden genotypes 00 01 11
         # p_read = np.array([e_rate, 0.5, 1 - e_rate]) # original emission model with no contamination
         assert(len(pCon) == ob_stat.shape[1]) # sanity check
+        print(f'min of pCon: {np.min(pCon)}')
         p_read = np.zeros((ob_stat.shape[1], 3))
         p_read[:, 0] = (1-c)*e_rate + c*pCon*(1-e_rate)
         p_read[:, 1] = 0.5*(1-c) + c*pCon*(1-e_rate)
@@ -291,6 +293,9 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
         rc_der = ob_stat[1, :]
 
         prob_binom = binom.pmf(rc_der[:, None], rc_tot[:, None], p_read)
+        assert(np.min(prob_binom)>=0)
+        assert(np.min(e_mat)>=0)
+        print('both assertion tests passed!')
 
         # Sum over each of the 3 possible genotypes
         p_full = np.einsum('ijk,jk->ij', e_mat, prob_binom[:, :])

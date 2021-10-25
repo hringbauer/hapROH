@@ -1,4 +1,4 @@
-# run hapROH from mpileup results
+# run female hapCON estimate from mpileup results
 
 import numpy as np
 import argparse
@@ -54,18 +54,6 @@ if __name__ == '__main__':
     numSitesCovered = sum([n for _, n, _ in results])
     print(f'finished reading mpileup files, takes {round(time.time()-t1, 3)}s')
     print(f'estimated genotyping error: {err}')
-
-    # for ch in range(1, 23):
-    #     t1 = time.time()
-    #     path2mpileup = args.basepath
-    #     if not path2mpileup.endswith('/'):
-    #         path2mpileup += "/"
-    #     path2mpileup += f'{iid}.chr{ch}.mpileup'
-    #     path2ref = f'/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr{ch}.hdf5'
-    #     err, numSitesCovered, path2hdf5 = mpileup2hdf5(path2mpileup, path2ref, iid=iid, outPath='./hdf5', output=False)
-    #     print(f'finished reading mpileup file for chr{ch}, takes {round(time.time()-t1, 3)}.')
-    #     print(f'number of sites covered by at least one read: {numSitesCovered}')
-    #     print(f'hdf5 file saved to {path2hdf5}')
 
     ################################### call ROH ##################################
     hapsb_ind(iid, chs=range(1,23), 

@@ -8,17 +8,28 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
     t1 = time.time()
     f = h5py.File(refHDF5, 'r')
     pos = np.array(f['variants/POS'])
-    subset = np.logical_and(pos >= s, pos <= e)
+    ref = f['variants/REF']
+    alt = f['variants/ALT']
+    if len(alt.shape) == 2:
+        alt = alt[:, 0].flatten()
+    bases = np.array(['A', 'T', 'G', 'C'])
+    subset1 = np.logical_and(pos >= s, pos <= e)
+    subset2 = np.logical_and(np.in1d(ref, bases), np.in1d(alt, bases))
+    print(f'exclude {np.sum(~subset1)} sites outside the specified region')
+    print(f'exclude {np.sum(~subset2)} non-SNP sites')
+    subset = np.logical_and(subset1, subset2)
     pos = pos[subset]
     rec = f['variants/MAP'][subset]
-    ref = f['variants/REF'][subset]
+    ref = ref[subset]
+    alt = alt[subset]
+    # ref = f['variants/REF'][subset]
     
-    alt = f['variants/ALT']
-    is1D = len(alt.shape) == 1 # the 1240k hdf5's alt is a 2d array, while the new full 1000Genome hdf5 is 1d array
-    if is1D:
-        alt = alt[subset]
-    else:
-        alt = alt[subset, 0]
+    # alt = f['variants/ALT']
+    # is1D = len(alt.shape) == 1 # the 1240k hdf5's alt is a 2d array, while the new full 1000Genome hdf5 is 1d array
+    # if is1D:
+    #     alt = alt[subset]
+    # else:
+    #     alt = alt[subset, 0]
 
     assert(len(ref) == len(pos))
     assert(len(alt) == len(pos))
@@ -53,7 +64,7 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
             i = np.searchsorted(pos, bp)
             if i < l and pos[i] == bp:
                 # target sites
-                #print(f'at target sites: {bp}')
+                # print(f'at target sites: {bp}, ref: {ref[i]}, alt: {alt[i]}')
                 ad[i, 0, 0] = rc[base2index[ref[i]]]
                 ad[i, 0, 1] = rc[base2index[alt[i]]]
                 if coverage > 1:
