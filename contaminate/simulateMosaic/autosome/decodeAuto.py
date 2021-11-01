@@ -30,8 +30,8 @@ if __name__ == '__main__':
     from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind # Need this import
 
 
-    base_path="./simulated/1000G_Mosaic/CHB/Autosome/" 
-    path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
+    base_path="./simulated/1000G_Mosaic/CHB/Autosome_wgs/" 
+    path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/maf5_auto/maf5_chr"
     ch=args.chr
 
     # parameters for readcount data  
@@ -79,7 +79,7 @@ if __name__ == '__main__':
         iid = "iid" + str(i)
         hapsb_ind(iid, chs=range(1,2), 
         path_targets = f"{outFolder}/data.h5",
-        h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
+        h5_path1000g = path1000G, 
         meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
         folder_out=f"{outFolder}/hapRoh/", prefix_out="",
         e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
@@ -87,7 +87,7 @@ if __name__ == '__main__':
         c=con, conPop=["CEU"],
         n_ref=2504, diploid_ref=True, exclude_pops=["CHB"], readcounts=True, random_allele=False,
         roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3, 
-        cutoff_post = 0.999, max_gap=0.005, roh_min_l = 0.04, logfile=False, combine=True, 
+        cutoff_post = 0.999, max_gap=0.005, logfile=False, combine=True, 
         file_result="_roh_full.csv")
 
     # for i in range(100):

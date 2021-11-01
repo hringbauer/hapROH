@@ -12,6 +12,7 @@
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
 #$ -t 1:10:1
 
-#python3 decodeXjump.py -j $SGE_TASK_ID --cov 0.1
-#python3 decodeXjump.py -j $SGE_TASK_ID --cov 0.5
+
+python3 decodeXjump.py -j $SGE_TASK_ID --cov 0.1
+python3 decodeXjump.py -j $SGE_TASK_ID --cov 0.5
 python3 decodeXjump.py -j $SGE_TASK_ID --cov 1.0

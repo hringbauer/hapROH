@@ -35,8 +35,8 @@ if __name__ == '__main__':
     os.chdir(path)  # Set the right Path (in line with Atom default)
     
     # actual simulation
-    base_path='/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/CHB/Autosome/'
-    path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
+    base_path='/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/CHB/Autosome_wgs/'
+    path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/maf5_auto/maf5_chr"
     pop_list=["CHB"]
     conPop=["CEU"]
     n = args.n  # Number of Individuals

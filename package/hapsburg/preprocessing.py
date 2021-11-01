@@ -150,7 +150,7 @@ class PreProcessingHDF5(PreProcessing):
         return iids[:self.n_ref], iids_con   # Return up to n_ref Individual Indices
     
 
-    def load_data(self, iid="MA89", ch=6, start=0, end=-1):
+    def load_data(self, iid="MA89", ch=6, start=-np.inf, end=np.inf):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l]"""
 
@@ -641,6 +641,73 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         read_counts[0,:] = anc
         read_counts[1,:] = der
         return read_counts
+
+
+########################################################################################
+########################################################################################
+
+# class PreProcessingMpileup(PreProcessingHDF5):
+#     def load_data(self, iid="MA89", ch=6, start=-np.inf, end=np.inf):
+#         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
+#         as well as linkage Map [l]"""
+
+#         if self.output == True:
+#             print(f"Loading Individual: {iid}")
+
+#         # Attach Part for the right Chromosome
+#         if self.h5_path1000g.endswith(".hdf5"):
+#             h5_path1000g = self.h5_path1000g
+#         else:
+#             h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"
+
+#         # Def Set the output folder:
+#         out_folder = self.set_output_folder(iid, ch)
+
+#         # Load and Merge the Data
+#         fs = self.load_h5(self.path_targets)
+#         f1000 = self.load_h5(h5_path1000g)
+#         i1, i2, flipped = self.merge_2hdf(fs, f1000, start, end)
+
+#         id_obs = self.get_index_iid(iid, fs, samples_field=self.samples_field)
+#         ids_ref, ids_con = self.get_ref_ids(f1000)
+
+#         markers = np.arange(0, len(i1))  # Which Markers to Slice out
+#         markers_obs = i1[markers]
+#         markers_ref = i2[markers]
+
+#         ### Load Target Dataset
+#         gts_ind = self.extract_snps_hdf5(
+#             fs, [id_obs], markers_obs, diploid=True, removeIncompleteHap=False)
+#         if self.readcounts:
+#             read_counts = self.extract_rc_hdf5(fs, id_obs, markers_obs)
+#         else:
+#             read_counts = []
+        
+#         ### Flip target genotypes where flipped
+#         if self.flipstrand:
+#             if self.output:
+#                 print(f"Flipping Ref/Alt Allele in target for {np.sum(flipped)} SNPs...")
+#             flip_idcs = flipped & (gts_ind[0,:]>=0) # Where Flip AND Genotype Data
+#             gts_ind[:,flip_idcs] = 1 - gts_ind[:,flip_idcs]
+#             if self.readcounts:
+#                 read_counts[0,flipped], read_counts[1,flipped] = read_counts[1,flipped], read_counts[0,flipped]
+
+#         ### Load Reference Dataset
+#         gts = self.extract_snps_hdf5(
+#             f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
+#         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
+#         pos = self.extract_rmap_hdf5(f1000, markers_ref, col="variants/POS")  # Extract Positions
+
+#         # get pCon: allele frequency from the specified contamination population
+#         gts_con = self.extract_snps_contaminationPop(f1000, ids_con, markers_ref)
+#         pCon = np.mean(gts_con, axis=0)
+
+#         # Do optional Processing Steps (based on boolean flags in class)
+#         gts_ind, gts, r_map, pos, pCon, out_folder = self.optional_postprocessing(
+#             gts_ind, gts, r_map, pos, out_folder, pCon, read_counts)
+
+#         return gts_ind, gts, r_map, pos, pCon, out_folder    
+
     
 ########################################################################################    
 ########################################################################################

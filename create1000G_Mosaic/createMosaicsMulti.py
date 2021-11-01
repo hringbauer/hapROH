@@ -269,7 +269,11 @@ class Mosaic_1000G_Multi(object):
         gt = gts
         ad = gts
 
-        ref, alt = f["variants/REF"][:], f["variants/ALT"][:, 0]
+        ref = f["variants/REF"][:]
+        if len(f['variants/ALT'].shape) == 2:
+            alt = f["variants/ALT"][:, 0]
+        else:
+            alt = f['variants/ALT'][:]
         pos = f["variants/POS"]
         rec = f["variants/MAP"]
         print(f'shape of gt: {gt.shape}')

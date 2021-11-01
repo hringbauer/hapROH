@@ -7,14 +7,14 @@
 # -m e #send an email at the end of the job
 # -M yilei_huang@eva.mpg.de #send email to this address
 # -pe make 2 #needs 8 CPU cores
-#$ -l h_vmem=40G #request 4Gb of memory
+#$ -l h_vmem=110G #request 4Gb of memory
 #$ -V # load personal profile
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
-#$ -t 1:90:1
+#$ -t 1:18:1
 
 
 id=$SGE_TASK_ID
-id=$(($id-1))
+id=$((5*$id-1))
 
 cons=(0.0 0.05 0.1 0.15 0.2 0.25)
 con_index=$(($id/15))
@@ -28,7 +28,7 @@ nblocks=${blocks[$block_index]}
 len=${lens[$block_index]}
 
 cov_index=$(($id - 5*$block_index))
-coverages=(0.1 0.5 1.0 2.0 5.0)
+coverages=(0.05 0.1 0.5 1.0 2.0)
 cov=${coverages[$cov_index]}
 
 echo nblocks$nblocks
@@ -36,5 +36,5 @@ echo length$len
 echo coverage$cov
 echo contamination$con
 
-# python3 simAuto.py -n 100 --cov $cov --con $con --nblock $nblocks -l $len
+#python3 simAuto.py -n 100 --cov $cov --con $con --nblock $nblocks -l $len
 python3 decodeAuto.py --cov $cov --con $con --nblock $nblocks

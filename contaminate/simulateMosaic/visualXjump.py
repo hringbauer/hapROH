@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
         plt.title(f'1240k SNP coverage: {cov}X')
         plt.ylabel('estimated contamination')
-        plt.ylim((0.0, 0.18)) # use the same y range to demonstrate the effects of coverage on the estimates
+        #plt.ylim((0.0, 0.18)) # use the same y range to demonstrate the effects of coverage on the estimates
         plt.xlabel('simulated copying jump rate')
         plt.axhline(y=0.075, xmin=0, xmax=1, zorder=2, c='red', linestyle='-', label="true contamination rate")
         plt.axvline(x=300, ymin=0, ymax=1, zorder=2, c='black', linestyle='dashdot', label='jump rate used in inference')

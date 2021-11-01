@@ -13,6 +13,7 @@ import sys
 import time
 from scipy.optimize import minimize
 import numdifftools as ndt
+from scipy.optimize import newton
 
 
 
@@ -90,7 +91,7 @@ def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_pat
     tot_neg_loglik = 0
     if processes == 1:
         # print(f'running using single process...')
-        for ch, (start, end) in chunks.items():
+        for ch, start, end in chunks:
             path_targets = path_targets_prefix + f"{iid}.chr{ch}.hdf5"
             tot_neg_loglik += hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
                 folder_out, c, conPop=conPop, roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump, e_rate=e_rate, e_rate_ref=e_rate_ref,
@@ -104,7 +105,7 @@ def hapsb_multiChunk(c, chunks, iid, path_targets_prefix, h5_path1000g, meta_pat
                 c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref,
                 save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, 
                 readcounts, random_allele, prefix_out, logfile] 
-                for ch, (start, end) in chunks.items()]
+                for ch, start, end in chunks]
         results = multi_run(hapsb_chunk_negloglik, prms, processes = processes)
         # print(f'results is: {results}')
         if isinstance(results, float):
@@ -141,7 +142,7 @@ def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta
                 processes=1, save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
                 exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
                 readcounts=True, random_allele=False, prefix_out="", logfile=False):
-    chunks = {}
+    chunks = []
     with open(roh_list) as f:
         f.readline()
         line = f.readline()
@@ -149,12 +150,15 @@ def hapsb_femaleROHcontam(iid, roh_list, path_targets_prefix, h5_path1000g, meta
             _, _, StartM, EndM, _, lengthM, _, ch, _, _ = line.strip().split(',')
             StartM, EndM, lengthM = float(StartM), float(EndM), float(lengthM)
             if lengthM >= minLen:
-                chunks[ch] = (StartM + trim, EndM - trim)
+                chunks.append((ch, StartM + trim, EndM - trim))
                 print(f'chr{ch}\t{round(StartM, 6)}\t{round(EndM, 6)}')
             line = f.readline()
             
     if len(chunks) > 0:
-        print(f'a total of {len(chunks)} ROH blocks found.')
+        sumROH = 0
+        for _, start, end in chunks:
+            sumROH += end - start
+        print(f'a total of {len(chunks)} ROH blocks passing filtering threshold found, total length after trimming: {sumROH}M.')
         if not path_targets_prefix.endswith('/'):
             path_targets_prefix += "/"
         kargs = (chunks, iid, path_targets_prefix, h5_path1000g, meta_path_ref, folder_out,
@@ -180,7 +184,7 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, path_targets_prefix, h5_path100
                 exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
                 readcounts=True, random_allele=False, prefix_out="", logfile=False):
     # should be the same as hapsb_femaleROHcontam, but a faster implementation
-    chunks = {}
+    chunks = []
     with open(roh_list) as f:
         f.readline()
         line = f.readline()
@@ -188,19 +192,22 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, path_targets_prefix, h5_path100
             _, _, StartM, EndM, _, lengthM, _, ch, _, _ = line.strip().split(',')
             StartM, EndM, lengthM = float(StartM), float(EndM), float(lengthM)
             if lengthM >= minLen:
-                chunks[ch] = (StartM + trim, EndM - trim)
+                chunks.append((ch, StartM + trim, EndM - trim))
                 print(f'chr{ch}\t{round(StartM, 6)}\t{round(EndM, 6)}')
             line = f.readline()
             
     if len(chunks) > 0:
-        print(f'a total of {len(chunks)} ROH blocks found.')
+        sumROH = 0
+        for _, start, end in chunks:
+            sumROH += end - start
+        print(f'a total of {len(chunks)} ROH blocks passing filtering threshold found, total length after trimming: {sumROH}M.')
         if not path_targets_prefix.endswith('/'):
             path_targets_prefix += "/"
 
         # preload hmm models
         t1 = time.time()
         hmms = []
-        for ch, (start, end) in chunks.items():
+        for ch, start, end in chunks:
             path_targets = path_targets_prefix + f"{iid}.chr{ch}.hdf5"
             hmm = preload(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
                 folder_out, conPop=conPop, roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump, 
@@ -221,10 +228,34 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, path_targets_prefix, h5_path100
             print(res)
             print('please take the final estimate with caution.')
         Hfun = ndt.Hessian(hapsb_multiChunk_preload, step=1e-4, full_output=True)
-        h, info = Hfun(res.x[0], *kargs)
-        h = h[0][0]
-        se = math.sqrt(1/(h))
-        return res.x[0], se
+        try:
+            x = res.x[0]
+            h, info = Hfun(x, *kargs)
+            h = h[0][0]
+            if h < 0:
+                print('WARNING: Cannot estimate standard error because the likelihood curve is concave up...')
+                se = np.nan
+            else:
+                if x > 0:
+                    se = math.sqrt(1/(h))
+                    return x, se
+                else:
+                    # hessian does not work well at the boundary, use a different approach
+                    print(f'use quadracitc interpolation to obtain likelihood confidence interval...')
+                    step = 1e-6
+                    grad = (hapsb_multiChunk_preload(step, *kargs) - hapsb_multiChunk_preload(0, *kargs))/step
+                    assert(grad > 0)
+                    findroot = lambda x, x0, grad, hess: hess*(x-x0)**2/2.0 + (x-x0)*grad - 1.92
+                    findroot_prime = lambda x, x0, grad, hess: (x-x0)*hess + grad
+                    res = newton(findroot, x, fprime=findroot_prime, args=(x, grad, h))
+                    return x, res/1.96
+        except AssertionError:
+            print(f'cannot estimate the Hessian of the loglikelihood around {res.x}')
+            return res.x[0], np.nan
+        # h, info = Hfun(res.x[0], *kargs)
+        # h = h[0][0]
+        # se = math.sqrt(1/(h))
+        # return res.x[0], se
     else:
         print(f'not enough ROH blocks found to estimate contamination...')
         sys.exit()

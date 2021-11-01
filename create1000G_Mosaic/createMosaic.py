@@ -178,6 +178,7 @@ class Mosaic_1000G(object):
         # Create Length Bin Vector
         len_bins = np.arange(ch_min, ch_max, chunk_length)
         len_bins = np.append(len_bins, ch_max)  # Append the last Value
+        #print(f'len_bins: {len_bins[-10:]}')
 
         if self.output == True:
             print("Setting new Genotypes...")
@@ -189,17 +190,23 @@ class Mosaic_1000G(object):
             c_min, c_max = len_bins[i], len_bins[i + 1]
 
             i_min, i_max = np.searchsorted(rec, [c_min, c_max])
-            #print((i_min, i_max))
+            #print(f'{(i_min, i_max)}:{(c_min, c_max)}')
             ind = copy_id[i]
             gts_new[i_min:i_max + 1,
                     1] = f["calldata/GT"][i_min:i_max + 1, ind, 0]
             gts_new[i_min:i_max + 1,
                     0] = f["calldata/GT"][i_min:i_max + 1, ind, 1]
+        # append the last bit if necessary
+        if i_max+1 < nr_loci:
+            ind = np.random.randint(k)
+            gts_new[i_max+1:, 1] = f["calldata/GT"][i_max+1:, ind, 0]
+            gts_new[i_max+1:, 0] = f["calldata/GT"][i_max+1:, ind, 1]
 
         if self.output == True:
             print("Finished chunked Genotypes")
 
         assert(nr_loci == len(rec))  # Sanity Check
+        print(f'missing data in gts_new: {np.where(gts_new<0)}')
         assert(np.min(gts_new) > -1)  # Sanity Check
         return gts_new, rec
 

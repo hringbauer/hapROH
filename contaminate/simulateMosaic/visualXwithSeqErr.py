@@ -32,11 +32,12 @@ if __name__ == '__main__':
             left += 2/9
             right += 2/9
 
-        plt.title(f'1240k SNP coverage: {cov}X')
+        plt.title(f'1240k SNP coverage on chrX : {cov}X')
         plt.ylabel('estimated contamination')
         plt.xlabel('simulated genotyping error rate')
         plt.axhline(y=0.075, xmin=0, xmax=1, zorder=2, c='red', linestyle='-', label="true contamination rate")
-        plt.legend(loc="upper left")
+        plt.axvline(x=1e-2, ymin=0, ymax=1, zorder=2, c='black', linestyle='dashdot', label='genotyping error rate used in inference')
+        plt.legend(loc="upper left", fontsize='x-small')
         plt.xscale('log', basex=10)
         plt.savefig(f'{prefix}/{confix}.png', dpi=300)
         plt.clf()
