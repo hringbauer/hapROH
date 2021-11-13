@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # actual simulation
     base_path=args.b
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
-    pop_list=["PEL"]
+    pop_list=["JPT"]
     if args.conpop == None:
         conPop=[]
     else:

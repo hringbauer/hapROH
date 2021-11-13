@@ -471,7 +471,7 @@ def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True
                 h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
                 meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
                 folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
-                c=np.arange(0, 0.2, 0.005), roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
+                c=np.arange(0, 0.2, 0.005), roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
                 max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True):
     """Run HapCon analysis for one chromosome on hdf5 data
     Wrapper for HMM Class.
@@ -543,6 +543,8 @@ def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True
 
 
     lls, con_mle, lower, upper = hmm.optimize_ll_contamination(c)
+
+
     return lls, con_mle, lower, upper
 
     
@@ -556,72 +558,6 @@ def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True
     #print(f'hapcon_chr returns result: {tot_ll}')
     #return tot_ll
 
-def hapCon_ind(iid, chs=range(1,23), 
-            path_targets='/mnt/archgen/users/yilei/Data/SA_1240KHDF5/marcus2020.h5',
-            h5_path1000g='./Data/1000G/1000g1240khdf5/all1240/chr',
-            meta_path_ref='./Data/1000G/meta_df_all.csv', 
-            folder_out='./tools/hapROH/test_output/contaminate/first_try/', prefix_out="",
-            e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
-            processes=1, delete=False, output=True, save=True, save_fp=False, 
-            n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], readcounts=True, random_allele=False,
-            c=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
-            cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=False):
-    """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel
-    Wrapper for hapsb_chrom
-    iid: IID of the Target Individual, as found in Eigenstrat [str]
-    path_targets: Path of the target files [str]
-    h5_path1000g: Path of the reference genotypes [str]
-    meta_path_ref: Path of the meta file for the references [str]
-    folder_out: Path of the basis folder for output [str]
-    prefix_out: Path to insert in output string, e.g. test/ [str]
-    e_model: Emission model to use [str]: haploid/diploid_gt/readcount
-    p_model: Preprocessing model tu use [str]: EigenstratPacked/EigenstratUnpacked/MosaicHDF5
-    post_model: Model to post-process the data [str]: Standard/MMR (experimental)
-    processes: How many Processes to use [int]
-    delete: Whether to delete raw posterior per locus [bool]
-    output: Whether to print extensive output [bool]
-    save: Whether to save the inferred ROH [bool]
-    save_fp: Whether to save the full posterior matrix [bool]
-    n_ref: Number of (diploid) reference Individuals to use [int]
-    exclude_pops: Which populations to exclude from reference [list of str]
-    readcounts: Whether to load readcount data [bool]
-    random_allele: Whether to pick a random of the two target alleles per locus [bool]
-    c: contamination rate
-    roh_in: Parater to jump into ROH state (per Morgan) [float]
-    roh_out: Parameter to jump out of ROH state (per Morgan) [float]
-    roh_jump: Parameter to jump (per Morgan) [float]
-    e_rate: Error rate target [float]
-    e_rate_ref: Error rate refernce [float]
-    cutoff_post: Posterior cutoff [float]
-    max_gap: Maximum gap to merge (Morgan) [float]
-    roh_min_l: Minimum length ROH (Morgan) [float]
-    logfile: Whether to use logfile [bool]
-    combine: Wether to combine output of all chromosomes [bool]
-    file_result: Appendix to individual results [string]
-    
-    default is with default Parameters finetuned from 1240k data,
-    applied to a 1240k Eigenstrat pseudo-haploid dataset."""
-                            
-    if output:
-        print(f"Doing Individual {iid}...")
-    
-    ### Prepare the Parameters for that Indivdiual
-    prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, conPop, e_model, p_model, readcounts, random_allele,
-            post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out, c, 
-            roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff_post, roh_min_l, logfile] for ch in chs]
-    assert(len(prms[0]) == 28)   # Sanity Check
-                            
-    ### Run the analysis in parallel
-    #results = multi_run(hapCon_chrom, prms, processes = processes)
-
-    # just for now, do this sequentially
-    lls = []
-    for prm in prms:
-        lls.append(hapCon_chrom(*prm))
-
-    tot_lls = sum(lls)
-    print(f'total log likelihood: {tot_lls}')
-    return tot_lls
 
 
 
@@ -713,7 +649,7 @@ def hapCon_chrom_BFGS(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref
     meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
     folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
     c=0.025, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
-    max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True, output=False):
+    max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True, output=False, posterior=False):
 
     parameters = locals() # Gets dictionary of all local variables at this point
     
@@ -746,6 +682,16 @@ def hapCon_chrom_BFGS(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref
 
 
     con_mle, lower, upper = hmm.optimize_ll_contamination_BFGS(c)
+
+    # calculate the posterior
+    # for debugging purpose now, leave full=False as is defaulted
+    if posterior:
+        hmm.e_obj.set_params(c=con_mle)
+        hmm.calc_posterior(save=save) # Calculate the Posterior.
+        # Do the Post-Processing. Just here for sanity check of called ROH region. 
+        # Not needed for estimating contamination purpose. TO BE REMOVED LATER.
+        hmm.post_processing(save=save)
+
     return con_mle, lower, upper
 
 

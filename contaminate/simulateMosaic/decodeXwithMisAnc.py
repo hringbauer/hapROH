@@ -30,7 +30,7 @@ if __name__ == '__main__':
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS  # Need this import
 
 
-    base_path="./simulated/1000G_Mosaic/TSI/maleXMisAnc/" 
+    base_path="./simulated/1000G_Mosaic/JPT/maleXMisAnc_noContam/" 
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
     ch='X'
 
@@ -63,29 +63,38 @@ if __name__ == '__main__':
     elif cov == 5.0:
         prefix = "chrX_cov5"
 
-    outFolder = base_path + prefix
+    pathTargets = base_path + prefix
+    outFolder = f'{pathTargets}/{args.conpop2}'
+    os.system(f'rm -r {outFolder}/iid*')
+
+    if args.conpop2 == 'all':
+        conPop = ['EUR', 'EAS', 'AMR', 'SAS']
+    else:
+        conPop = [args.conpop2]
 
     results = np.zeros((100, 3))
     for i in range(100):
         iid = "iid" + str(i)
-        conMLE, lower95, upper95 = hapCon_chrom_BFGS(iid, ch='X', save=False, save_fp=False, 
-            n_ref=2504, diploid_ref=True, exclude_pops=["PEL"], conPop=[args.conpop2], 
+        conMLE, lower95, upper95 = hapCon_chrom_BFGS(iid, ch='X', save=True, save_fp=False, 
+            n_ref=2504, diploid_ref=True, exclude_pops=["JPT", 'AFR'], conPop=conPop, 
             e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
             post_model="Standard", 
-            path_targets=f"{outFolder}/data.h5",
+            path_targets=f"{pathTargets}/data.h5",
             h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
             meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
             folder_out=outFolder, prefix_out="",
             c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err_rate, e_rate_ref=e_rate_ref,
-            max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
+            max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False, posterior=True)
 
         results[i, :] = (conMLE, lower95, upper95)
     
     # write output to a file
-    with open(f'{outFolder}/batchresults_bfgs_{args.conpop1}_{args.conpop2}.txt', 'w') as out:
+    with open(f'{outFolder}/batchresults_bfgs_{args.conpop1}_{args.conpop2}_exAFR.txt', 'w') as out:
         out.write(f'###contamination={con}, coverage={cov}, genotyping error={err_rate}, ref err={e_rate_ref}\n')
         out.write(f'###sampleID\tconMLE\tlower95CI\tupper95CI\n')
         for i in range(100):
             iid = "iid" + str(i)
             conMLE, lower95, upper95 = results[i]
             out.write(f'{iid}\t{conMLE}\t{lower95}\t{upper95}\n')
+
+    os.system(f'rm -r {outFolder}/iid*')

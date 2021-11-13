@@ -18,6 +18,6 @@ i=$(($i-1))
 coverages=(0.05 0.1 0.5 1.0 2.0 5.0)
 cov=${coverages[$i]}
 
-python3 simXwithRC.py -n 100 --cov $cov --con 0.1 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXMisAnc/ --hetero --conpop CEU
-python3 simXwithRC.py -n 100 --cov $cov --con 0.1 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXMisAnc/ --hetero --conpop YRI
-python3 simXwithRC.py -n 100 --cov $cov --con 0.1 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXMisAnc/ --hetero --conpop CHB
+python3 simXwithRC.py -n 100 --cov $cov --con 0.0 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/JPT/maleXMisAnc_noContam/ --conpop CEU
+python3 simXwithRC.py -n 100 --cov $cov --con 0.0 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/JPT/maleXMisAnc_noContam/ --conpop YRI
+python3 simXwithRC.py -n 100 --cov $cov --con 0.0 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/JPT/maleXMisAnc_noContam/ --conpop CHB
