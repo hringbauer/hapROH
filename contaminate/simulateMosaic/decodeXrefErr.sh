@@ -17,10 +17,10 @@ i=$(($i-1))
 coverages=(0.05 0.1 0.5 1.0)
 cov_index=$(($i/10))
 cov=${coverages[$cov_index]}
-j=$(($i-$cov_index*10))
-j=$(($j+1))
+r=$(($i-$cov_index*10))
+r=$(($r+1))
 
 echo cov$cov
-echo jump_rate$j
+echo e_ref_rate$r
 
-python3 decodeXjump.py -j $j --cov $cov
+python3 decodeXrefErr.py -r $r --cov $cov

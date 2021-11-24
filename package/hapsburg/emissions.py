@@ -269,6 +269,42 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
         self.emission_matrix = self.give_emission_matrix()
         assert(ref_haps.shape[1] == len(pCon))
         self.pCon = pCon
+    
+
+    def give_emission_matrix(self, remember=False):
+        """Return Emission Matrix, which describes
+        probabilities in Genotypes [n_ref+1, n_loci, 3]"""
+        p = self.p
+        ref_haps = self.ref_haps
+        e_rate_ref = self.e_rate_ref
+
+        n_loci = np.shape(ref_haps)[1]
+        n_ref = np.shape(ref_haps)[0]
+        p_hgeno = -np.ones((n_ref + 1, n_loci, 3))
+
+        # Do the HW State 0 (i.e, non-ROH state)
+        p_hgeno[0, :, 0] = (1 - p) ** 2 # genotype 00
+        p_hgeno[0, :, 1] = 2 * p * (1 - p) # genotype 01
+        p_hgeno[0, :, 2] = p ** 2 # genotype 11
+
+        # Do the copying states (add some error)
+        p_hgeno[1:, :, 1] = 0
+        p_hgeno[1:, :, 0] = (ref_haps == 0) * (1 - e_rate_ref) + \
+            (ref_haps == 1) * e_rate_ref
+        p_hgeno[1:, :, 2] = (ref_haps == 1) * (1 - e_rate_ref) + \
+            (ref_haps == 0) * e_rate_ref
+
+        # Sanity Check if genotype probabilities sum up to (approx.) 1
+        # I commented out the following 2 assert statements to save runtime
+        # turns out it takes ~7s on chrX, too slow!
+        assert(np.min(p_hgeno) >= 0)
+        assert(np.max(p_hgeno) <= 1)
+        assert(np.all(np.isclose(np.sum(p_hgeno, axis=2), 1)))
+        
+
+        if remember == True:
+            self.e_mat = p_hgeno
+        return p_hgeno
 
     def give_emission_state(self, ob_stat, e_mat):
         """Gives the emission matrix of observed states

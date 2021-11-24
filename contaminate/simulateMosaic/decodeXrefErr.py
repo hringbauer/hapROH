@@ -8,8 +8,8 @@ import argparse
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run hapCon on Mosaic X chromosome with readcount data.')
-    parser.add_argument('--err', action="store", dest="err", type=int, required=True,
-                        help="genotyping error index (see simulation readme).")
+    parser.add_argument('-r', action="store", dest="ref", type=int, required=True,
+                        help="e_rate_ref index (see simulation readme).")
     parser.add_argument('--cov', action="store", dest="cov", type=float, required=True,
                         help="Genomic coverage")
     args = parser.parse_args()
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")  # hack to get local package first in path [FROM HARALD - DELETE!!!]
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS  # Need this import
     
-    base_path="./simulated/1000G_Mosaic/TSI/maleXseqErr/" 
+    base_path="./simulated/1000G_Mosaic/TSI/maleXrefErr/" 
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/chX1240/chr"
     ch='X'
 
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     cov = args.cov
     err_rate = 1e-2
     e_rate_ref = 1e-3
-    err = args.err
+    ref_index = args.ref
     
     prefix = ""
     if cov == 0.05:
@@ -44,8 +44,9 @@ if __name__ == '__main__':
     elif cov == 5.0:
         base_path += "chrX_cov5/"
 
-    outFolder = base_path + "err" + str(err)
+    outFolder = base_path + "ref" + str(ref_index)
     os.system(f'rm -r {outFolder}/iid*')
+
 
     results = np.zeros((100, 3))
     for i in range(100):
@@ -63,11 +64,11 @@ if __name__ == '__main__':
     
     # write output to a file
     with open(f'{outFolder}/batchresults.txt', 'w') as out:
-        out.write(f'###contamination=0.1, coverage={cov}, genotyping error index={err}, genotyping error used in inference=1e-2, ref err=1e-3\n')
+        out.write(f'###contamination=0.1, coverage={cov}, e_rate_ref index={ref_index}, genotyping error used in inference=1e-2\n')
         out.write(f'###sampleID\tconMLE\tlower95CI\tupper95CI\n')
         for i in range(100):
             iid = "iid" + str(i)
             conMLE, lower95, upper95 = results[i]
             out.write(f'{iid}\t{conMLE}\t{lower95}\t{upper95}\n')
-    
+            
     os.system(f'rm -r {outFolder}/iid*')

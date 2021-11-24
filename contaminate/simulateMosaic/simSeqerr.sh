@@ -1,6 +1,6 @@
 #!/bin/bash
 #$ -S /bin/bash #defines bash as the shell for execution
-#$ -N hapCon_jump #Name of the command that will be listed in the queue
+#$ -N hapCon_seqerr #Name of the command that will be listed in the queue
 #$ -cwd #change to current directory
 #$ -j y #join error and standard output in one file, no error file will be written
 #$ -q archgen.q #queue
@@ -19,5 +19,9 @@ i=$(($i-1))
 errs=(0.001 0.0016681 0.00278256 0.00464159 0.00774264 0.0129155 0.02154435 0.03593814 0.05994843 0.1)
 err=${errs[$i]}
 
-python3 simXwithRC.py -n 100 --cov 0.5 --con 0.075 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr/
-python3 simXwithRC.py -n 100 --cov 0.1 --con 0.075 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr/
+#python3 simXwithRC.py -n 100 --cov 0.5 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr/ --hetero
+#python3 simXwithRC.py -n 100 --cov 0.1 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr/ --hetero
+
+python3 simXwithRC.py -n 100 --cov 0.05 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr/ --hetero
+python3 simXwithRC.py -n 100 --cov 1.0 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr/ --hetero
+

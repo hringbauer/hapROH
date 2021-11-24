@@ -10,7 +10,10 @@
 #$ -l h_vmem=25G #request 4Gb of memory
 #$ -V # load personal profile
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
-#$ -t 1:10:1
+#$ -t 10:10:1
 
 python3 decodeXwithSeqErr.py --err $SGE_TASK_ID --cov 0.1
-python3 decodeXwithSeqErr.py --err $SGE_TASK_ID --cov 0.5
+#python3 decodeXwithSeqErr.py --err $SGE_TASK_ID --cov 0.5
+
+#python3 decodeXwithSeqErr.py --err $SGE_TASK_ID --cov 1.0
+#python3 decodeXwithSeqErr.py --err $SGE_TASK_ID --cov 0.05

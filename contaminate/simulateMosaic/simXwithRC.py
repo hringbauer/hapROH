@@ -41,7 +41,7 @@ if __name__ == '__main__':
     # actual simulation
     base_path=args.b
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
-    pop_list=["JPT"]
+    pop_list=["TSI"]
     if args.conpop == None:
         conPop=[]
     else:
@@ -65,8 +65,8 @@ if __name__ == '__main__':
         base_path += "con0/"
     elif con == 0.05:
         base_path += "con5/"
-    elif con == 0.1:
-        base_path += "con10/"
+    # elif con == 0.1:
+    #     base_path += "con10/"
     
     if cov == 0.05:
         prefix = "chrX_cov1over20"
@@ -83,7 +83,9 @@ if __name__ == '__main__':
 
     base_path += prefix + "/"
     
-    prefix = args.prefix
+    #prefix = args.prefix
+    if args.prefix != None:
+        base_path += args.prefix + "/"
     print(f'simulating {n} maleX chromosomes')
     print(f'output basepath: {base_path}')
     create_individual_mosaic(base_path=base_path, path1000G=path1000G, pop_list=pop_list, n=n, ch=ch, cov=cov, con=con, err_rate=err_rate, e_rate_ref=e_rate_ref, conPop=conPop, jump=jump, downsample=args.downsample, heterogeneous=args.hetero)

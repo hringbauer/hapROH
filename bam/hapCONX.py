@@ -13,12 +13,15 @@ if __name__ == '__main__':
                         help="path to bam file")
     parser.add_argument('-r', action="store", dest="ref", type=str, required=True,
                         help="path to reference panel")
+    parser.add_argument('--con', action="store", dest="conpop", type=str, required=False,
+                        help='source of contamination. Default is CEU.')
     parser.add_argument('-o', action="store", dest="out", type=str, required=False, default="",
                         help="path to the hdf5 file output")
     parser.add_argument('-i', action="store", dest="iid", type=str, required=False, default="",
                         help="IID of the target individual. If unspecified, will use the prefix of the bam file.")
     parser.add_argument('-t', action="store", dest="trim", required=False, default=0, 
                         help="trim certain number of bases from both ends.")
+    
     args = parser.parse_args()
 
     iid = args.iid
@@ -45,18 +48,23 @@ if __name__ == '__main__':
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS
 
-    #err = err/3.0
+    err = err/3.0
+    conpop = []
+    if args.conpop == None:
+        conpop = ['CEU']
+    else:
+        conpop = [args.conpop]
 
     mle_bfgs, low95_bfgs, up95_bfgs = hapCon_chrom_BFGS(iid, 'X', save=False, save_fp=False, n_ref=2504, diploid_ref=False, 
-        exclude_pops=[], conPop=["CEU"], e_model="readcount_contam", p_model="SardHDF5", 
+        exclude_pops=['AFR'], conPop=conpop, e_model="readcount_contam", p_model="SardHDF5", 
         readcounts=True, random_allele=False, post_model="Standard", path_targets=path2hdf5, 
         folder_out='/mnt/archgen/users/yilei/Data/iberian_BAM/hapCon/', h5_path1000g=args.ref,
         meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
-        prefix_out=iid, c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-3,
+        prefix_out=iid, c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-2,
         max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
 
-    with open(f'{iid}.hapcon.CEU.txt', 'w') as out:
+    with open(f'{iid}.hapcon.test.OOA_CEU.txt', 'w') as out:
         out.write(f'Number of target sites covered by at least one read: {numSitesCovered}\n')
         out.write(f'Method1: Fixing genotyping error rate\n')
-        out.write(f'\tEstimated genotyping error via flanking region: {round(err, 6)}\n')
+        out.write(f'\tEstimated genotyping error via flanking region: {round(3*err, 6)}\n')
         out.write(f'\tMLE for contamination using BFGS: {round(mle_bfgs, 6)} ({round(low95_bfgs, 6)} - {round(up95_bfgs, 6)})\n')

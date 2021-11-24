@@ -30,7 +30,7 @@ if __name__ == '__main__':
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS  # Need this import
 
 
-    base_path="./simulated/1000G_Mosaic/JPT/maleXMisAnc_noContam/" 
+    base_path="./simulated/1000G_Mosaic/TSI/maleXMisAnc/" 
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
     ch='X'
 
@@ -76,7 +76,7 @@ if __name__ == '__main__':
     for i in range(100):
         iid = "iid" + str(i)
         conMLE, lower95, upper95 = hapCon_chrom_BFGS(iid, ch='X', save=True, save_fp=False, 
-            n_ref=2504, diploid_ref=True, exclude_pops=["JPT", 'AFR'], conPop=conPop, 
+            n_ref=2504, diploid_ref=True, exclude_pops=["TSI", 'AFR'], conPop=conPop, 
             e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
             post_model="Standard", 
             path_targets=f"{pathTargets}/data.h5",

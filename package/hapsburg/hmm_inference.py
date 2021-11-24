@@ -355,7 +355,7 @@ class HMM_Analyze(object):
             h = h[0][0]
             if h < 0:
                 print('WARNING: Cannot estimate standard error because the likelihood curve is concave up...')
-                se = np.nan
+                return x, np.nan, np.nan
             else:
                 if x > 0:
                     se = math.sqrt(1/(h))

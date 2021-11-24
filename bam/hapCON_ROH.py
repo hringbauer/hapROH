@@ -18,7 +18,7 @@ if __name__ == '__main__':
                         help="Basepath to a list of mpileup file")
     parser.add_argument('-r', action="store", dest="roh", type=str, required=True,
                         help='file containing a list of known ROH blocks.')
-    parser.add_argument('-e', action="store", dest="err", type=float, required=True,
+    parser.add_argument('-e', action="store", dest="err", type=float, required=False,
                         help='genotyping error rate')
     parser.add_argument('-i', action="store", dest="iid", type=str, required=True,
                         help="IID of the target individual.")

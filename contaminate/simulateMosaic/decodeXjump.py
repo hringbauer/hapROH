@@ -45,12 +45,14 @@ if __name__ == '__main__':
         base_path += "chrX_cov5/"
 
     outFolder = base_path + "jump" + str(jump)
+    os.system(f'rm -r {outFolder}/iid*')
+
 
     results = np.zeros((100, 3))
     for i in range(100):
         iid = "iid" + str(i)
         conMLE, lower95, upper95 = hapCon_chrom_BFGS(iid, ch='X', 
-            path_targets=f"{outFolder}/jump{jump}data.h5",
+            path_targets=f"{outFolder}/data.h5",
             h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
             meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
             folder_out=outFolder, prefix_out="",
@@ -62,9 +64,11 @@ if __name__ == '__main__':
     
     # write output to a file
     with open(f'{outFolder}/batchresults.txt', 'w') as out:
-        out.write(f'###contamination=0.075, coverage={cov}, copying jump rate index={jump}, genotyping error used in inference=1e-2, ref err=1e-3\n')
+        out.write(f'###contamination=0.1, coverage={cov}, copying jump rate index={jump}, genotyping error used in inference=1e-2, ref err=1e-3\n')
         out.write(f'###sampleID\tconMLE\tlower95CI\tupper95CI\n')
         for i in range(100):
             iid = "iid" + str(i)
             conMLE, lower95, upper95 = results[i]
             out.write(f'{iid}\t{conMLE}\t{lower95}\t{upper95}\n')
+            
+    os.system(f'rm -r {outFolder}/iid*')

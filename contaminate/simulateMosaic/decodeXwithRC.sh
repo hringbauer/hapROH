@@ -10,14 +10,19 @@
 #$ -l h_vmem=25G #request 4Gb of memory
 #$ -V # load personal profile
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
-#$ -t 1:6:1
+#$ -t 1:18:1
 
 i=$SGE_TASK_ID
 i=$(($i-1))
 coverages=(0.05 0.1 0.5 1.0 2.0 5.0)
-cov=${coverages[$i]}
+cov_index=$(($i/3))
+cov=${coverages[$cov_index]}
 
-python3 decodeXwithRC.py --cov $cov --con 0.05 --err 5e-2 --eref 1e-3
-python3 decodeXwithRC.py --cov $cov --con 0.0 --err 5e-2 --eref 1e-3 
-python3 decodeXwithRC.py --cov $cov --con 0.1 --err 5e-2 --eref 1e-3 
+cons=(0.0 0.05 0.1)
+con_index=$(($i-3*$cov_index))
+con=${cons[$con_index]}
 
+echo cov$cov
+echo con$con
+
+python3 decodeXwithRC.py --cov $cov --con $con --err 1e-2 --eref 1e-3
