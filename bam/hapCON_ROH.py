@@ -81,7 +81,7 @@ if __name__ == '__main__':
         exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
         readcounts=True, random_allele=False, prefix_out="", logfile=False)
     
-    with open(f'{basepath}/{iid}.trueRoh.1240k.results', 'w') as f:
+    with open(f'{basepath}/{iid}.HeRoh.1240k.results', 'w') as f:
         f.write(f'Method1: Fixing genotyping error rate at {err}\n')
         f.write(f'\tROH blocks obtained from: {roh_path}\n')
         f.write(f'\tMLE for contamination using BFGS: {round(contam, 6)} ({round(contam-1.96*se, 6)} - {round(contam+1.96*se, 6)})\n')

@@ -648,7 +648,7 @@ def hapCon_chrom_BFGS(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref
     h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
     meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
     folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
-    c=0.025, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
+    c=0.025, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
     max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True, output=False, posterior=False):
 
     parameters = locals() # Gets dictionary of all local variables at this point
@@ -677,7 +677,7 @@ def hapCon_chrom_BFGS(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref
 
     ### Set the Parameters
     hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
-    hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
+    hmm.t_obj.set_params(roh_out=roh_out, roh_jump=roh_jump)
     hmm.post_obj.set_params(max_gap=max_gap, cutoff_post=cutoff_post, roh_min_l = roh_min_l)
 
 

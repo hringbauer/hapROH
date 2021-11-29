@@ -586,8 +586,10 @@ def fwd(double[:, :] e_mat, double[:, :, :] t_mat, double in_val = 1e-4):
     #############################
     ### Initialize FWD Arrays
     fwd0 = np.zeros(n_states, dtype=DTYPE)
-    fwd0[:] = in_val  # Initial Probabilities
-    fwd0[0] = 1 - (n_states - 1) * in_val
+    #fwd0[:] = in_val  # Initial Probabilities
+    #fwd0[0] = 1 - (n_states - 1) * in_val
+    fwd0[:] = 1/(n_states - 1)
+    fwd0[0] = 0
     cdef double[:] fwd = fwd0
 
     tmp0 = np.zeros(n_states, dtype=DTYPE)
