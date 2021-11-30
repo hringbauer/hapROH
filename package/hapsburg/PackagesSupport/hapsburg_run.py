@@ -652,7 +652,7 @@ def prepare_path_hapCON(base_path, iid, logfile):
         sys.stdout = open(path_log, 'w')
 
 
-def hapCon_chrom_BFGS(iid="", ch='X', mpileup=None, bam=None,
+def hapCon_chrom_BFGS(iid="", ch='X', mpileup=None, bam=None, q=30, Q=30,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
     h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chrX.hdf5", 
     meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
@@ -702,7 +702,7 @@ def hapCon_chrom_BFGS(iid="", ch='X', mpileup=None, bam=None,
     ################## pre-process of mpileup or BAM file ################
     if bam:
         t1 = time.time()
-        err, numSitesCovered, path2hdf5 = bam2hdf5(bam, h5_path1000g, ch=ch, iid=iid, s=5000000, e=154900000, outPath=folder_out)
+        err, numSitesCovered, path2hdf5 = bam2hdf5(bam, h5_path1000g, ch=ch, iid=iid, minMapQual=q, minBaseQual=Q, s=5000000, e=154900000, outPath=folder_out)
         print(f'finished reading bam file, takes {time.time()-t1:.3f}.')
     else:
         t1 = time.time()

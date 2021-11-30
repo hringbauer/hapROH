@@ -1,8 +1,5 @@
 import argparse
-import time
-import os
 import sys
-from toHDF5 import mpileup2hdf5, bam2hdf5
 
 
 if __name__ == '__main__':
@@ -20,8 +17,12 @@ if __name__ == '__main__':
                         help='source of contamination. Default is CEU.')
     parser.add_argument('-i', action="store", dest="iid", type=str, required=False, default="",
                         help="IID of the target individual. If unspecified, will use the prefix of the bam/mpileup file.")
-    parser.add_argument('-t', action="store", dest="trim", required=False, default=0, 
+    parser.add_argument('-t', action="store", dest="trim", type=int, required=False, default=0, 
                         help="trim certain number of bases from both ends.")
+    parser.add_argument('-q', action="store", dest="q", type=int, required=False, default=30, 
+                        help="Minimum mapping quality.")
+    parser.add_argument('-Q', action="store", dest="Q", type=int, required=False, default=30, 
+                        help="Minimum base quality.")
     parser.add_argument('--cleanup', action="store_true", dest="cleanup", required=False, 
                         help="whether to delete the intermediary hdf5 file. Default: False.")
     
@@ -36,7 +37,7 @@ if __name__ == '__main__':
     else:
         conpop = [args.conpop]
 
-    hapCon_chrom_BFGS(iid=args.iid, ch='X', mpileup=args.mpileup, bam=args.bam,
+    hapCon_chrom_BFGS(iid=args.iid, ch='X', mpileup=args.mpileup, bam=args.bam, q=args.q, Q=args.Q,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=conpop, 
     h5_path1000g = args.ref, meta_path_ref = args.meta, folder_out="", prefix_out="", 
     c=0.025, roh_jump=300, e_rate_ref=1e-3, logfile=False, output=False, cleanup=args.cleanup)
