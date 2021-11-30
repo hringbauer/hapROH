@@ -125,7 +125,6 @@ class HMM_Analyze(object):
 
     def load_data(self, iid="", ch=0):
         """Load the External Data"""
-        print(type(self.p_obj))
         if type(self.p_obj) is hapsburg.preprocessing.PreProcessingHDF5:
             gts_ind, gts, r_map, pos, pCon, out_folder = self.p_obj.load_data(iid=iid, ch=ch, start=self.start, end=self.end)
         else:
