@@ -398,7 +398,6 @@ class PreProcessingHDF5(PreProcessing):
         Return 2D array [# haplotypes, # markers]"""
         # Important: Swap of Dimensions [loci<->individuals]
         if diploid:
-            print(f'ids_ref: {ids_ref}')
             gts = h5["calldata/GT"][:, ids_ref, :] #.astype(dtype)  # Only first IID
             if self.output:
                 print("Exctraction of hdf5 done. Subsetting...!")

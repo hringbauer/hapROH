@@ -18,6 +18,8 @@ from scipy.optimize import newton
 
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
 from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data, move_X_to_parent_folder
+from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bam2hdf5
+
 
 def hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
                 folder_out, c, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
@@ -650,64 +652,92 @@ def prepare_path_hapCON(base_path, iid, logfile):
         sys.stdout = open(path_log, 'w')
 
 
-def hapCon_chrom_BFGS(iid, ch='X', n_ref=2504, diploid_ref=False, 
-    exclude_pops=["AFR"], conPop=["CEU"], e_model="readcount_contam", p_model="SardHDF5", 
-    readcounts=True, path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
-    h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
-    meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
-    folder_out="", prefix_out="", c=0.025, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3, logfile=True, output=False):
+def hapCon_chrom_BFGS(iid="", ch='X', mpileup=None, bam=None,
+    n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
+    h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chrX.hdf5", 
+    meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
+    folder_out="", prefix_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, 
+    logfile=True, output=False, cleanup=False):
     """Run HapCon analysis for one chromosome on hdf5 data
     Wrapper for HMM Class.
-    iid: IID of the Target Individual, as found in the given hdf5 file [str]
+    iid: IID of the Target Individual, if not provided, will be deduced from the prefix of BAM or mpileup file [str]
     ch: Chromosome to run [float]
-    path_targets: Path of the target files [str]
     h5_path1000g: Path of the reference genotypes [str]
     meta_path_ref: Path of the meta file for the references [str]
-    folder_out: Path of the basis folder for output [str]
+    folder_out: Path of the basis folder for output, if not provided, output will reside in the same directory as BAM or mpileup file [str]
     prefix_out: Path to insert in output string, e.g. test/ [str]
-    e_model: Emission model to use [str]
-    p_model: Preprocessing model tu use [str]
     output: Whether to print extensive output [bool]
     n_ref: Maximum Number of (diploid) reference Individuals to use [int]
-    diploid_ref: Use both haplotypes of reference panel [bool]
     exclude_pops: Which populations to exclude from reference [list of str]
     conPop: use which population in the ref panel as the contaminating pop. If empty list, then use all samples in the ref panel to cauclate allele freq [list of str]
-    readcounts: Whether to load readcount data [bool]
     c: initial contamination rate to start the BFGS optimization procedure [float]
     roh_jump: Parameter to jump (per Morgan) [float]
-    e_rate: Error rate target [float]
     e_rate_ref: Error rate refernce [float]
-    logfile: Whether to use logfile [bool]
+    logfile: Whether to produce a logfile [bool]
     
     RETURN: three floats: MLE for contamination, lower bound for the 95% CI, and the upper bound for the 95% CI
     """    
 
-    parameters = locals() # Gets dictionary of all local variables at this point
-    
+    if not mpileup and not bam:
+        print(f'Must provide path to either a mpileup file or a BAM file')
+        sys.exit()
+    elif len(folder_out) == 0:
+        if bam:
+            folder_out = os.path.dirname(os.path.abspath(bam))
+        else:
+            folder_out = os.path.dirname(os.path.abspath(mpileup))
+
+    if len(iid) == 0:
+        if bam != None:
+            bamName = os.path.basename(bam)
+            iid = bamName[:bamName.find(".bam")]
+        elif mpileup != None:
+            mpileupName = os.path.basename(mpileup)
+            iid = mpileupName[:mpileupName.find(".mpileup")]
+    assert(len(iid) != 0)
+
     ### Create Folder if needed, and pipe output if wanted
     prepare_path_hapCON(folder_out, iid, logfile) # Set the logfile
-    hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, post_model="Standard",
+
+    ################## pre-process of mpileup or BAM file ################
+    if bam:
+        t1 = time.time()
+        err, numSitesCovered, path2hdf5 = bam2hdf5(bam, h5_path1000g, ch=ch, iid=iid, s=5000000, e=154900000, outPath=folder_out)
+        print(f'finished reading bam file, takes {time.time()-t1:.3f}.')
+    else:
+        t1 = time.time()
+        err, numSitesCovered, path2hdf5 = mpileup2hdf5(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
+        print(f'finished reading mpileup file, takes {time.time()-t1:.3f}.')
+
+    print(f'number of sites covered by at least one read: {numSitesCovered}')
+    print(f'hdf5 file saved to {path2hdf5}')
+
+    ########################## end of preprocessing ###########################
+    # parameters = locals() # Gets dictionary of all local variables at this point
+    
+    
+    hmm = HMM_Analyze(cython=3, p_model="SardHDF5", e_model="readcount_contam", post_model="Standard",
                       manual_load=True, save=False, save_fp=False, output=output)
 
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
-    hmm.p_obj.set_params(readcounts = readcounts, random_allele=False,
+    hmm.p_obj.set_params(readcounts = True, random_allele=False,
                          folder_out=folder_out, prefix_out_data=prefix_out, 
                          excluded=exclude_pops, diploid_ref=diploid_ref)
     
     ### Set the paths to ref & target
-    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
+    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path2hdf5, 
                          meta_path_ref = meta_path_ref, n_ref=n_ref)
     hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
     hmm.load_secondary_objects()
     
     ### Print out the Parameters used in run:
-    print("\nParameters in hapCon_chrom_BFGS:")
-    print("\n".join("{}\t{}".format(k, v) for k, v in parameters.items()))
-    print("\n")
+    # print("\nParameters in hapCon_chrom_BFGS:")
+    # print("\n".join("{}\t{}".format(k, v) for k, v in parameters.items()))
+    # print("\n")
 
     ### Set the Parameters
-    hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
+    hmm.e_obj.set_params(e_rate = err/3, e_rate_ref = e_rate_ref)
     hmm.t_obj.set_params(roh_out=0.0, roh_jump=roh_jump)
     #hmm.post_obj.set_params(max_gap=max_gap, cutoff_post=cutoff_post, roh_min_l = roh_min_l)
 
@@ -715,14 +745,16 @@ def hapCon_chrom_BFGS(iid, ch='X', n_ref=2504, diploid_ref=False,
     con_mle, lower, upper = hmm.optimize_ll_contamination_BFGS(c)
     print(f'estimated contamination rate: {con_mle:.6f}({lower:.6f} - {upper:.6f})')
 
-    # calculate the posterior
-    # for debugging purpose now, leave full=False as is defaulted
-    # if posterior:
-    #     hmm.e_obj.set_params(c=con_mle)
-    #     hmm.calc_posterior(save=save) # Calculate the Posterior.
-    #     # Do the Post-Processing. Just here for sanity check of called ROH region. 
-    #     # Not needed for estimating contamination purpose. TO BE REMOVED LATER.
-    #     hmm.post_processing(save=save)
+    #writing output to file
+    with open(f'{folder_out}/{iid}.hapcon.OOA_CEU.txt', 'w') as out:
+        out.write(f'Number of target sites covered by at least one read: {numSitesCovered}\n')
+        out.write(f'Method1: Fixing genotyping error rate\n')
+        out.write(f'\tEstimated genotyping error via flanking region: {round(err,6)}\n')
+        out.write(f'\tMLE for contamination using BFGS: {round(con_mle,6)} ({round(lower,6)} - {round(upper,6)})\n')
+
+    if cleanup:
+        os.remove(path2hdf5)
+        print(f'delete {path2hdf5}')
 
     return con_mle, lower, upper
 
