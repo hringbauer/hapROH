@@ -16,6 +16,7 @@ import math
 from scipy.optimize import minimize
 from scipy.optimize import newton
 
+import hapsburg
 from hapsburg.cfunc import fwd # fwd only computes total likelihood
 from hapsburg.cfunc import fwd_bkwd_fast, fwd_bkwd_lowmem, fwd_bkwd_scaled, fwd_bkwd_scaled_lowmem  # Cython Functions
 from hapsburg.func import fwd_bkwd_p, sloppyROH_cumsum  # Python Functions
@@ -124,7 +125,12 @@ class HMM_Analyze(object):
 
     def load_data(self, iid="", ch=0):
         """Load the External Data"""
-        gts_ind, gts, r_map, pos, pCon, out_folder = self.p_obj.load_data(iid=iid, ch=ch, start=self.start, end=self.end)
+        print(type(self.p_obj))
+        if type(self.p_obj) is hapsburg.preprocessing.PreProcessingHDF5:
+            gts_ind, gts, r_map, pos, pCon, out_folder = self.p_obj.load_data(iid=iid, ch=ch, start=self.start, end=self.end)
+        else:
+            gts_ind, gts, r_map, pos, out_folder = self.p_obj.load_data(iid=iid, ch=ch)
+            pCon = [] # placehodler
 
         self.ch = ch
         self.iid = iid

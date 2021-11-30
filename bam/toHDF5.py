@@ -3,6 +3,8 @@ import os
 import pysam
 import time
 import numpy as np
+from itertools import zip_longest
+
 
 def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="", output=True):
     t1 = time.time()
@@ -12,6 +14,8 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
     alt = f['variants/ALT']
     if len(alt.shape) == 2:
         alt = alt[:, 0].flatten()
+    ref = np.array(ref).astype('str')
+    alt = np.array(alt).astype('str')
     bases = np.array(['A', 'T', 'G', 'C'])
     subset1 = np.logical_and(pos >= s, pos <= e)
     subset2 = np.logical_and(np.in1d(ref, bases), np.in1d(alt, bases))
@@ -47,7 +51,9 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
     with open(path2mpileup) as f:
         for line in f:
             rc = np.zeros(4)
-            contig, bp, _, coverage, readbases, baseQ = line.strip().split()
+            contig, bp, _, coverage, readbases, baseQ = list(zip(*zip_longest(line.strip().split(), range(6))))[0]
+            if int(coverage) == 0:
+                continue
 
             insertion_index = readbases.find("+")
             insert = ""

@@ -128,7 +128,7 @@ class PreProcessingHDF5(PreProcessing):
 
         # Load Meta Population File
         meta_df = pd.read_csv(self.meta_path_ref, sep="\t")
-        assert(len(meta_df) == np.shape(f["calldata/GT"])[1])  # Sanity Check
+        #assert(len(meta_df) == np.shape(f["calldata/GT"])[1])  # Sanity Check
         ### Sanity check whether IIDs in Meta and HDF5 identical:
         assert((meta_df["sample"].values == f["samples"][:].astype("str")).all())
 
@@ -398,7 +398,7 @@ class PreProcessingHDF5(PreProcessing):
         Return 2D array [# haplotypes, # markers]"""
         # Important: Swap of Dimensions [loci<->individuals]
         if diploid:
-
+            print(f'ids_ref: {ids_ref}')
             gts = h5["calldata/GT"][:, ids_ref, :] #.astype(dtype)  # Only first IID
             if self.output:
                 print("Exctraction of hdf5 done. Subsetting...!")
@@ -487,6 +487,61 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         h5_path1000g = h5_path1000g + str(ch) + ".hdf5"
         return h5_path1000g
 
+    def get_ref_ids(self, f, samples_field="samples"):
+        """OVERWRITE: Get the Indices of the individuals
+        in the HDF5 to extract. Here: Allow to subset for Individuals from
+        different 1000G Populations
+        samples_field: Field of all sample iids in hdf5"""
+
+        # Load Meta Population File
+        meta_df = pd.read_csv(self.meta_path_ref, sep="\t")
+        assert(len(meta_df) == np.shape(f["calldata/GT"])[1])  # Sanity Check
+        ### Sanity check whether IIDs in Meta and HDF5 identical:
+        assert((meta_df["sample"].values == f["samples"][:].astype("str")).all())
+
+        iids = np.where(np.logical_and(~meta_df["pop"].isin(self.excluded), ~meta_df["super_pop"].isin(self.excluded)))[0]
+        if self.output:
+            print(f"{len(iids)} / {len(meta_df)} Individuals included in Reference")
+            print(f"Extracting up to {self.n_ref} Individuals")
+
+        return iids[:self.n_ref]
+
+    def optional_postprocessing(self, gts_ind, gts, r_map, pos, out_folder, read_counts=[]):
+        """Postprocessing steps of gts_ind, gts, r_map, and the folder,
+        based on boolean fields of the class."""
+
+        if self.only_calls:
+            called = self.markers_called(gts_ind, read_counts)
+            gts_ind = gts_ind[:, called]
+            gts = gts[:, called]
+            r_map = r_map[called]
+            pos = pos[called]
+            
+            if self.output:
+                print(f"Subset to markers with data: {np.shape(gts)[1]} / {len(called)}")
+                print(f"Fraction SNPs covered: {np.shape(gts)[1] / len(called):.4f}")
+                
+            if len(read_counts) > 0:
+                read_counts = read_counts[:, called]
+
+        if self.save == True:
+            self.save_info(out_folder, r_map, pos,
+                           gt_individual=gts_ind, read_counts=read_counts)
+
+        if (self.readcounts == True) and len(read_counts) > 0:   # Switch to Readcount
+            if self.output:
+                print(f"Loading Readcounts...")
+                print(f"Mean Readcount on markers with data: {np.mean(read_counts) * 2:.5f}")
+            gts_ind = read_counts
+        
+        ### Shuffle Target Allele     
+        if (self.random_allele == True) and (self.readcounts == False):     
+            if self.output == True:
+                print("Shuffling phase of target...")
+            gts_ind = self.destroy_phase_func(gts_ind)
+        
+        return gts_ind, gts, r_map, pos, out_folder
+
     def load_data(self, iid="MA89", ch=6):
         """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
         as well as linkage Map [l] and the output folder.
@@ -509,7 +564,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         markers_obs, markers_ref, flipped = self.merge_es_hdf5(es, f1000)
         
         id_obs = self.es_get_index_iid(es, iid)
-        ids_ref = self.get_ref_ids(f1000)
+        ids_ref = self.get_ref_ids(f1000) # the second placeholder is here because my modified get_ref_ids 
 
         r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
         pos = self.extract_rmap_hdf5(f1000, markers_ref, col="variants/POS")  # Extract Positions
