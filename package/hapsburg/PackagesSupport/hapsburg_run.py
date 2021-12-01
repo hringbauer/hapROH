@@ -13,6 +13,7 @@ import time
 from scipy.optimize import minimize
 import numdifftools as ndt
 from scipy.optimize import newton
+import shutil
 
 
 
@@ -466,100 +467,6 @@ def hapsb_chromXs(iids=[["I15595","I15970"]], ch=23, processes=1,
 ##################################################################################
 ######################## contamination code starts here ##########################
 
-def hapCon_chrom(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], 
-                e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
-                post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
-                h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
-                meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
-                folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
-                c=np.arange(0, 0.2, 0.005), roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
-                max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True):
-    """Run HapCon analysis for one chromosome on hdf5 data
-    Wrapper for HMM Class.
-    iid: IID of the Target Individual, as found in the given hdf5 file [str]
-    ch: Chromosome to run [float]
-    path_targets: Path of the target files [str]
-    h5_path1000g: Path of the reference genotypes [str]
-    meta_path_ref: Path of the meta file for the references [str]
-    folder_out: Path of the basis folder for output [str]
-    prefix_out: Path to insert in output string, e.g. test/ [str]
-    e_model: Emission model to use [str]
-    p_model: Preprocessing model tu use [str]
-    post_model: Model to post-process the data [str]
-    processes: How many Processes to use [int]
-    delete: Whether to delete raw posterior per locus [bool]
-    output: Whether to print extensive output [bool]
-    save: Whether to save the inferred ROH [bool]
-    save_fp: Whether to save the full posterior matrix [bool]
-    n_ref: Number of (diploid) reference Individuals to use [int]
-    diploid_ref: Use both haplotypes of reference panel [bool]
-    exclude_pops: Which populations to exclude from reference [list of str]
-    conPop: use which population in the ref panel as the contaminating pop. If empty list, then use all samples in the ref panel to cauclate allele freq.
-    readcounts: Whether to load readcount data [bool]
-    random_allele: Whether to pick a random of the two target alleles per locus [bool]
-    c: contamination rate
-    roh_in: Parater to jump into ROH state (per Morgan) [float]
-    roh_out: Parameter to jump out of ROH state (per Morgan) [float]
-    roh_jump: Parameter to jump (per Morgan) [float]
-    e_rate: Error rate target [float]
-    e_rate_ref: Error rate refernce [float]
-    cutoff_post: Posterior cutoff [float]
-    max_gap: Maximum gap to merge (Morgan) [float]
-    roh_min_l: Minimum length ROH (Morgan) [float]
-    logfile: Whether to use logfile [bool]
-    combine: Wether to combine output of all chromosomes [bool]
-    file_result: Appendix to individual results [string]
-    
-    RETURN: loglikelihood of the data under the model
-    
-    """
-    parameters = locals() # Gets dictionary of all local variables at this point
-    
-    ### Create Folder if needed, and pipe output if wanted
-    _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
-    hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, post_model=post_model,
-                      manual_load=True, save=save, save_fp=save_fp)
-
-    ### Load and prepare the pre-processing Model
-    hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
-    hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
-                         folder_out=folder_out, prefix_out_data=prefix_out, 
-                         excluded=exclude_pops, diploid_ref=diploid_ref)
-    
-    ### Set the paths to ref & target
-    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
-                         meta_path_ref = meta_path_ref, n_ref=n_ref)
-    hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
-    hmm.load_secondary_objects()
-    
-    ### Print out the Parameters used in run:
-    print("\nParameters in hapCon_chrom:")
-    print("\n".join("{}\t{}".format(k, v) for k, v in parameters.items()))
-    print("\n")
-
-    ### Set the Parameters
-    hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
-    hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
-    hmm.post_obj.set_params(max_gap=max_gap, cutoff_post=cutoff_post, roh_min_l = roh_min_l)
-
-
-    lls, con_mle, lower, upper = hmm.optimize_ll_contamination(c)
-
-
-    return lls, con_mle, lower, upper
-
-    
-    # calculate the posterior. Should set full=True later as there is no need to store posterior in a file for contamination purpose
-    # for debugging purpose now, leave full=False as is defaulted
-    #*_, tot_ll = hmm.calc_posterior(save=save, full=True) # Calculate the Posterior.
-    #hmm.calc_posterior(save=save)
-    # Do the Post-Processing. Just here for sanity check of called ROH region. 
-    # Not needed for estimating contamination purpose. TO BE REMOVED LATER.
-    #hmm.post_processing(save=save)             
-    #print(f'hapcon_chr returns result: {tot_ll}')
-    #return tot_ll
-
-
 
 
 def hapCon_chrom_2d(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], 
@@ -656,16 +563,19 @@ def hapCon_chrom_BFGS(iid="", ch='X', mpileup=None, bam=None, q=30, Q=30,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
     h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chrX.hdf5", 
     meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
-    folder_out="", prefix_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, 
+    folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, 
     logfile=True, output=False, cleanup=False):
     """Run HapCon analysis for one chromosome on hdf5 data
     Wrapper for HMM Class.
     iid: IID of the Target Individual, if not provided, will be deduced from the prefix of BAM or mpileup file [str]
     ch: Chromosome to run [float]
+    mpileup: path to mpileup file of chrX. If left unspecified, we assume you use a BAM file instead [str]
+    bam: path to BAM file. If left unspecified, we assume you use a mpileup file instead [str]
+    q: minimum mappling quality for reads in BAM file to be considered [int]
+    Q: minimum base quality for reads in BAM file to be considered [int]
     h5_path1000g: Path of the reference genotypes [str]
     meta_path_ref: Path of the meta file for the references [str]
     folder_out: Path of the basis folder for output, if not provided, output will reside in the same directory as BAM or mpileup file [str]
-    prefix_out: Path to insert in output string, e.g. test/ [str]
     output: Whether to print extensive output [bool]
     n_ref: Maximum Number of (diploid) reference Individuals to use [int]
     exclude_pops: Which populations to exclude from reference [list of str]
@@ -722,7 +632,7 @@ def hapCon_chrom_BFGS(iid="", ch='X', mpileup=None, bam=None, q=30, Q=30,
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
     hmm.p_obj.set_params(readcounts = True, random_allele=False,
-                         folder_out=folder_out, prefix_out_data=prefix_out, 
+                         folder_out=folder_out, prefix_out_data="", 
                          excluded=exclude_pops, diploid_ref=diploid_ref)
     
     ### Set the paths to ref & target
@@ -755,6 +665,7 @@ def hapCon_chrom_BFGS(iid="", ch='X', mpileup=None, bam=None, q=30, Q=30,
     if cleanup:
         os.remove(path2hdf5)
         print(f'delete {path2hdf5}')
+    shutil.rmtree(f'{folder_out}/{iid}') # this is a hack
 
     return con_mle, lower, upper
 

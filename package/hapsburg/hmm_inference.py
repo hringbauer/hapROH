@@ -268,9 +268,6 @@ class HMM_Analyze(object):
             path = self.folder + "posterior.csv"
             np.savetxt(path, post,
                        delimiter=",",  fmt='%f')
-            #path = self.folder + "refs.csv"
-            #np.savetxt(path, self.ref_states,
-            #           delimiter=",",  fmt='%i')
             print(f"Saved Full Posterior and Ref GTS to folder {self.folder}")
 
         if save:
