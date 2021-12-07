@@ -469,7 +469,7 @@ def hapsb_chromXs(iids=[["I15595","I15970"]], ch=23, processes=1,
 
 
 
-def hapCon_chrom_2d(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], 
+def hapCon_chrom_BFGS_deprecate(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], 
                 e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
                 post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
                 h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
@@ -546,8 +546,8 @@ def hapCon_chrom_2d(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=T
     hmm.post_obj.set_params(max_gap=max_gap, cutoff_post=cutoff_post, roh_min_l = roh_min_l)
 
 
-    mle, se = hmm.optimize_ll_contamANDerr(c, e_rate)
-    return mle, se
+    con_mle, lower, upper = hmm.optimize_ll_contamination_BFGS(c)
+    return con_mle, lower, upper
 
 def prepare_path_hapCON(base_path, iid, logfile):
     if not os.path.exists(base_path):
@@ -564,7 +564,7 @@ def hapCon_chrom_BFGS(iid="", ch='X', mpileup=None, bam=None, q=30, Q=30,
     h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chrX.hdf5", 
     meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
     folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, 
-    logfile=True, output=False, cleanup=False):
+    logfile=False, output=False, cleanup=False):
     """Run HapCon analysis for one chromosome on hdf5 data
     Wrapper for HMM Class.
     iid: IID of the Target Individual, if not provided, will be deduced from the prefix of BAM or mpileup file [str]

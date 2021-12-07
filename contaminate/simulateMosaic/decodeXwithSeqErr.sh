@@ -10,10 +10,17 @@
 #$ -l h_vmem=25G #request 4Gb of memory
 #$ -V # load personal profile
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
-#$ -t 10:10:1
+#$ -t 1:40:1
 
-python3 decodeXwithSeqErr.py --err $SGE_TASK_ID --cov 0.1
-#python3 decodeXwithSeqErr.py --err $SGE_TASK_ID --cov 0.5
+i=$SGE_TASK_ID
+i=$(($i-1))
+coverages=(0.05 0.1 0.5 1.0)
+cov_index=$(($i/10))
+cov=${coverages[$cov_index]}
+r=$(($i-$cov_index*10))
+r=$(($r+1))
 
-#python3 decodeXwithSeqErr.py --err $SGE_TASK_ID --cov 1.0
-#python3 decodeXwithSeqErr.py --err $SGE_TASK_ID --cov 0.05
+echo cov$cov
+echo err_rate$r
+
+python3 decodeXwithSeqErr.py --err $r --cov $cov

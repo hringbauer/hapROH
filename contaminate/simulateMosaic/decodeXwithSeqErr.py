@@ -18,15 +18,15 @@ if __name__ == '__main__':
     os.chdir(path)  # Set the right Path (in line with Atom default)
 
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")  # hack to get local package first in path [FROM HARALD - DELETE!!!]
-    from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS  # Need this import
+    from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS_deprecate  # Need this import
     
-    base_path="./simulated/1000G_Mosaic/TSI/maleXseqErr/" 
+    base_path="./simulated/1000G_Mosaic/TSI/maleXseqErr2/" 
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/chX1240/chr"
     ch='X'
 
     # parameters for readcount data  
     cov = args.cov
-    err_rate = 1e-2
+    err_rate = 1e-3
     e_rate_ref = 1e-3
     err = args.err
     
@@ -50,7 +50,7 @@ if __name__ == '__main__':
     results = np.zeros((100, 3))
     for i in range(100):
         iid = "iid" + str(i)
-        conMLE, lower95, upper95 = hapCon_chrom_BFGS(iid, ch='X', 
+        conMLE, lower95, upper95 = hapCon_chrom_BFGS_deprecate(iid, ch='X', 
             path_targets=f"{outFolder}/data.h5",
             h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
             meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 

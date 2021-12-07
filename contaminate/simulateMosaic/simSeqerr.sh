@@ -16,12 +16,12 @@
 i=$SGE_TASK_ID
 i=$(($i-1))
 
-errs=(0.001 0.0016681 0.00278256 0.00464159 0.00774264 0.0129155 0.02154435 0.03593814 0.05994843 0.1)
+#errs=(0.001 0.0016681 0.00278256 0.00464159 0.00774264 0.0129155 0.02154435 0.03593814 0.05994843 0.1)
+errs=(0.0001 0.00016681 0.00027826 0.00046416 0.00077426 0.00129155 0.00215443 0.00359381 0.00599484 0.01)
 err=${errs[$i]}
 
-#python3 simXwithRC.py -n 100 --cov 0.5 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr/ --hetero
-#python3 simXwithRC.py -n 100 --cov 0.1 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr/ --hetero
-
-python3 simXwithRC.py -n 100 --cov 0.05 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr/ --hetero
-python3 simXwithRC.py -n 100 --cov 1.0 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr/ --hetero
+python3 simXwithRC.py -n 100 --cov 0.5 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr2/ --hetero
+python3 simXwithRC.py -n 100 --cov 0.1 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr2/ --hetero
+python3 simXwithRC.py -n 100 --cov 0.05 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr2/ --hetero
+python3 simXwithRC.py -n 100 --cov 1.0 --con 0.1 --err $err --eref 1e-3 --prefix err$SGE_TASK_ID -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXseqErr2/ --hetero
 

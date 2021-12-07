@@ -281,8 +281,8 @@ def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, s
                             ad[i, 0, 0] += 1
                         elif baseCall == alt[i]:
                             ad[i, 0, 1] += 1
-                        else:
-                            print(f'at position {pos[i]} the read {baseCall} is neither ref {ref[i]} nor alt {alt[i]}.')
+                        # else:
+                        #     print(f'at position {pos[i]} the read {baseCall} is neither ref {ref[i]} nor alt {alt[i]}.')
 
             if np.sum(rc) <= 1:
                 continue # sites covered by only 1 read is not informative for estimating genotyping error
@@ -292,8 +292,8 @@ def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, s
             else:
                 major_foc += np.max(rc)
                 minor_foc += np.sum(rc) - np.max(rc)
-            if np.sum(rc == 0) < 2:
-                print(f'more than 2 genotype calls at {basePos}')
+            # if np.sum(rc == 0) < 2:
+            #     print(f'more than 2 genotype calls at {basePos}')
 
     if output:
         print(f'number of major reads at flanking sites: {int(major_adj)}')
