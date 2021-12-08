@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../package'))
+sys.path.insert(0, os.path.abspath('../package/hapsburg'))
 
 
 # -- Project information -----------------------------------------------------
@@ -32,7 +32,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
 ]
-autoapi_dirs = ["../package"]  # location to parse for API reference
+autoapi_dirs = ["../package/hapsburg"]  # location to parse for API reference
 html_theme = "sphinx_rtd_theme"
 
 # Add any paths that contain templates here, relative to this directory.
