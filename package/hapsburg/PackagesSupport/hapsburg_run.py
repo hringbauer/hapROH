@@ -265,46 +265,79 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, path_targets_prefix, h5_path100
 
 def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], 
                 e_model="EigenstratPacked", p_model="MosaicHDF5", readcounts=True, random_allele=True,
-                post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
-                h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
-                meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
-                folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
+                post_model="Standard", path_targets=None,
+                h5_path1000g=None, meta_path_ref=None, folder_out=None, prefix_out="",
                 c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
                 max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.05,
                 min_len1 = 0.02, min_len2 = 0.04, cutoff_post = 0.999, logfile=True):
     """Run Hapsburg analysis for one chromosome on eigenstrat data
     Wrapper for HMM Class.
-    iid: IID of the Target Individual, as found in Eigenstrat [str]
-    ch: Chromosome to run [float]
-    path_targets: Path of the target files [str]
-    h5_path1000g: Path of the reference genotypes [str]
-    meta_path_ref: Path of the meta file for the references [str]
-    folder_out: Path of the basis folder for output [str]
-    prefix_out: Path to insert in output string, e.g. test/ [str]
-    e_model: Emission model to use [str]
-    p_model: Preprocessing model tu use [str]
-    post_model: Model to post-process the data [str]
-    processes: How many Processes to use [int]
-    delete: Whether to delete raw posterior per locus [bool]
-    output: Whether to print extensive output [bool]
-    save: Whether to save the inferred ROH [bool]
-    save_fp: Whether to save the full posterior matrix [bool]
-    n_ref: Number of (diploid) reference Individuals to use [int]
-    diploid_ref: Use both haplotypes of reference panel [bool]
-    exclude_pops: Which populations to exclude from reference [list of str]
-    readcounts: Whether to load readcount data [bool]
-    random_allele: Whether to pick a random of the two target alleles per locus [bool]
-    roh_in: Parater to jump into ROH state (per Morgan) [float]
-    roh_out: Parameter to jump out of ROH state (per Morgan) [float]
-    roh_jump: Parameter to jump (per Morgan) [float]
-    e_rate: Error rate target [float]
-    e_rate_ref: Error rate refernce [float]
-    cutoff_post: Posterior cutoff [float]
-    max_gap: Maximum gap to merge (Morgan) [float]
-    roh_min_l: Minimum length ROH (Morgan) [float]
-    logfile: Whether to use logfile [bool]
-    combine: Wether to combine output of all chromosomes [bool]
-    file_result: Appendix to individual results [string]"""
+
+    Parameters
+    ----------
+    iid: str
+        IID of the Target Individual, as found in Eigenstrat.
+    ch: int
+        Which chromosomes to call ROH.
+    path_targets: str
+        Path of the target files. You need only specify one of path_targets_prefix or path_targets.
+    h5_path1000g: str
+        Path of the reference genotypes
+    meta_path_ref: str 
+        Path of the meta file for the references
+    folder_out: str
+        Path of the basis folder for output
+    prefix_out: str
+        Path to insert in output string, e.g. test/ [str]
+    e_model: str
+        Emission model to use, should be one of haploid/diploid_gt/readcount
+    p_model: str
+        Preprocessing model to use, should be one of EigenstratPacked/EigenstratUnpacked/MosaicHDF5
+    post_model: str
+        Model to post-process the data, should be one of Standard/MMR (experimental)
+    save: bool
+        Whether to save the inferred ROH
+    save_fp: bool
+        Whether to save the full posterior matrix
+    n_ref: int
+        Number of (diploid) reference Individuals to use
+    diploid: bool
+        Whether the reference panel is diploid or not (e.g., for autosome, True and for male X chromosome, False). 
+    exclude_pops: list of str
+        Which populations to exclude from reference
+    readcounts: bool
+        Whether to load readcount data
+    random_allele: bool
+        Whether to pick a random of the two target alleles per locus
+    c: float
+        Contamination rate. This is only applicable if the emission model is readcount_contam.
+    conPop: list of str
+        Ancestry of contamination source. Only applicable if the emission model is readcount_contam.
+    roh_in: float
+        Parater to jump into ROH state (per Morgan)
+    roh_out: float
+        Parameter to jump out of ROH state (per Morgan)
+    roh_jump: float
+        Parameter to jump (per Morgan)
+    e_rate: float
+        Sequencing error rate.
+    e_rate_ref: float
+        Haplotype miscopying rate.
+    cutoff_post: float
+        Posterior cutoff for ROH calling
+    max_gap: float
+        Maximum gap to merge two adjacent short ROH blocks (in Morgan)
+    roh_min_l_initial: float
+        Minimum length of ROH blocks to use before merging adjacent ones (in Morgan)
+    roh_min_l_final: float
+        Minimum length of ROH blcoks to output after merging (in Morgan)
+    min_len1: float
+        Minimum length of the shorter candidate block in two adjacent blocks that can be merged (in Morgan)
+    min_len2: float
+        Minimum length of the longer candidate block in two adjacent blocks that can be merged (in Morgan)
+    logfile: bool
+        Whether to use logfile
+    """
     parameters = locals() # Gets dictionary of all local variables at this point
     
     ### Create Folder if needed, and pipe output if wanted
@@ -345,10 +378,8 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
 ### Run Hapsburg for one Individual (wrap for Chr.)
 
 def hapsb_ind(iid, chs=range(1,23),
-              path_targets_prefix="", path_targets = "",
-              h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240int8/chr", 
-              meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
-              folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
+              path_targets_prefix="", path_targets="",
+              h5_path1000g=None, meta_path_ref=None, folder_out=None, prefix_out="",
               e_model="haploid", p_model="Eigenstrat", post_model="Standard",
               processes=1, delete=False, output=True, save=True, save_fp=False, 
               n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=True,
@@ -357,35 +388,83 @@ def hapsb_ind(iid, chs=range(1,23),
                 min_len1 = 0.02, min_len2 = 0.04, logfile=True, combine=True, file_result="_roh_full.csv"):
     """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel
     Wrapper for hapsb_chrom
-    iid: IID of the Target Individual, as found in Eigenstrat [str]
-    path_targets: Path of the target files [str]
-    h5_path1000g: Path of the reference genotypes [str]
-    meta_path_ref: Path of the meta file for the references [str]
-    folder_out: Path of the basis folder for output [str]
-    prefix_out: Path to insert in output string, e.g. test/ [str]
-    e_model: Emission model to use [str]: haploid/diploid_gt/readcount
-    p_model: Preprocessing model tu use [str]: EigenstratPacked/EigenstratUnpacked/MosaicHDF5
-    post_model: Model to post-process the data [str]: Standard/MMR (experimental)
-    processes: How many Processes to use [int]
-    delete: Whether to delete raw posterior per locus [bool]
-    output: Whether to print extensive output [bool]
-    save: Whether to save the inferred ROH [bool]
-    save_fp: Whether to save the full posterior matrix [bool]
-    n_ref: Number of (diploid) reference Individuals to use [int]
-    exclude_pops: Which populations to exclude from reference [list of str]
-    readcounts: Whether to load readcount data [bool]
-    random_allele: Whether to pick a random of the two target alleles per locus [bool]
-    roh_in: Parater to jump into ROH state (per Morgan) [float]
-    roh_out: Parameter to jump out of ROH state (per Morgan) [float]
-    roh_jump: Parameter to jump (per Morgan) [float]
-    e_rate: Error rate target [float]
-    e_rate_ref: Error rate refernce [float]
-    cutoff_post: Posterior cutoff [float]
-    max_gap: Maximum gap to merge (Morgan) [float]
-    roh_min_l: Minimum length ROH (Morgan) [float]
-    logfile: Whether to use logfile [bool]
-    combine: Wether to combine output of all chromosomes [bool]
-    file_result: Appendix to individual results [string]
+
+    Parameters
+    ----------
+    iid: str
+        IID of the Target Individual, as found in Eigenstrat.
+    chs: list
+        Which set of chromosomes to call ROH.
+    path_targets_prefix:
+        A directory containing a hdf5 file for each chromosome. The file name should follow $iid.chr$ch.hdf5.
+    path_targets: str
+        Path of the target files. You need only specify one of path_targets_prefix or path_targets.
+    h5_path1000g: str
+        Path of the reference genotypes
+    meta_path_ref: str 
+        Path of the meta file for the references
+    folder_out: str
+        Path of the basis folder for output
+    prefix_out: str
+        Path to insert in output string, e.g. test/ [str]
+    e_model: str
+        Emission model to use, should be one of haploid/diploid_gt/readcount
+    p_model: str
+        Preprocessing model to use, should be one of EigenstratPacked/EigenstratUnpacked/MosaicHDF5
+    post_model: str
+        Model to post-process the data, should be one of Standard/MMR (experimental)
+    processes: int
+        How many Processes to use
+    delete: bool
+        Whether to delete raw posterior per locus
+    output: bool
+        Whether to print extensive output
+    save: bool
+        Whether to save the inferred ROH
+    save_fp: bool
+        Whether to save the full posterior matrix
+    n_ref: int
+        Number of (diploid) reference Individuals to use
+    diploid: bool
+        Whether the reference panel is diploid or not (e.g., for autosome, True and for male X chromosome, False). 
+    exclude_pops: list of str
+        Which populations to exclude from reference
+    readcounts: bool
+        Whether to load readcount data
+    random_allele: bool
+        Whether to pick a random of the two target alleles per locus
+    c: float
+        Contamination rate. This is only applicable if the emission model is readcount_contam.
+    conPop: list of str
+        Ancestry of contamination source. Only applicable if the emission model is readcount_contam.
+    roh_in: float
+        Parater to jump into ROH state (per Morgan)
+    roh_out: float
+        Parameter to jump out of ROH state (per Morgan)
+    roh_jump: float
+        Parameter to jump (per Morgan)
+    e_rate: float
+        Sequencing error rate.
+    e_rate_ref: float
+        Haplotype miscopying rate.
+    cutoff_post: float
+        Posterior cutoff for ROH calling
+    max_gap: float
+        Maximum gap to merge two adjacent short ROH blocks (in Morgan)
+    roh_min_l_initial: float
+        Minimum length of ROH blocks to use before merging adjacent ones (in Morgan)
+    roh_min_l_final: float
+        Minimum length of ROH blcoks to output after merging (in Morgan)
+    min_len1: float
+        Minimum length of the shorter candidate block in two adjacent blocks that can be merged (in Morgan)
+    min_len2: float
+        Minimum length of the longer candidate block in two adjacent blocks that can be merged (in Morgan)
+    logfile: bool
+        Whether to use logfile
+    combine: bool 
+        Wether to combine output of all chromosomes
+    file_result: str
+        Appendix to individual results
     
     default is with default Parameters finetuned from 1240k data,
     applied to a 1240k Eigenstrat pseudo-haploid dataset."""
@@ -561,8 +640,7 @@ def prepare_path_hapCON(base_path, iid, logfile):
 
 def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
-    h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chrX.hdf5", 
-    meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
+    h5_path1000g = None, meta_path_ref = None,
     folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, 
     logfile=False, output=False, cleanup=False):
     """Run HapCon to estimate male X chromosome contamination.
