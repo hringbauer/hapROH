@@ -7,3 +7,5 @@ hapCON is a new method for estimating contamination in male X chromosome. It has
 The core functionality of hapCON is exposed via :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`.
 
 A short tutorial and example usage can be found `here <https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCON_vignette.ipynb>`_.
+
+Author: Yilei Huang, Dec 2021

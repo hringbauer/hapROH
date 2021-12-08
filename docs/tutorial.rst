@@ -6,11 +6,12 @@ To get started, please find `vignette jupyter notebooks <https://www.dropbox.com
 These are a resource to do show example usecases, that you can use as template for your own applications.
 
 These notebooks walk you through examples for 
+
 1. how to use the core functions to call ROH from eigenstrat files, and generate ROH tables from results of multiple individuals ('callROH_vignette')
 
-2. how to use functions for visualizing ROH results ('plotting_vignette' - warning: Some of these are experimental and require additional packages. You might want to consider creating your own plotting functions for visualizing the results in the way that works best for you)
+2. how to use functions for visualizing ROH results (*plotting_vignette* - warning: Some of these are experimental and require additional packages. You might want to consider creating your own plotting functions for visualizing the results in the way that works best for you)
 
-3. how to call IBD on the X chromosome between two male X chromosomes ('callIBD_maleX_vignette', warning: experimental)
+3. how to call IBD on the X chromosome between two male X chromosomes (*callIBD_maleX_vignette*, warning: experimental)
 
 Download reference Data
 **************************
@@ -35,6 +36,7 @@ Please find `example notebooks <https://www.dropbox.com/sh/eq4drs62tu6wuob/AABM4
 All you need is a Eigenstrat file, and the reference genome data (see link above), and you are good to go to run your own ROH calling!
 
 There is a vignette notebook for...
+
 1. walking you through the calling of ROH (callROH)
 
 2. producing various figures from the output (plotROH)
@@ -47,12 +49,13 @@ There is a vignette notebook for...
 Dependencies
 *************
 
-The basic requirements for calling ROH are kept minimal and only sufficient for the core ROH calling ('numpy', 'pandas', 'scipy' & 'h5py'). If you want to use extended analysis and plotting functionality: There are extra Python packages that you need to install (e.g. via `pip` or `conda`). 
-1. If you want to use the advanced plotting functionality, you need `matplotlib` installed.
+The basic requirements for calling ROH are kept minimal and only sufficient for the core ROH calling (*numpy*, *pandas*, *scipy* & *h5py*). If you want to use extended analysis and plotting functionality: There are extra Python packages that you need to install (e.g. via *pip* or *conda*). 
 
-2. For plotting of maps, you will need `basemap` (warning: installing can be tricky on some architectures). 
+1. If you want to use the advanced plotting functionality, you need *matplotlib* installed.
 
-3.s If you want to use the effective population size fitting functionality from ROH output, you require the package `statsmodels`.
+2. For plotting of maps, you will need *basemap* (warning: installing can be tricky on some architectures). 
+
+3. If you want to use the effective population size fitting functionality from ROH output, you require the package *statsmodels*.
 
 c Extension
 ************
