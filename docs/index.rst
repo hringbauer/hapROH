@@ -10,6 +10,7 @@ Welcome to hapROH's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+FAQ
 
 
 Indices and tables
