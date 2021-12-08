@@ -9,7 +9,10 @@ Welcome to hapROH's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   
+
+   intro
+   tutorial
+   hapCON
    install
    FAQ
 
