@@ -1,5 +1,5 @@
 sphinx
 sphinx_rtd_theme
-autoapi.extension
+autoapi
 sphinx.ext.napoleon
 sphinx.ext.viewcode
