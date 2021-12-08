@@ -11,9 +11,9 @@ Welcome to hapROH's documentation!
    :caption: Contents:
 
    intro
+   install
    tutorial
    hapCON
-   install
    FAQ
 
 
