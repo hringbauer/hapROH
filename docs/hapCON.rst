@@ -1,4 +1,4 @@
-hapCON: An Extension of hapROH for Estimating Contamination in in maleX
+hapCON: An Extension of hapROH for Estimating Contamination in maleX
 ==========================================================================
 
 
