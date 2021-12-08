@@ -10,7 +10,7 @@ Welcome to hapROH's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-FAQ.rst
+   FAQ
 
 
 Indices and tables
