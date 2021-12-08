@@ -1,3 +1,8 @@
+## [Version number to be added later], Dec, Yilei Huang
+### Feature
+- added hapCON: a new method for estimating male X chromosome contamination
+- added new parameters for hapsb_ind and hapsb_chrom to perform automatic merging of short ROH blocks into a long block
+
 ## 0.3a4, June 14th 2021, Harald Ringbauer
 - Fixed minor bug leading to posterior for last locus on target chromosome not being normalized probably.
 

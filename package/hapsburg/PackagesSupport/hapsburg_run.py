@@ -469,7 +469,7 @@ def hapsb_chromXs(iids=[["I15595","I15970"]], ch=23, processes=1,
 
 
 
-def hapCon_chrom_BFGS_deprecate(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], 
+def hapCon_chrom_BFGS_legacy(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], 
                 e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
                 post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
                 h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
@@ -559,33 +559,59 @@ def prepare_path_hapCON(base_path, iid, logfile):
         sys.stdout = open(path_log, 'w')
 
 
-def hapCon_chrom_BFGS(iid="", ch='X', mpileup=None, bam=None, q=30, Q=30,
+def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
     h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chrX.hdf5", 
     meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
     folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, 
     logfile=False, output=False, cleanup=False):
-    """Run HapCon analysis for one chromosome on hdf5 data
-    Wrapper for HMM Class.
-    iid: IID of the Target Individual, if not provided, will be deduced from the prefix of BAM or mpileup file [str]
-    ch: Chromosome to run [float]
-    mpileup: path to mpileup file of chrX. If left unspecified, we assume you use a BAM file instead [str]
-    bam: path to BAM file. If left unspecified, we assume you use a mpileup file instead [str]
-    q: minimum mappling quality for reads in BAM file to be considered [int]
-    Q: minimum base quality for reads in BAM file to be considered [int]
-    h5_path1000g: Path of the reference genotypes [str]
-    meta_path_ref: Path of the meta file for the references [str]
-    folder_out: Path of the basis folder for output, if not provided, output will reside in the same directory as BAM or mpileup file [str]
-    output: Whether to print extensive output [bool]
-    n_ref: Maximum Number of (diploid) reference Individuals to use [int]
-    exclude_pops: Which populations to exclude from reference [list of str]
-    conPop: use which population in the ref panel as the contaminating pop. If empty list, then use all samples in the ref panel to cauclate allele freq [list of str]
-    c: initial contamination rate to start the BFGS optimization procedure [float]
-    roh_jump: Parameter to jump (per Morgan) [float]
-    e_rate_ref: Error rate refernce [float]
-    logfile: Whether to produce a logfile [bool]
+    """Run HapCon to estimate male X chromosome contamination.
+
+    Parameters
+    ----------
+    iid: str
+        IID of the Target Individual, if not provided, will be deduced from the prefix of BAM or mpileup file.
+    mpileup: str
+        path to mpileup file of chrX. If left unspecified, we assume you use a BAM file instead.
+    bam: str
+        path to BAM file. If left unspecified, we assume you use a mpileup file instead.
+    q: int
+        minimum mappling quality for reads in BAM file to be considered. Only applicable if used in conjunction with the bam option.
+    Q: int
+        minimum base quality for reads in BAM file to be considered. Only applicable if used in conjunction with the bam option.
+    h5_path1000g: str
+        Path of the reference genotypes.
+    meta_path_ref: str
+        Path of the meta file for the references.
+    folder_out: str
+        Path of the basis folder for output, if not provided, output will reside in the same directory as BAM or mpileup file.
+    output: bool
+        Whether to print extensive output. Default False.
+    n_ref: int
+        Maximum Number of (diploid) reference Individuals to use. Default 2504.
+    exclude_pops: list of str
+        Which populations to exclude from reference. Default AFR.
+    conPop: list of str
+        use which population in the ref panel as the contaminating pop. If empty list, then use all samples in the ref panel to cauclate allele freq. Default CEU.
+    c: float 
+        initial contamination rate to start the BFGS optimization procedure. Default to 0.025.
+    roh_jump: float
+        Parameter to jump (per Morgan). Default to 300.
+    e_rate_ref: float
+        Haplotype coping error rate. Default to 0.001.
+    logfile: bool
+        Whether to produce a logfile. Default False.
+    cleanup: bool
+        Whether to delete the intermediary .hdf5 file. Default False.
     
-    RETURN: three floats: MLE for contamination, lower bound for the 95% CI, and the upper bound for the 95% CI
+    Returns
+    ----------
+    conMLE: float
+        MLE point estimate for contamination.
+    lower95: float
+        lower bound for the 95% CI of estimated contamination.
+    upper95: float
+        upper bound for the 95% CI of estimated contamination.
     """    
 
     if not mpileup and not bam:
@@ -612,7 +638,7 @@ def hapCon_chrom_BFGS(iid="", ch='X', mpileup=None, bam=None, q=30, Q=30,
     ################## pre-process of mpileup or BAM file ################
     if bam:
         t1 = time.time()
-        err, numSitesCovered, path2hdf5 = bam2hdf5(bam, h5_path1000g, ch=ch, iid=iid, minMapQual=q, minBaseQual=Q, s=5000000, e=154900000, outPath=folder_out)
+        err, numSitesCovered, path2hdf5 = bam2hdf5(bam, h5_path1000g, ch='X', iid=iid, minMapQual=q, minBaseQual=Q, s=5000000, e=154900000, outPath=folder_out)
         print(f'finished reading bam file, takes {time.time()-t1:.3f}.')
     else:
         t1 = time.time()
@@ -638,7 +664,7 @@ def hapCon_chrom_BFGS(iid="", ch='X', mpileup=None, bam=None, q=30, Q=30,
     ### Set the paths to ref & target
     hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path2hdf5, 
                          meta_path_ref = meta_path_ref, n_ref=n_ref)
-    hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
+    hmm.load_data(iid=iid, ch='X')  # Load the actual Data
     hmm.load_secondary_objects()
     
     ### Print out the Parameters used in run:

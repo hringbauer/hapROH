@@ -37,7 +37,7 @@ if __name__ == '__main__':
     else:
         conpop = [args.conpop]
 
-    hapCon_chrom_BFGS(iid=args.iid, ch='X', mpileup=args.mpileup, bam=args.bam, q=args.q, Q=args.Q,
+    hapCon_chrom_BFGS(iid=args.iid, mpileup=args.mpileup, bam=args.bam, q=args.q, Q=args.Q,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=conpop, 
     h5_path1000g = args.ref, meta_path_ref = args.meta, folder_out="", 
     c=0.025, roh_jump=300, e_rate_ref=1e-3, logfile=False, output=False, cleanup=args.cleanup)
