@@ -386,8 +386,9 @@ def hapsb_ind(iid, chs=range(1,23),
               c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
               cutoff_post = 0.999, max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.05,
                 min_len1 = 0.02, min_len2 = 0.04, logfile=True, combine=True, file_result="_roh_full.csv"):
-    """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel
-    Wrapper for hapsb_chrom
+    """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel.
+    Wrapper for hapsb_chrom. Default is with default Parameters finetuned from 1240k data,
+    applied to a 1240k Eigenstrat pseudo-haploid dataset.
 
     Parameters
     ----------
@@ -465,9 +466,7 @@ def hapsb_ind(iid, chs=range(1,23),
         Wether to combine output of all chromosomes
     file_result: str
         Appendix to individual results
-    
-    default is with default Parameters finetuned from 1240k data,
-    applied to a 1240k Eigenstrat pseudo-haploid dataset."""
+    """
                             
     if output:
         print(f"Doing Individual {iid}...")
@@ -548,85 +547,37 @@ def hapsb_chromXs(iids=[["I15595","I15970"]], ch=23, processes=1,
 
 
 
-def hapCon_chrom_BFGS_legacy(iid, ch, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], conPop=[], 
-                e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
-                post_model="Standard", path_targets = "./Data/SA_1240kHDF5/IPK12.h5",
-                h5_path1000g = "./Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
-                meta_path_ref = "./Data/1000Genomes/Individuals/meta_df_all.csv",
-                folder_out="./Empirical/Eigenstrat/Reichall/test/", prefix_out="",
-                c=0.025, roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
-                max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=True):
-    """Run HapCon analysis for one chromosome on hdf5 data
-    Wrapper for HMM Class.
-    iid: IID of the Target Individual, as found in the given hdf5 file [str]
-    ch: Chromosome to run [float]
-    path_targets: Path of the target files [str]
-    h5_path1000g: Path of the reference genotypes [str]
-    meta_path_ref: Path of the meta file for the references [str]
-    folder_out: Path of the basis folder for output [str]
-    prefix_out: Path to insert in output string, e.g. test/ [str]
-    e_model: Emission model to use [str]
-    p_model: Preprocessing model tu use [str]
-    post_model: Model to post-process the data [str]
-    processes: How many Processes to use [int]
-    delete: Whether to delete raw posterior per locus [bool]
-    output: Whether to print extensive output [bool]
-    save: Whether to save the inferred ROH [bool]
-    save_fp: Whether to save the full posterior matrix [bool]
-    n_ref: Number of (diploid) reference Individuals to use [int]
-    diploid_ref: Use both haplotypes of reference panel [bool]
-    exclude_pops: Which populations to exclude from reference [list of str]
-    conPop: use which population in the ref panel as the contaminating pop. If empty list, then use all samples in the ref panel to cauclate allele freq.
-    readcounts: Whether to load readcount data [bool]
-    random_allele: Whether to pick a random of the two target alleles per locus [bool]
-    c: contamination rate
-    roh_in: Parater to jump into ROH state (per Morgan) [float]
-    roh_out: Parameter to jump out of ROH state (per Morgan) [float]
-    roh_jump: Parameter to jump (per Morgan) [float]
-    e_rate: Error rate target [float]
-    e_rate_ref: Error rate refernce [float]
-    cutoff_post: Posterior cutoff [float]
-    max_gap: Maximum gap to merge (Morgan) [float]
-    roh_min_l: Minimum length ROH (Morgan) [float]
-    logfile: Whether to use logfile [bool]
-    combine: Wether to combine output of all chromosomes [bool]
-    file_result: Appendix to individual results [string]
+def hapCon_chrom_BFGS_legacy(iid="", hdf5=None,
+    n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
+    h5_path1000g = None, meta_path_ref = None,
+    folder_out="", c=0.025, roh_jump=300, e_rate=1e-2, e_rate_ref=1e-3, output=False):
     
-    RETURN: loglikelihood of the data under the model
-    
-    """
-    parameters = locals() # Gets dictionary of all local variables at this point
-    
-    ### Create Folder if needed, and pipe output if wanted
-    _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
-    hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, post_model=post_model,
-                      manual_load=True, save=save, save_fp=save_fp)
+    hmm = HMM_Analyze(cython=3, p_model="SardHDF5", e_model="readcount_contam", post_model="Standard",
+                      manual_load=True, save=False, save_fp=False, output=output)
 
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
-    hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
-                         folder_out=folder_out, prefix_out_data=prefix_out, 
+    hmm.p_obj.set_params(readcounts = True, random_allele=False,
+                         folder_out=folder_out, prefix_out_data="", 
                          excluded=exclude_pops, diploid_ref=diploid_ref)
     
     ### Set the paths to ref & target
-    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
+    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = hdf5, 
                          meta_path_ref = meta_path_ref, n_ref=n_ref)
-    hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
+    hmm.load_data(iid=iid, ch='X')  # Load the actual Data
     hmm.load_secondary_objects()
     
     ### Print out the Parameters used in run:
-    print("\nParameters in hapCon_chrom:")
-    print("\n".join("{}\t{}".format(k, v) for k, v in parameters.items()))
-    print("\n")
+    # print("\nParameters in hapCon_chrom_BFGS:")
+    # print("\n".join("{}\t{}".format(k, v) for k, v in parameters.items()))
+    # print("\n")
 
     ### Set the Parameters
     hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
-    hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
-    hmm.post_obj.set_params(max_gap=max_gap, cutoff_post=cutoff_post, roh_min_l = roh_min_l)
-
-
+    hmm.t_obj.set_params(roh_out=0.0, roh_jump=roh_jump)
     con_mle, lower, upper = hmm.optimize_ll_contamination_BFGS(c)
     return con_mle, lower, upper
+
 
 def prepare_path_hapCON(base_path, iid, logfile):
     if not os.path.exists(base_path):
@@ -641,7 +592,7 @@ def prepare_path_hapCON(base_path, iid, logfile):
 def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
     h5_path1000g = None, meta_path_ref = None,
-    folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, 
+    folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3,
     logfile=False, output=False, cleanup=False):
     """Run HapCon to estimate male X chromosome contamination.
 
@@ -650,9 +601,9 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     iid: str
         IID of the Target Individual, if not provided, will be deduced from the prefix of BAM or mpileup file.
     mpileup: str
-        path to mpileup file of chrX. If left unspecified, we assume you use a BAM file instead.
+        path to mpileup file of chrX. You need to specify one of mpileup/bam/hdf5.
     bam: str
-        path to BAM file. If left unspecified, we assume you use a mpileup file instead.
+        path to BAM file. You need to specify one of mpileup/bam/hdf5.
     q: int
         minimum mappling quality for reads in BAM file to be considered. Only applicable if used in conjunction with the bam option.
     Q: int
@@ -693,7 +644,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     """    
 
     if not mpileup and not bam:
-        print(f'Must provide path to either a mpileup file or a BAM file')
+        print(f'Must specify one of mpileup/bam/hdf5.')
         sys.exit()
     elif len(folder_out) == 0:
         if bam:
@@ -705,7 +656,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
         if bam != None:
             bamName = os.path.basename(bam)
             iid = bamName[:bamName.find(".bam")]
-        elif mpileup != None:
+        else:
             mpileupName = os.path.basename(mpileup)
             iid = mpileupName[:mpileupName.find(".mpileup")]
     assert(len(iid) != 0)

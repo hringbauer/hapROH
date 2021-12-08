@@ -10,7 +10,7 @@
 #$ -l h_vmem=25G #request 4Gb of memory
 #$ -V # load personal profile
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
-#$ -t 1:40:1
+#$ -t 1:1:1
 
 i=$SGE_TASK_ID
 i=$(($i-1))
