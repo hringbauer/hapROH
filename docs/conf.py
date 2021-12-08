@@ -28,7 +28,12 @@ author = 'Harald Ringbauer, Yilei Huang'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "autoapi.extension",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
 ]
+autoapi_dirs = ["../package"]  # location to parse for API reference
+html_theme = "sphinx_rtd_theme"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
