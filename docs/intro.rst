@@ -20,7 +20,7 @@ Citation
 **********
 
 If you use the software for a scientific publication and want to cite it, you can use:
-https://www.biorxiv.org/content/10.1101/2020.05.31.126912v1
+https://www.nature.com/articles/s41467-021-25289-w
 
 Contact
 **********
