@@ -51,34 +51,29 @@ from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bam2h
 #     hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
 #     return hmm.compute_tot_neg_likelihood(c)
 
-def prepare_path_hapCON_ROH(base_path, iid, logfile):
-    if not os.path.exists(base_path):
-        os.makedirs(base_path)
+def prepare_path_general(basepath, iid, suffix, logfile):
+    if not os.path.exists(basepath):
+        os.makedirs(basepath)
     ### Activate LOG FILE output if given
     if logfile == True:
-        path_log = os.path.join(base_path, f"{iid}_hapCON_ROH_log.txt")
+        path_log = os.path.join(basepath, f"{iid}_{suffix}.txt")
         print(f"Set Output Log path: {path_log}")
         sys.stdout = open(path_log, 'w')
 
 def preload(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
                 folder_out, conPop=["CEU"], roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
-                n_ref=2504, diploid_ref=True, 
-                exclude_pops=[], p_model="SardHDF5", logfile=False):
+                n_ref=2504, exclude_pops=[]):
     # reference panel needed only to be loaded once for each optimization phase
     # so we preload here to reduce run time
-    parameters = locals() # Gets dictionary of all local variables at this point
-    
-    ### Create Folder if needed, and pipe output if wanted
-    #_ = prepare_path(folder_out, iid, ch, "", logfile=logfile) # Set the logfile
-    
-    hmm = HMM_Analyze(cython=3, p_model=p_model, e_model="readcount_contam", output=False,
+        
+    hmm = HMM_Analyze(cython=3, p_model="SardHDF5", e_model="readcount_contam", output=False,
                       manual_load=True, save=False, save_fp=False, start=start, end=end)
 
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
     hmm.p_obj.set_params(readcounts=True, random_allele=False,
                          folder_out=folder_out, prefix_out_data="", 
-                         excluded=exclude_pops, diploid_ref=diploid_ref)
+                         excluded=exclude_pops, diploid_ref=True)
     
     ### Set the paths to ref & target
     hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
@@ -189,12 +184,62 @@ def hapsb_multiChunk_preload(c, hmms, processes=1):
 #         print(f'not enough ROH blocks found to estimate contamination...')
 #         sys.exit()
 
-def hapsb_femaleROHcontam_preload(iid, roh_list, path_targets_prefix, h5_path1000g, meta_path_ref,
-                folder_out, init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
-                processes=1, n_ref=2504, diploid_ref=True, 
-                exclude_pops=[], p_model="SardHDF5", logfile=False):
+def hapsb_femaleROHcontam_preload(iid, roh_list, mpileup_path, h5_path1000g, meta_path_ref,
+                folder_out=None, init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_jump=300, e_rate_ref=1e-3,
+                processes=1, n_ref=2504, exclude_pops=[], logfile=False):
+    """
+    Estimating autosomal contamination rate from a list of ROH blocks. Need at least one ROH for inference.
+
+    Parameters
+    ----------
+    iid: str
+        IID of the sample. We assume that the mpileup file has the format $iid.chr[1-22].mpileup.
+    roh_list: str
+        Path to a file containing a list of ROH blocks. This file should have the same format as the output of hapROH.
+    mpileup_path:
+        Directory of mpileup files. One file for each autosome.
+    h5_path1000g: str
+        Path to the reference panel.
+    meta_path_ref: str
+        Path to the metadata of reference panel.
+    folder_out: str
+        Directory in which you want the output to reside. If not given, all output files will be in the parent directory of mpileup_path.
+    init_c: float
+        Initial value for the BFGS search.
+    trim: float
+        Trim both ends of inferred ROH blocks (in Morgan).
+    minLen: float
+        Minimum length of ROH blocks to use in estimating contamination (in Morgan).
+    conPop: list of str
+        Contaminant Ancestry. Must correspond to names in the super_pop or pop column in the 1000G metadata file.
+    roh_jump: float
+        Copying jump rate.
+    e_rate_ref: float
+        Haplotype copying error rate.
+    processes: int
+        Number of processes to use.
+    n_ref: int
+        Number of samples in the reference panel.
+    exclude_pops: list of str
+        A list of populations to exclude from the reference panel.
+    logfile: bool
+        Whether to produce a log file.
+
+    Returns
+    ---------
+    conMLE: float
+        MLE estimate for contamination.
+    se: float
+        Standard error of the estimated contamination rate.
+     
+    """
+    
+    
     # should be the same as hapsb_femaleROHcontam, but a faster implementation
-    prepare_path_hapCON_ROH(folder_out, iid, logfile)
+    if not folder_out:
+        folder_out = os.path.dirname(os.path.abspath(mpileup_path))
+
+    prepare_path_general(folder_out, iid, "hapCON_ROH", logfile)
     chunks = []
     with open(roh_list) as f:
         f.readline()
@@ -212,18 +257,31 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, path_targets_prefix, h5_path100
         for _, start, end in chunks:
             sumROH += end - start
         print(f'a total of {len(chunks)} ROH blocks passing filtering threshold found, total length after trimming: {100*sumROH:.3f}cM.')
-        if not path_targets_prefix.endswith('/'):
-            path_targets_prefix += "/"
+
+        
+        hdf5_path = os.path.join(folder_out, "hdf5")
+        if not os.path.exists(hdf5_path):
+            os.makedirs(hdf5_path)
+            print(f'saving hdf5 files in {hdf5_path}')
+
+        t1 = time.time()
+        prms = [ [os.path.join(mpileup_path, f'{iid}.chr{ch}.mpileup'), 
+            h5_path1000g + str(ch) + ".hdf5", iid, -np.inf, np.inf, hdf5_path, False] \
+                for ch in range(1, 23)]
+        results = multi_run(mpileup2hdf5, prms, processes)
+        e_rate = np.mean(np.array([err for err, _, _ in results]))
+        print(f'finished reading mpileup files, takes {time.time()-t1:.3f}s')
+        print(f'estimated genotyping error: {e_rate:.3f}')
 
         # preload hmm models
         t1 = time.time()
         hmms = []
         for ch, start, end in chunks:
-            path_targets = path_targets_prefix + f"{iid}.chr{ch}.hdf5"
+            path_targets = hdf5_path + "/" +f"{iid}.chr{ch}.hdf5"
             hmm = preload(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
                 folder_out, conPop=conPop, roh_jump=roh_jump, 
-                e_rate=e_rate, e_rate_ref=e_rate_ref, n_ref=n_ref, diploid_ref=diploid_ref, 
-                exclude_pops=exclude_pops, p_model=p_model, logfile=logfile)
+                e_rate=e_rate, e_rate_ref=e_rate_ref, n_ref=n_ref, 
+                exclude_pops=exclude_pops)
             hmms.append(hmm)
         print(f'{len(chunks)} hmm models loaded, takes {round(time.time()-t1, 3)}s')
 
@@ -233,7 +291,7 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, path_targets_prefix, h5_path100
         if not res.success:
             print('L-BFGS-B does not converge. Printing its result log for diagnostic purpose.')
             print(res)
-            print('please take the final estimate with caution.')
+            print('please treat the final estimate with caution.')
         Hfun = ndt.Hessian(hapsb_multiChunk_preload, step=1e-4, full_output=True)
         try:
             x = res.x[0]
@@ -585,17 +643,6 @@ def hapCon_chrom_BFGS_legacy(iid="", hdf5=None,
     con_mle, lower, upper = hmm.optimize_ll_contamination_BFGS(c)
     return con_mle, lower, upper
 
-
-def prepare_path_hapCON(base_path, iid, logfile):
-    if not os.path.exists(base_path):
-        os.makedirs(base_path)
-    ### Activate LOG FILE output if given
-    if logfile == True:
-        path_log = os.path.join(base_path, f"{iid}_hapCON_log.txt")
-        print(f"Set Output Log path: {path_log}")
-        sys.stdout = open(path_log, 'w')
-
-
 def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
     h5_path1000g = None, meta_path_ref = None,
@@ -669,7 +716,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     assert(len(iid) != 0)
 
     ### Create Folder if needed, and pipe output if wanted
-    prepare_path_hapCON(folder_out, iid, logfile) # Set the logfile
+    prepare_path_general(folder_out, iid, "hapCON", logfile) # Set the logfile
 
     ################## pre-process of mpileup or BAM file ################
     if bam:
