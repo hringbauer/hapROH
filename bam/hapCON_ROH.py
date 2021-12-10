@@ -75,16 +75,15 @@ if __name__ == '__main__':
     contam, se = hapsb_femaleROHcontam_preload(iid, roh_path, hdf5_path,
         "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
         "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
-        f'{basepath}/hapRoh/', init_c=0.025, conPop=["CEU"], roh_in=1, 
-        roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-3,
-        processes=p, save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
-        exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
-        readcounts=True, random_allele=False, prefix_out="", logfile=False)
+        f'{basepath}', init_c=0.025, conPop=["CEU"],
+        roh_jump=300, e_rate=err, e_rate_ref=1e-3,
+        processes=p, n_ref=2504, diploid_ref=True, 
+        exclude_pops=[], p_model="SardHDF5", logfile=True)
     
-    with open(f'{basepath}/{iid}.MyRoh.1240k.results', 'w') as f:
-        f.write(f'Method1: Fixing genotyping error rate at {err}\n')
-        f.write(f'\tROH blocks obtained from: {roh_path}\n')
-        f.write(f'\tMLE for contamination using BFGS: {round(contam, 6)} ({round(contam-1.96*se, 6)} - {round(contam+1.96*se, 6)})\n')
+    # with open(f'{basepath}/{iid}.MyRoh.1240k.results', 'w') as f:
+    #     f.write(f'Method1: Fixing genotyping error rate at {err}\n')
+    #     f.write(f'\tROH blocks obtained from: {roh_path}\n')
+    #     f.write(f'\tMLE for contamination using BFGS: {round(contam, 6)} ({round(contam-1.96*se, 6)} - {round(contam+1.96*se, 6)})\n')
     
     
 
