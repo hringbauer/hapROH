@@ -51,12 +51,15 @@ from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bam2h
 #     hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
 #     return hmm.compute_tot_neg_likelihood(c)
 
-def prepare_path_general(basepath, iid, suffix, logfile):
+def prepare_path_general(basepath, iid, prefix, suffix, logfile):
     if not os.path.exists(basepath):
         os.makedirs(basepath)
     ### Activate LOG FILE output if given
     if logfile == True:
-        path_log = os.path.join(basepath, f"{iid}_{suffix}.txt")
+        if prefix:
+            path_log = os.path.join(basepath, f"{iid}.{prefix}.{suffix}.log")
+        else:
+            path_log = os.path.join(basepath, f"{iid}.{suffix}.log")
         print(f"Set Output Log path: {path_log}")
         sys.stdout = open(path_log, 'w')
 
@@ -186,7 +189,7 @@ def hapsb_multiChunk_preload(c, hmms, processes=1):
 
 def hapsb_femaleROHcontam_preload(iid, roh_list, mpileup_path, h5_path1000g, meta_path_ref,
                 folder_out=None, init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_jump=300, e_rate_ref=1e-3,
-                processes=1, n_ref=2504, exclude_pops=[], logfile=False):
+                processes=1, n_ref=2504, exclude_pops=["AFR"], prefix=None, logfile=False, cleanup=False):
     """
     Estimating autosomal contamination rate from a list of ROH blocks. Need at least one ROH for inference.
 
@@ -222,8 +225,12 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, mpileup_path, h5_path1000g, met
         Number of samples in the reference panel.
     exclude_pops: list of str
         A list of populations to exclude from the reference panel.
+    prefix: str
+        Prefix of the output and log file. The output will follow $iid.$prefix.hapCON_ROH.txt. And the log file will follow $iid.$prefix.hapCON_ROH.log.
     logfile: bool
         Whether to produce a log file.
+    cleanup: bool
+        Whether to delete intermediary HDF5 files generated during this function run.
 
     Returns
     ---------
@@ -239,7 +246,7 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, mpileup_path, h5_path1000g, met
     if not folder_out:
         folder_out = os.path.dirname(os.path.abspath(mpileup_path))
 
-    prepare_path_general(folder_out, iid, "hapCON_ROH", logfile)
+    prepare_path_general(folder_out, iid, prefix, "hapCON_ROH", logfile)
     chunks = []
     with open(roh_list) as f:
         f.readline()
@@ -313,7 +320,11 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, mpileup_path, h5_path1000g, met
                     findroot_prime = lambda x, x0, grad, hess: (x-x0)*hess + grad
                     res = newton(findroot, x, fprime=findroot_prime, args=(x, grad, h))
                     se = res/1.96
-            with open(f'{folder_out}/{iid}.MyRoh.1240k.results', 'w') as f:
+            if prefix:
+                fileName = f'{iid}.{prefix}.hapCON_ROH.txt'
+            else:
+                fileName = f'{iid}.hapCON_ROH.txt'
+            with open(f'{folder_out}/{fileName}', 'w') as f:
                 f.write(f'Method1: Fixing genotyping error rate at {e_rate}\n')
                 f.write(f'\tROH blocks obtained from: {roh_list}\n')
                 f.write(f'\tNumber of ROH blocks found: {len(chunks)}\n')
@@ -322,7 +333,12 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, mpileup_path, h5_path1000g, met
             return x, se
         except AssertionError:
             print(f'cannot estimate the Hessian of the loglikelihood around {res.x}')
-            return res.x[0], np.nan
+            se = np.nan
+        finally:
+            if cleanup:
+                shutil.rmtree(hdf5_path)
+                print(f'deleted intermediary hdf5 files at {hdf5_path}')
+            return x, se
     else:
         print(f'not enough ROH blocks found to estimate contamination...')
         sys.exit()
@@ -721,7 +737,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     assert(len(iid) != 0)
 
     ### Create Folder if needed, and pipe output if wanted
-    prepare_path_general(folder_out, iid, "hapCON", logfile) # Set the logfile
+    prepare_path_general(folder_out, iid, None, "hapCON", logfile) # Set the logfile
 
     ################## pre-process of mpileup or BAM file ################
     if bam:

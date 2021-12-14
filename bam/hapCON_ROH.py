@@ -24,6 +24,8 @@ if __name__ == '__main__':
                         help="IID of the target individual.")
     parser.add_argument('-p', action="store", dest="processes", type=int, required=False, default=1,
                         help="Number of processes to use.")
+    parser.add_argument('--prefix', action="store", dest="prefix", type=str, required=False, default=None,
+                        help="prefix of the output.")
     args = parser.parse_args()
 
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
@@ -77,7 +79,7 @@ if __name__ == '__main__':
         "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
         init_c=0.025, conPop=["CEU"],
         roh_jump=300, e_rate_ref=1e-3,
-        processes=p, n_ref=2504, exclude_pops=[], p_model="SardHDF5", logfile=True)
+        processes=p, n_ref=2504, prefix=args.prefix, logfile=True)
     
     # with open(f'{basepath}/{iid}.MyRoh.1240k.results', 'w') as f:
     #     f.write(f'Method1: Fixing genotyping error rate at {err}\n')
