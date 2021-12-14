@@ -673,9 +673,14 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     n_ref: int
         Maximum Number of (diploid) reference Individuals to use. Default 2504.
     exclude_pops: list of str
-        Which populations to exclude from reference. Default AFR.
+        Which populations to exclude from reference. Default is to exclude African haplotypes.
+        Note that the population label supplied in the list must correspond to the pop or super_pop column in the metadata file. 
+        A list of population labels (column "pop") can be seen https://www.coriell.org/1/NHGRI/Collections/1000-Genomes-Collections/1000-Genomes-Project.
+        The "super_pop" column has 5 possible values: AFR, EUR, EAS, SAS, AMR.
+        The column "pop" is a refinement of "super_pop".
+        The same principle applies for the conPop argument as well. 
     conPop: list of str
-        use which population in the ref panel as the contaminating pop. If empty list, then use all samples in the ref panel to cauclate allele freq. Default CEU.
+        use which population in the ref panel as the contaminating pop. If empty list, then use all samples in the ref panel to cauclate allele freq. Default is to CEU allele frequency.
     c: float 
         initial contamination rate to start the BFGS optimization procedure. Default to 0.025.
     roh_jump: float
