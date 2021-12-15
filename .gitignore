@@ -24,6 +24,7 @@ cluster_runs/ES_callROH/logs/
 cluster_runs/HO_callROH/logs/
 cluster_runs/Marcus_callROH/logs/
 cluster_runs/Ust_Ishim_rep_callROH/logs/
+cluster_runs/prep_refHDF5/logs/
 package/dist/
 Notebooks/other_data/
 nb-log*

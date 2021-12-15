@@ -52,7 +52,6 @@ def save_data_h5(gt, ad, ref, alt, pos,
         dt = h5py.special_dtype(vlen=str)  # To have no problem with saving
         with h5py.File(path, 'w') as f0:
             ### Create all the Groups
-            f_map = f0.create_dataset("variants/MAP", (l,), dtype='f')
             if ad_group:
                 f_ad = f0.create_dataset("calldata/AD", (l, k, 2), dtype='int8', compression=compression)
             f_ref = f0.create_dataset("variants/REF", (l,), dtype=dt)
@@ -63,23 +62,26 @@ def save_data_h5(gt, ad, ref, alt, pos,
                 f_gp = f0.create_dataset("calldata/GP", (l, k, 3), dtype="f", compression=compression) 
             if len(af)>0:
                 f_af = f0.create_dataset("variants/AF_ALL", (l,), dtype="f", compression=compression) 
+            if len(rec)>0:
+                f_map = f0.create_dataset("variants/MAP", (l,), dtype='f')
                 
             f_samples = f0.create_dataset("samples", (k,), dtype=dt)
 
             ### Save the Data
-            f_map[:] = rec
             if ad_group:
                 f_ad[:] = ad
             f_ref[:] = ref.astype("S1")
             ### Alternative Allele cases:
             if alt.ndim==2:
                 f_alt[:] = alt[:,0].astype("S1")
-            elif af.ndim==1:
+            elif alt.ndim==1:
                 f_alt[:] = alt.astype("S1")
             else: 
                 raise RuntimeWarning("Allele Frequencies do not line up")          
             f_pos[:] = pos
             f_gt[:] = gt
+            if len(rec)>0:
+                f_map[:] = rec
             if len(gp)>0:
                 f_gp[:] = gp
             if len(af)>0:
@@ -223,7 +225,8 @@ def merge_in_ld_map(path_h5, path_snp1240k, chs=range(1,23), write_mode="a"):
     hdf5 file. Save modified h5 in place 
     path_h5: Path to hdf5 file to modify.
     path_snp1240k: Path to Eigenstrat .snp file whose map to use
-    chs: Which Chromosomes to merge in HDF5 [list]"""
+    chs: Which Chromosomes to merge in HDF5 [list].
+    write_mode: Which mode to use on hdf5. a: New field. r+: Change Field"""
     with h5py.File(path_h5, "r") as f:
         print("Lifting LD Map from eigenstrat to HDF5...")
         print("Loaded %i variants." % np.shape(f["calldata/GT"])[0])
