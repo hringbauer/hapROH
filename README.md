@@ -15,6 +15,13 @@ The code behind the hapROH package can be found in `./package/`
 
 Large data is not shared (the `./Data` folder is git-ignored) via github. You will need to download empirical data. You can download the reference data as explained on the Pip Project site. https://pypi.org/project/hapROH/. Alternatively you can download the 1000G data directly and run the notebooks to process them into the required hdf5 format (see below). For simulated data, you can generate data via running the simulation notebooks described below.
 
+# hapCON
+hapCON is an extension of hapROH for estimaing contamination rate for male aDNA samples.
+Detailed documentations can be seen at https://haproh.readthedocs.io/en/latest/hapCON.html
+
+Author: Yilei Huang, Dec 2021
+
+
 # Internal notes about folder structure:
 
 ## Data Preparation:
