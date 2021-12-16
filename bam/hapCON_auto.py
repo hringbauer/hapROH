@@ -20,11 +20,13 @@ if __name__ == '__main__':
                         help="Maximum number of iterations.")
     parser.add_argument('--tol', action="store", dest="tol", type=float, required=False, default=0.005,
                         help="Stopping criterion. If the estimated contamination rates between two consecutive iterations differ less than this value, stop iteration.")
+    parser.add_argument('--prefix', action="store", dest="prefix", type=str, required=False, default=None,
+                        help="prefix of the output.")
     args = parser.parse_args()
 
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
     from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind
-    from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam
+    from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam_preload
     from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
     from multiprocessing import set_start_method
     set_start_method("spawn")
@@ -60,27 +62,22 @@ if __name__ == '__main__':
         path_targets_prefix = f"{basepath}/hdf5",
         h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
         meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
-        folder_out=f"{basepath}/hapRoh/", prefix_out="",
+        folder_out=f"{basepath}/hapRoh_iter/", prefix_out="",
         e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
         processes=args.processes, delete=False, output=True, save=True, save_fp=False, 
         n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False,
-        c=0.05, roh_min_l_final=0.06, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
+        c=0.025, roh_min_l_final=0.06, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
         logfile=True, combine=True, file_result="_roh_full.csv")
     
     ######################################################################################
 
 
     ################## Use the called ROH region to estimate contamination ###############
-    contam, se = hapsb_femaleROHcontam(iid, f"{basepath}/hapRoh/{iid}_roh_full.csv",
+    contam, se = hapsb_femaleROHcontam_preload(iid, f"{basepath}/hapRoh_iter/{iid}_roh_full.csv",
         f"{basepath}/hdf5",
         "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
         "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
-        f"{basepath}/hapRoh/",
-        init_c=0.025, conPop=["CEU"], roh_in=1, 
-        roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-3,
-        processes=p, save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
-        exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
-        readcounts=True, random_allele=False, prefix_out="", logfile=False)
+        e_rate=err, processes=p, prefix=args.prefix, logfile=False)
 
     # iterate the process if necessary
     if contam >= 0.025:
@@ -95,22 +92,17 @@ if __name__ == '__main__':
                 path_targets_prefix = f"{basepath}/hdf5",
                 h5_path1000g = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
                 meta_path_ref = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
-                folder_out=f"{basepath}/hapRoh/", prefix_out="",
+                folder_out=f"{basepath}/hapRoh_iter/", prefix_out="",
                 e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
                 processes=p, delete=True, output=True, save=True, save_fp=False, 
                 n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False,
                 c=contam_prev, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
                 logfile=True, combine=True, file_result="_roh_full.csv")
-            contam, se = hapsb_femaleROHcontam(iid, f"{basepath}/hapRoh/{iid}_roh_full.csv",
+            contam, se = hapsb_femaleROHcontam_preload(iid, f"{basepath}/hapRoh_iter/{iid}_roh_full.csv",
                 f"{basepath}/hdf5",
                 "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
                 "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
-                f"{basepath}/hapRoh/",
-                init_c=contam_prev, conPop=["CEU"], roh_in=1, 
-                roh_out=0, roh_jump=300, e_rate=err, e_rate_ref=1e-3,
-                processes=p, save=False, save_fp=False, n_ref=2504, diploid_ref=True, 
-                exclude_pops=[], e_model="readcount_contam", p_model="SardHDF5", 
-                readcounts=True, random_allele=False, prefix_out="", logfile=False)
+                e_rate=err, processes=p, prefix=args.prefix, logfile=False)
             niter += 1
             diff = abs(contam_prev - contam)
             print(f'iteration {niter} done, prev contam: {round(contam_prev, 6)}, current contam: {round(contam, 6)}')
