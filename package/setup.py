@@ -23,10 +23,10 @@ with open("README.md", "r") as fh:
     
 setup(
     name="hapROH",
-    version="0.3a4",  # a means alpha
+    version="0.4a1",  # a means alpha 0.3a4
     author="Harald Ringbauer",
     author_email="harald_ringbauer@eva.mpg.de",
-    description="Identify runs of homozygosity (ROH) in low coverage ancient human DNA data (1240K SNPs) using modern reference panel",
+    description="Identify runs of homozygosity (hapROH) and contamination (hapCon) in low coverage ancient human DNA data (1240K SNPs) using modern reference panel",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/hringbauer/hapROH",
@@ -38,5 +38,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    install_requires=['numpy', 'pandas', 'scipy', 'h5py', 'psutil'],
+    install_requires=['numpy', 'pandas', 'scipy', 'h5py', 'psutil', 'numdifftools'],
 )

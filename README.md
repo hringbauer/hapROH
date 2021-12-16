@@ -34,7 +34,9 @@ cython=
 2: Optimized Cython Algorithm (linear Nr. references, full Linkage Map Model)
 
 ### Produce C extension
-In order to run the code, you need to build the C extension that implements the forward/backward pass. If you do not install hapROH via PIP or wish to use the development version, you have to compile the C extension yourself. You can do this via:
+In order to run the code, you need to build the C extension that implements the forward/backward pass. 
+
+If you do not install hapROH via PIP (which automatically installs the C extensions) or wish to use the development version (from github), you have to compile the C extension yourself. You can do this via:
 
 Switch to the C folder and build the extensions via:
 
@@ -43,7 +45,7 @@ module load gcc
 module load python  
 cythonize -a -i cfunc.pyx  
   
-This compiles a C file into package/hapsburg. Manually importing `from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind` makes you use these file.d
+This compiles a C file into package/hapsburg. Manually importing `from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind` uses this functions.
 
 Tested with gcc/6.1 and python/anaconda-2020.02
 

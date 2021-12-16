@@ -467,9 +467,9 @@ def hapsb_ind(iid, chs=range(1,23),
               c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
               cutoff_post = 0.999, max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.05,
                 min_len1 = 0.02, min_len2 = 0.04, logfile=True, combine=True, file_result="_roh_full.csv"):
-    """Analyze a full single individual in a parallelized fasion. Run all Chromosome analyses in parallel.
-    Wrapper for hapsb_chrom. Default is with default Parameters finetuned from 1240k data,
-    applied to a 1240k Eigenstrat pseudo-haploid dataset.
+    """Analyze a full single individual in a parallelized fashion. Run multiple chromosome analyses in parallel.
+    Then brings together the result ROH tables from each chromosome into one genome-wide summary ROH table.
+    This function wraps hapsb_chrom. The default Parameters are finetuned for pseudo-haploid 1240k aDNA data.
 
     Parameters
     ----------
@@ -584,31 +584,30 @@ def hapsb_ind(iid, chs=range(1,23),
 ############################################################################
 ### Run multiple X Chromosomes in parallel
 
-def hapsb_chromXs(iids=[["I15595","I15970"]], ch=23, processes=1, 
-                  path_targets = "/project2/jnovembre/hringbauer/caribbean_roh/data/eigenstrat/v421_CaribIllu1000GancSam_bySite_PAM",
-                  h5_path1000g = "/project2/jnovembre/hringbauer/HAPSBURG/Data/1000Genomes/HDF5/1240kHDF5/all1240/chr", 
-                  meta_path_ref = "/project2/jnovembre/hringbauer/HAPSBURG/Data/1000Genomes/Individuals/meta_df_all_sex.tsv",
-                  folder_out = "/project2/jnovembre/hringbauer/HAPSBURG/Empirical/dumpster/testx/", prefix_out="",
-                  e_model="readcount", p_model="EigenstratX", post_model="IBD_X",
-                  delete=False, output=True, save=True, save_fp=False, 
-                  n_ref=2504, diploid_ref=False, exclude_pops=[], readcounts=True, random_allele=False,
-                  roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
-                  cutoff_post = 0.999, max_gap=0, roh_min_l = 0.01, logfile=True, combine=False, 
-                  file_result="_roh_full.csv"):
+def hapsb_chromXs(iids=[["I15595","I15970"]], processes=1, file_result="", 
+                  ch=23, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], 
+                  e_model="EigenstratPacked", p_model="MosaicHDF5", readcounts=True, random_allele=True,
+                  post_model="Standard", path_targets=None,
+                  h5_path1000g=None, meta_path_ref=None, folder_out=None, prefix_out="",
+                  c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
+                  max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.05,
+                  min_len1 = 0.02, min_len2 = 0.04, cutoff_post = 0.999, logfile=True):
     """Run multiple X chromosome pairs. iids is list of two individuals.
     For parameters see hapsb_chrom. Additional:
     iids: list of pairs of iids to run [list of lists of len 2]
     processes: How many processes to use [int]. Think about sufficient memory.
     """
+    
     ### Sanity Checks
     assert(len(iids)>=1)
     assert(len(iids[0])==2)
     
     ### Prepare the Parameters for each Individual pairs
     prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
-            post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
-            roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, cutoff_post, roh_min_l, logfile] for iid in iids]
-    assert(len(prms[0])==26)   # Sanity Check
+             post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
+             c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial,
+             roh_min_l_final, min_len1, min_len2, cutoff_post, logfile] for iid in iids]
+    assert(len(prms[0])==31)   # Sanity Check
                             
     ### Run the analysis in parallel
     multi_run(hapsb_chrom, prms, processes = processes)  
@@ -619,19 +618,18 @@ def hapsb_chromXs(iids=[["I15595","I15970"]], ch=23, processes=1,
             move_X_to_parent_folder(base_path=folder_out, 
                                     iid=iid, delete=delete, ch=ch, 
                                     prefix_out=prefix_out, file_result=file_result)
-    
-    
-    
+            
+        
 ##################################################################################
 ##################################################################################
-######################## contamination code starts here ##########################
+######################## Functions to estimate Contamination #####################
 
 
 
 def hapCon_chrom_BFGS_legacy(iid="", hdf5=None,
-    n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
-    h5_path1000g = None, meta_path_ref = None,
-    folder_out="", c=0.025, roh_jump=300, e_rate=1e-2, e_rate_ref=1e-3, output=False):
+                             n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
+                             h5_path1000g = None, meta_path_ref = None,folder_out="", c=0.025, roh_jump=300, 
+                             e_rate=1e-2, e_rate_ref=1e-3, output=False):
     
     hmm = HMM_Analyze(cython=3, p_model="SardHDF5", e_model="readcount_contam", post_model="Standard",
                       manual_load=True, save=False, save_fp=False, output=output)
