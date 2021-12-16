@@ -306,6 +306,10 @@ def fwd_bkwd_lowmem(double[:, :] e_mat, double[:, :, :] t_mat,
       return post[None,:], fwd0, bwd0, tot_ll
 
 
+
+
+
+
 def fwd_bkwd_scaled(double[:, :] e_mat, double[:, :, :] t_mat, 
                     double in_val = 1e-4, full=False, output=True):
     """
@@ -557,6 +561,76 @@ def fwd_bkwd_scaled_lowmem(double[:, :] e_mat, double[:, :, :] t_mat,
         return post[None,:]
     
     
+######################### Yilei  ##############################
+# returns total loglikelihood, copied from fwd_bkwd_scaled_lowmem but without the backward iteration
+def fwd(double[:, :] e_mat, double[:, :, :] t_mat, double in_val = 1e-4):
+    cdef int n_states = e_mat.shape[0]
+    cdef int n_loci = e_mat.shape[1]
+    cdef Py_ssize_t i, j, k    # The Array and Iteration Indices
+    cdef double stay           # The Probablility of Staying
+    cdef double x1, x2, x3     # Place holder variables [make code readable]
+
+    # Initialize Posterior and Transition Probabilities
+    temp = np.empty(n_states, dtype=DTYPE) # l Array for calculations
+    cdef double[:] temp_v = temp
+    
+    temp1 = np.empty(n_states-1, dtype=DTYPE) # l-1 Array for calculatons
+    cdef double[:] temp1_v = temp1
+
+    cdef double[:,:,:] t = t_mat   # C View of transition matrix
+    
+    c = np.empty(n_loci, dtype=DTYPE) # Array of normalization constants
+    cdef double[:] c_view = c
+    c_view[0] = 1 # Set the first normalization constant
+
+    #############################
+    ### Initialize FWD Arrays
+    fwd0 = np.zeros(n_states, dtype=DTYPE)
+    #fwd0[:] = in_val  # Initial Probabilities
+    #fwd0[0] = 1 - (n_states - 1) * in_val
+    fwd0[:] = 1/(n_states - 1)
+    fwd0[0] = 0
+    cdef double[:] fwd = fwd0
+
+    tmp0 = np.zeros(n_states, dtype=DTYPE)
+    cdef double[:] tmp = tmp0
+    
+    #############################
+    ### Do the Forward Algorithm    
+    for i in range(1, n_loci):  # Run forward recursion
+        stay = t[i, 1, 1] - t[i, 1, 2]  # Do the log of the Stay term
+
+        #for k in range(1, n_states): # Calculate Sum of ROH states. 
+        f_l = 1 - fwd[0]  ### Assume they are normalized!!!
+        
+        ### Do the 0 State:
+        x1 = fwd[0] * t[i, 0, 0]    # Staying in 0 State
+        x2 = f_l * t[i, 1, 0]               # Going into 0 State from any other
+        temp_v[0] = e_mat[0, i] * (x1 + x2) # Set the unnorm. 0 forward variable
+
+        ### Do the other states
+        # Preprocessing:
+        x1 = fwd[0] * t[i, 0, 1]   # Coming from 0 State
+        x2 = f_l * t[i, 1, 2]             # Coming from other ROH State
+
+        for j in range(1, n_states):  # Do the final run over all states
+            x3 = fwd[j] *  stay # Staying in state
+            temp_v[j] = e_mat[j, i] * (x1 + x2 + x3)
+            
+        ### Do the normalization and set up the forward array for next step
+        c_view[i] = sum_array(temp_v, n_states)
+        for j in range(n_states):
+            fwd[j] = temp_v[j] / c_view[i] # Rescale to prob. distribution
+
+    tot_ll = np.sum(np.log(c)) # Tot Likelihood is product over all c.
+    return tot_ll
+
+####################### End of Yilei ##########################
+
+
+
+
+
 ###################################################################################
 ###################################################################################
 #### LEGACY FUNCTIONS [NOT INT PRODUCTION ANYMORE]

@@ -7,7 +7,7 @@ For downward compatibility, the package uses `hapsburg` as module name. After in
 ## Scope of the Method
 Standard parameters are tuned for human 1240K capture data (ca. 1.2 million SNPs used widely in human aDNA analysis) and using 1000 Genome haplotypes as reference. The software is tested on a wide range of test applications, both 1240K data and also whole genome sequencing data downsampled to 1240K SNPs. Successful cases include 45k year old Ust Ishim man, and a wide range of American, Eurasian and Oceanian ancient DNA, showing that the method generally works for split times of reference panel and target up to a few 10k years, which includes all out-of-Africa populations (Attention: Neanderthals and Denisovans do not fall into that range, additionally some Subsaharan hunter gatherer test cases did not give satisfactory results).
 
-Currently, hapROH works on on data for 1240K SNPs and in unpacked or packed `eigenstrat` format (which is widely used in human ancient DNA). The software assumes pseudo-haploid or diploid genotype data (the mode can be set, by default it is pseudo-haploid). The recommended coverage range is 400,000 or more 1240K SNPs covered at least once (i.e. at least ca. 0.3x coverage).
+Currently, hapROH works on data for 1240K SNPs and in unpacked or packed `eigenstrat` format (which is widely used in human ancient DNA). The software assumes pseudo-haploid or diploid genotype data (the mode can be set, by default it is pseudo-haploid). The recommended coverage range is 400,000 or more 1240K SNPs covered at least once (i.e. at least ca. 0.3x coverage).
 
 If you have whole genome data available, you have to downsample an create eigenstrat files for biallelic 1240k SNPs first.
 
@@ -16,13 +16,13 @@ In case you are planning applications to other kind of SNP or bigger SNP sets, o
 ## Installation
 You can install the package using the Package manager pip:
 
-```
+```bash
 python3 -m pip install hapROH
 ```
 (`python3 -m` makes sure you use your python installation)
 
 If you have it already installed and want to upgrade to a newer hapROH version you can use:
-```
+```bash
 python3 -m pip install hapROH --upgrade
 ```
 
@@ -33,7 +33,7 @@ For customized installations, find more info in the section below (`c Extension`
 To get started, please find vignette jupyter notebooks:
 https://www.dropbox.com/sh/eq4drs62tu6wuob/AABM41qAErmI2S3iypAV-j2da?dl=0
 
-These are a ressource to do show example usecases, that you can use as template for your own applications.
+These are a resource to do show example usecases, that you can use as template for your own applications.
 
 These notebooks walk you through examples for 
 1) how to use the core functions to call ROH from eigenstrat files, and generate ROH tables from results of multiple individuals ('callROH_vignette')
@@ -49,7 +49,7 @@ https://www.dropbox.com/s/0qhjgo1npeih0bw/1000g1240khdf5.tar.gz?dl=0
 
 and unpack it using 
 
-```
+```bash
 tar -xvf FILE.tar.gz
 ```
 
@@ -85,6 +85,16 @@ You can also set CYTHON=False, then the extension is compiled from cfunc.c direc
 The code used to develop this package is deposited at the github repository: https://github.com/hringbauer/hapROH
 
 The package is packed in the folder `./package/`. In addition, there are a large number of notebooks used to test and extensively use the functionality in `./notebooks/`.
+
+
+## hapCON: An Extension of hapROH for Estimating Contamination in in maleX
+hapCON is a new method for estimating contamination in male X chromosome. It has been incorporate into hapROH since version xxx, so no additional installation is needed. It has the same dependencies as hapROH. It works directly from BAM file or from samtools mpileup output. We have created two reference panels for hapCON: one for 1240k data and the other for WGS data.
+
+The core functionality of hapCON is exposed via
+```python
+    from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS
+```
+A short tutorial and example usage can be found [here](https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCON_vignette.ipynb).
 
 
 ## Frequently Asked Questions (FAQ)

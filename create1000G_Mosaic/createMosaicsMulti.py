@@ -5,10 +5,13 @@ Save the created Data to HDF 5, and the ROH block info to a csv in the same fold
 @ Author: Harald Ringbauer, 2019, All rights reserved
 """
 
+from ast import get_docstring
 import h5py                            # For Processing HDF5s
 import numpy as np
+from numpy.core.numeric import _isclose_dispatcher
 import pandas as pd
 import os                              # To delete File
+import sys
 
 from createMosaic import Mosaic_1000G  # Import the
 
@@ -26,16 +29,33 @@ class Mosaic_1000G_Multi(object):
     n = 3       # Nr of individuals to simulate
 
     path1000G = "./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr"
-    pop_path = "./Data/1000Genomes/integrated_call_samples_v3.20130502.ALL.panel"
+    pop_path = "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv"
     # Where to save the new HDF5 to by default
     save_path = "./Simulated/1000G_Mosaic/TSI/ch3_5cm/"
 
     output = True  # whether to Print Output
     m_object = 0  # The Mosaic object
 
-    def __init__(self):
+    # parameters for faking readcount data
+    cov = 0.0 # genome wide coverage
+    con = 0.0 # contamination rate
+    err_rate = 1e-3 # sequencing err rate
+    e_rate_ref = 1e-3 # err rate when copied from the ref panel (eg., to emulate mutation since common ancestry)
+    conPop = []
+    jump = 300.0
+    downsample = False # whether to downsample the number of reads at each site to 1 read only (especially make it pseudohaploid)
+    heterogeneous = False # whether to simulate heterogeneous coverage at each of the 1240k target site
+
+    def __init__(self, cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], jump=300.0, downsample=False, heterogeneous=False):
         """Initialize"""
-        pass  # Just go on
+        self.cov = cov
+        self.con = con
+        self.err_rate = err_rate
+        self.e_rate_ref = e_rate_ref
+        self.conPop = conPop
+        self.jump = jump
+        self.downsample = downsample
+        self.heterogeneous = heterogeneous
 
     def load_m_object(self):
         """Load the Mosaic Object"""
@@ -45,7 +65,7 @@ class Mosaic_1000G_Multi(object):
         if not os.path.exists(self.save_path):
             os.makedirs(self.save_path)
 
-        self.m_object = Mosaic_1000G(ch=self.ch, path1000G=self.path1000G,
+        self.m_object = Mosaic_1000G(ch=self.ch, e_rate_ref=self.e_rate_ref, path1000G=self.path1000G,
                                      pop_path=self.pop_path, save_path=self.save_path)
 
     def save_hdf5(self, gt, ad, ref, alt, pos, rec, samples, path):
@@ -113,7 +133,16 @@ class Mosaic_1000G_Multi(object):
             if self.output == True:
                 print(f"\nDoing Individual {iids[i]}")
 
-            roh_list = self.create_roh_list(roh_lengths, c_min, c_max)
+            if self.ch in ['X', 'x']:
+                # for male x, we ignore the user input (the number of ROH blocks and the length of each block)
+                #roh_list = np.array([[c_min, c_max]]) # male X should be ROH everywhere
+                roh_list = self.create_roh_list_maleX(np.array(m.f["variants/MAP"]))
+            else:
+                roh_list = self.create_roh_list(roh_lengths, c_min, c_max)
+        
+            print(f'###### roh length: {roh_lengths} ####')
+            print(f'##### roh list: {roh_list} #####')
+            
             gts_roh, copy_ids = m.create_chunked_roh_individual(
                 chunk_length=chunk_length, roh_list=roh_list, pop_list=pop_list)
 
@@ -173,12 +202,64 @@ class Mosaic_1000G_Multi(object):
 
         return roh_list
 
+    def create_roh_list_maleX(self, recmap):
+        """
+        each ROH block is exponentially distributed with mean 1/300 morgen = 1/3 centi-morgen
+        They should cover the entire chromosome as maleX is haploid everywhere.
+        """
+        print(f'length of recomb map: {len(recmap)}')
+        print(f'recombination map: {recmap}')
+        cmin, cmax = recmap[0], recmap[-1]
+        print(f'cmin: {cmin}, cmax: {cmax}')
+        start = cmin
+        end = start
+        nloci = len(recmap)
+        starts = []
+        ends = []
+        jump = self.jump
+        while end < cmax:
+            wait_time = np.random.exponential(scale=1/jump)
+            i = np.searchsorted(recmap, start + wait_time)
+            if i == nloci:
+                end = cmax # we have reached chromosome end, done!
+            else:
+                dist2left = start + wait_time - recmap[i-1]
+                dist2right = recmap[i] - (start + wait_time)
+                if dist2left <= dist2right:
+                    end = recmap[i-1]
+                else:
+                    end = recmap[i]
+            starts.append(start)
+            ends.append(end)
+            start = end
+
+        print(f'total number of ROH blocks: {len(starts)}')
+        print(f'first ROH block: {starts[0]} - {ends[0]}')
+        print(f'last ROH block: {starts[-1]} - {ends[-1]}')
+        print(f'average block length: {np.mean(np.array(ends) - np.array(starts))}')
+        roh_list = np.zeros((len(starts), 2))
+        roh_list[:,0] = starts
+        roh_list[:,1] = ends
+        return roh_list
+
+
     def save_genotypes(self, f, gts, samples, path=""):
         """Save the full genotype Matrix
         f: HDF5 File with Matching entries for Meta Data per Locus
         gts: Genotype Matrix [l,k,2]
         samples: List of sample IIDs [k]
-        Path: Where to save to"""
+        Path: Where to save to
+        cov: genome wide coverage
+        con: contamination rate
+        err: sequencing error rate"""
+
+        downsample = self.downsample
+        heterogeneous = self.heterogeneous
+        if downsample:
+            print(f'Downsample reads at each site to be 1 read only...')
+        if heterogeneous:
+            print('simulate heterogeneous coverage at 1240k target site')
+        
 
         if len(path) == 0:
             path = self.save_path
@@ -188,9 +269,59 @@ class Mosaic_1000G_Multi(object):
         gt = gts
         ad = gts
 
-        ref, alt = f["variants/REF"][:], f["variants/ALT"][:, 0]
+        ref = f["variants/REF"][:]
+        if len(f['variants/ALT'].shape) == 2:
+            alt = f["variants/ALT"][:, 0]
+        else:
+            alt = f['variants/ALT'][:]
         pos = f["variants/POS"]
         rec = f["variants/MAP"]
+        print(f'shape of gt: {gt.shape}')
+
+        # add (artificial) readcount coverage data
+        cov = self.cov
+        con = self.con
+        err_rate = self.err_rate
+        e_rate_ref = self.e_rate_ref
+        p = self.m_object.give_popfreq_by_pop(self.conPop)
+
+        if cov > 0:
+            ad = np.zeros_like(gt)
+            nloci, nind, _ = ad.shape
+            if not heterogeneous:
+                nreads = np.random.poisson(cov, (nloci, nind)) # using Poisson random number to model the number of reads that cover each site
+            else:
+                ratios = []
+                with open(f'/mnt/archgen/users/yilei/Data/iberian_BAM/1240kChrX_coverage.ratio', 'r') as f:
+                    for line in f:
+                        _, _, ratio = line.strip().split()
+                        ratios.append(float(ratio))
+                assert(len(ratios) == nloci)
+                nreads = np.random.poisson(cov*np.array(ratios).reshape(nloci, 1), (nloci, nind))
+                print(f'mean number of reads per site: {np.mean(nreads, axis=1)}')
+            for i in range(nloci):
+                allele_freq = p[i]
+                for j in range(nind):
+                    gt_ij = gt[i, j]
+                    nread_ij = nreads[i, j]
+                    # sample reads from 1) the genotype or 2) the reference panel based on contamination rate
+                    for read in range(nread_ij):
+                        isCon = np.random.rand() <= con
+                        if not isCon:
+                            # sample reads based on the genotype
+                            ret = np.random.choice(gt_ij)
+                            if np.random.rand() <= err_rate:
+                                ret = abs(1 - ret) # simulate sequencing error
+                            ad[i, j, ret] += 1
+                        else:
+                            # sample reads based on the reference panel
+                            ret = 1 if np.random.rand() <= allele_freq else 0
+                            if np.random.rand() <= err_rate:
+                                ret = abs(1 - ret)
+                            ad[i, j, ret] += 1
+                        if downsample:
+                            break # only sample one read if downsample
+
 
         # Maybe filter for Loci here
         self.save_hdf5(gt, ad, ref, alt, pos, rec, samples, path)
@@ -266,6 +397,77 @@ def copy_population(base_path="./Simulated/1000G_Mosaic/TSI0/",
     t.save_path = base_path + "ch" + str(t.ch) + "/"
     t.load_m_object()  # Load the inner Mosaic Object
     t.extract_individuals()
+
+
+
+
+#############################################
+#############################################
+# some helper functions to aid simulation
+# helper function for the simulation
+
+def create_individual_mosaic(base_path="./Simulated/1000G_Mosaic/TSI/", 
+                             path1000G="./Data/1000Genomes/HDF5/1240kHDF5/Eur1240chr",
+                    pop_list=["TSI"], n=2, ch=3, chunk_length=0.005, l = 1, n_blocks=5,
+                    cov=0.0, con=0.0, err_rate=1e-3, e_rate_ref=1e-3, conPop=[], jump=300.0, downsample=False, heterogeneous=False):
+    """Create Multiple ROH runs and saves combined data into base_path hdf5 and roh_info df
+    base_path:  Start of SavePaths
+    path1000G: Where to find the 1000 Genome Data
+    pop_list: The Reference Populations for Mosaic
+    n: Number of Individuals to simulate
+    chunk_length: Lenths of the Chunks to mosaic
+    ch: Chromosome to use
+    l: Length of the ROH blocks
+    n_blocks: The NR of the Blocks to copy in
+    cov: genome wide coverage
+    con: contamination rate
+    err_rate: sequencing err rate
+    conPop: list of populations to draw contaminating sequence from."""
+    
+    ########### Pipe the output
+    save_path = base_path
+    # if len(prefix) == 0:
+    #     save_path += "chr" + str(ch) + "_" + str(int(l)) + "cM/"
+    # else:
+    #     save_path += prefix
+
+    if not os.path.exists(save_path):
+            os.makedirs(save_path)
+    
+    print(f"Setting save path...: {save_path}")
+    sys.stdout = open(save_path + "mosaic_out.txt", 'w')
+    
+    t = Mosaic_1000G_Multi(cov, con, err_rate, e_rate_ref, conPop, jump, downsample, heterogeneous)  # Create the MltiRUn Object
+    
+    ##################################
+    ### Set the parameters for the run
+    t.pop_list = pop_list
+    t.path1000G = path1000G
+    t.n = n
+    t.chunk_length = chunk_length
+    t.ch = ch  # The Chromosome
+    t.roh_lengths = np.ones(n_blocks) * 0.01 * l  # Set the Lengths
+    t.save_path = save_path
+    t.load_m_object()
+    t.create_individuals()
+
+def multi_run(fun, prms, processes = 4):
+    """Implementation of running in Parallel.
+    fun: Function
+    prms: The Parameter Files
+    processes: How many Processes to use"""
+    print(f"Running {len(prms)} jobs in parallel.")
+    
+    with mp.Pool(processes = processes) as pool:
+        results = pool.starmap(fun, prms)
+
+
+
+
+
+
+
+
 
 
 #########################################

@@ -26,22 +26,26 @@ def prepare_path(base_path, iid, ch, prefix_out, logfile=True):
         sys.stdout = open(path_log, 'w') 
     return path_out
 
-def multi_run(fun, prms, processes = 4):
+def multi_run(fun, prms, processes = 4, output=False):
     """Implementation of running in Parallel.
     fun: Function
     prms: The Parameter Files
     processes: How many Processes to use"""
-    print(f"Running {len(prms)} total jobs; {processes} in parallel.")
+    if output:
+        print(f"Running {len(prms)} total jobs; {processes} in parallel.")
     
     if len(prms)>1:
-        print("Starting Pool of multiple workers...")    
+        if output:
+            print("Starting Pool of multiple workers...")    
         with mp.Pool(processes = processes) as pool:
             results = pool.starmap(fun, prms)
     elif len(prms)==1:
-        print("Running single process...")
+        if output:
+            print("Running single process...")
         results = fun(*prms[0])
     else:
         raise RuntimeWarning("Nothing to run! Please check input.")
+    return results
 
 def split_up_roh_df(base_path, path_out, iid, 
                     file_in="roh_info.csv", file_out="roh_gt.csv"):

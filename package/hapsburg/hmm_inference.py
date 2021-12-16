@@ -9,6 +9,15 @@ import os                     # For Saving to Folder
 #import psutil                 # For Memory Profiling
 #import cProfile               # For Profiling
 # from func import fwd_bkwd    # Import the Python Function
+import time
+import sys
+import numdifftools as ndt
+import math
+from scipy.optimize import minimize
+from scipy.optimize import newton
+
+import hapsburg
+from hapsburg.cfunc import fwd # fwd only computes total likelihood
 from hapsburg.cfunc import fwd_bkwd_fast, fwd_bkwd_lowmem, fwd_bkwd_scaled, fwd_bkwd_scaled_lowmem  # Cython Functions
 from hapsburg.func import fwd_bkwd_p, sloppyROH_cumsum  # Python Functions
 from hapsburg.emissions import load_emission_model     # Factory Methods
@@ -36,6 +45,7 @@ class HMM_Analyze(object):
     sanity_checks = True # Can turn off for better performance. Not recomm.
     ref_states = []  # Ref. Array of k Reference States to Copy from. [kxl]
     ob_stat = []     # The observed State [l]
+    pCon = [] # allele freq of the contamination population
 
     r_map = []      # The Map position of every marker [l]
     pos = []        # The pysical position of every marker [l]
@@ -47,6 +57,11 @@ class HMM_Analyze(object):
 
     iid = ""  # Remember the Individual
     ch = 0    # Which Chromosome
+    # allows analysis on only a chunk of the given chromosome 
+    # default is to analyze the entire chromosome
+    # position is given in Morgen (not cM!)
+    start = -np.inf
+    end = np.inf
 
     fwd_bkwd = 0  # Function for the fwd-bkwd Algorithm
 
@@ -58,7 +73,7 @@ class HMM_Analyze(object):
     def __init__(self, folder="./Simulated/Example0/",
                  t_model="model", e_model="haploid", p_model="SardHDF5", post_model="Standard",
                  output=True, save=True, cython=True, manual_load=False,
-                 save_fp=True):
+                 save_fp=True, start=-np.inf, end=np.inf):
         """Initialize Class. output: Boolean whether to print
         Cython: Whether to use Cython.
         Manual_Load: Whether to skip automatic loading of data"""
@@ -70,6 +85,8 @@ class HMM_Analyze(object):
         self.output = output
         self.save = save
         self.save_fp = save_fp
+        self.start = start
+        self.end = end
 
         if manual_load == False:
             self.load_objects()
@@ -93,23 +110,26 @@ class HMM_Analyze(object):
         else:
             self.fwd_bkwd = fwd_bkwd_p
 
-    def load_objects(self, iid="", ch=0):
+    def load_objects(self, iid="", ch=0, c=0.0):
         """Load all the required Objects in right order"""
         self.load_preprocessing_model()
         self.load_data(iid, ch)
-        self.load_secondary_objects()
+        self.load_secondary_objects(c)
 
-    def load_secondary_objects(self):
+    def load_secondary_objects(self, c=0.0):
         """Load all secondary objects
         (but not the pre-processing one)"""
-        self.load_emission_model()
+        self.load_emission_model(c, self.pCon)
         self.load_transition_model()
         self.load_postprocessing_model()
 
     def load_data(self, iid="", ch=0):
         """Load the External Data"""
-        gts_ind, gts, r_map, pos, out_folder = self.p_obj.load_data(
-            iid=iid, ch=ch)
+        if type(self.p_obj) is hapsburg.preprocessing.PreProcessingHDF5:
+            gts_ind, gts, r_map, pos, pCon, out_folder = self.p_obj.load_data(iid=iid, ch=ch, start=self.start, end=self.end)
+        else:
+            gts_ind, gts, r_map, pos, out_folder = self.p_obj.load_data(iid=iid, ch=ch)
+            pCon = [] # placehodler
 
         self.ch = ch
         self.iid = iid
@@ -118,6 +138,7 @@ class HMM_Analyze(object):
         self.pos = pos
         self.ob_stat = gts_ind
         self.folder = out_folder
+        self.pCon = pCon
 
         ### Do some Post-Processing for summary Parameters
         self.n_ref = np.shape(self.ref_states)[0]
@@ -132,9 +153,9 @@ class HMM_Analyze(object):
         if self.output:
             print(f"Successfully loaded Data from: {self.folder}")
 
-    def load_emission_model(self):
+    def load_emission_model(self, c=0.0, pCon=[]):
         """Method to load an Emission Model"""
-        self.e_obj = load_emission_model(self.ref_states, e_model=self.e_model)
+        self.e_obj = load_emission_model(self.ref_states, e_model=self.e_model, c=c, pCon=pCon)
 
         if self.output:
             print(f"Loaded Emission Model: {self.e_model}")
@@ -146,9 +167,9 @@ class HMM_Analyze(object):
         if self.output:
             print(f"Loaded Transition Model: {self.t_model}")
 
-    def load_preprocessing_model(self):
+    def load_preprocessing_model(self, conPop=[]):
         self.p_obj = load_preprocessing(
-            p_model=self.p_model, save=self.save, output=self.output)
+            p_model=self.p_model, conPop=conPop, save=self.save, output=self.output)
 
         if self.output:
             print(f"Loaded Pre Processing Model: {self.p_model}")
@@ -247,9 +268,6 @@ class HMM_Analyze(object):
             path = self.folder + "posterior.csv"
             np.savetxt(path, post,
                        delimiter=",",  fmt='%f')
-            #path = self.folder + "refs.csv"
-            #np.savetxt(path, self.ref_states,
-            #           delimiter=",",  fmt='%i')
             print(f"Saved Full Posterior and Ref GTS to folder {self.folder}")
 
         if save:
@@ -257,6 +275,43 @@ class HMM_Analyze(object):
             np.savetxt(path, post[0, :],
                        delimiter=",",  fmt='%f')
             print(f"Saved Zero State Posterior to folder {self.folder}.")
+    
+    def compute_tot_neg_likelihood(self, c, in_val=1e-4):
+        """Calculate the poserior for each path
+        FULL: Wether to return fwd, bwd as well as tot_ll (Mode for postprocessing)
+        in_val: The Initial Probability to copy from one Ind."""
+        t_mat = self.t_obj.give_transitions()
+        ob_stat = self.ob_stat
+        r_map = self.prepare_rmap()  # Get the Recombination Map
+
+        self.e_obj.set_params(c=c)
+        e_mat = self.e_obj.give_emission(ob_stat=ob_stat)
+
+        # Precompute the 3x3 Transition Matrix
+        t_mat_full = self.pre_compute_transition_matrix(
+            t_mat, r_map, self.n_ref)
+        
+        logll = fwd(e_mat, t_mat_full, in_val)
+        return -logll #RETURN THE NEGATIVE OF LOGLL SO THAT THIS COULD WORK WITH STANDARD OPTIMIZATION METHOD
+
+    def compute_tot_neg_likelihood_2d(self, args, in_val=1e-4):
+        # args = [contamination rate, genotyping error rate]
+        print(f'##### args: {args} #####')
+        t_mat = self.t_obj.give_transitions()
+        ob_stat = self.ob_stat
+        r_map = self.prepare_rmap()  # Get the Recombination Map
+
+        self.e_obj.set_params(c=args[0], e_rate=args[1])
+        e_mat = self.e_obj.give_emission(ob_stat=ob_stat)
+
+        # Precompute the 3x3 Transition Matrix
+        t_mat_full = self.pre_compute_transition_matrix(
+            t_mat, r_map, self.n_ref)
+        
+        logll = fwd(e_mat, t_mat_full, in_val)
+        # return -logll here because optimizer usually minimize the target function instead of maximize
+        return -logll
+
 
     def optimze_ll_transition_param(self, roh_trans_params):
         """Calculate and return the log likelihoods for Transitions Parameters
@@ -272,6 +327,69 @@ class HMM_Analyze(object):
             ll_hoods.append(tot_ll)
 
         return np.array(ll_hoods)
+
+    def optimize_ll_contamination(self, cons):
+        """
+        grid search for MLE of contamination rate, return a list of loglikelihoods, mle estimate and the confidence interval.
+        """
+        lls = []
+        for con in cons:
+            tot_ll = self.compute_tot_neg_likelihood(con)
+            lls.append(-tot_ll) # NOTE: MY COMPUTE_TOT_LIKELIHOOD RETURNS THE NEGATIVE OF LIKELIHOOD
+
+        conMLE = cons[np.argmax(lls)]
+        Hfun = ndt.Hessian(self.compute_tot_neg_likelihood, step=1e-4, full_output=True)
+        h, info = Hfun(conMLE)
+        h = h[0][0]
+        se = math.sqrt(1/(h))
+        return lls, conMLE, conMLE - 1.96*se, conMLE + 1.96*se
+
+    def optimize_ll_contamination_BFGS(self, init_c):
+        """
+        Find MLE of contamination rate by L-BFGS-B.
+        """
+        bnds = [(0, 0.5)]
+        res = minimize(self.compute_tot_neg_likelihood, init_c, method='L-BFGS-B', bounds=bnds)
+        Hfun = ndt.Hessian(self.compute_tot_neg_likelihood, step=1e-4, full_output=True)
+        try:
+            x = res.x[0]
+            h, info = Hfun(x)
+            h = h[0][0]
+            if h < 0:
+                print('WARNING: Cannot estimate standard error because the likelihood curve is concave up...')
+                return x, np.nan, np.nan
+            else:
+                if x > 0:
+                    se = math.sqrt(1/(h))
+                    return x, x - 1.96*se, x + 1.96*se
+                else:
+                    # hessian does not work well at the boundary, use a different approach
+                    print(f'use quadracitc interpolation to obtain likelihood confidence interval...')
+                    step = 1e-6
+                    grad = (self.compute_tot_neg_likelihood(step) - self.compute_tot_neg_likelihood(0))/step
+                    assert(grad > 0)
+                    findroot = lambda x, x0, grad, hess: hess*(x-x0)**2/2.0 + (x-x0)*grad - 1.92
+                    findroot_prime = lambda x, x0, grad, hess: (x-x0)*hess + grad
+                    res = newton(findroot, x, fprime=findroot_prime, args=(x, grad, h))
+                    return x, x-res, x+res
+        except AssertionError:
+            print(f'cannot estimate the Hessian of the loglikelihood around {res.x}')
+            return res.x[0], np.nan, np.nan
+        
+
+    def optimize_ll_contamANDerr(self, init_c, init_err):
+        # use powell's optimization to search for MLE of contamination rate and genotyping error rate
+        guess = np.array([init_c, init_err])
+        bnds = [(0, 0.5), (0, 0.1)]
+        res = minimize(self.compute_tot_neg_likelihood_2d, guess, method='L-BFGS-B', bounds=bnds)
+        Hfun = ndt.Hessian(self.compute_tot_neg_likelihood_2d, step=1e-4, full_output=True)
+        try:
+            h, info = Hfun(res.x)
+        except AssertionError:
+            print(f'cannot estimate the Hessian of the loglikelihood around {res.x}')
+            return res.x, np.array([np.nan, np.nan])
+        se = np.sqrt(np.diag(np.linalg.inv(h)))
+        return res.x, se
 
     def post_processing(self, save=True):
         """Do the Postprocessing of ROH Blocks
@@ -302,7 +420,7 @@ class HMM_Analyze(object):
 def prep_3x3matrix(t, n_ref):
     """Prepares the grouped 3x3 Matrix (3rd State: Everything in OTHER ROH State)"""
     n = n_ref
-    print(f"Reference Number: {n}")
+    # print(f"Reference Number: {n}")
     # Initiate to -1 (for later Sanity Check if everything is filled)
     t_simple = -np.ones((3, 3))
     t_simple[:2, :2] = t[:2, :2]
