@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to hapROH's documentation!
+Welcome to the Documentation of hapROH and hapCon
 ==================================
 
 .. toctree::
