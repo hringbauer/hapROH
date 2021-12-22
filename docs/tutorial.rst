@@ -60,18 +60,6 @@ There is a vignette notebook for...
 4. estimating population sizes from inferred ROH, using a likelihood framework (estimateNe)
 
 
-Dependencies
-*************
-
-The basic requirements for calling ROH are kept minimal and only sufficient for the core ROH calling (*numpy*, *pandas*, *scipy* & *h5py*). If you want to use extended analysis and plotting functionality: There are extra Python packages that you need to install (e.g. via *pip* or *conda*). 
-
-1. If you want to use the advanced plotting functionality, you need *matplotlib* installed.
-
-2. For plotting of maps, you will need *basemap* (warning: installing can be tricky on some architectures). 
-
-3. If you want to use the effective population size fitting functionality from ROH output, you require the package *statsmodels*.
-
-
 Development
 *************
 
