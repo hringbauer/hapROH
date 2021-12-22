@@ -15,14 +15,13 @@ For customized installations, find more info in the section c Extension (TODO: f
 c Extension
 ************
 
-For performance reasons, the heavy lifting of the algorithms is coded into c methods (cfunc.c). This "extension" is built via cython from cfunc.pyx This should be done automatically via the package cython (as CYTHON=True in setup.py by default).
-You can also set CYTHON=False, then the extension is compiled from cfunc.c directly (experimental, not tested on all platforms).
+For performance reasons, the heavy lifting of the algorithms is coded into c methods (cfunc.c). The package is set up so that this "extension" is built during installation. This is done automatically from cfunc.pyx via the package cython (as CYTHON=True in setup.py by default). You can also set CYTHON=False, then the extension is directly compiled from cfunc.c (experimental, not tested on all platforms).
 
 
 Dependencies
 ************
 
-The basic dependencies are kept minimal. They are sufficient for the core functions of ROH calling (numpy, pandas, scipy & h5py). If you want to use extended analysis and plotting functionality, there are extra Python packages that you need to install (e.g. via pip or conda).
+The basic dependencies of the package are kept minimal. They are sufficient for the core functions of the algorithms (numpy, pandas, scipy & h5py). If you want to use extended analysis and plotting functionality, there are extra Python packages that you need to install manually (e.g. via pip or conda).
 
     If you want to use the advanced plotting functionality, you need ``matplotlib``.
 
