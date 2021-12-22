@@ -71,11 +71,6 @@ The basic requirements for calling ROH are kept minimal and only sufficient for 
 
 3. If you want to use the effective population size fitting functionality from ROH output, you require the package *statsmodels*.
 
-c Extension
-************
-
-For performance reasons, the heavy lifting of the algorithm is coded into a c method (cfunc.c). This "extension" is built via cython from cfunc.pyx This should be done automatically via the package cython (as CYTHON=True in setup.py by default).
-You can also set CYTHON=False, then the extension is compiled from cfunc.c directly (experimental, not tested on all platforms).
 
 Development
 *************
