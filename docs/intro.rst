@@ -2,7 +2,7 @@ Overview
 ============
 The ``hapROH`` software package contains two primary modules and a range of functions to visualize the results.
 
-#. ``hapROH`` identifies runs of homozygosity (ROH) in ancient and present-day DNA by using a panel of reference haplotypes. As input, it uses genotype files in eigentstrat format. This module contains functions and wrappers to call ROH and functions for downstream analysis and visualization. For downward compatibility, this software uses ``hapsburg`` as module name. After installation you can import Python functions via *from hapsburg.XX import YY*.
+#. ``hapROH`` identifies runs of homozygosity (ROH) in ancient and present-day DNA by using a panel of reference haplotypes. As input, it uses genotype files in eigentstrat format. This module contains functions and wrappers to call ROH and functions for downstream analysis and visualization. For downward compatibility, this software uses ``hapsburg`` as module name.
 
 #. ``hapCON`` estimates contamination in aDNA data of male individuals by using a panel of reference haplotypes. It works directly from BAM file or from samtools mpileup output. 
 
