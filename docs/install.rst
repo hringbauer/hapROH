@@ -20,7 +20,8 @@ For performance reasons, the heavy lifting of the algorithms is coded into c met
 
 Dependencies
 ************
-The basic dependencies of the package are kept minimal. They are sufficient for the core functions of the algorithms. When ``hapROH`` is installed, the following dependent Python packages should be automatically installed without any action on your part: 
+The basic dependencies of the package are kept minimal. They are sufficient for the core functions of the algorithms. When ``hapROH`` is installed, the following dependent Python packages should be automatically installed without any action on your part:
+
 * ``numpy`` for calculaions with numerical arrays at C speed 
 * ``pandas`` for handling databases and tables at C speed 
 * ``scipy`` for statistical operations at C speed
