@@ -40,6 +40,6 @@ If you want to use extended analysis and plotting functionality, there are extra
     
 Upgrading    
 ************
-If you installed a stable ``hapROH`` release via pip and wish to upgrade to the latest stable release, you can do so by adding --upgrade:
+If you installed a stable ``hapROH`` release via pip and wish to upgrade to the latest stable release, you can do so by adding ``--upgrade``:
 
-```pip install --upgrade hapROH```
+``pip install --upgrade hapROH``
