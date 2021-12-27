@@ -187,9 +187,11 @@ def hapsb_multiChunk_preload(c, hmms, processes=1):
 #         print(f'not enough ROH blocks found to estimate contamination...')
 #         sys.exit()
 
-def hapsb_femaleROHcontam_preload(iid, roh_list, mpileup_path, h5_path1000g, meta_path_ref,
-                folder_out=None, init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_jump=300, e_rate_ref=1e-3,
-                processes=1, n_ref=2504, exclude_pops=["AFR"], prefix=None, logfile=False, cleanup=False):
+def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
+                mpileup_path=None, hdf5_path=None, folder_out=None, 
+                init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_jump=300, 
+                e_rate=1e-2, e_rate_ref=1e-3, processes=1, n_ref=2504, 
+                exclude_pops=["AFR"], prefix=None, logfile=False, cleanup=False):
     """
     Estimating autosomal contamination rate from a list of ROH blocks. Need at least one ROH for inference.
 
@@ -199,12 +201,14 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, mpileup_path, h5_path1000g, met
         IID of the sample. We assume that the mpileup file has the format $iid.chr[1-22].mpileup.
     roh_list: str
         Path to a file containing a list of ROH blocks. This file should have the same format as the output of hapROH.
-    mpileup_path:
-        Directory of mpileup files. One file for each autosome.
     h5_path1000g: str
         Path to the reference panel.
     meta_path_ref: str
         Path to the metadata of reference panel.
+    mpileup_path: str
+        Directory of mpileup files. One file for each autosome.
+    hdf5_path: str
+        Directory of hdf5 files. One file for each autosome. One of mpileup_path or hdf5_path must be provided.
     folder_out: str
         Directory in which you want the output to reside. If not given, all output files will be in the parent directory of mpileup_path.
     init_c: float
@@ -217,6 +221,9 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, mpileup_path, h5_path1000g, met
         Contaminant Ancestry. Must correspond to names in the super_pop or pop column in the 1000G metadata file.
     roh_jump: float
         Copying jump rate.
+    e_rate: float
+        If mpileup_path is provided, the sequencing error rate will be estimated from flanking sites, so this parameter has no effect.
+        If hdf5_path is provided, then this parameter is the error rate used for inference. So one should obtain sequencing error estimate from external source if you use the hdf5_path option.
     e_rate_ref: float
         Haplotype copying error rate.
     processes: int
@@ -244,7 +251,11 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, mpileup_path, h5_path1000g, met
     
     # should be the same as hapsb_femaleROHcontam, but a faster implementation
     if not folder_out:
-        folder_out = os.path.dirname(os.path.abspath(mpileup_path))
+        if mpileup_path:
+            folder_out = os.path.dirname(os.path.abspath(mpileup_path))
+        else:
+            assert(hdf5_path != None)
+            folder_out = os.path.dirname(os.path.abspath(hdf5_path))
 
     prepare_path_general(folder_out, iid, prefix, "hapCON_ROH", logfile)
     chunks = []
@@ -265,20 +276,23 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, mpileup_path, h5_path1000g, met
             sumROH += end - start
         print(f'a total of {len(chunks)} ROH blocks passing filtering threshold found, total length after trimming: {100*sumROH:.3f}cM.')
 
-        
-        hdf5_path = os.path.join(folder_out, "hdf5")
-        if not os.path.exists(hdf5_path):
-            os.makedirs(hdf5_path)
-            print(f'saving hdf5 files in {hdf5_path}')
+        if mpileup_path:
+            hdf5_path = os.path.join(folder_out, "hdf5")
+            if not os.path.exists(hdf5_path):
+                os.makedirs(hdf5_path)
+                print(f'saving hdf5 files in {hdf5_path}')
 
-        t1 = time.time()
-        prms = [ [os.path.join(mpileup_path, f'{iid}.chr{ch}.mpileup'), 
-            h5_path1000g + str(ch) + ".hdf5", iid, -np.inf, np.inf, hdf5_path, False] \
-                for ch in range(1, 23)]
-        results = multi_run(mpileup2hdf5, prms, processes)
-        e_rate = np.mean(np.array([err for err, _, _ in results]))
-        print(f'finished reading mpileup files, takes {time.time()-t1:.3f}s')
-        print(f'estimated genotyping error: {e_rate:.3f}')
+            t1 = time.time()
+            prms = [ [os.path.join(mpileup_path, f'{iid}.chr{ch}.mpileup'), 
+                h5_path1000g + str(ch) + ".hdf5", iid, -np.inf, np.inf, hdf5_path, False] \
+                    for ch in range(1, 23)]
+            results = multi_run(mpileup2hdf5, prms, processes)
+            e_rate = np.mean(np.array([err for err, _, _ in results]))
+            print(f'finished reading mpileup files, takes {time.time()-t1:.3f}s')
+            print(f'estimated genotyping error: {e_rate:.3f}')
+        else:
+            assert(hdf5_path != None)
+
 
         # preload hmm models
         t1 = time.time()

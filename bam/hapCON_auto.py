@@ -10,7 +10,7 @@ from toHDF5 import mpileup2hdf5
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run hapROH(on autosomes) from mpileup output')
-    parser.add_argument('-b', action="store", dest="mpath", type=str, required=False,
+    parser.add_argument('--mpileup', action="store", dest="mpath", type=str, required=False,
                         help="Basepath to a list of mpileup file")
     parser.add_argument('-i', action="store", dest="iid", type=str, required=True,
                         help="IID of the target individual.")
@@ -74,10 +74,9 @@ if __name__ == '__main__':
 
     ################## Use the called ROH region to estimate contamination ###############
     contam, se = hapsb_femaleROHcontam_preload(iid, f"{basepath}/hapRoh_iter/{iid}_roh_full.csv",
-        f"{basepath}/hdf5",
         "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
         "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
-        e_rate=err, processes=p, prefix=args.prefix, logfile=False)
+        hdf5_path=f"{basepath}/hdf5", e_rate=err, processes=p, prefix=args.prefix, logfile=False)
 
     # iterate the process if necessary
     if contam >= 0.025:
@@ -99,10 +98,9 @@ if __name__ == '__main__':
                 c=contam_prev, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
                 logfile=True, combine=True, file_result="_roh_full.csv")
             contam, se = hapsb_femaleROHcontam_preload(iid, f"{basepath}/hapRoh_iter/{iid}_roh_full.csv",
-                f"{basepath}/hdf5",
                 "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
                 "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
-                e_rate=err, processes=p, prefix=args.prefix, logfile=False)
+                hdf5_path=f"{basepath}/hdf5", e_rate=err, processes=p, prefix=args.prefix, logfile=False)
             niter += 1
             diff = abs(contam_prev - contam)
             print(f'iteration {niter} done, prev contam: {round(contam_prev, 6)}, current contam: {round(contam, 6)}')
@@ -116,12 +114,12 @@ if __name__ == '__main__':
     else:
         converged = True
 
-    with open(f'{basepath}/{iid}.results', 'w') as f:
-        f.write(f'Number of target sites covered by at least one read: {numSitesCovered}\n')
-        f.write(f'Method1: Fixing genotyping error rate\n')
-        f.write(f'\tEstimated genotyping error via flanking region: {round(err, 6)}\n')
-        f.write(f'\tconverged: {converged}\n')
-        f.write(f'\tMLE for contamination using BFGS: {round(contam, 6)} ({round(contam-1.96*se, 6)} - {round(contam+1.96*se, 6)})\n')
+    # with open(f'{basepath}/{iid}.results', 'w') as f:
+    #     f.write(f'Number of target sites covered by at least one read: {numSitesCovered}\n')
+    #     f.write(f'Method1: Fixing genotyping error rate\n')
+    #     f.write(f'\tEstimated genotyping error via flanking region: {round(err, 6)}\n')
+    #     f.write(f'\tconverged: {converged}\n')
+    #     f.write(f'\tMLE for contamination using BFGS: {round(contam, 6)} ({round(contam-1.96*se, 6)} - {round(contam+1.96*se, 6)})\n')
     
 
 

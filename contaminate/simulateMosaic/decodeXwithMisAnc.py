@@ -30,7 +30,7 @@ if __name__ == '__main__':
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS  # Need this import
 
 
-    base_path="./simulated/1000G_Mosaic/TSI/maleXMisAnc/" 
+    base_path="./simulated/1000G_Mosaic/TSI/maleXMisAnc_noContam/" 
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
     ch='X'
 
