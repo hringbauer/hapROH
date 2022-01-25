@@ -3,7 +3,7 @@ hapCon is an extension of hapROH for estimaing contamination rate for male aDNA 
 
 We have prepared a detailed [online documentation](https://haproh.readthedocs.io/en/latest/hapCON.html) for hapCon. In addition, a jupyter notebook guide for using our method is availble at ./Notebooks/Vignettes/hapCon_vignette.ipynb in this repository. We also have a [preprint](https://www.biorxiv.org/content/10.1101/2021.12.20.473429v1) for hapCon if you are interested in more technical details and its usage limits.
 
-This hapCon repository is a forked github repository from the main develop repository for [hapROH](https://www.nature.com/articles/s41467-021-25289-w), a method for identifying ROH in low-coverage ancient DNA data. We invite you to visit [hapROH's own github repo](https://github.com/hringbauer/hapROH) for more details.
+This hapCon repository is a forked github repository from the main develop repository for [hapROH](https://www.nature.com/articles/s41467-021-25289-w), a method for identifying ROH in low-coverage ancient DNA data. We invite you to visit [hapROH's own github repo](https://github.com/hringbauer/hapROH) for more details about hapROH.
 
 Author: Yilei Huang, Dec 2021
 
