@@ -319,9 +319,9 @@ class RC_Model_Emissions_withContamination(RC_Model_Emissions):
         # p_read = np.array([e_rate, 0.5, 1 - e_rate]) # original emission model with no contamination
         assert(len(pCon) == ob_stat.shape[1]) # sanity check
         p_read = np.zeros((ob_stat.shape[1], 3))
-        p_read[:, 0] = (1-c)*e_rate + c*pCon*(1-e_rate)
+        p_read[:, 0] = (1-c)*e_rate + c*pCon*(1-e_rate) + c*(1-pCon)*e_rate
         p_read[:, 1] = 0.5*(1-c) + c*pCon*(1-e_rate)
-        p_read[:, 2] = (1-c)*(1-e_rate) + c*pCon*(1-e_rate)
+        p_read[:, 2] = (1-c)*(1-e_rate) + c*pCon*(1-e_rate) + c*(1-pCon)*e_rate
 
         # Calculate the Binomial Likelihoods of RC Data
         rc_tot = np.sum(ob_stat, axis=0)

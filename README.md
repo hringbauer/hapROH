@@ -1,4 +1,13 @@
-# hapROH
+# hapCon
+hapCon is an extension of hapROH for estimaing contamination rate for male aDNA samples.
+
+We have prepared a detailed [online documentation](https://haproh.readthedocs.io/en/latest/hapCON.html) for hapCon. In addition, a jupyter notebook guide for using our method is availble at ./Notebooks/Vignettes/hapCon_vignette.ipynb in this repository. We also have a [preprint](https://www.biorxiv.org/content/10.1101/2021.12.20.473429v1) for hapCon if you are interested in more technical details and its usage limits.
+
+This hapCon repository is a forked github repository from the main develop repository for [hapROH](https://www.nature.com/articles/s41467-021-25289-w), a method for identifying ROH in low-coverage ancient DNA data. We invite you to visit [hapROH's own github repo](https://github.com/hringbauer/hapROH) for more details.
+
+Author: Yilei Huang, Dec 2021
+
+<!-- # hapROH
 Software to call ROH from ancient and present-day DNA using reference haplotypes.
 Author: Harald Ringbauer, September 2020
 Code released under GNU General Public License v3.0
@@ -15,11 +24,7 @@ The code behind the hapROH package can be found in `./package/`
 
 Large data is not shared (the `./Data` folder is git-ignored) via github. You will need to download empirical data. You can download the reference data as explained on the Pip Project site. https://pypi.org/project/hapROH/. Alternatively you can download the 1000G data directly and run the notebooks to process them into the required hdf5 format (see below). For simulated data, you can generate data via running the simulation notebooks described below.
 
-# hapCON
-hapCON is an extension of hapROH for estimaing contamination rate for male aDNA samples.
-Detailed documentations can be seen at https://haproh.readthedocs.io/en/latest/hapCON.html
 
-Author: Yilei Huang, Dec 2021
 
 
 # Internal notes about folder structure:
@@ -169,4 +174,4 @@ Notebooks that wrap shell commands for these two are found in `./Notebooks/PLINK
 General strategy: Analyze the Mosaic Individuals with copied in ROH blocks. For that run the tools on the datasets with 100 individuals.
 First transfer H5 to VCF (for BCFTOOLS also the PL genotype likelihood field in bcftools is needed). Tools for that conversion are found in `./PackagesSupport/h5_python/h5_functions.py`.
 
-After running the VCF (saving into output folders, after transforming to rough "HAPSBURG" ROH format), 2) split up the output .csv (or dataframe) into the individual output folders. These can then be analyzed in the same way as HAPSBURG outputs, with tools in `./Notebooks/Mosaic1000G_Analysis`
+After running the VCF (saving into output folders, after transforming to rough "HAPSBURG" ROH format), 2) split up the output .csv (or dataframe) into the individual output folders. These can then be analyzed in the same way as HAPSBURG outputs, with tools in `./Notebooks/Mosaic1000G_Analysis` -->

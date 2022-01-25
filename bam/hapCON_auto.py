@@ -66,7 +66,7 @@ if __name__ == '__main__':
         e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
         processes=args.processes, delete=False, output=True, save=True, save_fp=False, 
         n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False,
-        c=0.025, roh_min_l_final=0.06, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
+        c=0.05, roh_min_l_final=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
         logfile=True, combine=True, file_result="_roh_full.csv")
     
     ######################################################################################
@@ -79,8 +79,8 @@ if __name__ == '__main__':
         hdf5_path=f"{basepath}/hdf5", e_rate=err, processes=p, prefix=args.prefix, logfile=False)
 
     # iterate the process if necessary
-    if contam >= 0.025:
-        print(f'estimated contamination rate {round(contam, 6)} greater than 0.025, start iteration.')
+    if contam >= 0.05:
+        print(f'estimated contamination rate {round(contam, 6)} greater than 0.05, start iteration.')
         diff = np.inf
         niter = 1
         maxIter = args.niter

@@ -257,6 +257,11 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
             assert(hdf5_path != None)
             folder_out = os.path.dirname(os.path.abspath(hdf5_path))
 
+    if prefix:
+        fileName = f'{iid}.{prefix}.hapCON_ROH.txt'
+    else:
+        fileName = f'{iid}.hapCON_ROH.txt'
+
     prepare_path_general(folder_out, iid, prefix, "hapCON_ROH", logfile)
     chunks = []
     with open(roh_list) as f:
@@ -334,10 +339,6 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
                     findroot_prime = lambda x, x0, grad, hess: (x-x0)*hess + grad
                     res = newton(findroot, x, fprime=findroot_prime, args=(x, grad, h))
                     se = res/1.96
-            if prefix:
-                fileName = f'{iid}.{prefix}.hapCON_ROH.txt'
-            else:
-                fileName = f'{iid}.hapCON_ROH.txt'
             with open(f'{folder_out}/{fileName}', 'w') as f:
                 f.write(f'Method1: Fixing genotyping error rate at {e_rate}\n')
                 f.write(f'\tROH blocks obtained from: {roh_list}\n')
@@ -355,6 +356,8 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
             return x, se
     else:
         print(f'not enough ROH blocks found to estimate contamination...')
+        with open(f'{folder_out}/{fileName}', 'w') as f:
+            f.write('not enough ROH blocks found to estimate contamination...')
         sys.exit()
 
 
@@ -677,7 +680,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
     h5_path1000g = None, meta_path_ref = None,
     folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3,
-    logfile=False, output=False, cleanup=False):
+    logfile=False, output=False, cleanup=False, prefix="hapcon.OOA_CEU"):
     """Run HapCon to estimate male X chromosome contamination.
 
     Parameters
@@ -721,6 +724,8 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
         Whether to produce a logfile. Default False.
     cleanup: bool
         Whether to delete the intermediary .hdf5 file. Default False.
+    prefix: str
+        The output file will have file name $iid.$prefix.txt
     
     Returns
     ----------
@@ -800,7 +805,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     print(f'estimated contamination rate: {con_mle:.6f}({lower:.6f} - {upper:.6f})')
 
     #writing output to file
-    with open(f'{folder_out}/{iid}.hapcon.OOA_CEU.txt', 'w') as out:
+    with open(f'{folder_out}/{iid}.{prefix}.txt', 'w') as out:
         out.write(f'Number of target sites covered by at least one read: {numSitesCovered}\n')
         out.write(f'Method1: Fixing genotyping error rate\n')
         out.write(f'\tEstimated genotyping error via flanking region: {round(err,6)}\n')

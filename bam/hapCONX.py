@@ -25,6 +25,7 @@ if __name__ == '__main__':
                         help="Minimum base quality.")
     parser.add_argument('--cleanup', action="store_true", dest="cleanup", required=False, 
                         help="whether to delete the intermediary hdf5 file. Default: False.")
+    parser.add_argument('-p', action="store", dest="prefix", type=str, required=False, default="hapCon.OOA_CEU")
     
     args = parser.parse_args()
 
@@ -40,4 +41,4 @@ if __name__ == '__main__':
     hapCon_chrom_BFGS(iid=args.iid, mpileup=args.mpileup, bam=args.bam, q=args.q, Q=args.Q,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=conpop, 
     h5_path1000g = args.ref, meta_path_ref = args.meta, folder_out="", 
-    c=0.025, roh_jump=300, e_rate_ref=1e-3, logfile=False, output=False, cleanup=args.cleanup)
+    c=0.025, roh_jump=300, e_rate_ref=1e-3, logfile=False, output=False, cleanup=args.cleanup, prefix=args.prefix)
