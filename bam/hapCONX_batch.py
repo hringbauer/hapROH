@@ -4,10 +4,12 @@ import sys
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert bam file to hdf5 format that stores readcount info at target sites.')
-    parser.add_argument('-m', action="store", dest="mpileup", type=str, required=False,
-                        help="path to samtools mpileup file")
-    parser.add_argument('-b', action="store", dest="bam", type=str, required=False,
-                        help="path to bam file")
+    parser.add_argument('--mlist', action="store", dest="mpileup", type=str, required=False,
+                        help="path to a text file containing a list of mpileup files.")
+    parser.add_argument('--blist', action="store", dest="bam", type=str, required=False,
+                        help="path to a text file containing a list of BAM files.")
+    parser.add_argument('-t', action="store", dest='t', type=int, required=False, default=1,
+                        help="Number of processes to use. We recommend using multiple processes if your list contains multiple files.")
     parser.add_argument('-r', action="store", dest="ref", type=str, required=True,
                         help="path to reference panel")
     parser.add_argument('--meta', action="store", dest="meta", type=str, required=False, 
@@ -36,11 +38,41 @@ if __name__ == '__main__':
 
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS
+    from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
 
+    if args.mpileup and args.bam:
+        print('please only provide one of BAM list or mpileup list...')
+        sys.exit()
+
+    sampleList = []
     conpop = [args.conpop]
     exclude_pops = [args.exHap]
 
-    hapCon_chrom_BFGS(iid=args.iid, mpileup=args.mpileup, bam=args.bam, q=args.q, Q=args.Q,
-    n_ref=2504, diploid_ref=False, exclude_pops=exclude_pops, conPop=conpop, 
-    h5_path1000g = args.ref, meta_path_ref = args.meta, folder_out="", 
-    c=args.c, roh_jump=args.jump, e_rate_ref=args.miscopy, logfile=args.log, cleanup=True, prefix=args.prefix)
+    if args.mpileup:
+        with open(args.mpileup) as f:
+            for line in f:
+                iid, path2mpileup = line.strip().split()
+                sampleList.append((iid, path2mpileup))
+        prms = [[iid, path2mpileup, None, 30, 30, 2504, False, exclude_pops, conpop, 
+                args.ref, args.meta, "", args.c, args.jump, args.miscopy,
+                args.log, False, False, args.prefix] for iid, path2mpileup in sampleList]
+    elif args.bam:
+        with open(args.bam) as f:
+            for line in f:
+                iid, path2bam = line.strip().split()
+                sampleList.append((iid, path2bam))
+        prms = [[iid, None, path2bam, 30, 30, 2504, False, exclude_pops, conpop, 
+                args.ref, args.meta, "", args.c, args.jump, args.miscopy,
+                args.log, False, False, args.prefix] for iid, path2bam in sampleList]
+    else:
+        print('One of BAM or mpielup file list must be given.')
+        sys.exit()
+    
+    print(f'running hapCon for {len(prms)} samples using {args.t} processes...')
+    results = multi_run(hapCon_chrom_BFGS, prms, args.t)
+    with open('hapCon.summary.tsv', 'w') as out:
+        out.write(f'iid\tcontamX\tNumber_of_sites_covered\n')
+        for sample, result in zip(sampleList, results):
+            iid, _ = sample
+            con_mle, lower, upper, numSitesCovered = result
+            out.write(f'{iid}\t{round(con_mle,3)}({round(lower,3)} - {round(upper,3)})\t{numSitesCovered}\n')

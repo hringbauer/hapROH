@@ -756,7 +756,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     assert(len(iid) != 0)
 
     ### Create Folder if needed, and pipe output if wanted
-    prepare_path_general(folder_out, iid, None, "hapCON", logfile) # Set the logfile
+    prepare_path_general(folder_out, iid, None, "hapCon", logfile) # Set the logfile
 
     ################## pre-process of mpileup or BAM file ################
     if bam:
@@ -816,7 +816,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
         print(f'delete {path2hdf5}')
     shutil.rmtree(f'{folder_out}/{iid}') # this is a hack
 
-    return con_mle, lower, upper
+    return con_mle, lower, upper, numSitesCovered
 
 
 

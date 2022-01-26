@@ -12,6 +12,7 @@ from hapsburg.PackagesSupport.loadEigenstrat.loadEigenstrat import load_eigenstr
 import time
 import pysam
 from itertools import zip_longest
+import sys
 
 def save_hdf5(path, gt, ref, alt, pos, chs,
               rec, samples, ad=[], sex=[], clst=[],
@@ -242,7 +243,6 @@ def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, s
     pos = pos[subset]
     rec = f['variants/MAP'][subset]
     ref = f['variants/REF'][subset]
-    
     alt = f['variants/ALT']
     is1D = len(alt.shape) == 1 # the 1240k hdf5's alt is a 2d array, while the new full 1000Genome hdf5 is 1d array
     if is1D:
@@ -263,7 +263,9 @@ def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, s
     major_foc = 0
     minor_foc = 0
     base2index = {'A':0, 'C':1, 'G':2, 'T':3}
+
     sf = pysam.AlignmentFile(path2bam, "rb")
+
     print(f'total number of mapped reads: {sf.mapped}')
     for i, p in enumerate(pos):
         for pileupcolumn in sf.pileup(ch, p-4, p+5, min_mapping_quality=minMapQual, min_base_quality=minBaseQual, truncate=True):
