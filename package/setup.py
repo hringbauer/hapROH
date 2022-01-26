@@ -38,5 +38,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-    install_requires=['numpy', 'pandas', 'scipy', 'h5py', 'psutil', 'numdifftools'],
+    install_requires=['numpy', 'pandas', 'scipy', 'h5py', 'psutil', 'numdifftools', 'cython', 'matplotlib', 'pysam'],
 )
