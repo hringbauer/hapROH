@@ -239,16 +239,24 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
 def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, s=-np.inf, e=np.inf, trim=0, outPath="", output=True):
     f = h5py.File(refHDF5, 'r')
     pos = np.array(f['variants/POS'])
-    subset = np.logical_and(pos >= s, pos <= e)
-    pos = pos[subset]
-    rec = f['variants/MAP'][subset]
-    ref = f['variants/REF'][subset]
+    rec = f['variants/MAP']
+    ref = f['variants/REF']
     alt = f['variants/ALT']
     is1D = len(alt.shape) == 1 # the 1240k hdf5's alt is a 2d array, while the new full 1000Genome hdf5 is 1d array
-    if is1D:
-        alt = alt[subset]
-    else:
-        alt = alt[subset, 0]
+    if not is1D:
+        alt = alt[:, 0].flatten()
+    ref = np.array(ref).astype('str')
+    alt = np.array(alt).astype('str')
+    bases = np.array(['A', 'T', 'G', 'C'])
+    subset1 = np.logical_and(pos >= s, pos <= e)
+    subset2 = np.logical_and(np.in1d(ref, bases), np.in1d(alt, bases))
+    print(f'exclude {np.sum(~subset1)} sites outside the specified region')
+    print(f'exclude {np.sum(~subset2)} non-SNP sites')
+    subset = np.logical_and(subset1, subset2)
+    pos = pos[subset]
+    rec = f['variants/MAP'][subset]
+    ref = ref[subset]
+    alt = alt[subset]
 
     assert(len(ref) == len(pos))
     assert(len(alt) == len(pos))

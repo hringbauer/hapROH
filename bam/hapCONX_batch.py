@@ -45,7 +45,12 @@ if __name__ == '__main__':
         sys.exit()
 
     sampleList = []
-    conpop = [args.conpop]
+    if args.conpop == 'OOA':
+        conpop = ['EUR', 'EAS', 'SAS', 'AMR']
+    elif ',' in args.conpop:
+        conpop = [pop for pop in args.conpop.split(',')]
+    else:
+        conpop = [args.conpop]    
     exclude_pops = [args.exHap]
 
     if args.mpileup:

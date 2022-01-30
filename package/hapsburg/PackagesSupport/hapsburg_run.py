@@ -770,6 +770,8 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
 
     print(f'number of sites covered by at least one read: {numSitesCovered}')
     print(f'hdf5 file saved to {path2hdf5}')
+    if err == 0:
+        err = 1e-3 # to avoid numerical errors
 
     ########################## end of preprocessing ###########################
     # parameters = locals() # Gets dictionary of all local variables at this point

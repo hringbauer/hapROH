@@ -37,7 +37,12 @@ if __name__ == '__main__':
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS
 
-    conpop = [args.conpop]
+    if args.conpop == 'OOA':
+        conpop = ['EUR', 'EAS', 'SAS', 'AMR']
+    elif ',' in args.conpop:
+        conpop = [pop for pop in args.conpop.split(',')]
+    else:
+        conpop = [args.conpop]
     exclude_pops = [args.exHap]
 
     hapCon_chrom_BFGS(iid=args.iid, mpileup=args.mpileup, bam=args.bam, q=args.q, Q=args.Q,
