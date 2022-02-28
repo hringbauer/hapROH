@@ -10,16 +10,16 @@
 #$ -l h_vmem=25G #request 4Gb of memory
 #$ -V # load personal profile
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
-#$ -t 1:18:1
+#$ -t 1:36:1
 
 i=$SGE_TASK_ID
 i=$(($i-1))
 coverages=(0.05 0.1 0.5 1.0 2.0 5.0)
-cov_index=$(($i/3))
+cov_index=$(($i/6))
 cov=${coverages[$cov_index]}
 
-cons=(0.0 0.05 0.1)
-con_index=$(($i-3*$cov_index))
+cons=(0.0 0.05 0.1 0.15 0.2 0.25)
+con_index=$(($i-6*$cov_index))
 con=${cons[$con_index]}
 
 echo cov$cov

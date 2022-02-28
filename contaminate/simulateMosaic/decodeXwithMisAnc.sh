@@ -31,4 +31,4 @@ echo coverage$cov
 echo pop1$pop1
 echo pop2$pop2
 
-python3 decodeXwithMisAnc.py --cov $cov --con 0.1 --err 1e-2 --eref 1e-3 --conpop1 $pop1 --conpop2 $pop2
+python3 decodeXwithMisAnc.py --cov $cov --con 0.0 --err 1e-2 --eref 1e-3 --conpop1 $pop1 --conpop2 $pop2

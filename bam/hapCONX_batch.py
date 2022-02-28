@@ -16,11 +16,15 @@ if __name__ == '__main__':
                         default="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
                         help="path to metadata of the reference panel")
     parser.add_argument('--con', action="store", dest="conpop", type=str, required=False, default="CEU",
-                        help='source of contamination. Default is CEU.')
+                        help='source of contamination. Default is CEU. If you want to use allele frequencies calculated from multiple populations, use comma to delimit them. \
+                            For example, --con CEU, TSI.')
     parser.add_argument('-c', action="store", dest="c", type=float, required=False, default=0.025,
                         help='Starting value for the optimization subroutine. Default is 0.025.')
     parser.add_argument('--exclude', action="store", dest='exHap', type=str, required=False, default="AFR",
-                        help='Exclude certain haplotypes from the copying reference set. Default is AFR')
+                        help='Exclude certain haplotypes from the copying reference set. Default is AFR.\
+                            If you do not want to exclude any haplotypes (this is especially important if you are working with aDNA from Africa),\
+                                then you can simply provide a nonsense string that does not correspond to any populations in the 1000 Genome metadata. For example, --exclude 123.\
+                                    If you want to exluce multiple subpopulations, use comma to separate strings. For example, --exclude CEU, TSI.')
     parser.add_argument('-i', action="store", dest="iid", type=str, required=False, default="",
                         help="IID of the target individual. If unspecified, will use the prefix of the bam/mpileup file.")
     parser.add_argument('--jump', action="store", dest="jump", type=float, required=False, default=300, 
@@ -50,8 +54,12 @@ if __name__ == '__main__':
     elif ',' in args.conpop:
         conpop = [pop for pop in args.conpop.split(',')]
     else:
-        conpop = [args.conpop]    
-    exclude_pops = [args.exHap]
+        conpop = [args.conpop]
+
+    if ',' in args.exHap:
+        exclude_pops = [pop for pop in args.exHap.split(',')]
+    else:
+        exclude_pops = [args.exHap]
 
     if args.mpileup:
         with open(args.mpileup) as f:

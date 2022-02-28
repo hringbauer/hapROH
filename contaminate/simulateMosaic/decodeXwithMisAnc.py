@@ -26,11 +26,10 @@ if __name__ == '__main__':
     os.chdir(path)  # Set the right Path (in line with Atom default)
 
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")  # hack to get local package first in path [FROM HARALD - DELETE!!!]
-    from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom  # Need this import
-    from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS  # Need this import
+    from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS_legacy  # Need this import
 
 
-    base_path="./simulated/1000G_Mosaic/TSI/maleXMisAnc_noContam/" 
+    base_path="/mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleXMisAnc_noContam/" 
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
     ch='X'
 
@@ -75,21 +74,17 @@ if __name__ == '__main__':
     results = np.zeros((100, 3))
     for i in range(100):
         iid = "iid" + str(i)
-        conMLE, lower95, upper95 = hapCon_chrom_BFGS(iid, ch='X', save=True, save_fp=False, 
-            n_ref=2504, diploid_ref=True, exclude_pops=["TSI", 'AFR'], conPop=conPop, 
-            e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
-            post_model="Standard", 
-            path_targets=f"{pathTargets}/data.h5",
+        conMLE, lower95, upper95 = hapCon_chrom_BFGS_legacy(iid,
+            n_ref=2504, exclude_pops=["TSI"], conPop=conPop, 
+            hdf5=f"{pathTargets}/data.h5",
             h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
             meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
-            folder_out=outFolder, prefix_out="",
-            c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err_rate, e_rate_ref=e_rate_ref,
-            max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False, posterior=True)
+            folder_out=outFolder, e_rate=err_rate, e_rate_ref=e_rate_ref)
 
         results[i, :] = (conMLE, lower95, upper95)
     
     # write output to a file
-    with open(f'{outFolder}/batchresults_bfgs_{args.conpop1}_{args.conpop2}_exAFR.txt', 'w') as out:
+    with open(f'{outFolder}/batchresults_bfgs_{args.conpop1}_{args.conpop2}.txt', 'w') as out:
         out.write(f'###contamination={con}, coverage={cov}, genotyping error={err_rate}, ref err={e_rate_ref}\n')
         out.write(f'###sampleID\tconMLE\tlower95CI\tupper95CI\n')
         for i in range(100):

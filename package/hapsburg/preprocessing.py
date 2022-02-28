@@ -407,7 +407,7 @@ class PreProcessingHDF5(PreProcessing):
             gts = gts.T # Transpose the data to right format
 
             # get rid of haplotypes with missing data
-            # eg. male sample's only has one chrX
+            # eg. male samples only have one chrX
             # this is problematic for large reference panel as it takes toooo much memory
             # TODO: fix this later
             if removeIncompleteHap:

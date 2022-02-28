@@ -19,8 +19,7 @@ import shutil
 
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
 from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data, move_X_to_parent_folder
-from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bam2hdf5
-
+from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bam2hdf5, mpileup2hdf5_damageAware
 
 # def hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
 #                 folder_out, c, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
@@ -679,7 +678,7 @@ def hapCon_chrom_BFGS_legacy(iid="", hdf5=None,
 def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
     h5_path1000g = None, meta_path_ref = None,
-    folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3,
+    folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, damage=False,
     logfile=False, output=False, cleanup=False, prefix="hapcon.OOA_CEU"):
     """Run HapCon to estimate male X chromosome contamination.
 
@@ -765,7 +764,11 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
         print(f'finished reading bam file, takes {time.time()-t1:.3f}.')
     else:
         t1 = time.time()
-        err, numSitesCovered, path2hdf5 = mpileup2hdf5(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
+        if not damage:
+            err, numSitesCovered, path2hdf5 = mpileup2hdf5(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
+        else:
+            print(f'Doing damage aware parsing of mpileup file.')
+            err, numSitesCovered, path2hdf5 = mpileup2hdf5_damageAware(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
         print(f'finished reading mpileup file, takes {time.time()-t1:.3f}.')
 
     print(f'number of sites covered by at least one read: {numSitesCovered}')
