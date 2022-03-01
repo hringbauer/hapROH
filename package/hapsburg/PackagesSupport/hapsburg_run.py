@@ -679,7 +679,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
     h5_path1000g = None, meta_path_ref = None,
     folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, damage=False,
-    logfile=False, output=False, cleanup=False, prefix="hapcon.OOA_CEU"):
+    logfile=False, output=False, cleanup=False, prefix="hapCon"):
     """Run HapCon to estimate male X chromosome contamination.
 
     Parameters
@@ -689,7 +689,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     mpileup: str
         path to mpileup file of chrX. You need to specify one of mpileup/bam/hdf5.
     bam: str
-        path to BAM file. You need to specify one of mpileup/bam/hdf5.
+        path to BAM file. You need to specify one of mpileup/BAM.
     q: int
         minimum mappling quality for reads in BAM file to be considered. Only applicable if used in conjunction with the bam option.
     Q: int
@@ -737,7 +737,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     """    
 
     if not mpileup and not bam:
-        print(f'Must specify one of mpileup/bam/hdf5.')
+        print(f'Must specify one of mpileup/BAM.')
         sys.exit()
     elif len(folder_out) == 0:
         if bam:
@@ -753,6 +753,11 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
             mpileupName = os.path.basename(mpileup)
             iid = mpileupName[:mpileupName.find(".mpileup")]
     assert(len(iid) != 0)
+    
+    # check if the index file for BAM exists
+    if bam and not os.path.isfile(bam + ".bai"):
+        print(f'No index file found for {bam}. Need to index BAM file using samtools index.')
+        sys.exit()
 
     ### Create Folder if needed, and pipe output if wanted
     prepare_path_general(folder_out, iid, None, "hapCon", logfile) # Set the logfile
