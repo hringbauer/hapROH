@@ -33,7 +33,7 @@ if __name__ == '__main__':
                         help="Minimum mapping quality. Only applicable when you use BAM file.")
     parser.add_argument('-Q', action="store", dest="Q", type=int, required=False, default=30, 
                         help="Minimum base quality. Only applicable when you use BAM file.")
-    parser.add_argument('-p', action="store", dest="prefix", type=str, required=False, default="hapCon.OOA_CEU")
+    parser.add_argument('-p', action="store", dest="prefix", type=str, required=False, default="hapCon")
     parser.add_argument('--damage', action="store_true", dest="damage",
                         help="Do aDNA damage aware parsing of BAM file or mpileup file.")
     parser.add_argument('--log', action="store_true", dest="log",
