@@ -298,23 +298,10 @@ def bring_over_samples(h5_original, h5_target, field="samples", dt="S32"):
         f_samples[:] = np.array(samples).astype(dt)
     print("We did it. Finished.")
     return
+    
 
 ##################################################################
-### Example Case, test whether ad_to_genotypeL does what it should
-if __name__ == '__main__':
-	ad = np.array([[[1,0], [1,1]],  [[3,3], [3,0]], [[10,10], [0,10]]])
-
-	gl = ad_to_gentoypeL(ad)
-	pl = gl_to_pl(gl)
-
-	i,j=2,1
-	print(ad[i, j, :])
-	print(gl[i, j, :])
-	print(pl[i, j, :])
-    
-    
-##################################################################
-### Functions to merge two hdf5s into one genotype hdf5
+### Functions to merge hdf5s into one genotype hdf5
 
 def concat_fields(f, f2, field1, field2, axis=0):
     """Concatenate two hdf5 fields and return data"""
@@ -334,6 +321,7 @@ def combine_hdf5s(f,g, path_new):
              f["variants/MAP"], samples, path_new, gp=gp, af=f["variants/AF_ALL"][:],
               compression="gzip", ad_group=False, gt_type="int8")
     
+##################################################################    
 ##################################################################
 ### Functions to generate HDF5 Files (and pileups) from .bam Files    
 
@@ -409,12 +397,12 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
                     minor_adj += np.sum(rc) - np.max(rc)
 
     if output:
-        print(f'number of major reads at flanking sites: {major_adj}')
-        print(f'number of minor reads at flanking sites: {minor_adj}')
-        print(f'number of major reads at focal sites: {major_foc}')
-        print(f'number of minor reads at focal sites: {minor_foc}')
-        print(f'err rate at flanking sites: {minor_adj/(minor_adj + major_adj)}')
-        print(f'err rate at focal sites: {minor_foc/(minor_foc + major_foc)}')
+        print(f'number of major reads at flanking sites: {major_adj:.0f}')
+        print(f'number of minor reads at flanking sites: {minor_adj:.0f}')
+        print(f'number of major reads at focal sites: {major_foc.0f}')
+        print(f'number of minor reads at focal sites: {minor_foc.0f}')
+        print(f'err rate at flanking sites: {minor_adj/(minor_adj + major_adj).4g}')
+        print(f'err rate at focal sites: {minor_foc/(minor_foc + major_foc).4g}')
 
     # finished reading bam file and we have made an estimate for genotyping error
     # now write a hdf5 file for read count at target sites
