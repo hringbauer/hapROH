@@ -28,7 +28,7 @@ yilei_huang AT eva mpg de
 (fill in AT with @ and other blanks with dots)
 
 Acknowledgments
-**********
+*****************
 
 Big thank you to the two original co-authors of hapROH, Matthias Steinrücken and John Novembre. This project and follow-ups profited immensely from Matthias' deep knowledge about HMMs and from John's extensive experience in developing population genetics software. Countless discussions with both have been key for moving forward this project. Another big thanks goes to Nick Patterson, who informed me about the benefits of working with rescaled HMMs - substantially improving the runtime of hapROH. 
 

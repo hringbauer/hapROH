@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to the Documentation of hapROH and hapCon
-==================================
+======================================================
 
 .. toctree::
    :maxdepth: 2
