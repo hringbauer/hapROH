@@ -12,7 +12,7 @@ A short tutorial and example usage is available `here <https://github.com/hyl317
 
 Application Range of hapCon:
     HapCon works with ancient DNA data for modern human. It does not work for Neaderthals and Denisovans and other archaic hominins. 
-    Our simulations show that hapCon works well for a wide range of ancestries and sample age, including Ust Ishim, one of the oldest modern humans ever sequenced, ancient Africans (e.g, Mota) and Native Americans.
+    Our simulations show that hapCon works well for a wide range of ancestries and sample age, including Ust Ishim, one of the oldest modern humans ever sequenced, ancient Africans (e.g, Mota) and native Americans.
     However, we have found that hapCon does work well with Sub-Saharan ancient foragers (e.g, samples from Site Hora 1 and Fingira, both in present-day Malawi, `Lipson et al. Nature 2022 <https://www.nature.com/articles/s41586-022-04430-9>`_). These samples can contain a substantial amount of Southern African related ancestry, which is not present in the 1000Genome dataset. For details, see Supplementary Note 4 of our manuscript.
 
 
