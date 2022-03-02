@@ -13,7 +13,7 @@ Welcome to the Documentation of hapROH and hapCon
    intro
    install
    tutorial
-   hapCON
+   hapCon
    FAQ
 
 
