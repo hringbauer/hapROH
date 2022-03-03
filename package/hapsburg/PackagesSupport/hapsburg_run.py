@@ -19,7 +19,7 @@ import shutil
 
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
 from hapsburg.PackagesSupport.parallel_runs.helper_functions import prepare_path, multi_run, combine_individual_data, move_X_to_parent_folder
-from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bam2hdf5, mpileup2hdf5_damageAware
+from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bam2hdf5, bamTable2hdf5, mpileup2hdf5_damageAware
 
 # def hapsb_chunk_negloglik(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
 #                 folder_out, c, conPop=["CEU"], roh_in=1, roh_out=0, roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
@@ -675,7 +675,7 @@ def hapCon_chrom_BFGS_legacy(iid="", hdf5=None,
     con_mle, lower, upper = hmm.optimize_ll_contamination_BFGS(c)
     return con_mle, lower, upper
 
-def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
+def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, bamTable=None, q=30, Q=30,
     n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
     h5_path1000g = None, meta_path_ref = None,
     folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, damage=False,
@@ -687,9 +687,11 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     iid: str
         IID of the Target Individual, if not provided, will be deduced from the prefix of BAM or mpileup file.
     mpileup: str
-        path to mpileup file of chrX. You need to specify one of mpileup/bam/hdf5.
+        path to mpileup file of chrX.
     bam: str
-        path to BAM file. You need to specify one of mpileup/BAM.
+        path to BAM file.
+    bamTable: str
+        path to output of BamTable. You need to specify one of mpileup/BAM/bamTable. We recommend using BamTable as your first choice.
     q: int
         minimum mappling quality for reads in BAM file to be considered. Only applicable if used in conjunction with the bam option.
     Q: int
@@ -736,22 +738,27 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
         upper bound for the 95% CI of estimated contamination.
     """    
 
-    if not mpileup and not bam:
-        print(f'Must specify one of mpileup/BAM.')
+    if not mpileup and not bam and not bamTable:
+        print(f'Must specify one of mpileup/BAM/bamTable.')
         sys.exit()
     elif len(folder_out) == 0:
         if bam:
             folder_out = os.path.dirname(os.path.abspath(bam))
-        else:
+        elif mpileup:
             folder_out = os.path.dirname(os.path.abspath(mpileup))
+        else:
+            folder_out = os.path.dirname(os.path.abspath(bamTable))
 
     if len(iid) == 0:
-        if bam != None:
+        if bam:
             bamName = os.path.basename(bam)
             iid = bamName[:bamName.find(".bam")]
-        else:
+        elif mpileup:
             mpileupName = os.path.basename(mpileup)
             iid = mpileupName[:mpileupName.find(".mpileup")]
+        else:
+            bamTableName = os.path.basename(bamTable)
+            iid = bamTableName[:bamTableName.find(".BamTable")]
     assert(len(iid) != 0)
     
     # check if the index file for BAM exists
@@ -763,18 +770,20 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, q=30, Q=30,
     prepare_path_general(folder_out, iid, None, "hapCon", logfile) # Set the logfile
 
     ################## pre-process of mpileup or BAM file ################
+    t1 = time.time()
     if bam:
-        t1 = time.time()
         err, numSitesCovered, path2hdf5 = bam2hdf5(bam, h5_path1000g, ch='X', iid=iid, minMapQual=q, minBaseQual=Q, s=5000000, e=154900000, outPath=folder_out)
         print(f'finished reading bam file, takes {time.time()-t1:.3f}.')
-    else:
-        t1 = time.time()
+    elif mpileup:
         if not damage:
             err, numSitesCovered, path2hdf5 = mpileup2hdf5(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
         else:
             print(f'Doing damage aware parsing of mpileup file.')
             err, numSitesCovered, path2hdf5 = mpileup2hdf5_damageAware(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
         print(f'finished reading mpileup file, takes {time.time()-t1:.3f}.')
+    else:
+        err, numSitesCovered, path2hdf5 = bamTable2hdf5(bamTable, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
+        print(f'finished reading BamTable, takes {time.time()-t1:.3f}')
 
     print(f'number of sites covered by at least one read: {numSitesCovered}')
     print(f'hdf5 file saved to {path2hdf5}')

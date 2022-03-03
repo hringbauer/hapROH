@@ -6,8 +6,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Convert bam file to hdf5 format that stores readcount info at target sites.')
     parser.add_argument('-m', action="store", dest="mpileup", type=str, required=False,
                         help="path to samtools mpileup file")
-    parser.add_argument('-b', action="store", dest="bam", type=str, required=False,
+    parser.add_argument('--bam', action="store", dest="bam", type=str, required=False,
                         help="path to bam file")
+    parser.add_argument('--bamtable', action="store", dest="bamtable", type=str, required=False,
+                        help="path to BamTable output")
     parser.add_argument('-r', action="store", dest="ref", type=str, required=True,
                         help="path to reference panel")
     parser.add_argument('--meta', action="store", dest="meta", type=str, required=False, 
@@ -55,7 +57,7 @@ if __name__ == '__main__':
     else:
         exclude_pops = [args.exHap]
 
-    hapCon_chrom_BFGS(iid=args.iid, mpileup=args.mpileup, bam=args.bam, q=args.q, Q=args.Q,
+    hapCon_chrom_BFGS(iid=args.iid, mpileup=args.mpileup, bam=args.bam, bamTable=args.bamtable, q=args.q, Q=args.Q,
     n_ref=2504, diploid_ref=False, exclude_pops=exclude_pops, conPop=conpop, 
     h5_path1000g = args.ref, meta_path_ref = args.meta, folder_out="", 
     c=args.c, roh_jump=args.jump, e_rate_ref=args.miscopy, damage=args.damage, logfile=args.log, cleanup=False, prefix=args.prefix)
