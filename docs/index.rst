@@ -14,6 +14,7 @@ Welcome to the Documentation of hapROH and hapCon
    install
    tutorial
    hapCon
+   hapROH_with_contamination
    FAQ
 
 
