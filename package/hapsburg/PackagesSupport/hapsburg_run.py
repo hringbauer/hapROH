@@ -187,7 +187,7 @@ def hapsb_multiChunk_preload(c, hmms, processes=1):
 #         sys.exit()
 
 def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
-                mpileup_path=None, hdf5_path=None, folder_out=None, 
+                hdf5_path=None, folder_out=None, 
                 init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_jump=300, 
                 e_rate=1e-2, e_rate_ref=1e-3, processes=1, n_ref=2504, 
                 exclude_pops=["AFR"], prefix=None, logfile=False, cleanup=False):
@@ -204,10 +204,8 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
         Path to the reference panel.
     meta_path_ref: str
         Path to the metadata of reference panel.
-    mpileup_path: str
-        Directory of mpileup files. One file for each autosome.
     hdf5_path: str
-        Directory of hdf5 files. One file for each autosome. One of mpileup_path or hdf5_path must be provided.
+        Directory of hdf5 files. One file for each autosome.
     folder_out: str
         Directory in which you want the output to reside. If not given, all output files will be in the parent directory of mpileup_path.
     init_c: float
@@ -250,11 +248,7 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
     
     # should be the same as hapsb_femaleROHcontam, but a faster implementation
     if not folder_out:
-        if mpileup_path:
-            folder_out = os.path.dirname(os.path.abspath(mpileup_path))
-        else:
-            assert(hdf5_path != None)
-            folder_out = os.path.dirname(os.path.abspath(hdf5_path))
+        folder_out = os.path.dirname(os.path.abspath(hdf5_path))
 
     if prefix:
         fileName = f'{iid}.{prefix}.hapCON_ROH.txt'
@@ -280,34 +274,21 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
             sumROH += end - start
         print(f'a total of {len(chunks)} ROH blocks passing filtering threshold found, total length after trimming: {100*sumROH:.3f}cM.')
 
-        if mpileup_path:
-            hdf5_path = os.path.join(folder_out, "hdf5")
-            if not os.path.exists(hdf5_path):
-                os.makedirs(hdf5_path)
-                print(f'saving hdf5 files in {hdf5_path}')
-
-            t1 = time.time()
-            prms = [ [os.path.join(mpileup_path, f'{iid}.chr{ch}.mpileup'), 
-                h5_path1000g + str(ch) + ".hdf5", iid, -np.inf, np.inf, hdf5_path, False] \
-                    for ch in range(1, 23)]
-            results = multi_run(mpileup2hdf5, prms, processes)
-            e_rate = np.mean(np.array([err for err, _, _ in results]))
-            print(f'finished reading mpileup files, takes {time.time()-t1:.3f}s')
-            print(f'estimated genotyping error: {e_rate:.3f}')
-        else:
-            assert(hdf5_path != None)
-
 
         # preload hmm models
         t1 = time.time()
-        hmms = []
-        for ch, start, end in chunks:
-            path_targets = hdf5_path + "/" +f"{iid}.chr{ch}.hdf5"
-            hmm = preload(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
-                folder_out, conPop=conPop, roh_jump=roh_jump, 
-                e_rate=e_rate, e_rate_ref=e_rate_ref, n_ref=n_ref, 
-                exclude_pops=exclude_pops)
-            hmms.append(hmm)
+        prms = [[iid, ch, start, end, hdf5_path+f"/{iid}.chr{ch}.hdf5", h5_path1000g, meta_path_ref, \
+                    folder_out, conPop, roh_jump, e_rate, e_rate_ref, n_ref, exclude_pops] for ch, start, end in chunks]
+        hmms = multi_run(preload, prms, processes=processes)
+        assert(len(hmms) == len(chunks))
+        # hmms = []
+        # for ch, start, end in chunks:
+        #     path_targets = hdf5_path + "/" +f"{iid}.chr{ch}.hdf5"
+        #     hmm = preload(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
+        #         folder_out, conPop=conPop, roh_jump=roh_jump, 
+        #         e_rate=e_rate, e_rate_ref=e_rate_ref, n_ref=n_ref, 
+        #         exclude_pops=exclude_pops)
+        #     hmms.append(hmm)
         print(f'{len(chunks)} hmm models loaded, takes {round(time.time()-t1, 3)}s')
 
         # the actual optimization part
@@ -338,13 +319,13 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
                     findroot_prime = lambda x, x0, grad, hess: (x-x0)*hess + grad
                     res = newton(findroot, x, fprime=findroot_prime, args=(x, grad, h))
                     se = res/1.96
-            with open(f'{folder_out}/{fileName}', 'w') as f:
-                f.write(f'Method1: Fixing genotyping error rate at {e_rate}\n')
-                f.write(f'\tROH blocks obtained from: {roh_list}\n')
-                f.write(f'\tNumber of ROH blocks found: {len(chunks)}\n')
-                f.write(f'\tTotal length of ROH after trimming: {round(100*sumROH,3)}cM\n')
-                f.write(f'\tMLE for contamination using BFGS: {round(x, 6)} ({round(x-1.96*se, 6)} - {round(x+1.96*se, 6)})\n')
-            return x, se
+            # with open(f'{folder_out}/{fileName}', 'w') as f:
+            #     f.write(f'Method1: Fixing genotyping error rate at {e_rate}\n')
+            #     f.write(f'\tROH blocks obtained from: {roh_list}\n')
+            #     f.write(f'\tNumber of ROH blocks found: {len(chunks)}\n')
+            #     f.write(f'\tTotal length of ROH after trimming: {round(100*sumROH,3)}cM\n')
+            #     f.write(f'\tMLE for contamination using BFGS: {round(x, 6)} ({round(x-1.96*se, 6)} - {round(x+1.96*se, 6)})\n')
+            return x, se, chunks, sumROH
         except AssertionError:
             print(f'cannot estimate the Hessian of the loglikelihood around {res.x}')
             se = np.nan
@@ -352,7 +333,7 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
             if cleanup:
                 shutil.rmtree(hdf5_path)
                 print(f'deleted intermediary hdf5 files at {hdf5_path}')
-            return x, se
+            return x, se, chunks, sumROH
     else:
         print(f'not enough ROH blocks found to estimate contamination...')
         with open(f'{folder_out}/{fileName}', 'w') as f:

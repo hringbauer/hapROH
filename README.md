@@ -7,6 +7,10 @@ This hapCon repository is a forked github repository from the main develop repos
 
 Author: Yilei Huang, Dec 2021
 
+# hapROH with Contamination
+Joint estimation of ROH blocks and Contamination Rate
+work in progress, coming soon
+
 <!-- # hapROH
 Software to call ROH from ancient and present-day DNA using reference haplotypes.
 Author: Harald Ringbauer, September 2020
