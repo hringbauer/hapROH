@@ -16,22 +16,19 @@ This usually occurs for individuals from close-kin unions, or individuals that c
 We also require that, for 1240k capture data, at least 300k SNPs should be covered, and ideally at least 400k, otherwise one may get false positive ROH blocks which then drives up contamination estimates.
 
 
-One thing to keep in mind that, the default hapROH algorithm assumes minimal contamination. For moderately contaminated samples (e.g, between 5-10% contamination), 
+One thing to keep in mind that, the default hapROH algorithm (as presented in `Ringbauer et.al <https://www.nature.com/articles/s41467-021-25289-w>`_)assumes minimal contamination. For moderately contaminated samples (e.g, between 5-10% contamination), 
 it may still detect ROH blocks, but they tend to be fragmented, which confuses downstream analysis (e.g, deciding whether a sample is from a close-kin union or estimating effective population size from ROH block length distribution).
 If you have prior belief that your sample is a close-kin union and you observe an excess of short ROH blocks, there might be appreciable level of contamination and this modified hapROH might be more suitable.
 
 Example Usage 1: Identify ROH blocks for contaminated samples
 ***************************************************************
 
-Please refer to our short Vignettes.
+Please refer to our short `Vignettes <https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/ROH_contam_tutorial.ipynb>`_.
 
 Example Usage 2: Identify false positive ROH blocks
 *****************************************************
 
 Coming soon
 
-
-
-Contends to be added.
 
 Authors: Yilei Huang, Harald Ringbauer March 2022
