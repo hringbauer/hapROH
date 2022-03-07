@@ -31,7 +31,10 @@ Example Usage 2: Identify false positive ROH blocks
 For samples with very low coverages (e.g, around 300k SNPs covered), the called ROH may be subject to false positives. If you suspect this is the case,
 it is best to run hapROH using the diploid readcounts model and manually inspect the called ROH by using our plotting function :meth:`hapsburg.figures.plot_posterior.plot_posterior_cm`.
 Briefly, it plots the posterior probability of not being in ROH state along the specified genomic region and indicates "apparent heterozygote sites", which is
-controled by the parameter m.   
+controled by the parameter m. It will plot a little blue dot if a site is covered by at least m reads supporting the reference allele and m reads supporting the alternative allele. 
+For more details, please see the second part of `Vignettes <https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/ROH_contam_tutorial.ipynb>`_.
+
+
 
 
 Authors: Yilei Huang, Harald Ringbauer March 2022
