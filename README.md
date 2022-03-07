@@ -9,7 +9,8 @@ Author: Yilei Huang, Dec 2021
 
 # hapROH with Contamination
 Joint estimation of ROH blocks and Contamination Rate
-work in progress, coming soon
+
+Please refer to our [readthedocs](https://haproh.readthedocs.io/en/latest/hapROH_with_contamination.html) site for details.
 
 <!-- # hapROH
 Software to call ROH from ancient and present-day DNA using reference haplotypes.
