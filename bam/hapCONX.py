@@ -42,7 +42,7 @@ if __name__ == '__main__':
                         help="Output a log file.")
     args = parser.parse_args()
 
-    sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
+    #sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS
 
     if args.conpop == 'OOA':
