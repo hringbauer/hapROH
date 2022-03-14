@@ -1,6 +1,20 @@
-Getting Started
+hapROH
 ==================
 
+Scope
+**************************
+
+Default parameters are optimized for human 1240K capture data (ca. 1.2 million SNPs used widely in human aDNA analysis) and using 1000 Genome haplotypes as reference panel. The software is tested on a wide range of aDNA data, both 1240K data and also whole genome sequencing data downsampled to 1240K SNPs. Successful cases include 45k year old Ust Ishim man, and a wide range of American, Eurasian and Oceanian ancient DNA, showing that the method generally works for split times of reference panel and target up to a few 10k years, which includes all out-of-Africa populations (Attention: Neanderthals and Denisovans do not fall into that range, additionally some Subsaharan hunter gatherer test cases did not give satisfactory results).
+
+Currently, hapROH works on data for 1240K SNPs and in unpacked or packed eigenstrat format (which is widely used in human ancient DNA). The software assumes pseudo-haploid or diploid genotype data (the mode can be set, by default it is pseudo-haploid). The recommended coverage range is 400,000 or more 1240K SNPs covered at least once (i.e. at least ca. 0.3x coverage).
+
+If you have whole genome data available, you have to downsample an create eigenstrat files for biallelic 1240k SNPs first.
+
+In case you are planning applications to other kind of SNP or bigger SNP sets, or even other organisms, the method parameters have to be adjusted (the default parameters are specifically optimized for human 1240K data). You can mirror our procedure to find good parameters (described in the publication), and if you contact me for assistance - I am happy to share my own experience.
+
+
+Getting started
+**************************
 To get started, please find `vignette jupyter notebooks <https://www.dropbox.com/sh/eq4drs62tu6wuob/AABM41qAErmI2S3iypAV-j2da?dl=0>`_.
 
 These are a resource to do show example usecases, that you can use as template for your own applications.
@@ -45,23 +59,6 @@ There is a vignette notebook for...
 
 4. estimating population sizes from inferred ROH, using a likelihood framework (estimateNe)
 
-
-Dependencies
-*************
-
-The basic requirements for calling ROH are kept minimal and only sufficient for the core ROH calling (*numpy*, *pandas*, *scipy* & *h5py*). If you want to use extended analysis and plotting functionality: There are extra Python packages that you need to install (e.g. via *pip* or *conda*). 
-
-1. If you want to use the advanced plotting functionality, you need *matplotlib* installed.
-
-2. For plotting of maps, you will need *basemap* (warning: installing can be tricky on some architectures). 
-
-3. If you want to use the effective population size fitting functionality from ROH output, you require the package *statsmodels*.
-
-c Extension
-************
-
-For performance reasons, the heavy lifting of the algorithm is coded into a c method (cfunc.c). This "extension" is built via cython from cfunc.pyx This should be done automatically via the package cython (as CYTHON=True in setup.py by default).
-You can also set CYTHON=False, then the extension is compiled from cfunc.c directly (experimental, not tested on all platforms).
 
 Development
 *************

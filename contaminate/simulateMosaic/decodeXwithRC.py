@@ -22,10 +22,10 @@ if __name__ == '__main__':
     os.chdir(path)  # Set the right Path (in line with Atom default)
 
     sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")  # hack to get local package first in path [FROM HARALD - DELETE!!!]
-    from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS  # Need this import
+    from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS_legacy  # Need this import
 
 
-    base_path="./simulated/1000G_Mosaic/TSI/maleX6/" 
+    base_path="./simulated/1000G_Mosaic/TSI/maleX12/" 
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
     ch='X'
 
@@ -41,6 +41,12 @@ if __name__ == '__main__':
         base_path += "con5/"
     elif con == 0.1:
         base_path += "con10/"
+    elif con == 0.15:
+        base_path += "con15/"
+    elif con == 0.2:
+        base_path += "con20/"
+    elif con == 0.25:
+        base_path += "con25/"
     
     prefix = ""
     if cov == 0.05:
@@ -57,20 +63,19 @@ if __name__ == '__main__':
         prefix = "chrX_cov5"
 
     outFolder = base_path + prefix
+    os.system(f'rm -r {outFolder}/iid*')
+    os.system(f'rm {outFolder}/batchresults*.txt')
+
 
     results = np.zeros((100, 3))
     for i in range(100):
         iid = "iid" + str(i)
-        conMLE, lower95, upper95 = hapCon_chrom_BFGS(iid, ch='X', save=True, save_fp=False, 
-            n_ref=2504, diploid_ref=True, exclude_pops=["TSI"], conPop=[], 
-            e_model="readcount_contam", p_model="SardHDF5", readcounts=True, random_allele=False,
-            post_model="Standard", 
-            path_targets=f"{outFolder}/{prefix}data.h5",
+        conMLE, lower95, upper95 = hapCon_chrom_BFGS_legacy(iid, 
+            n_ref=2504, exclude_pops=["TSI"], conPop=[], 
+            hdf5=f"{outFolder}/data.h5",
             h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
             meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
-            folder_out=outFolder, prefix_out="",
-            c=0.025, roh_in=1, roh_out=0, roh_jump=300, e_rate=err_rate, e_rate_ref=e_rate_ref,
-            max_gap=0, cutoff_post = 0.999, roh_min_l = 0.01, logfile=False)
+            folder_out=outFolder, e_rate=err_rate, e_rate_ref=e_rate_ref)
 
         results[i, :] = (conMLE, lower95, upper95)
     
@@ -82,3 +87,4 @@ if __name__ == '__main__':
             iid = "iid" + str(i)
             conMLE, lower95, upper95 = results[i]
             out.write(f'{iid}\t{conMLE}\t{lower95}\t{upper95}\n')
+    os.system(f'rm -r {outFolder}/iid*')

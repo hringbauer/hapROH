@@ -65,8 +65,14 @@ if __name__ == '__main__':
         base_path += "con0/"
     elif con == 0.05:
         base_path += "con5/"
-    # elif con == 0.1:
-    #     base_path += "con10/"
+    elif con == 0.1:
+        base_path += "con10/"
+    elif con == 0.15:
+        base_path += "con15/"
+    elif con == 0.2:
+        base_path += "con20/"
+    elif con == 0.25:
+        base_path += "con25/"
     
     if cov == 0.05:
         prefix = "chrX_cov1over20"

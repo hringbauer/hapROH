@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to hapROH's documentation!
-==================================
+Welcome to the Documentation of hapROH and hapCon
+======================================================
 
 .. toctree::
    :maxdepth: 2
@@ -13,7 +13,8 @@ Welcome to hapROH's documentation!
    intro
    install
    tutorial
-   hapCON
+   hapCon
+   hapROH_with_contamination
    FAQ
 
 
