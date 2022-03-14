@@ -75,7 +75,7 @@ if __name__ == '__main__':
     for i in range(100):
         iid = "iid" + str(i)
         conMLE, lower95, upper95 = hapCon_chrom_BFGS_legacy(iid,
-            n_ref=2504, exclude_pops=["TSI"], conPop=conPop, 
+            n_ref=2504, exclude_pops=["AFR"], conPop=conPop, 
             hdf5=f"{pathTargets}/data.h5",
             h5_path1000g='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr',
             meta_path_ref='/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv', 
@@ -84,7 +84,7 @@ if __name__ == '__main__':
         results[i, :] = (conMLE, lower95, upper95)
     
     # write output to a file
-    with open(f'{outFolder}/batchresults_bfgs_{args.conpop1}_{args.conpop2}.txt', 'w') as out:
+    with open(f'{outFolder}/batchresults_bfgs_{args.conpop1}_{args.conpop2}_exAFR_incTSI.txt', 'w') as out:
         out.write(f'###contamination={con}, coverage={cov}, genotyping error={err_rate}, ref err={e_rate_ref}\n')
         out.write(f'###sampleID\tconMLE\tlower95CI\tupper95CI\n')
         for i in range(100):
