@@ -16,6 +16,7 @@ import sys # for debugging
 
 
 #Assume hapsburg directory is in root
+from hapsburg.PackagesSupport.loadEigenstrat.loadEigenstrat import load_eigenstrat
 
 # Write General PreProcessing Class: (PreProcessing)
 # Inherit one for real HDF5 Dataset: PreProcessingHDF5

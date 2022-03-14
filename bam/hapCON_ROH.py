@@ -28,7 +28,7 @@ if __name__ == '__main__':
                         help="prefix of the output.")
     args = parser.parse_args()
 
-    sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
+    #sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
     from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam_preload
     from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
     from multiprocessing import set_start_method
