@@ -16,8 +16,8 @@ Application Range of hapCon:
     However, we have found that hapCon does not work well with Sub-Saharan ancient foragers (e.g, samples from Site Hora 1 and Fingira, both in present-day Malawi, `Lipson et al. Nature 2022 <https://www.nature.com/articles/s41586-022-04430-9>`_). These samples can contain a substantial amount of south African related ancestry (such as represented by present-day groups—Juǀ'hoansi (San)), which is not present in the 1000Genome dataset. For details, see Supplementary Note 4 of our manuscript.
 
 Usage Notes:
-* For the input BAM file, it should have passed a few common QC steps, like PCR deduplication, filter for read lengths, etc. Base qaulity or alignment quality filtering can be done within samtools or BamTable. We suggest performing the same QC steps (with the exception of PMDtools) for hapCon as you would do for other common popgen analysis, like PCA or F-statistics.
-* If your data contains African ancestry, please adjust the parameter "exclude_pops" in :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. As explained in our manuscript, by default it excludes African haplotypes in the reference panel as this alleviates the "attraction effect". In case when the sample has African ancestry, however, the whole reference panel should be used.
+    * For the input BAM file, it should have passed a few common QC steps, like PCR deduplication, filter for read lengths, etc. Base qaulity or alignment quality filtering can be done within samtools or BamTable. We suggest performing the same QC steps (with the exception of PMDtools) for hapCon as you would do for other common popgen analysis, like PCA or F-statistics.
+    * If your data contains African ancestry, please adjust the parameter "exclude_pops" in :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. As explained in our manuscript, by default it excludes African haplotypes in the reference panel as this alleviates the "attraction effect". In case when the sample has African ancestry, however, the whole reference panel should be used.
 
 
 Authors: Yilei Huang, Harald Ringbauer March 2022
