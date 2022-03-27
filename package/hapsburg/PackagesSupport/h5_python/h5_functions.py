@@ -399,10 +399,10 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
     if output:
         print(f'number of major reads at flanking sites: {major_adj:.0f}')
         print(f'number of minor reads at flanking sites: {minor_adj:.0f}')
-        print(f'number of major reads at focal sites: {major_foc.0f}')
-        print(f'number of minor reads at focal sites: {minor_foc.0f}')
-        print(f'err rate at flanking sites: {minor_adj/(minor_adj + major_adj).4g}')
-        print(f'err rate at focal sites: {minor_foc/(minor_foc + major_foc).4g}')
+        print(f'number of major reads at focal sites: {major_foc:.0f}')
+        print(f'number of minor reads at focal sites: {minor_foc:.0f}')
+        print(f'err rate at flanking sites: {minor_adj/(minor_adj + major_adj):.4g}')
+        print(f'err rate at focal sites: {minor_foc/(minor_foc + major_foc):.4g}')
 
     # finished reading bam file and we have made an estimate for genotyping error
     # now write a hdf5 file for read count at target sites
