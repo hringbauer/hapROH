@@ -3,10 +3,10 @@ from setuptools.extension import Extension
 from Cython.Distutils import build_ext
 
 ###
-# I distribute the source only,
+# We distribute the source only,
 # to avoid trouble with platform
 
-### MODIFY IF YOU WANT TO USE CYTHON FOR BUILDING!
+### MODIFY IF YOU WANT TO USE CYTHON FOR BUILDING:
 USE_CYTHON = True   
 
 # Code for Cython / C Extension
@@ -23,7 +23,7 @@ with open("README.md", "r") as fh:
     
 setup(
     name="hapROH",
-    version="0.4a1",  # a means alpha 0.3a4
+    version="0.5a",  # a means alpha 0.3a4
     author="Harald Ringbauer",
     author_email="harald_ringbauer@eva.mpg.de",
     description="Identify runs of homozygosity (hapROH) and contamination (hapCon) in low coverage ancient human DNA data (1240K SNPs) using modern reference panel",
