@@ -1,11 +1,35 @@
+# hapROH
+Software to call ROH from ancient and present-day DNA using reference haplotypes.
+Author: Harald Ringbauer, September 2020
+Code released under GNU General Public License v3.0
+
+Development Code behind python package hapROH. Please refer to our [online documentation](https://haproh.readthedocs.io/en/latest/tutorial.html) for details about the current version and installation.
+
+This is the git repository for development, as well as code used in the [hapROH publication](https://doi.org/10.1038/s41467-021-25289-w).
+
+
 # hapCon
 hapCon is an extension of hapROH for estimaing contamination rate for male aDNA samples.
 
 We have prepared a detailed [online documentation](https://haproh.readthedocs.io/en/latest/hapCON.html) for hapCon. In addition, a jupyter notebook guide for using our method is availble at ./Notebooks/Vignettes/hapCon_vignette.ipynb in this repository. We also have a [preprint](https://www.biorxiv.org/content/10.1101/2021.12.20.473429v1) for hapCon if you are interested in more technical details and its usage limits.
 
-This hapCon repository is a forked github repository from the main develop repository for [hapROH](https://www.nature.com/articles/s41467-021-25289-w), a method for identifying ROH in low-coverage ancient DNA data. We invite you to visit [hapROH's own github repo](https://github.com/hringbauer/hapROH) for more details about hapROH.
+### Install
+    hapCon is bundled together with hapROH, you only need to install the python package hapROH to use both hapCon and hapROH.
+    To install,
+        pip install hapROH
+    To upgrade,
+        pip install --upgrade hapROH
 
-Author: Yilei Huang, Dec 2021
+### Quick Starting Guide
+    The quickest way to have a test run of hapCon is to use the prepared Python script ./bam/hapCONX.py. It is essentially a wrapper script for the core function of hapCon.
+    To use the hapCONX.py script, you need at least three input: the pileup file for your sample, the reference panel and the meatadata for the reference panel. You can download the reference panel from https://www.dropbox.com/s/1vv8mz9athedpiq/data.zip?dl=0 (TODO: replace this dropbox link with zenodo later). 
+        python hapCONX.py -m [path to pileup file] -r [path to reference panel] --meta [path to the metadata file]
+    
+    For more details about how to prepare the pileup file and more customized usage of hapCon, please refer to our [jupyter notebook tutorial](https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCon_vignette.ipynb).
+
+###
+
+Author: Yilei Huang, April 2022
 
 # hapROH with Contamination
 Joint estimation of ROH blocks and Contamination Rate
