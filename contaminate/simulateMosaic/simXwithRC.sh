@@ -10,17 +10,17 @@
 #$ -l h_vmem=10G #request 4Gb of memory
 #$ -V # load personal profile
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
-#$ -t 1:6:1
+#$ -t 7:8:1
 
 
 i=$SGE_TASK_ID
 i=$(($i-1))
-coverages=(0.05 0.1 0.5 1.0 2.0 5.0)
+coverages=(0.05 0.1 0.5 1.0 2.0 5.0 10 20)
 cov=${coverages[$i]}
 
-python3 simXwithRC.py -n 100 --cov $cov --con 0.0 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX12/ --hetero --downsample
-python3 simXwithRC.py -n 100 --cov $cov --con 0.05 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX12/ --hetero --downsample
-python3 simXwithRC.py -n 100 --cov $cov --con 0.1 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX12/ --hetero --downsample
-python3 simXwithRC.py -n 100 --cov $cov --con 0.15 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX12/ --hetero --downsample
-python3 simXwithRC.py -n 100 --cov $cov --con 0.2 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX12/ --hetero --downsample
-python3 simXwithRC.py -n 100 --cov $cov --con 0.25 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX12/ --hetero --downsample
+python3 simXwithRC.py -n 100 --cov $cov --con 0.0 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX9/ --hetero
+python3 simXwithRC.py -n 100 --cov $cov --con 0.05 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX9/ --hetero
+python3 simXwithRC.py -n 100 --cov $cov --con 0.1 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX9/ --hetero
+python3 simXwithRC.py -n 100 --cov $cov --con 0.15 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX9/ --hetero
+python3 simXwithRC.py -n 100 --cov $cov --con 0.2 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX9/ --hetero
+python3 simXwithRC.py -n 100 --cov $cov --con 0.25 --err 1e-2 --eref 1e-3 -b /mnt/archgen/users/yilei/tools/hapROH/simulated/1000G_Mosaic/TSI/maleX9/ --hetero

@@ -7,14 +7,14 @@
 #$ -m e #send an email at the end of the job
 #$ -M yilei_huang@eva.mpg.de #send email to this address
 # -pe make 2 #needs 8 CPU cores
-#$ -l h_vmem=25G #request 4Gb of memory
+#$ -l h_vmem=50G #request 4Gb of memory
 #$ -V # load personal profile
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
-#$ -t 1:36:1
+#$ -t 37:48:1
 
 i=$SGE_TASK_ID
 i=$(($i-1))
-coverages=(0.05 0.1 0.5 1.0 2.0 5.0)
+coverages=(0.05 0.1 0.5 1.0 2.0 5.0 10 20)
 cov_index=$(($i/6))
 cov=${coverages[$cov_index]}
 
