@@ -1,6 +1,5 @@
 # Development github repository for the software ``hapROH`` and ``hapCON``
-Authors: Harald Ringbauer, Yilei Huang, May 2022
-Code released under GNU General Public License v3.0
+Harald Ringbauer, Yilei Huang, May 2022; Code released under GNU General Public License v3.0
 
 This is the code repository intended for contributing developers, and to keep track of code used in the publications.  **The release for users is made available as an installable Python software package [hapROH](https://pypi.org/project/hapROH/)**. The official documentation is available at [readthedocs](https://haproh.readthedocs.io/en/latest/hapROH_with_contamination.html). It contains quick-start guides as well as example data.
 
