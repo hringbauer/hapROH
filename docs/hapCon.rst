@@ -19,12 +19,14 @@ hapCon has been incorporated into the hapROH package (since version 0.4a1). For 
 
 The quickest way to have a test run of hapCon is to use the prepared Python script ./bam/hapCONX.py. It is a wrapper script for the core function of hapCon.
 
-To use the hapCONX.py script, you need at least three input: the pileup file for your sample, the reference panel and the metadata for the reference panel. You can download the reference panel from https://www.dropbox.com/s/1vv8mz9athedpiq/data.zip?dl=0 (TODO: replace this dropbox link with zenodo later). To generate the pileup file, you can use either [samtools mpileup](http://www.htslib.org/doc/samtools-mpileup.html) or [BamTable](https://bioinf.eva.mpg.de/BamTable/).
+To use the hapCONX.py script, you need at least three input: the pileup file for your sample, the reference panel and the metadata for the reference panel. You can download the reference panel from https://www.dropbox.com/s/1vv8mz9athedpiq/data.zip?dl=0 (TODO: replace this dropbox link with zenodo later). To generate the pileup file, you can use either `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_.
     
+.. code-block:: console
+
     python hapCONX.py -m [path to pileup file] -r [path to reference panel] --meta [path to the metadata file]
     
     
-For more details about how to prepare the pileup file and more customized usage of hapCon, please check out the [jupyter notebook tutorial](https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCon_vignette.ipynb).
+For more details about how to prepare the pileup file and more customized usage of hapCon, please check out the `jupyter notebook tutorial <https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCon_vignette.ipynb>`_.
 
 
 Input
