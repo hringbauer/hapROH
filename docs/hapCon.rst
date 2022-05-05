@@ -13,7 +13,22 @@ Application Range of hapCon:
 
 Getting started
 *************************
-An implementation (hapCon) has been incorporated into the hapROH package (since version 0.4a1). For example use cases, that you can adapt for your purpose, please see our `vignette notebook <https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCon_vignette.ipynb>`_.
+
+hapCon has been incorporated into the hapROH package (since version 0.4a1). For example use cases, that you can adapt for your purpose, please see our `vignette notebook <https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCon_vignette.ipynb>`_.
+
+
+The quickest way to have a test run of hapCon is to use the prepared Python script ./bam/hapCONX.py. It is a wrapper script for the core function of hapCon.
+
+To use the hapCONX.py script, you need at least three input: the pileup file for your sample, the reference panel and the metadata for the reference panel. You can download the reference panel from https://www.dropbox.com/s/1vv8mz9athedpiq/data.zip?dl=0 (TODO: replace this dropbox link with zenodo later). To generate the pileup file, you can use either [samtools mpileup](http://www.htslib.org/doc/samtools-mpileup.html) or [BamTable](https://bioinf.eva.mpg.de/BamTable/).
+    
+    python hapCONX.py -m [path to pileup file] -r [path to reference panel] --meta [path to the metadata file]
+    
+    
+For more details about how to prepare the pileup file and more customized usage of hapCon, please check out the [jupyter notebook tutorial](https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCon_vignette.ipynb).
+
+
+Input
+*************************
 
 hapCon works directly from BAM file or from `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_ output. 
 
@@ -28,9 +43,13 @@ We recommend using BamTable for preprocessing your BAM file as it provides the m
 
 
 Usage Notes:
-    * For the input BAM file, it should have passed a few common QC steps according to your data type (UDG treatment, double or single stranded protocol, 1240k capture or shotgun, etc). 
-    This includes merging paried reads, PCR deduplicatoin, filtering to read lengths and qualities”. For a set of standard settings and QC steps we refer to `Eager 2 <https://github.com/nf-core/eager>`_.
-    Base qaulity or alignment quality filtering can be done within `samtools <http://www.htslib.org/doc/samtools.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. We suggest performing the same QC steps (with the exception of PMDtools) for hapCon as you would do for other common popgen analysis, like PCA or F-statistics.
+    * For optimal performance, the input BAM file should have passed common QC steps that depend on your data type (e.g. UDG treatment, double or single stranded protocol, 1240k capture or shotgun).  We suggest performing the same QC steps (with the exception of PMDtools) for the input of hapCon as for common popgen analysis, like PCA or F-statistics.
+    
+    Typical steps include merging paired reads, PCR deduplication, filtering to read lengths and qualities”. For a set of standard processing and QC steps we refer to the aDNA pipeline `Eager 2 <https://github.com/nf-core/eager>`_.
+    
+    
+    Base qaulity or alignment quality filtering can be done within `samtools <http://www.htslib.org/doc/samtools.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_.
+    
     * If your data contains African ancestry, please adjust the parameter "exclude_pops" in :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. As explained in our manuscript, by default it excludes African haplotypes in the reference panel as this alleviates the "attraction effect". In case when the sample has African ancestry, however, the whole reference panel should be used.
 
 
