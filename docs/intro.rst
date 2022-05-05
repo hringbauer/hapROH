@@ -19,7 +19,7 @@ If you want to cite the software in a scientific publication you can use:
 Contact
 **********
 
-If you have bug reports, suggestions or any general comments, please contact us. Please do not hesitate to reach out, we are happy to hear from you! Bug reports and user suggestions will help us to improve this software.
+If you have bug reports, suggestions or any general comments please do not hesitate to reach out. We are happy to hear from you! Bug reports and user suggestions will help us to improve this software.
 
 - harald_ringbauer AT eva mpg de
 - yilei_huang AT eva mpg de
