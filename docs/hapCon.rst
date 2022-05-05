@@ -2,13 +2,20 @@ hapCon
 ==========================================================================
 
 
-This software can estimate contamination in male X chromosome using a haplotype copying framework. Details of the model are described in a `preprint <https://doi.org/10.1101/2021.12.20.473429>`_.
+This software can estimate contamination in male X chromosome using a haplotype copying framework. The model is described in a `preprint <https://doi.org/10.1101/2021.12.20.473429>`_.
 
-An implementation (hapCon) has been incorporated into the hapROH package since version 0.4a1. No additional installation is needed.
+An implementation (hapCon) has been incorporated into the hapROH package (since version 0.4a1).
+
 hapCon works directly from BAM file or from `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_ output. 
+
 We have created two reference panels for common use cases in human aDNA data: One for 1240k data and the other for WGS data (TODO: add a link to zenodo repo after paper acceptance).
 
-The core functionality of hapCon is exposed via :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. It can take as input BAM file, output from `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or output from `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. We recommend using BamTable for preprocessing your BAM file as it provides the most flexibility. For more details, please checkout our `tutorial <https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCon_vignette.ipynb>`_.
+The core functionality of hapCon is exposed via :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. The input is  
+1) BAM file
+2) output from `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ 
+3) output from `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. 
+
+We recommend using BamTable for preprocessing your BAM file as it provides the most flexibility. For example use cases, please checkout our `tutorial <https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCon_vignette.ipynb>`_.
 
 Application Range of hapCon:
     HapCon works with ancient DNA data for modern human. It does not work for Neaderthals and Denisovans and other archaic hominins. 
