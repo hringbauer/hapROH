@@ -7,10 +7,10 @@
 #$ -m e #send an email at the end of the job
 #$ -M yilei_huang@eva.mpg.de #send email to this address
 # -pe make 2 #needs 8 CPU cores
-#$ -l h_vmem=50G #request 4Gb of memory
+#$ -l h_vmem=100G #request 4Gb of memory
 #$ -V # load personal profile
 #$ -o $JOB_NAME.o.$JOB_ID.$TASK_ID
-#$ -t 37:48:1
+#$ -t 45:45:1
 
 i=$SGE_TASK_ID
 i=$(($i-1))

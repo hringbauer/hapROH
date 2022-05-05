@@ -1,7 +1,0 @@
-cov10
-con0.1
-Unable to init server: Could not connect: Connection refused
-Unable to init server: Could not connect: Connection refused
-
-(decodeXwithRC.py:804922): Gdk-CRITICAL **: 14:36:12.536: gdk_cursor_new_for_display: assertion 'GDK_IS_DISPLAY (display)' failed
-rm: cannot remove './simulated/1000G_Mosaic/TSI/maleX9/con10/chrX_cov10/batchresults*.txt': No such file or directory
