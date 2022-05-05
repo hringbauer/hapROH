@@ -1,41 +1,37 @@
-# hapCon
-hapCon is an extension of hapROH for estimaing contamination rate for male aDNA samples.
-
-We have prepared a detailed [online documentation](https://haproh.readthedocs.io/en/latest/hapCON.html) for hapCon. In addition, a jupyter notebook guide for using our method is availble at ./Notebooks/Vignettes/hapCon_vignette.ipynb in this repository. We also have a [preprint](https://www.biorxiv.org/content/10.1101/2021.12.20.473429v1) for hapCon if you are interested in more technical details and its usage limits.
-
-This hapCon repository is a forked github repository from the main develop repository for [hapROH](https://www.nature.com/articles/s41467-021-25289-w), a method for identifying ROH in low-coverage ancient DNA data. We invite you to visit [hapROH's own github repo](https://github.com/hringbauer/hapROH) for more details about hapROH.
-
-Author: Yilei Huang, Dec 2021
-
-# hapROH with Contamination
-Joint estimation of ROH blocks and Contamination Rate
-
-Please refer to our [readthedocs](https://haproh.readthedocs.io/en/latest/hapROH_with_contamination.html) site for details.
-
-<!-- # hapROH
-Software to call ROH from ancient and present-day DNA using reference haplotypes.
-Author: Harald Ringbauer, September 2020
+# Development github repository for the software ``hapROH`` and ``hapCON``
+Authors: Harald Ringbauer, Yilei Huang, May 2022
 Code released under GNU General Public License v3.0
 
-Development Code behind python package hapROH.
-See https://pypi.org/project/hapROH/ for detail about the current version and installation.
-
-This is the git repository for development, as well as code used in the hapROH publication
-(Preprint at https://doi.org/10.1101/2020.05.31.126912)
-
-This code is desgined to run on the University of Chicago midway cluster, which uses a `slurm` job scheduling system.
-
-The code behind the hapROH package can be found in `./package/`
-
-Large data is not shared (the `./Data` folder is git-ignored) via github. You will need to download empirical data. You can download the reference data as explained on the Pip Project site. https://pypi.org/project/hapROH/. Alternatively you can download the 1000G data directly and run the notebooks to process them into the required hdf5 format (see below). For simulated data, you can generate data via running the simulation notebooks described below.
+This is the code repository intended for contributing developers, and to keep track of code used in the publications.  **The release for users is made available as an installable Python software package [hapROH](https://pypi.org/project/hapROH/)**. The official documentation is available at [readthedocs](https://haproh.readthedocs.io/en/latest/hapROH_with_contamination.html). It contains quick-start guides as well as example data.
 
 
+# Overview
+The ``hapROH`` software package contains two primary modules and a range of functions to visualize the results.
 
+#. ``hapROH`` identifies runs of homozygosity (ROH) in ancient and present-day DNA by using a panel of reference haplotypes. As input, it uses genotype files in eigentstrat format. This module contains functions and wrappers to call ROH and functions for downstream analysis and visualization. For downward compatibility, this software uses ``hapsburg`` as module name.
 
-# Internal notes about folder structure:
+#. ``hapCON`` estimates contamination in aDNA data of male individuals by using a panel of reference haplotypes. It works directly from BAM file or from samtools mpileup output. 
+
+## hapROH
+Software to call ROH from ancient and present-day DNA using reference haplotypes.
+Author: Harald Ringbauer, September 2020
+
+## hapCon
+hapCon is an extension of hapROH for estimaing contamination rate for male aDNA samples.
+Author: Yilei Huang, Dec 2021
+
+## hapROH with Contamination
+Joint estimation of ROH blocks and Contamination Rate.
+Author: Yilei Huang, Dec 2021
+
+# Notes on Folder Structure:
+The code behind the hapROH package can be found in `./package/
+
+Large data is not shared (the `./Data` folder is git-ignored) via github. You will need to get access to that data, e.g. download the 1000G data directly and run the notebooks to process them into the required hdf5 format (see below). For simulated data, you can generate data via running the simulation notebooks described below.
+
 
 ## Data Preparation:
-This scripts can prepare the reference data
+These scripts can prepare the reference data
 
 For 1240k reference data:
 There is a notebook `prepare_1000genomes.ipynb`:
@@ -44,16 +40,10 @@ downsampled and clean 1240k data (subsampled to biallelic SNPs), and saves it to
 
 ## Running the HMM
 
-### Running Modes:
-cython=
-0: Python Fwd/Bwd Algorithm
-1: Full Cython Algorithm
-2: Optimized Cython Algorithm (linear Nr. references, full Linkage Map Model)
-
 ### Produce C extension
 In order to run the code, you need to build the C extension that implements the forward/backward pass. 
 
-If you do not install hapROH via PIP (which automatically installs the C extensions) or wish to use the development version (from github), you have to compile the C extension yourself. You can do this via:
+If you do not install hapROH via PIP (which automatically installs the C extensions) and use the development version (from github), you have to compile the C extension yourself. You can do this via:
 
 Switch to the C folder and build the extensions via:
 
@@ -64,7 +54,7 @@ cythonize -a -i cfunc.pyx
   
 This compiles a C file into package/hapsburg. Manually importing `from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind` uses this functions.
 
-Tested with gcc/6.1 and python/anaconda-2020.02
+Tested with gcc/6.1 and python/anaconda-2020.02.
 
 # Folders:
 ## Data
@@ -95,7 +85,6 @@ Contains the final product. Downsampled hdf5s to 1240k biallelic SNPs
 Contains the Eigenstrat from the Reich website. Use script in ./Notebooks/PrepareData/prepare_Reich_Eigenstrat to download and unzip it.
 
 
-
 # How to run notebooks on cluster
 Assumes that the cluster uses a `slurm` job scheduling system.
 
@@ -110,7 +99,6 @@ This allows one to run memory or cpu-intense tasks via a notebook on the cluster
 
 For debugging/info: Show job account information for a specific job:
 sacct -j jobid --format=User,JobID,Jobname,partition,state,time,start,end,elapsed,MaxRss,MaxVMSize,nnodes,ncpus,nodelist
-
 
 
 ## Notebooks to run for creation of data used in paper
@@ -166,13 +154,10 @@ In particular, posterior plotting is found in `plot_posetrior.ipynb`.
 
 Geographic and temporal figure production is found in `plot_map_ROH.ipynb`
 
-
 ### Peak Memory Requirements:
 For pseudo-haploid 1240k data: 2-10 gb per Chromosome (during Internal Calculations), depending on target coverage.
 
 Total runtime single CPU (Intel Xeon E5-2680 v4 (2.40GHz) processor) for one individual (22 Autosomes): Up to 15 minutes.
-
-
 
 ## Testing BCFTOOLS and PLINK
 
