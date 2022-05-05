@@ -1,6 +1,6 @@
 Overview
 ============
-The ``hapROH`` software package contains two primary modules and a range of functions to visualize the results:
+This software package contains two primary programs and a range of functions to visualize the results:
 
 #. ``hapROH`` identifies runs of homozygosity (ROH) in ancient and present-day DNA by using a panel of reference haplotypes. As input, it uses genotype files in eigentstrat format. This module contains functions and wrappers to call ROH and functions for downstream analysis and visualization. For downward compatibility, this software uses ``hapsburg`` as module name.
 
