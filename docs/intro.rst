@@ -12,8 +12,8 @@ Citations
 
 If you use the software for a scientific publication and want to cite it, you can use:
 
-#. https://doi.org/10.1038/s41467-021-25289-w (for ``hapROH``)
-#. https://doi.org/10.1101/2021.12.20.473429 (for ``hapCON``)
+#. https://doi.org/10.1038/s41467-021-25289-w for ``hapROH``
+#. https://doi.org/10.1101/2021.12.20.473429 for ``hapCON``
 
 
 Contact
