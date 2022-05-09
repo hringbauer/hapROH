@@ -43,7 +43,8 @@ The core functionality of hapCon is exposed via :meth:`hapsburg.PackagesSupport.
 
 We recommend using BamTable for preprocessing your BAM file as it provides the most flexibility. 
 
-### Input BAM File
+Input BAM File
+*************************
 The input BAM file should have passed common preprocessing steps depending on your aDNA data type (e.g. which UDG treatment, double or single stranded library preparation protocol, 1240k capture or shotgun data). It is the same preprocessing steps as done for genotype calling and includes merging paried reads, PCR deduplication, filtering to read lengths and qualities. For a set of commonly used preprocessing steps in aDNA research we refer to `Eager 2  <https://github.com/nf-core/eager>`.
     
 Base qaulity or alignment quality filtering can be done during the process of generating read counts with `samtools <http://www.htslib.org/doc/samtools.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_.
