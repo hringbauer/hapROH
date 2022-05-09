@@ -50,6 +50,7 @@ The input BAM file should have passed common preprocessing steps depending on yo
 Base qaulity or alignment quality filtering can be done during the process of generating read counts with `samtools <http://www.htslib.org/doc/samtools.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_.
 
 
+*************************
 Usage Notes:
     
     * If your data contains African ancestry, please adjust the parameter "exclude_pops" in :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. As explained in our manuscript, by default it excludes African haplotypes in the reference panel as this alleviates the "attraction effect". In case when the sample has African ancestry, however, the whole reference panel should be used.
