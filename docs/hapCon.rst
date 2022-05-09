@@ -43,14 +43,13 @@ The core functionality of hapCon is exposed via :meth:`hapsburg.PackagesSupport.
 
 We recommend using BamTable for preprocessing your BAM file as it provides the most flexibility. 
 
+### Input BAM File
+The input BAM file should have passed common preprocessing steps depending on your aDNA data type (e.g. which UDG treatment, double or single stranded library preparation protocol, 1240k capture or shotgun data). It is the same preprocessing steps as done for genotype calling and includes merging paried reads, PCR deduplication, filtering to read lengths and qualities. For a set of commonly used preprocessing steps in aDNA research we refer to `Eager 2  <https://github.com/nf-core/eager>`.
+    
+Base qaulity or alignment quality filtering can be done during the process of generating read counts with `samtools <http://www.htslib.org/doc/samtools.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_.
+
 
 Usage Notes:
-    * For optimal performance, the input BAM file should have passed common QC steps that depend on your data type (e.g. UDG treatment, double or single stranded protocol, 1240k capture or shotgun).  We suggest performing the same QC steps (with the exception of PMDtools) for the input of hapCon as for common popgen analysis, like PCA or F-statistics.
-    
-    Typical steps include merging paired reads, PCR deduplication, filtering to read lengths and qualities”. For a set of standard processing and QC steps we refer to the aDNA pipeline `Eager 2 <https://github.com/nf-core/eager>`_.
-    
-    
-    Base qaulity or alignment quality filtering can be done within `samtools <http://www.htslib.org/doc/samtools.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_.
     
     * If your data contains African ancestry, please adjust the parameter "exclude_pops" in :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. As explained in our manuscript, by default it excludes African haplotypes in the reference panel as this alleviates the "attraction effect". In case when the sample has African ancestry, however, the whole reference panel should be used.
 
