@@ -1,7 +1,7 @@
 hapCon
 ==========================================================================
 
-This software can estimate contamination in male X chromosome using a haplotype copying framework. The model is described in a `scientific manuscript <https://doi.org/10.1101/2021.12.20.473429>`_.
+This software estimates contamination of human aDNA data using a haplotype copying framework for male X chromosomes. The full model is described in a `scientific manuscript <https://doi.org/10.1101/2021.12.20.473429>`_.
 
 
 Application range of hapCon
