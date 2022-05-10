@@ -36,7 +36,7 @@ hapCon works directly from BAM file or from `samtools mpileup <http://www.htslib
 
 We have created two reference panels for common use cases in human aDNA data: One for 1240k data and the other for WGS data (TODO: add a link to zenodo repo after paper acceptance).
 
-The core functionality of hapCon is exposed via :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. The input can be  
+The core functionality of hapCon is exposed via :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. The input can be any one of the following,
 1) BAM file
 2) output from `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ 
 3) output from `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. 
@@ -45,10 +45,9 @@ We recommend using BamTable for preprocessing your BAM file as it provides the m
 
 
 Usage Notes:
-    * For optimal performance, the input BAM file should have passed common QC steps that depend on your data type (e.g. UDG treatment, double or single stranded protocol, 1240k capture or shotgun).  We suggest performing the same QC steps (with the exception of PMDtools) for the input of hapCon as for common popgen analysis, like PCA or F-statistics.
+    * For optimal performance, the input BAM file should have passed common preprocessing steps as required for producing genotype data for your data type (e.g. depending on UDG treatment, double or single stranded library preparation protocol, 1240k capture or shotgun data). 
     
-    Typical steps include merging paired reads, PCR deduplication, filtering to read lengths and qualities”. For a set of standard processing and QC steps we refer to the aDNA pipeline `Eager 2 <https://github.com/nf-core/eager>`_.
-    
+    This includes merging paired reads, PCR deduplication, filtering by read lengths and mapping qualities. For a set of commonly used QC steps we refer to `Eager2 <https://github.com/nf-core/eager>`_.
     
     Base qaulity or alignment quality filtering can be done within `samtools <http://www.htslib.org/doc/samtools.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_.
     
