@@ -43,11 +43,7 @@ We recommend using BamTable for preprocessing your BAM file as it provides the m
 
 Usage Notes
 *****************
-    * For optimal performance, the input BAM file should have passed common preprocessing steps as required for producing genotype data for your data type (e.g. depending on UDG treatment, double or single stranded library preparation protocol, 1240k capture or shotgun data). 
-    
-    This includes merging paired reads, PCR deduplication, filtering by read lengths and mapping qualities. For a set of commonly used QC steps we refer to `Eager2 <https://github.com/nf-core/eager>`_.
-    
-    Base qaulity or alignment quality filtering can be done within `samtools <http://www.htslib.org/doc/samtools.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_.
+    * For optimal performance, the input BAM file should have passed common preprocessing steps as required for producing genotype data for your data type (e.g. depending on UDG treatment, double or single stranded library preparation protocol, 1240k capture or shotgun data). This includes merging paired reads, PCR deduplication, filtering by read lengths and mapping qualities. For a set of commonly used QC steps we refer to `Eager2 <https://github.com/nf-core/eager>`_. Base qaulity or alignment quality filtering can be done within `samtools <http://www.htslib.org/doc/samtools.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_.
 
     * If your data contains African ancestry, please adjust the parameter "exclude_pops". As explained in our manuscript, by default it excludes African haplotypes in the reference panel as this alleviates the "attraction effect". In case when the sample has African ancestry, however, the whole reference panel should be used.
 
