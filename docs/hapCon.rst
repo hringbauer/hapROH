@@ -1,14 +1,12 @@
 hapCon
 ==========================================================================
 
-Scope of the Method
-**************************
-This software can estimate contamination in male X chromosome using a haplotype copying framework. The model is described in a `preprint <https://doi.org/10.1101/2021.12.20.473429>`_.
+This software estimates contamination of human aDNA data using a haplotype copying framework for male X chromosomes. The full model is described in a `scientific manuscript <https://doi.org/10.1101/2021.12.20.473429>`_.
 
-Application Range of hapCon:
-    HapCon works with ancient DNA data for modern human. It does not work for Neaderthals and Denisovans and other archaic hominins. 
-    Our simulations show that hapCon works well for a wide range of ancestries and sample age, including Ust Ishim, one of the oldest modern humans ever sequenced, ancient Africans (e.g, Mota) and native Americans.
-    However, we have found that hapCon does not work well with Sub-Saharan ancient foragers (e.g, samples from Site Hora 1 and Fingira, both in present-day Malawi, `Lipson et al. Nature 2022 <https://www.nature.com/articles/s41586-022-04430-9>`_). These samples can contain a substantial amount of south African related ancestry (such as represented by present-day groups—Juǀ'hoansi (San)), which is not present in the 1000Genome dataset. For details, see Supplementary Note 4 of our manuscript.
+
+Application range of hapCon
+**************************
+HapCon works with ancient DNA data for modern human. It does not work for Neaderthals and Denisovans and other archaic hominins.  Our simulations show that hapCon works well for a wide range of ancestries and sample age, including Ust Ishim, one of the oldest modern humans ever sequenced, ancient Africans (e.g, Mota) and native Americans. However, we have found that hapCon does not work well with Sub-Saharan ancient foragers (e.g, samples from Site Hora 1 and Fingira, both in present-day Malawi, `Lipson et al. Nature 2022 <https://www.nature.com/articles/s41586-022-04430-9>`_). These samples can contain a substantial amount of south African related ancestry (such as represented by present-day groups—Juǀ'hoansi (San)), which is not present in the 1000Genome dataset. For details, see Supplementary Note 4 of our manuscript.
 
 
 Getting started
@@ -43,15 +41,15 @@ The core functionality of hapCon is exposed via :meth:`hapsburg.PackagesSupport.
 
 We recommend using BamTable for preprocessing your BAM file as it provides the most flexibility. 
 
-
-Usage Notes:
+Usage Notes
+*****************
     * For optimal performance, the input BAM file should have passed common preprocessing steps as required for producing genotype data for your data type (e.g. depending on UDG treatment, double or single stranded library preparation protocol, 1240k capture or shotgun data). 
     
     This includes merging paired reads, PCR deduplication, filtering by read lengths and mapping qualities. For a set of commonly used QC steps we refer to `Eager2 <https://github.com/nf-core/eager>`_.
     
     Base qaulity or alignment quality filtering can be done within `samtools <http://www.htslib.org/doc/samtools.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_.
-    
-    * If your data contains African ancestry, please adjust the parameter "exclude_pops" in :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. As explained in our manuscript, by default it excludes African haplotypes in the reference panel as this alleviates the "attraction effect". In case when the sample has African ancestry, however, the whole reference panel should be used.
+
+    * If your data contains African ancestry, please adjust the parameter "exclude_pops". As explained in our manuscript, by default it excludes African haplotypes in the reference panel as this alleviates the "attraction effect". In case when the sample has African ancestry, however, the whole reference panel should be used.
 
 
 Example Use Case: Vignettes
@@ -59,4 +57,5 @@ Example Use Case: Vignettes
 For example use cases, please checkout our `tutorial <https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCon_vignette.ipynb>`_.
 
 
-Authors: Yilei Huang, Harald Ringbauer April 2022
+
+Authors: Yilei Huang, Harald Ringbauer May 2022
