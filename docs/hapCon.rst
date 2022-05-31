@@ -49,10 +49,24 @@ this generates a pileup file for your BAM. Then we are ready to run hapCon.
 
     python hapCONX.py -m test.mpileup -r chrX_1240k.hdf5 --meta meta_df_all.csv
 
+By the default, the output file will have the same prefix as the .mpileup file, and it will be named as $prefix.hapCon.txt. By using the above input and command, we should expect something similar to the following,
 
-    
+.. code-block:: console
+    Number of target sites covered by at least one read: 3999
+    Method1: Fixing genotyping error rate
+	    Estimated genotyping error via flanking region: 0.001502
+	    MLE for contamination using BFGS: 0.102113 (0.076802 - 0.127424)
+
+If your data contains African ancestry, please adjust the parameter "--exclude". As explained in our manuscript, by default it excludes African haplotypes in the reference panel as this alleviates the "attraction effect". In case when the sample has African ancestry, however, the whole reference panel should be used. 
+
+If you believe the contamination source of your sample is not of continental European, please adjust --con parameter accordingly. To see a full list of adjustable parameters, 
+
+.. code-block:: console
+
+    python hapCONX.py -h
+
+
 For more details about the usage of hapCon, please check the next section.
-
 
 
 Example Use Case: Vignettes
