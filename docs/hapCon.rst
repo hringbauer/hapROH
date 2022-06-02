@@ -17,6 +17,7 @@ hapCon works directly from BAM file or from `samtools mpileup <http://www.htslib
 We have created two reference panels for common use cases in human aDNA data: One for 1240k data and the other for WGS data (TODO: add a link to zenodo repo after paper acceptance).
 
 The core functionality of hapCon is exposed via :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. The input can be any one of the following,
+
 * BAM file
 * output from `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ 
 * output from `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. 
@@ -58,6 +59,7 @@ By the default, the output file will have the same prefix as the .mpileup file, 
 	    MLE for contamination using BFGS: 0.102113 (0.076802 - 0.127424)
 
 It gives
+
 #. Number of sites covered by one or more reads (aka the length of the HMM chain)
 #. Genotype error estimated by measuring heterozygosity on supposedly non-segregating sites
 #. MLE of contamination rate and its confidence intervals
