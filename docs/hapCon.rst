@@ -14,7 +14,7 @@ Input
 
 hapCon works directly from BAM file or from `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_ output. 
 
-We have created two reference panels for common use cases in human aDNA data: One for 1240k data and the other for WGS data (TODO: add a link to zenodo repo after paper acceptance).
+We have created two reference panels for common use cases in human aDNA data: One for 1240k data and the other for WGS data (https://doi.org/10.5281/zenodo.6619138).
 
 The core functionality of hapCon is exposed via :meth:`hapsburg.PackagesSupport.hapsburg_run.hapCon_chrom_BFGS`. The input can be any one of the following,
 
@@ -35,7 +35,7 @@ The quickest way to have a test run of hapCon is to use the prepared Python scri
 
 To use the hapCONX.py script, you need at least three input: the pileup file for your sample, the reference panel and the metadata for the reference panel. 
 
-You can download the reference panel from https://www.dropbox.com/s/1vv8mz9athedpiq/data.zip?dl=0 and test BAM file from https://www.dropbox.com/sh/tgvwq75mvixeyic/AAAGURMdDGWLIxGzwAgtGm1Sa?dl=0  (TODO: put both into a zenodo repository after manuscript acceptance). 
+You can download the reference panel and test BAM file from https://doi.org/10.5281/zenodo.6619138.
 
 Assuming you have the above-mentioned file in your current directory, to generate the pileup file, you can use either `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. We will use samtools as an example here,
 
