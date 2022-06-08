@@ -23,7 +23,7 @@ with open("README.md", "r") as fh:
     
 setup(
     name="hapROH",
-    version="0.5a",  # a means alpha 0.3a4
+    version="0.51a0",  # a means alpha 0.3a4
     author="Harald Ringbauer",
     author_email="harald_ringbauer@eva.mpg.de",
     description="Identify runs of homozygosity (hapROH) and contamination (hapCon) in low coverage ancient human DNA data (1240K SNPs) using modern reference panel",
