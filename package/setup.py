@@ -39,4 +39,9 @@ setup(
     ],
     python_requires='>=3.6',
     install_requires=['numpy', 'pandas', 'scipy', 'h5py', 'psutil'],
+    entry_points ={
+            'console_scripts': [
+                'hapConX = hapsburg.hapCONX:main'
+            ]
+        },
 )
