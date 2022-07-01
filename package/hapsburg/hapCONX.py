@@ -12,7 +12,7 @@ def main():
                         help="path to BamTable output")
     parser.add_argument('-r', action="store", dest="ref", type=str, required=True,
                         help="path to reference panel")
-    parser.add_argument('--meta', action="store", dest="meta", type=str, required=False, 
+    parser.add_argument('--meta', action="store", dest="meta", type=str, required=True, 
                         default="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
                         help="path to metadata of the reference panel")
     parser.add_argument('--con', action="store", dest="conpop", type=str, required=False, default="CEU",

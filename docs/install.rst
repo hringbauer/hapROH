@@ -3,7 +3,7 @@ Installation
 
 You can install the package using the Package manager ``pip``:
 ::
-    cpython3 -m pip install hapROH
+    python3 -m pip install hapROH
 
 The package distributes source code that is compiled during installation. For experts: The ``setup.py`` contains information used by ``pip`` for the installation.
 

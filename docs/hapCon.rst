@@ -30,10 +30,7 @@ Getting started
 
 hapCon has been incorporated into the hapROH package (since version 0.4a1). For example use cases, that you can adapt for your purpose, please see our `vignette notebook <https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCon_vignette.ipynb>`_.
 
-
-The quickest way to have a test run of hapCon is to use the prepared Python script ./bam/hapCONX.py. It is a wrapper script for the core function of hapCon.
-
-To use the hapCONX.py script, you need at least three input: the pileup file for your sample, the reference panel and the metadata for the reference panel. 
+To run hapCon to estimate contamination on male X chromosome, you need at least three input: the pileup file for your sample, the reference panel and the metadata for the reference panel. 
 
 You can download the reference panel and test BAM file from https://doi.org/10.5281/zenodo.6619138.
 
@@ -43,11 +40,11 @@ Assuming you have the above-mentioned file in your current directory, to generat
 
     samtools mpileup -o test.mpileup -q 30 -Q 30 --positions chrX_1240k.bed SUA001.bam
 
-this generates a pileup file for your BAM. Then we are ready to run hapCon.
+this generates a pileup file for your BAM. Then we are ready to run hapCon. Starting from version 0.51, you can simply type hapConX in your command line to invoke the program. If you have an older version installed, we recommend upgrading to the newest version.
     
 .. code-block:: console
 
-    python hapCONX.py -m test.mpileup -r chrX_1240k.hdf5 --meta meta_df_all.csv
+    hapConX -m test.mpileup -r chrX_1240k.hdf5 --meta meta_df_all.csv
 
 By the default, the output file will have the same prefix as the .mpileup file, and it will be named as $prefix.hapCon.txt. By using the above input and command, the output will have the following format,
 
@@ -70,7 +67,7 @@ If you believe the contamination source of your sample is not of continental Eur
 
 .. code-block:: console
 
-    python hapCONX.py -h
+    hapConX -h
 
 
 For more details about the usage of hapCon, please check the next section.
@@ -82,4 +79,4 @@ For detailed example use cases, please checkout our `tutorial <https://github.co
 
 
 
-Authors: Yilei Huang, Harald Ringbauer May 2022
+Authors: Yilei Huang, Harald Ringbauer July 2022
