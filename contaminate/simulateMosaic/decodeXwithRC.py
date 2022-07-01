@@ -25,7 +25,7 @@ if __name__ == '__main__':
     from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS_legacy  # Need this import
 
 
-    base_path="./simulated/1000G_Mosaic/TSI/maleX12/" 
+    base_path="./simulated/1000G_Mosaic/TSI/maleX9/" 
     path1000G="/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr"
     ch='X'
 
@@ -61,6 +61,10 @@ if __name__ == '__main__':
         prefix = "chrX_cov2"
     elif cov == 5.0:
         prefix = "chrX_cov5"
+    elif cov == 10:
+        prefix = "chrX_cov10"
+    elif cov == 20:
+        prefix = "chrX_cov20"
 
     outFolder = base_path + prefix
     os.system(f'rm -r {outFolder}/iid*')

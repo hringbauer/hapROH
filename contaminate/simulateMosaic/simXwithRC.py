@@ -86,6 +86,10 @@ if __name__ == '__main__':
         prefix = "chrX_cov2"
     elif cov == 5.0:
         prefix = "chrX_cov5"
+    elif cov == 10:
+        prefix = "chrX_cov10"
+    elif cov == 20:
+        prefix = "chrX_cov20"
 
     base_path += prefix + "/"
     
