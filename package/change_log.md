@@ -1,3 +1,6 @@
+## 0.53, July 1st 2022, Harald Ringbauer
+- Merged in Yeilei's branch, that includes Unix-style command line functionality for hapCon
+
 ## 0.52, June 29th 2022, Harald Ringbauer
 - Updated the license (so that license file is automatically available) and package meta information, added setup.cfg for that.
 
