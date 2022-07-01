@@ -1,3 +1,6 @@
+## 0.52, June 29th 2022, Harald Ringbauer
+- Updated the license (so that license file is automatically available) and package meta information, added setup.cfg for that.
+
 ## 0.51a0, June 8th 2022, Harald Ringbauer
 - Minor bug fix in h5_functions (Import now works again - fixing the issue with
   with the incorrectly formatted `major_foc.0f`
