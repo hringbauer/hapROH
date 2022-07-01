@@ -8,11 +8,15 @@ cd /project2/jnovembre/hringbauer/HAPSBURG/package
 On Chicago cluster:  
 module load python
 
+Or on O2:
+envpython37
+
 ### Run Tests of Expected Behavior
-Use `/Notebooks/Tests/roh_caller_test.ipynb` to run tests of expected behavior. 
+Use `/Notebooks/Tests/roh_caller_test_chicago.ipynb` to run tests of expected behavior of hapROH
+Use `/Notebooks/Tests/hapCon_test_chicago.ipynb` to run tests of hapCon.
 
 ### Create the Source Package 
-Update version in setup.py to next version number
+Update version in setup.py to next version number (currently v0.52)
 
 ### Update setuptools. 
 Delete previous ./dist/* (alternatively be specific below what to upload):  

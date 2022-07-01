@@ -1,5 +1,12 @@
-## [Version number to be added later], Dec, Yilei Huang
-### Feature
+## 0.52, June 29th 2022, Harald Ringbauer
+- Updated the license (so that license file is automatically available) and package meta information, added setup.cfg for that.
+
+## 0.51a0, June 8th 2022, Harald Ringbauer
+- Minor bug fix in h5_functions (Import now works again - fixing the issue with
+  with the incorrectly formatted `major_foc.0f`
+
+## 0.5a, December 1st 2022, Yilei Huang
+This is the addition of hapCON - estimating contamination in aDNA with haplotype copying!
 - added hapCON: a new method for estimating male X chromosome contamination
 - added new parameters for hapsb_ind and hapsb_chrom to perform automatic merging of short ROH blocks into a long block
 
