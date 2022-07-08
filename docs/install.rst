@@ -3,13 +3,13 @@ Installation
 
 Our package hapROH is on both pypi and conda. 
 
-To use pip,
+To use ``pip``,
 ::
     python3 -m pip install hapROH
 
 The package distributes source code that is compiled during installation. For experts: The ``setup.py`` contains information used by ``pip`` for the installation.
 
-To use conda, 
+To use ``conda``, 
 ::
     conda install hapROH
 
