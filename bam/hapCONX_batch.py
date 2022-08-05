@@ -66,7 +66,7 @@ if __name__ == '__main__':
             for line in f:
                 iid, path2mpileup = line.strip().split()
                 sampleList.append((iid, path2mpileup))
-        prms = [[iid, path2mpileup, None, 30, 30, 2504, False, exclude_pops, conpop, 
+        prms = [[iid, path2mpileup, None, None, 30, 30, 2504, False, exclude_pops, conpop, 
                 args.ref, args.meta, "", args.c, args.jump, args.miscopy,
                 args.log, False, False, args.prefix] for iid, path2mpileup in sampleList]
     elif args.bam:
@@ -74,7 +74,7 @@ if __name__ == '__main__':
             for line in f:
                 iid, path2bam = line.strip().split()
                 sampleList.append((iid, path2bam))
-        prms = [[iid, None, path2bam, 30, 30, 2504, False, exclude_pops, conpop, 
+        prms = [[iid, None, path2bam, None, 30, 30, 2504, False, exclude_pops, conpop, 
                 args.ref, args.meta, "", args.c, args.jump, args.miscopy,
                 args.log, False, False, args.prefix] for iid, path2bam in sampleList]
     else:

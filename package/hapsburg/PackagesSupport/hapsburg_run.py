@@ -188,7 +188,7 @@ def hapsb_multiChunk_preload(c, hmms, processes=1):
 
 def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
                 hdf5_path=None, folder_out=None, 
-                init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_jump=300, 
+                init_c=0.025, trim=0.005, minLen=0.06, conPop=["CEU"], roh_jump=300, 
                 e_rate=1e-2, e_rate_ref=1e-3, processes=1, n_ref=2504, 
                 exclude_pops=["AFR"], prefix=None, logfile=False, cleanup=False):
     """
@@ -251,11 +251,11 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
         folder_out = os.path.dirname(os.path.abspath(hdf5_path))
 
     if prefix:
-        fileName = f'{iid}.{prefix}.hapCON_ROH.txt'
+        fileName = f'{iid}.{prefix}.hapCon_ROH.txt'
     else:
-        fileName = f'{iid}.hapCON_ROH.txt'
+        fileName = f'{iid}.hapCon_ROH.txt'
 
-    prepare_path_general(folder_out, iid, prefix, "hapCON_ROH", logfile)
+    prepare_path_general(folder_out, iid, prefix, "hapCon_ROH", logfile)
     chunks = []
     with open(roh_list) as f:
         f.readline()
@@ -280,6 +280,9 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
         prms = [[iid, ch, start, end, hdf5_path+f"/{iid}.chr{ch}.hdf5", h5_path1000g, meta_path_ref, \
                     folder_out, conPop, roh_jump, e_rate, e_rate_ref, n_ref, exclude_pops] for ch, start, end in chunks]
         hmms = multi_run(preload, prms, processes=processes)
+        print(hmms)
+        if not type(hmms) is list:
+            hmms = [hmms]
         assert(len(hmms) == len(chunks))
         # hmms = []
         # for ch, start, end in chunks:
@@ -343,7 +346,7 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
 
 def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], 
                 e_model="EigenstratPacked", p_model="MosaicHDF5", readcounts=True, random_allele=True,
-                post_model="Standard", path_targets=None,
+                downsample=False, post_model="Standard", path_targets=None,
                 h5_path1000g=None, meta_path_ref=None, folder_out=None, prefix_out="",
                 c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
                 max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.05,
@@ -427,7 +430,7 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
     hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
     hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
                          folder_out=folder_out, prefix_out_data=prefix_out, 
-                         excluded=exclude_pops, diploid_ref=diploid_ref)
+                         excluded=exclude_pops, diploid_ref=diploid_ref, downsample=downsample)
     
     ### Set the paths to ref & target
     hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
@@ -460,7 +463,7 @@ def hapsb_ind(iid, chs=range(1,23),
               h5_path1000g=None, meta_path_ref=None, folder_out=None, prefix_out="",
               e_model="haploid", p_model="Eigenstrat", post_model="Standard",
               processes=1, delete=False, output=True, save=True, save_fp=False, 
-              n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=True,
+              n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=True, downsample=False,
               c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
               cutoff_post = 0.999, max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.05,
                 min_len1 = 0.02, min_len2 = 0.04, logfile=True, combine=True, file_result="_roh_full.csv"):
@@ -552,18 +555,18 @@ def hapsb_ind(iid, chs=range(1,23),
     ### Prepare the Parameters for that Indivdiual
     if len(path_targets) != 0:
         prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
-            post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
+            downsample, post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
             c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial, 
             roh_min_l_final, min_len1, min_len2, cutoff_post, logfile] for ch in chs]
     elif len(path_targets_prefix) != 0:
-        prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
+        prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele, downsample,
             post_model, f'{path_targets_prefix}/{iid}.chr{ch}.hdf5', h5_path1000g, meta_path_ref, folder_out, prefix_out,
             c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial, roh_min_l_final, 
             min_len1, min_len2, cutoff_post, logfile] for ch in chs]
     else:
         print(f'You need to at least specify one of path_targets or path_targets_prefix...')
         sys.exit()
-    assert(len(prms[0])==31)   # Sanity Check
+    assert(len(prms[0])==32)   # Sanity Check
                             
     ### Run the analysis in parallel
     multi_run(hapsb_chrom, prms, processes = processes)

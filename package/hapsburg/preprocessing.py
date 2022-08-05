@@ -61,7 +61,7 @@ class PreProcessing(object):
         if not os.path.exists(out_folder):   # Create Output Folder if needed
             if self.output == True:
                 print(f"Creating folder {out_folder}...")
-            os.makedirs(out_folder)
+            os.makedirs(out_folder, exist_ok=True) # will this exist_ok have unintended effect? wait to see...
 
         return out_folder
 
@@ -89,6 +89,7 @@ class PreProcessingHDF5(PreProcessing):
     only_calls = True     # Whether to downsample to markers with no missing data
     flipstrand = True
     max_mm_rate = 0.9     # Maximal mismatch rate ref/alt alleles between target and ref
+    downsample = False # whether to subsample readcount data to pseudohaploid data
 
     def __init__(self, conPop=[], save=True, output=True):
         """Initialize Class.
@@ -238,7 +239,17 @@ class PreProcessingHDF5(PreProcessing):
             if self.output:
                 print(f"Loading Readcounts...")
                 print(f"Mean Readcount on markers with data: {np.mean(read_counts) * 2:.5f}")
-            gts_ind = read_counts
+            if not self.downsample:
+                gts_ind = read_counts
+            else:
+                print('downsample readcounts to pseuohaploid data...')
+                gts_ind = np.zeros_like(read_counts)
+                alt_prob = read_counts[1, :]/np.sum(read_counts, axis=0)
+                sample_binom = np.random.binomial(np.ones(read_counts.shape[1], dtype=np.int8), alt_prob)
+                gts_ind[0, np.where(sample_binom == 0)[0]] = 1
+                gts_ind[1, np.where(sample_binom == 1)[0]] = 1
+                print('print the read counts after downsampling')
+                print(gts_ind)
         
         ### Shuffle Target Allele     
         if (self.random_allele == True) and (self.readcounts == False):     
