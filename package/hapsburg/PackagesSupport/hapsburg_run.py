@@ -280,7 +280,6 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
         prms = [[iid, ch, start, end, hdf5_path+f"/{iid}.chr{ch}.hdf5", h5_path1000g, meta_path_ref, \
                     folder_out, conPop, roh_jump, e_rate, e_rate_ref, n_ref, exclude_pops] for ch, start, end in chunks]
         hmms = multi_run(preload, prms, processes=processes)
-        print(hmms)
         if not type(hmms) is list:
             hmms = [hmms]
         assert(len(hmms) == len(chunks))
