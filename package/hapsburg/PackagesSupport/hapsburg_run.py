@@ -188,7 +188,7 @@ def hapsb_multiChunk_preload(c, hmms, processes=1):
 
 def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
                 hdf5_path=None, folder_out=None, 
-                init_c=0.025, trim=0.005, minLen=0.06, conPop=["CEU"], roh_jump=300, 
+                init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_jump=300, 
                 e_rate=1e-2, e_rate_ref=1e-3, processes=1, n_ref=2504, 
                 exclude_pops=["AFR"], prefix=None, logfile=False, cleanup=False):
     """
@@ -547,6 +547,8 @@ def hapsb_ind(iid, chs=range(1,23),
         Wether to combine output of all chromosomes
     file_result: str
         Appendix to individual results
+
+    Return: number of ROH blocks
     """
                             
     if output:
@@ -575,8 +577,9 @@ def hapsb_ind(iid, chs=range(1,23),
     if combine:
         if output:
             print(f"Combining Information for {len(chs)} Chromosomes...")
-        combine_individual_data(folder_out, iid=iid, delete=delete, chs=chs, 
+        df = combine_individual_data(folder_out, iid=iid, delete=delete, chs=chs, 
                                 prefix_out=prefix_out, file_result=file_result)
+        return len(df.index), 100*np.sum(df['lengthM'])
     if output:
         print(f"Run finished successfully!")
         
@@ -758,10 +761,10 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, bamTable=None, q=30, Q=30,
         print(f'finished reading bam file, takes {time.time()-t1:.3f}.')
     elif mpileup:
         if not damage:
-            err, numSitesCovered, path2hdf5 = mpileup2hdf5(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
+            err, numSitesCovered, _, path2hdf5 = mpileup2hdf5(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
         else:
             print(f'Doing damage aware parsing of mpileup file.')
-            err, numSitesCovered, path2hdf5 = mpileup2hdf5_damageAware(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
+            err, numSitesCovered, _, path2hdf5 = mpileup2hdf5_damageAware(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
         print(f'finished reading mpileup file, takes {time.time()-t1:.3f}.')
     else:
         err, numSitesCovered, path2hdf5 = bamTable2hdf5(bamTable, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)

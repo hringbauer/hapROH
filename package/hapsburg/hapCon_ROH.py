@@ -1,4 +1,4 @@
-# run female hapCON estimate from mpileup results
+# run hapCon_ROH estimate from mpileup results
 
 import numpy as np
 import argparse
@@ -7,8 +7,14 @@ import sys
 import os
 from pathlib import Path
 import shutil
+from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind
+from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam_preload
+from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
+from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bamTable2hdf5
+from multiprocessing import set_start_method
+set_start_method("spawn")
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(description='Run hapROH(on autosomes) from mpileup output')
     parser.add_argument('--mpileup', action="store", dest="mpath", type=str, required=False,
                         help="Basepath to a list of mpileup file")
@@ -29,14 +35,6 @@ if __name__ == '__main__':
     parser.add_argument('--prefix', action="store", dest="prefix", type=str, required=False, default=None,
                         help="prefix of the output. The output will be named as $iid.$prefix.hapCon_ROH.txt")
     args = parser.parse_args()
-
-    sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
-    from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind
-    from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam_preload
-    from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
-    from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bamTable2hdf5
-    from multiprocessing import set_start_method
-    set_start_method("spawn")
 
 
     iid = args.iid

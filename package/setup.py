@@ -29,7 +29,8 @@ setup(
     install_requires=['numpy', 'pandas', 'scipy', 'h5py', 'psutil', 'numdifftools', 'cython', 'matplotlib', 'pysam'],
     entry_points ={
             'console_scripts': [
-                'hapConX = hapsburg.hapCONX:main'
+                'hapConX = hapsburg.hapCONX:main',
+                'hapCon_ROH = hapsburg.hapCon_ROH:main'
             ]
         },
 )

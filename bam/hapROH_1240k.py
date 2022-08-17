@@ -48,8 +48,8 @@ if __name__ == '__main__':
             f'/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr{ch}.hdf5',
             iid, -np.inf, np.inf, f'{basepath}/hdf5', False] for ch in range(1, 23)]
     results = multi_run(mpileup2hdf5, prms, p)
-    err = np.mean(np.array([err for err, _, _ in results]))
-    numSitesCovered = sum([n for _, n, _ in results])
+    err = np.mean(np.array([err for err, _, _, _ in results]))
+    numSitesCovered = sum([n for _, n, _, _ in results])
     print(f'finished reading mpileup files, takes {round(time.time()-t1, 3)}s')
     print(f'estimated genotyping error: {err}')
 
