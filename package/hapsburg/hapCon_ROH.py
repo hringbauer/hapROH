@@ -15,7 +15,7 @@ from multiprocessing import set_start_method
 set_start_method("spawn")
 
 def main():
-    parser = argparse.ArgumentParser(description='Run hapROH(on autosomes) from mpileup output')
+    parser = argparse.ArgumentParser(description='Run hapCon_ROH from either mpileup or BamTable output')
     parser.add_argument('--mpileup', action="store", dest="mpath", type=str, required=False,
                         help="Basepath to a list of mpileup file")
     parser.add_argument('--bamTable', action="store", dest="bamTable", type=str, required=False,
