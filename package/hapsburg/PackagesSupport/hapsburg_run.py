@@ -464,7 +464,7 @@ def hapsb_ind(iid, chs=range(1,23),
               processes=1, delete=False, output=True, save=True, save_fp=False, 
               n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=True, downsample=False,
               c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
-              cutoff_post = 0.999, max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.05,
+              cutoff_post = 0.999, max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.04,
                 min_len1 = 0.02, min_len2 = 0.04, logfile=True, combine=True, file_result="_roh_full.csv"):
     """Analyze a full single individual in a parallelized fashion. Run multiple chromosome analyses in parallel.
     Then brings together the result ROH tables from each chromosome into one genome-wide summary ROH table.

@@ -122,7 +122,7 @@ def main():
                 e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
                 processes=p, delete=True, output=True, save=True, save_fp=False, 
                 n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False, downsample=downsample, 
-                c=contam_prev, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
+                c=contam_prev, roh_min_l_final=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
                 logfile=True, combine=True, file_result="_roh_full.csv")
             contam, se, chunks, sumROH = hapsb_femaleROHcontam_preload(iid, f"{basepath}/hapRoh_iter/{iid}_roh_full.csv",
                 args.r, args.meta, hdf5_path=f"{basepath}/hdf5", e_rate=err, processes=p, prefix=args.prefix, logfile=False)
