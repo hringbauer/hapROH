@@ -73,6 +73,8 @@ def main():
     frac = numSitesCovered/totNumSites
     print(f'fraction of sites covered by at least one read: {frac}')
     downsample = False
+    if frac >= 0.7:
+        downsample = True
 
     ################################### call ROH ##################################
     ## first, run without contamination

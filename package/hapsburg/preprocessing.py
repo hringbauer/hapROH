@@ -243,19 +243,26 @@ class PreProcessingHDF5(PreProcessing):
                 gts_ind = read_counts
             else:
                 print('downsample readcounts to pseuohaploid data...')
+                ################### downsample to pseudohaploid data ####################################
+                # gts_ind = np.zeros_like(read_counts)
+                # alt_prob = read_counts[1, :]/np.sum(read_counts, axis=0)
+                # sample_binom = np.random.binomial(np.ones(read_counts.shape[1], dtype=np.int8), alt_prob)
+                # gts_ind[0, np.where(sample_binom == 0)[0]] = 1
+                # gts_ind[1, np.where(sample_binom == 1)[0]] = 1
+                # print('print the read counts after downsampling')
+                # print(gts_ind)
+                ################## downsample to ~1x data ################################################
+                meanDepth = np.mean(np.sum(read_counts, axis=0))
+                p = 1/meanDepth
+                sample_binom_ref = np.random.binomial(read_counts[0], p)
+                sample_binom_alt = np.random.binomial(read_counts[1], p)
                 gts_ind = np.zeros_like(read_counts)
-                alt_prob = read_counts[1, :]/np.sum(read_counts, axis=0)
-                #nreads = np.minimum(np.random.poisson(lam=0.8, size=read_counts.shape[1]), np.sum(read_counts, axis=0))
-                sample_binom = np.random.binomial(np.ones(read_counts.shape[1], dtype=np.int8), alt_prob)
-                #sample_binom = np.random.binomial(nreads, alt_prob)
-                gts_ind[0, np.where(sample_binom == 0)[0]] = 1
-                gts_ind[1, np.where(sample_binom == 1)[0]] = 1
-                #gts_ind[0, :] = nreads - sample_binom
-                #gts_ind[1, :] = sample_binom
-                #assert(np.all(gts_ind >= 0))
+                gts_ind[0] = sample_binom_ref
+                gts_ind[1] = sample_binom_alt
                 print('print the read counts after downsampling')
-                print(gts_ind)
-        
+                print(gts_ind[:, :200])
+
+
         ### Shuffle Target Allele     
         if (self.random_allele == True) and (self.readcounts == False):     
             if self.output == True:
