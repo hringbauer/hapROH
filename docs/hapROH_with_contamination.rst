@@ -7,7 +7,7 @@ Runs of Homozygosity (ROH) are, just as male X chromosome, haploid and therefore
 jointly estimate ROH and contamination rate, described in detail in the Supplementary Note xxx in xxx. This method takes as input, the output of `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. 
 We recommend BamTable as it provides more flexibility for preprocessing your BAM file.
 
-Our algorithm is wrapped in a Python script located in `./bam/hapCON_auto.py <https://github.com/hyl317/hapROH/blob/master/bam/hapCON_auto.py>`_ (path given relative to the root of our github repository). For more details for how to use this method, please refer to the vignette linked below.
+Our algorithm is wrapped in a in a simple command line, invoked by "hapCon_ROH". For more details for how to use this method, please refer to the vignette linked below.
 
 Scope of this method and its limitation
 ******************************************

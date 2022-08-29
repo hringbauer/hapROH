@@ -28,7 +28,7 @@ if __name__ == '__main__':
                         help="prefix of the output.")
     args = parser.parse_args()
 
-    #sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
+    sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
     from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam_preload
     from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
     from multiprocessing import set_start_method
@@ -78,13 +78,13 @@ if __name__ == '__main__':
         "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr", 
         "/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv",
         mpileup_path=args.mpileup, init_c=0.025, conPop=["CEU"],
-        roh_jump=300, e_rate_ref=1e-3,
+        roh_jump=300, e_rate_ref=1e-3, e_rate=err,
         processes=p, n_ref=2504, prefix=args.prefix, logfile=True)
     
-    # with open(f'{basepath}/{iid}.MyRoh.1240k.results', 'w') as f:
-    #     f.write(f'Method1: Fixing genotyping error rate at {err}\n')
-    #     f.write(f'\tROH blocks obtained from: {roh_path}\n')
-    #     f.write(f'\tMLE for contamination using BFGS: {round(contam, 6)} ({round(contam-1.96*se, 6)} - {round(contam+1.96*se, 6)})\n')
+    with open(f'{basepath}/{iid}.knownROH.txt', 'w') as f:
+        f.write(f'Method1: Fixing genotyping error rate at {err}\n')
+        f.write(f'\tROH blocks obtained from: {roh_path}\n')
+        f.write(f'\tMLE for contamination using BFGS: {round(contam, 6)} ({round(contam-1.96*se, 6)} - {round(contam+1.96*se, 6)})\n')
     
     
 

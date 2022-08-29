@@ -36,15 +36,6 @@ To upgrade an existing installation:
 
     pip install --upgrade hapROH
 
-### Quick Start Guide
-You can do a simple run of hapCon with the prepared Python script ./bam/hapCONX.py (on the github folder). This is a Python wrapper for the core function of hapCon.
-
-To use this hapCONX.py script, you need at least three inputs: the pileup file for your sample, the reference panel and the meatadata for the reference panel. You can download the reference panel from https://www.dropbox.com/s/1vv8mz9athedpiq/data.zip?dl=0 (TODO: replace this dropbox link with zenodo later). To generate the pileup file, you can use either [samtools mpileup](http://www.htslib.org/doc/samtools-mpileup.html) or [BamTable](https://bioinf.eva.mpg.de/BamTable/).
-    
-    python hapCONX.py -m [path to pileup file] -r [path to reference panel] --meta [path to the metadata file]
-    
-For more details about how to prepare the pileup file and more customized usage of hapCon, please refer to our [jupyter notebook tutorial](https://github.com/hyl317/hapROH/blob/master/Notebooks/Vignettes/hapCon_vignette.ipynb).
-
 # References
 Scientific manuscripts introducing the methods are available at:
 - https://doi.org/10.1038/s41467-021-25289-w for hapROH

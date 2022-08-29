@@ -234,7 +234,7 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
         print(f'estimated genotyping error by flanking sites: {err:.6f}')
         print(f'number of sites covered by at least one read: {numSitesCovered}, fraction covered: {numSitesCovered/len(pos):.3f}')
         print(f'hdf5 file saved to {hdf5Name}')
-    return err, numSitesCovered, hdf5Name
+    return err, numSitesCovered, l, hdf5Name
 
 def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, s=-np.inf, e=np.inf, trim=0, outPath="", output=True):
     f = h5py.File(refHDF5, 'r')
@@ -624,4 +624,4 @@ def bamTable2hdf5(path2bamTable, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="
         print(f'estimated genotyping error by flanking sites: {err:.6f}')
         print(f'number of sites covered by at least one read: {numSitesCovered}, fraction covered: {numSitesCovered/len(pos):.3f}')
         print(f'hdf5 file saved to {hdf5Name}')
-    return err, numSitesCovered, hdf5Name
+    return err, numSitesCovered, l, hdf5Name

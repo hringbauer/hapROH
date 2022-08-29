@@ -1,4 +1,4 @@
-# run female hapCON estimate from mpileup results
+# run hapCon_ROH estimate from mpileup results
 
 import numpy as np
 import argparse
@@ -7,9 +7,15 @@ import sys
 import os
 from pathlib import Path
 import shutil
+from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind
+from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam_preload
+from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
+from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bamTable2hdf5
+from multiprocessing import set_start_method
+set_start_method("spawn")
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Run hapROH(on autosomes) from mpileup output')
+def main():
+    parser = argparse.ArgumentParser(description='Run hapCon_ROH from either mpileup or BamTable output')
     parser.add_argument('--mpileup', action="store", dest="mpath", type=str, required=False,
                         help="Basepath to a list of mpileup file")
     parser.add_argument('--bamTable', action="store", dest="bamTable", type=str, required=False,
@@ -29,14 +35,6 @@ if __name__ == '__main__':
     parser.add_argument('--prefix', action="store", dest="prefix", type=str, required=False, default=None,
                         help="prefix of the output. The output will be named as $iid.$prefix.hapCon_ROH.txt")
     args = parser.parse_args()
-
-    sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
-    from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind
-    from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam_preload
-    from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
-    from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bamTable2hdf5
-    from multiprocessing import set_start_method
-    set_start_method("spawn")
 
 
     iid = args.iid
@@ -77,7 +75,6 @@ if __name__ == '__main__':
     downsample = False
     if frac >= 0.7:
         downsample = True
-    
 
     ################################### call ROH ##################################
     ## first, run without contamination
@@ -127,7 +124,7 @@ if __name__ == '__main__':
                 e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
                 processes=p, delete=True, output=True, save=True, save_fp=False, 
                 n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False, downsample=downsample, 
-                c=contam_prev, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
+                c=contam_prev, roh_min_l_final=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
                 logfile=True, combine=True, file_result="_roh_full.csv")
             contam, se, chunks, sumROH = hapsb_femaleROHcontam_preload(iid, f"{basepath}/hapRoh_iter/{iid}_roh_full.csv",
                 args.r, args.meta, hdf5_path=f"{basepath}/hdf5", e_rate=err, processes=p, prefix=args.prefix, logfile=False)
