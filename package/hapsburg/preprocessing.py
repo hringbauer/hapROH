@@ -89,7 +89,7 @@ class PreProcessingHDF5(PreProcessing):
     only_calls = True     # Whether to downsample to markers with no missing data
     flipstrand = True
     max_mm_rate = 0.9     # Maximal mismatch rate ref/alt alleles between target and ref
-    downsample = False # whether to subsample readcount data to pseudohaploid data
+    downsample = False    # If not false (i.e. float), downsample readcounts to this target average coverage
 
     def __init__(self, conPop=[], save=True, output=True):
         """Initialize Class.
@@ -239,6 +239,8 @@ class PreProcessingHDF5(PreProcessing):
             if self.output:
                 print(f"Loading Readcounts...")
                 print(f"Mean Readcount on markers with data: {np.mean(read_counts) * 2:.5f}")
+            
+            ### Downsample to target average coverage
             if not self.downsample:
                 gts_ind = read_counts
             else:
@@ -253,19 +255,21 @@ class PreProcessingHDF5(PreProcessing):
                 # print(gts_ind)
                 ################## downsample to ~1x data ################################################
                 meanDepth = np.mean(np.sum(read_counts, axis=0))
-                p = 1/meanDepth
+                p = (1/meanDepth) * self.downsample
                 sample_binom_ref = np.random.binomial(read_counts[0], p)
                 sample_binom_alt = np.random.binomial(read_counts[1], p)
                 gts_ind = np.zeros_like(read_counts)
                 gts_ind[0] = sample_binom_ref
                 gts_ind[1] = sample_binom_alt
-                print('print the read counts after downsampling')
-                print(gts_ind[:, :200])
+                
+                if self.output:
+                    print('print first 100 read counts after downsampling')
+                    print(gts_ind[:, :100])
 
 
         ### Shuffle Target Allele     
         if (self.random_allele == True) and (self.readcounts == False):     
-            if self.output == True:
+            if self.output:
                 print("Shuffling phase of target...")
             gts_ind = self.destroy_phase_func(gts_ind)
         

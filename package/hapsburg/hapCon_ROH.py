@@ -72,9 +72,11 @@ def main():
     print(f'estimated genotyping error: {err}')
     frac = numSitesCovered/totNumSites
     print(f'fraction of sites covered by at least one read: {frac}')
-    downsample = False
+    
     if frac >= 0.7:
-        downsample = True
+        downsample = 1.0
+    else:
+        downsample = False
 
     ################################### call ROH ##################################
     ## first, run without contamination

@@ -389,6 +389,8 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
         Whether to load readcount data
     random_allele: bool
         Whether to pick a random of the two target alleles per locus
+    downsample:
+        If not false (i.e. float), downsample readcounts to this target average coverage
     c: float
         Contamination rate. This is only applicable if the emission model is readcount_contam.
     conPop: list of str
@@ -514,6 +516,8 @@ def hapsb_ind(iid, chs=range(1,23),
         Whether to load readcount data
     random_allele: bool
         Whether to pick a random of the two target alleles per locus
+    downsample:
+        If not false (i.e. float), downsample readcounts to this target average coverage
     c: float
         Contamination rate. This is only applicable if the emission model is readcount_contam.
     conPop: list of str
@@ -588,7 +592,8 @@ def hapsb_ind(iid, chs=range(1,23),
 
 def hapsb_chromXs(iids=[["I15595","I15970"]], processes=1, file_result="", 
                   ch=23, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], 
-                  e_model="EigenstratPacked", p_model="MosaicHDF5", readcounts=True, random_allele=True,
+                  e_model="EigenstratPacked", p_model="MosaicHDF5", readcounts=True, 
+                  random_allele=True, downsample=False,
                   post_model="Standard", path_targets=None,
                   h5_path1000g=None, meta_path_ref=None, folder_out=None, prefix_out="",
                   c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
@@ -606,10 +611,10 @@ def hapsb_chromXs(iids=[["I15595","I15970"]], processes=1, file_result="",
     
     ### Prepare the Parameters for each Individual pairs
     prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
-             post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
+             downsample, post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
              c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial,
              roh_min_l_final, min_len1, min_len2, cutoff_post, logfile] for iid in iids]
-    assert(len(prms[0])==31)   # Sanity Check
+    assert(len(prms[0])==32)   # Sanity Check
                             
     ### Run the analysis in parallel
     multi_run(hapsb_chrom, prms, processes = processes)  

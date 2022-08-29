@@ -1,3 +1,7 @@
+## 0.6, August 29th 2022, Harald Ringbauer, Yilei Huang
+- Included hapCon+ROH functionality from Yilei's branch
+- Added downsample parameter to downsample read count data to this specified average coverage
+
 ## 0.53, July 1st 2022, Harald Ringbauer
 - Merged in Yeilei's branch, that includes Unix-style command line functionality for hapCon
 

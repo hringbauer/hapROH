@@ -5,11 +5,15 @@ Summary of update and upload instructions from https://packaging.python.org/tuto
 ### Go to base folder
 cd /project2/jnovembre/hringbauer/HAPSBURG/package
 
-On Chicago cluster:  
+- On Chicago cluster:  
 module load python
 
-Or on O2:
+- Or on O2:
 envpython37
+
+### For local test install (e.g. for unit tests), run from ./package/ folder:
+pip3 install --user ./
+
 
 ### Run Tests of Expected Behavior
 Use `/Notebooks/Tests/roh_caller_test_chicago.ipynb` to run tests of expected behavior of hapROH
