@@ -12,9 +12,11 @@ from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam_preload
 from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
 from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bamTable2hdf5
 from multiprocessing import set_start_method
-set_start_method("spawn")
+
 
 def main():
+    set_start_method("spawn")
+    
     parser = argparse.ArgumentParser(description='Run hapCon_ROH from either mpileup or BamTable output')
     parser.add_argument('--mpileup', action="store", dest="mpath", type=str, required=False,
                         help="Basepath to a list of mpileup file")
