@@ -551,7 +551,7 @@ def hapsb_ind(iid, chs=range(1,23),
     file_result: str
         Appendix to individual results
 
-    Return: number of ROH blocks
+    Return: If combine is true, return a pandas dataframe that contains information of all detected ROH blocks. Otherwise nothing is returned.
     """
                             
     if output:
@@ -582,7 +582,7 @@ def hapsb_ind(iid, chs=range(1,23),
             print(f"Combining Information for {len(chs)} Chromosomes...")
         df = combine_individual_data(folder_out, iid=iid, delete=delete, chs=chs, 
                                 prefix_out=prefix_out, file_result=file_result)
-        return len(df.index), 100*np.sum(df['lengthM'])
+        return df
     if output:
         print(f"Run finished successfully!")
         
