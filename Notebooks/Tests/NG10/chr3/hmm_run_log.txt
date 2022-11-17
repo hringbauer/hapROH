@@ -1,0 +1,85 @@
+Using Rescaled HMM.
+Loaded Pre Processing Model: Eigenstrat
+Loading Individual: NG10
+
+Loaded 490291 variants
+Loaded 2504 individuals
+HDF5 loaded from /mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/maf5_auto/maf5_chr3.hdf5
+Eigenstrat packed: False
+3 Eigenstrat Files with 1 Individuals and 78366914 SNPs
+
+Intersection on Positions: 490291
+Nr of Matching Refs: 490291 / 490291
+Ref/Alt Matching: 490291 / 490291
+Flipped Ref/Alt Matching: 0
+Together: 490291 / 490291
+2504 / 2504 Individuals included in Reference
+Extracting up to 2504 Individuals
+Reduced to markers with data: 477651 / 490291
+Fraction SNPs covered: 0.9742
+Exctraction of hdf5 done. Subsetting...!
+Extraction of 5008 Haplotypes complete
+Flipping Ref/Alt Alleles in target for 0 SNPs...
+Successfully saved target individual data to: NG10/chr3/
+Shuffling phase of target...
+Successfully loaded Data from: NG10/chr3/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+
+Parameters in hapsb_chrom:
+iid	NG10
+ch	3
+save	True
+save_fp	False
+n_ref	2504
+diploid_ref	True
+exclude_pops	[]
+e_model	haploid
+p_model	Eigenstrat
+readcounts	False
+random_allele	True
+downsample	False
+post_model	Standard
+path_targets	/home/xiaowen_jia/LAI/genotype/NG10
+h5_path1000g	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/maf5_auto/maf5_chr
+meta_path_ref	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv
+folder_out	
+prefix_out	
+c	0.0
+conPop	['CEU']
+roh_in	1
+roh_out	20
+roh_jump	300
+e_rate	0.01
+e_rate_ref	0.0
+max_gap	0.005
+roh_min_l_initial	0.02
+roh_min_l_final	0.04
+min_len1	0.02
+min_len2	0.04
+cutoff_post	0.999
+logfile	True
+
+
+Minimum Genetic Map: 0.0000 Morgan
+Maximum Genetic Map: 2.2326 Morgan
+Gaps bigger than 0.1 cM: 5
+Maximum Gap: 0.1540 cM
+Upper Gap Cutoff: 5.0000 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 477651)
+Loaded Observations:
+(2, 477651)
+Memory Usage at end of HMM:
+Memory Usage: 21916.708864 mB
+Total Log likelihood: -111484.356
+Finished Calculation State Posteriors
+Saved Zero State Posterior to folder NG10/chr3/.
+Successfully loaded for PP. from NG10/chr3/
+Fraction Markers in ROH: 0.6079
+Called n=2 ROH Blocks > 4.0 cM
+Longest Block: 52.02 cM
+Successfully saved to NG10/chr3/roh.csv
+Combining Information for 1 Chromosomes...
