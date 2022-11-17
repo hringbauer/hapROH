@@ -94,6 +94,7 @@ def main():
         logfile=True, combine=True, file_result="_roh_full.csv")
     df = df[df['lengthM'] >= args.minL/100]
     nBlocks, lengthSum = len(df.index), 100*np.sum(df['lengthM'])
+    lengthSum -= 2*nBlocks*0.5
     print(f'number of blocks found with null-model: {nBlocks} with total length {round(lengthSum, 3)}cM')
     # run with 5% contamiantion only if the null-model doesn't yield any ROH or total sum < 10cM
     if nBlocks == 0 or lengthSum < 10:

@@ -156,10 +156,16 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
             insertion_index = readbases.find("+")
             insert = ""
             while insertion_index != -1:
-                numInsertion = int(readbases[insertion_index+1])
-                insert += readbases[insertion_index+2:insertion_index+2+numInsertion]
-                insertion_index = readbases.find("+", insertion_index+2+numInsertion)
-            
+                charFollowingPlus = readbases[insertion_index+1]
+                if charFollowingPlus.isnumeric():
+                    j = insertion_index + 2
+                    while readbases[j].isnumeric():
+                        j += 1
+                    numInsertion = int(readbases[insertion_index + 1:j])
+                    insert += readbases[j:j + numInsertion]
+                    insertion_index = readbases.find("+", j + numInsertion)
+                else:
+                    insertion_index = readbases.find("+", insertion_index+1)
             rc[0] = readbases.count('A') + readbases.count('a') - insert.count('A') - insert.count('a')
             rc[1] = readbases.count('C') + readbases.count('c') - insert.count('C') - insert.count('c')
             rc[2] = readbases.count('G') + readbases.count('g') - insert.count('G') - insert.count('g')

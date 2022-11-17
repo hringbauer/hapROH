@@ -1,0 +1,91 @@
+Using Rescaled HMM.
+Loaded Pre Processing Model: SardHDF5
+Loading Individual: test
+
+Loaded 69399 variants
+Loaded 1 individuals
+HDF5 loaded from /mnt/archgen/users/yilei/tools/hapROH/Notebooks/Tests/hdf5/test.chr5.hdf5
+
+Loaded 69399 variants
+Loaded 2504 individuals
+HDF5 loaded from /mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr5.hdf5
+
+Intersection on Positions: 69399
+Nr of Matching Refs: 69399 / 69399
+Ref/Alt Allele Matching: 69399 / 69399
+Flipped Ref/Alt Alleles for 0 SNPs
+Together: 69399 / 69399
+2504 / 2504 Individuals included in Reference
+Extracting up to 2504 Individuals
+99 / 2504 individuals included in contamination population
+Exctraction of hdf5 done. Subsetting...!
+Extraction of 2 Haplotypes complete
+Flipping Ref/Alt Allele in target for 0 SNPs...
+Exctraction of hdf5 done. Subsetting...!
+Extraction of 5008 Haplotypes complete
+Subset to markers with data: 20384 / 69399
+Fraction SNPs covered: 0.2937
+Successfully saved target individual data to: /mnt/archgen/users/yilei/tools/hapROH/Notebooks/Tests/hapRoh_iter/test/chr5/
+Loading Readcounts...
+Mean Readcount on markers with data: 1.30985
+Successfully loaded Data from: /mnt/archgen/users/yilei/tools/hapROH/Notebooks/Tests/hapRoh_iter/test/chr5/
+Loaded Emission Model: readcount_contam
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+
+Parameters in hapsb_chrom:
+iid	test
+ch	5
+save	True
+save_fp	False
+n_ref	2504
+diploid_ref	True
+exclude_pops	[]
+e_model	readcount_contam
+p_model	SardHDF5
+readcounts	True
+random_allele	False
+downsample	False
+post_model	Standard
+path_targets	/mnt/archgen/users/yilei/tools/hapROH/Notebooks/Tests/hdf5/test.chr5.hdf5
+h5_path1000g	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr
+meta_path_ref	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv
+folder_out	/mnt/archgen/users/yilei/tools/hapROH/Notebooks/Tests/hapRoh_iter/
+prefix_out	
+c	0.053901585550176385
+conPop	['CEU']
+roh_in	1
+roh_out	20
+roh_jump	300
+e_rate	0.023850409557141142
+e_rate_ref	0.001
+max_gap	0.005
+roh_min_l_initial	0.02
+roh_min_l_final	0.04
+min_len1	0.02
+min_len2	0.04
+cutoff_post	0.999
+logfile	True
+
+
+Minimum Genetic Map: 0.0004 Morgan
+Maximum Genetic Map: 2.0409 Morgan
+Gaps bigger than 0.1 cM: 404
+Maximum Gap: 1.3122 cM
+Upper Gap Cutoff: 5.0000 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 20384)
+Loaded Observations:
+(2, 20384)
+Memory Usage at end of HMM:
+Memory Usage: 3602.018304 mB
+Total Log likelihood: -9024.592
+Finished Calculation State Posteriors
+Saved Zero State Posterior to folder /mnt/archgen/users/yilei/tools/hapROH/Notebooks/Tests/hapRoh_iter/test/chr5/.
+Successfully loaded for PP. from /mnt/archgen/users/yilei/tools/hapROH/Notebooks/Tests/hapRoh_iter/test/chr5/
+Fraction Markers in ROH: 0.3368
+Called n=2 ROH Blocks > 4.0 cM
+Longest Block: 13.07 cM
+Successfully saved to /mnt/archgen/users/yilei/tools/hapROH/Notebooks/Tests/hapRoh_iter/test/chr5/roh.csv
+Set Output Log path: /mnt/archgen/users/yilei/tools/hapROH/Notebooks/Tests/hapRoh_iter/test/chr6/hmm_run_log.txt
