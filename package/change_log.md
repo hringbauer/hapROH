@@ -1,4 +1,4 @@
-## 0.6, August 29th 2022, Harald Ringbauer, Yilei Huang
+## 0.60, August 29th 2022, Harald Ringbauer, Yilei Huang
 - Included hapCon+ROH functionality from Yilei's branch
 - Added downsample parameter to downsample read count data to this specified average coverage
 
