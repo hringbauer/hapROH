@@ -14,6 +14,7 @@ from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bamTa
 from multiprocessing import set_start_method
 
 def main():
+    set_start_method("spawn")
     parser = argparse.ArgumentParser(description='Run hapCon_ROH from either mpileup or BamTable output')
     parser.add_argument('--mpileup', action="store", dest="mpath", type=str, required=False,
                         help="Basepath to a list of mpileup file")
@@ -36,9 +37,6 @@ def main():
     parser.add_argument('--prefix', action="store", dest="prefix", type=str, required=False, default=None,
                         help="prefix of the output. The output will be named as $iid.$prefix.hapCon_ROH.txt")
     args = parser.parse_args()
-
-    set_start_method("spawn")
-
 
     iid = args.iid
     p = args.processes
