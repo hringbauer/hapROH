@@ -144,6 +144,7 @@ def merge_called_blocks_custom(df, max_gap=0.005, min_len1=0.02,
 
         df_n = df.drop(df.index)  # Create New Data frame with all raws removed
         row_c = df.iloc[0, :].copy()
+        BPprovided = 'EndPosGRCh37' in df.columns
 
         # Iterate over all further rows, update blocks if gaps small enough
         for index, row in df.iloc[1:,:].iterrows():
@@ -158,6 +159,9 @@ def merge_called_blocks_custom(df, max_gap=0.005, min_len1=0.02,
                 row_c["EndM"] = row["EndM"]
                 row_c["length"] = row_c["End"] - row_c["Start"]
                 row_c["lengthM"] = row_c["EndM"] - row_c["StartM"]
+                if BPprovided:
+                    row_c['EndPosGRCh37'] = row['EndPosGRCh37']
+                
 
             else:  # Save and go to next row
                 df_n.loc[len(df_n)] = row_c  # Append a row to new df

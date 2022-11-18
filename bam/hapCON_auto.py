@@ -1,15 +1,22 @@
 # run female hapCON estimate from mpileup results
 
+
 import numpy as np
 import argparse
 import time
 import sys
+sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
 import os
 from pathlib import Path
 import shutil
+from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind
+from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam_preload
+from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
+from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bamTable2hdf5
+from multiprocessing import set_start_method
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Run hapROH(on autosomes) from mpileup output')
+    parser = argparse.ArgumentParser(description='Run hapCon_ROH from either mpileup or BamTable output')
     parser.add_argument('--mpileup', action="store", dest="mpath", type=str, required=False,
                         help="Basepath to a list of mpileup file")
     parser.add_argument('--bamTable', action="store", dest="bamTable", type=str, required=False,
@@ -20,6 +27,8 @@ if __name__ == '__main__':
                         help='path to reference panel hdf5 file. ')
     parser.add_argument('--meta', action="store", dest="meta", type=str, required=True,
                         help="path to the metadata for the reference panel.")
+    parser.add_argument('--minL', action="store", dest="minL", type=float, required=False, default=5.0,
+                        help="minimum length of ROH that will be used in contamination estimation (in cM).")
     parser.add_argument('-p', action="store", dest="processes", type=int, required=False, default=1,
                         help="Number of processes to use.")
     parser.add_argument('--niter', action="store", dest="niter", type=int, required=False, default=5,
@@ -30,12 +39,6 @@ if __name__ == '__main__':
                         help="prefix of the output. The output will be named as $iid.$prefix.hapCon_ROH.txt")
     args = parser.parse_args()
 
-    sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
-    from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind
-    from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam_preload
-    from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
-    from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bamTable2hdf5
-    from multiprocessing import set_start_method
     set_start_method("spawn")
 
 
@@ -74,22 +77,26 @@ if __name__ == '__main__':
     print(f'estimated genotyping error: {err}')
     frac = numSitesCovered/totNumSites
     print(f'fraction of sites covered by at least one read: {frac}')
-    downsample = False
-    if frac >= 0.7:
-        downsample = True
     
+    if frac >= 0.7:
+        downsample = 1.0
+    else:
+        downsample = False
 
     ################################### call ROH ##################################
     ## first, run without contamination
-    nBlocks, lengthSum = hapsb_ind(iid, chs=range(1,23), 
+    df = hapsb_ind(iid, chs=range(1,23), 
         path_targets_prefix = f"{basepath}/hdf5",
         h5_path1000g = args.r, meta_path_ref = args.meta,
         folder_out=f"{basepath}/hapRoh_iter/", prefix_out="",
         e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
-        processes=args.processes, delete=True, output=True, save=True, save_fp=False, 
+        processes=args.processes, delete=False, output=True, save=True, save_fp=False, 
         n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False, downsample=downsample, 
-        c=0.0, roh_min_l_final=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
+        c=0.0, roh_min_l_final=0.04, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
         logfile=True, combine=True, file_result="_roh_full.csv")
+    df = df[df['lengthM'] >= args.minL/100]
+    nBlocks, lengthSum = len(df.index), 100*np.sum(df['lengthM'])
+    lengthSum -= 2*nBlocks*0.5
     print(f'number of blocks found with null-model: {nBlocks} with total length {round(lengthSum, 3)}cM')
     # run with 5% contamiantion only if the null-model doesn't yield any ROH or total sum < 10cM
     if nBlocks == 0 or lengthSum < 10:
@@ -98,9 +105,9 @@ if __name__ == '__main__':
             h5_path1000g = args.r, meta_path_ref = args.meta,
             folder_out=f"{basepath}/hapRoh_iter/", prefix_out="",
             e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
-            processes=args.processes, delete=True, output=True, save=True, save_fp=False, 
+            processes=args.processes, delete=False, output=True, save=True, save_fp=False, 
             n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False, downsample=downsample, 
-            c=0.05, roh_min_l_final=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
+            c=0.05, roh_min_l_final=0.04, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
             logfile=True, combine=True, file_result="_roh_full.csv")
     
     ######################################################################################
@@ -108,7 +115,7 @@ if __name__ == '__main__':
 
     ################## Use the called ROH region to estimate contamination ###############
     contam, se, chunks, sumROH = hapsb_femaleROHcontam_preload(iid, f"{basepath}/hapRoh_iter/{iid}_roh_full.csv",
-        args.r, args.meta, hdf5_path=f"{basepath}/hdf5", 
+        args.r, args.meta, hdf5_path=f"{basepath}/hdf5", minLen=args.minL/100,
         e_rate=err, processes=p, prefix=args.prefix, logfile=False)
 
     # iterate the process if necessary
@@ -127,10 +134,10 @@ if __name__ == '__main__':
                 e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
                 processes=p, delete=True, output=True, save=True, save_fp=False, 
                 n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False, downsample=downsample, 
-                c=contam_prev, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
+                c=contam_prev, roh_min_l_final=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
                 logfile=True, combine=True, file_result="_roh_full.csv")
             contam, se, chunks, sumROH = hapsb_femaleROHcontam_preload(iid, f"{basepath}/hapRoh_iter/{iid}_roh_full.csv",
-                args.r, args.meta, hdf5_path=f"{basepath}/hdf5", e_rate=err, processes=p, prefix=args.prefix, logfile=False)
+                args.r, args.meta, hdf5_path=f"{basepath}/hdf5", minLen=args.minL/100, e_rate=err, processes=p, prefix=args.prefix, logfile=False)
             niter += 1
             diff = abs(contam_prev - contam)
             print(f'iteration {niter} done, prev contam: {round(contam_prev, 6)}, current contam: {round(contam, 6)}')
