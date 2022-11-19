@@ -40,9 +40,6 @@ def main():
                         help="prefix of the output. The output will be named as $iid.$prefix.hapCon_ROH.txt")
     args = parser.parse_args()
 
-    set_start_method("spawn")
-
-
     iid = args.iid
     p = args.processes
     mpileup_path= args.mpath

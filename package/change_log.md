@@ -1,3 +1,11 @@
+## 0.62 November 19th, 2022, Harald Ringbauer, Yilei Huang
+- Fixed a bug with spawning multiprocessing that prevented hapCon from running.
+
+## 0.61 November 18th, 2022, Harald Ringbauer, Yilei Huang 
+[CONTAINS CRITICAL BUG]
+- Fixed bug in gap-merging where the bp position was not merged.
+- Fixed a hapcon bug caused by a "+" in pileups also denoting deletion.
+
 ## 0.60, August 29th 2022, Harald Ringbauer, Yilei Huang
 - Included hapCon+ROH functionality from Yilei's branch
 - Added downsample parameter to downsample read count data to this specified average coverage
