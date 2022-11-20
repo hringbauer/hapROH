@@ -1,15 +1,24 @@
-Joint Estimation of ROH and Contamination Rate
+hapCon_ROH
 =================================================
 
 Introduction
 ****************
-Runs of Homozygosity (ROH) are, just as male X chromosome, haploid and therefore could in principle be used for estimating contamination. We have developed a modified version of hapROH to explicitly model contamination while detecting ROH. Together with this, we designed an iterative approach to
-jointly estimate ROH and contamination rate, described in detail in the Supplementary Note xxx in xxx. This method takes as input, the output of `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. 
-We recommend BamTable as it provides more flexibility for preprocessing your BAM file.
+Runs of Homozygosity (ROH) are haploid, just as male X chromosome, and therefore can in principle be used for estimating aDNA contamination. We have developed a version of hapROH to jointly model contamination while detecting ROH. We designed an iterative approach to jointly estimate ROH and contamination rate, described in detail in the Supplementary Note xxx in xxx. The implementation is termed hapCon_ROH
 
+Input
+****************
+hapCon_ROH can take as input:
+
+1) the output of `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or
+2) The output of `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. 
+
+Generally, we recommend to use BamTable because it provides more flexibility for preprocessing your BAM file.
+
+Usage
+******************************************
 Our algorithm is wrapped in a in a simple command line, invoked by "hapCon_ROH". For more details for how to use this method, please refer to the vignette linked below.
 
-Scope of this method and its limitation
+Scope of this method
 ******************************************
 As is clear from the introduction, our method is limited to samples with long ROH blocks, ideally the total sum of ROH blocks should exceed ~25cM.
 This usually occurs for individuals from close-kin unions, or individuals that come from populations with small effective population size, such as in `Paleolithic hunter-gatheres <https://www.nature.com/articles/s41467-021-25289-w>`_ and `pre-contact Carribeans <https://www.nature.com/articles/s41586-020-03053-2>`_.
