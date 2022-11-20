@@ -9,7 +9,7 @@ Input
 ****************
 hapCon_ROH can take as input:
 
-1) the output of `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or
+1) The output of `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or
 2) The output of `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. 
 
 Generally, we recommend to use BamTable because it provides more flexibility for preprocessing your BAM file.
