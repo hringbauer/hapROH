@@ -1,3 +1,6 @@
+## 0.63 January 26th, 2023, Harald Ringbauer, Yilei Huang
+- Fixed a bug where using a newer numpy version (>=1.24) caused an error as `np.float` is not supported anymore. This update solves gitub issue: https://github.com/hringbauer/hapROH/issues/11 
+
 ## 0.62 November 19th, 2022, Harald Ringbauer, Yilei Huang
 - Fixed a bug with spawning multiprocessing that prevented hapCon from running.
 

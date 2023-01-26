@@ -32,7 +32,7 @@ def load_h5(path, output=True):
     return f
 
 def save_data_h5(gt, ad, ref, alt, pos, 
-              rec, samples, path, gp=[], af=[],
+              rec, samples, path, gp=[], af=[], ch=[],
               compression="gzip", ad_group=True, gt_type="int8"):
         """Create a new HDF5 File with Input Data.
         gt: Genotype data [l,k,2]
@@ -40,6 +40,7 @@ def save_data_h5(gt, ad, ref, alt, pos,
         ref: Reference Allele [l]
         alt: Alternate Allele [l]
         pos: Position  [l]
+        ch: Chromosome [l] only numerical values (int8) allowed
         m: Map position [l]
         af: Allele Frequencies [l]
         samples: Sample IDs [k]
@@ -61,12 +62,15 @@ def save_data_h5(gt, ad, ref, alt, pos,
             f_alt = f0.create_dataset("variants/ALT", (l,), dtype=dt)
             f_pos = f0.create_dataset("variants/POS", (l,), dtype='int32')
             f_gt = f0.create_dataset("calldata/GT", (l, k, 2), dtype=gt_type, compression=compression)
+            
             if len(gp)>0:
                 f_gp = f0.create_dataset("calldata/GP", (l, k, 3), dtype="f", compression=compression) 
             if len(af)>0:
                 f_af = f0.create_dataset("variants/AF_ALL", (l,), dtype="f", compression=compression) 
             if len(rec)>0:
                 f_map = f0.create_dataset("variants/MAP", (l,), dtype='f')
+            if len(ch)>0:
+                f_ch = f0.create_dataset("variants/CH", (l,), dtype="int8") 
                 
             f_samples = f0.create_dataset("samples", (k,), dtype=dt)
 
@@ -89,6 +93,8 @@ def save_data_h5(gt, ad, ref, alt, pos,
                 f_gp[:] = gp
             if len(af)>0:
                 f_af[:] = af
+            if len(ch)>0:
+                f_ch[:] = ch
             max_s = np.max([len(s) for s in samples])
             f_samples[:] = np.array(samples).astype(f"S{max_s+1}")
         print(f"Successfully saved {k} individuals to: {path}")
@@ -302,6 +308,41 @@ def bring_over_samples(h5_original, h5_target, field="samples", dt="S32"):
 
 ##################################################################
 ### Functions to merge hdf5s into one genotype hdf5
+
+def merge_chr_hdf5(fs, path_combined_h5="", chs=[]):
+    """Combine Genotype hdf5s from different chromosomes into one
+    hdf5 and and save at path_new
+    fs: List of hdf5s.     
+    path_combined_h5: Where to save the new masive hdf5
+    For now only save Allele Depths an GT - but not GP -IMPLEMENT UPDATE
+    chs: list of chromosomes"""
+    assert(len(fs)==len(chs)) # Sanity check of input data
+    
+    ### Check whether all samples agree
+    samples = [f["samples"][:] for f in fs]
+    assert(np.all([s==samples[0] for s in samples]))
+    
+    gts = np.concatenate([f["calldata/GT"][:] for f in fs], axis=0)
+    ads = np.concatenate([f["calldata/AD"][:] for f in fs], axis=0)
+    
+    refs = np.concatenate([f["variants/REF"][:] for f in fs], axis=0)
+    alts = np.concatenate([f["variants/ALT"][:] for f in fs], axis=0)
+    poss = np.concatenate([f["variants/POS"][:] for f in fs], axis=0)
+    maps = np.concatenate([f["variants/MAP"][:] for f in fs], axis=0)
+    #afs = np.concatenate([f["variants/AF_ALL"][:] for f in fs], axis=0) 
+    
+    # Make new Chromosome list
+    ns =[len(f["calldata/GT"]) for f in fs]
+    chs = np.repeat(chs, ns)
+    
+    #gts = concat_fields(f, g, field1='calldata/GT', field2='calldata/GT', axis=1)
+    #gp = concat_fields(f, g, field1='calldata/GP', field2='calldata/GP', axis=1)
+    f = fs[0] # Use settings from first HDF5
+    
+    print("Combined... Saving the hdf5.")
+    save_data_h5(gts, ads, refs, alts, poss, maps, samples=samples[0], 
+                 path=path_combined_h5, gp=[], af=[],
+                 ch=chs, compression="gzip", ad_group=True, gt_type="int8")
 
 def concat_fields(f, f2, field1, field2, axis=0):
     """Concatenate two hdf5 fields and return data"""

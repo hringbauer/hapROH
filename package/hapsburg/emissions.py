@@ -9,6 +9,8 @@ from scipy.stats import binom  # Binomial Likelihood
 import time
 import sys
 
+DTYPE = np.float64 # Float Data Type
+
 ###############################
 ###############################
 
@@ -90,7 +92,7 @@ class Model_Emissions(Emissions):
 
         n_loci = np.shape(self.ref_haps)[1]
         n_ref = np.shape(self.ref_haps)[0]
-        e_mat = np.zeros((n_ref + 1, n_loci), dtype=np.float)
+        e_mat = np.zeros((n_ref + 1, n_loci), dtype=DTYPE)
 
         # Do the HW
         e_mat[0, :] = (ob_stat == 1) * (self.p * (1 - self.e_rate) + (1 - self.p) * self.e_rate) + \
@@ -224,7 +226,7 @@ class Diploid_GT_Emissions(RC_Model_Emissions):
         p_full = np.sum(e_mat * prob_gt[None, :, :], axis=2)
         return p_full
 
-    def give_emission(self, ob_stat, dtype=np.float):
+    def give_emission(self, ob_stat, dtype=DTYPE):
         """Return the full emission Probability directly in Log Space.
         ob_stat: Observed Readcounts [2,l] array of 0/1 """
         ref_haps = self.ref_haps

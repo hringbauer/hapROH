@@ -553,7 +553,7 @@ def hapsb_ind(iid, chs=range(1,23),
 
     Return: If combine is true, return a pandas dataframe that contains information of all detected ROH blocks. Otherwise nothing is returned.
     """
-                            
+    #print("BANANA")   # Test whether code reaches here                  
     if output:
         print(f"Doing Individual {iid}...")
     

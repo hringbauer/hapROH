@@ -7,7 +7,8 @@ cimport cython
 #from scipy.special import logsumexp
 from libc.math cimport exp, log   # For doing Exponentials and Logs
 
-DTYPE = np.float # The float data type
+DTYPE = np.float64 # The float data type
+DTYPE_INT = np.int16 # The int data type, only used in viterbi to track path
 
 ##############################################################################
 #### Helper Functions
@@ -91,12 +92,12 @@ def fwd_bkwd_fast(double[:, :] e_mat, double[:, :, :] t_mat,
     cdef double[:, :] e_mat0 = np.log(e_mat)
 
     ### Initialize FWD BWD matrices
-    fwd0 = np.zeros((n_states, n_loci), dtype="float")
+    fwd0 = np.zeros((n_states, n_loci), dtype=DTYPE)
     fwd0[:, 0] = np.log(in_val)  # Initial Probabilities
     fwd0[0, 0] = np.log(1 - (n_states - 1) * in_val)
     cdef double[:,:] fwd = fwd0
 
-    bwd0 = np.zeros((n_states, n_loci), dtype="float")
+    bwd0 = np.zeros((n_states, n_loci), dtype=DTYPE)
     bwd0[:, -1] = np.log(in_val)
     bwd0[0, -1] = np.log(1 - (n_states - 1) * in_val)
     cdef double[:,:] bwd = bwd0
@@ -153,9 +154,9 @@ def fwd_bkwd_fast(double[:, :] e_mat, double[:, :, :] t_mat,
     tot_ll = logsumexp(trans_ll_view1)
 
     # Combine the forward and backward calculations
-    fwd1 = np.asarray(fwd, dtype=np.float)  # Transform
-    bwd1 = np.asarray(bwd, dtype=np.float)
-    post = fwd1 + bwd1 - np.float(tot_ll)
+    fwd1 = np.asarray(fwd, dtype=DTYPE)  # Transform
+    bwd1 = np.asarray(bwd, dtype=DTYPE)
+    post = fwd1 + bwd1 - np.float64(tot_ll)
     
     if output:
         print("Memory Usage Full:")
@@ -346,14 +347,14 @@ def fwd_bkwd_scaled(double[:, :] e_mat, double[:, :, :] t_mat,
     cdef double[:,:,:] t = t_mat   # C View of transition matrix
 
     ### Initialize FWD BWD matrices with first and last entries filled
-    fwd1 = np.zeros((n_states, n_loci), dtype="float")
+    fwd1 = np.zeros((n_states, n_loci), dtype=DTYPE)
     fwd1[:, 0] = in_val  # Initial Probabilities
     fwd1[0, 0] = 1 - (n_states - 1) * in_val
     cdef double[:,:] fwd = fwd1
     
     c_view[0] = 1 # Set the first normalization constant
 
-    bwd1 = np.zeros((n_states, n_loci), dtype="float")
+    bwd1 = np.zeros((n_states, n_loci), dtype=DTYPE)
     bwd1[:, -1] = 1 # The initial values for the backward pass
     #bwd1[0, -1] = 1 - (n_states - 1) * in_val
     cdef double[:,:] bwd = bwd1
@@ -700,9 +701,9 @@ def viterbi_path(double[:, :] e_prob0, double[:, :, :] t_mat0, double[:] end_p0)
 
     # Do the actual optimization (with back-tracking)
     # Initialize Views:
-    cdef double[:, :] mp = np.empty((n_states, n_loci), dtype=np.float)
-    cdef double[:] new_p = np.empty(n_states, dtype = np.float) # Temporary Array
-    cdef long[:,:] pt = np.empty((n_states, n_loci), dtype = np.int)  # Previous State Pointer
+    cdef double[:, :] mp = np.empty((n_states, n_loci), dtype=DTYPE)
+    cdef double[:] new_p = np.empty(n_states, dtype = DTYPE) # Temporary Array
+    cdef long[:,:] pt = np.empty((n_states, n_loci), dtype = DTYPE_INT)  # Previous State Pointer
 
     trans_ll = np.empty(n_states-1, dtype=DTYPE) # Array for pre-calculations
     cdef double[:] trans_ll_view = trans_ll
@@ -760,7 +761,7 @@ def viterbi_path(double[:, :] e_prob0, double[:, :, :] t_mat0, double[:] end_p0)
           pt[k, i] = three_vi_view[m]      ### Set Pointer for Backtrace
 
     ### Do the trace back
-    cdef long[:] path = -np.ones(n_loci, dtype=np.int)  # Initialize
+    cdef long[:] path = -np.ones(n_loci, dtype=DTYPE_INT)  # Initialize
 
     x = np.argmax(mp[:, n_loci-1])  # The highest probability
     path[n_loci-1] = x
