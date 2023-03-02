@@ -4,7 +4,7 @@ Joint Estimation of ROH and Contamination Rate
 Introduction
 ****************
 Runs of Homozygosity (ROH) are, just as male X chromosome, haploid and therefore could in principle be used for estimating contamination. We have developed a modified version of hapROH to explicitly model contamination while detecting ROH. Together with this, we designed an iterative approach to
-jointly estimate ROH and contamination rate, described in detail in the Supplementary Note xxx in xxx. This method takes as input, the output of `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. 
+jointly estimate ROH and contamination rate, described in detail in the Supplementary Note Section 2 in `Posth et.al <https://www.nature.com/articles/s41586-023-05726-0>`_. This method takes as input, the output of `samtools mpileup <http://www.htslib.org/doc/samtools-mpileup.html>`_ or `BamTable <https://bioinf.eva.mpg.de/BamTable/>`_. 
 We recommend BamTable as it provides more flexibility for preprocessing your BAM file.
 
 Our algorithm is wrapped in a in a simple command line, invoked by "hapCon_ROH". For more details for how to use this method, please refer to the vignette linked below.

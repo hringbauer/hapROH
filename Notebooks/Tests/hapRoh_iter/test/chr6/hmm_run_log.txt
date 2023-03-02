@@ -52,7 +52,7 @@ h5_path1000g	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr
 meta_path_ref	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv
 folder_out	/mnt/archgen/users/yilei/tools/hapROH/Notebooks/Tests/hapRoh_iter/
 prefix_out	
-c	0.053901585550176385
+c	0.053901588228962787
 conPop	['CEU']
 roh_in	1
 roh_out	20
@@ -79,7 +79,7 @@ Loaded Transition and Emission Matrix:
 Loaded Observations:
 (2, 22609)
 Memory Usage at end of HMM:
-Memory Usage: 3969.806336 mB
+Memory Usage: 3928.293376 mB
 Total Log likelihood: -10204.930
 Finished Calculation State Posteriors
 Saved Zero State Posterior to folder /mnt/archgen/users/yilei/tools/hapROH/Notebooks/Tests/hapRoh_iter/test/chr6/.

@@ -171,7 +171,7 @@ def main():
 
     
     # clean up
-    shutil.rmtree(f'{basepath}/hdf5') # this is a hack
+    #shutil.rmtree(f'{basepath}/hdf5') # this is a hack
 
 
     #####################################################################################
