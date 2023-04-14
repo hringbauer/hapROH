@@ -1,5 +1,9 @@
+## 0.64 April 14th, 2023, Harald Ringbauer
+- Removed Pysam dependency as it does not install on Windows systems. Pysam is not needed in core hapROH. Only needed when running directly from .bam.
+- Fixed bug in hapsburg.PackagesSupport.fit_ne.MLE_ROH_Ne caused by Matplotlib Update - lists of lists could not np.arrayed via np.asarray anymore. A fix has been added into the fuction `load_roh_vec`
+
 ## 0.63 January 26th, 2023, Harald Ringbauer, Yilei Huang
-- Fixed a bug where using a newer numpy version (>=1.24) caused an error as `np.float` is not supported anymore. This update solves gitub issue: https://github.com/hringbauer/hapROH/issues/11 
+- Fixed a bug where using a newer numpy version (>=1.24) caused an error as `np.float` is not supported anymore. This update addresses gitub issue: https://github.com/hringbauer/hapROH/issues/11 
 
 ## 0.62 November 19th, 2022, Harald Ringbauer, Yilei Huang
 - Fixed a bug with spawning multiprocessing that prevented hapCon from running.

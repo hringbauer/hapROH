@@ -354,6 +354,8 @@ def load_roh_vec(iids=[], base_path = "./output/roh/", suffix="_roh_full.csv"):
     paths = give_iid_paths(iids, base_folder=base_path, suffix=suffix)
     roh_dfs = [pd.read_csv(p) for p in paths]
     roh_vec = [df["lengthM"].values*100 for df in roh_dfs]
+    ### Transform to np.array of np.array - to avoid errors downstream:
+    roh_vec = np.array([np.array(l) for l in roh_vec], dtype="object")
     return roh_vec
 
 def get_default_res():

@@ -7,10 +7,10 @@ This file is based on update and upload instructions from https://packaging.pyth
 - On Leipzig Archgen Cluster:
 cd /mnt/archgen/users/hringbauer/git/hapROH/package/
 
-
-- On Chicago cluster:  
-cd /project2/jnovembre/hringbauer/HAPSBURG/package
-module load python
+%%% LEGACY now (Leipzig is primary development server)
+%- On Chicago cluster:  
+%cd /project2/jnovembre/hringbauer/HAPSBURG/package
+%module load python
 
 - On Harvard O2:
 envpython37
@@ -35,7 +35,7 @@ rm ./dist/*
 python3 setup.py sdist
 
 ### Upload to the Sources (copy into shell, to interactively do it!)
-### For full PyPi server
+### For full PyPi server (user name `hringbauer`)
 python3 -m twine upload dist/* 
 ### Alternatively: Upload on test server (for testing)
 python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* 
@@ -47,6 +47,8 @@ python3 setup.py build_ext --inplace
 # Further Documentation 
 ### To install via pip:
 Follow instructions on pypi site of `hapROH`.
+
+`python3 -m pip install --user --upgrade --no-deps --force-reinstall hapROH`
 
 ### for packaging: 
 https://packaging.python.org/tutorials/packaging-projects/

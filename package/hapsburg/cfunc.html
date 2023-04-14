@@ -287,28 +287,28 @@ body.cython { font-family: courier; font-size: 12; }
 .cython.score-253 {background-color: #FFFF09;}
 .cython.score-254 {background-color: #FFFF09;}
 pre { line-height: 125%; }
-td.linenos pre { color: #000000; background-color: #f0f0f0; padding-left: 5px; padding-right: 5px; }
-span.linenos { color: #000000; background-color: #f0f0f0; padding-left: 5px; padding-right: 5px; }
-td.linenos pre.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 .cython .hll { background-color: #ffffcc }
 .cython { background: #f8f8f8; }
-.cython .c { color: #408080; font-style: italic } /* Comment */
+.cython .c { color: #3D7B7B; font-style: italic } /* Comment */
 .cython .err { border: 1px solid #FF0000 } /* Error */
 .cython .k { color: #008000; font-weight: bold } /* Keyword */
 .cython .o { color: #666666 } /* Operator */
-.cython .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
-.cython .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.cython .cp { color: #BC7A00 } /* Comment.Preproc */
-.cython .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
-.cython .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.cython .cs { color: #408080; font-style: italic } /* Comment.Special */
+.cython .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.cython .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.cython .cp { color: #9C6500 } /* Comment.Preproc */
+.cython .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.cython .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.cython .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
 .cython .gd { color: #A00000 } /* Generic.Deleted */
 .cython .ge { font-style: italic } /* Generic.Emph */
-.cython .gr { color: #FF0000 } /* Generic.Error */
+.cython .gr { color: #E40000 } /* Generic.Error */
 .cython .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.cython .gi { color: #00A000 } /* Generic.Inserted */
-.cython .go { color: #888888 } /* Generic.Output */
+.cython .gi { color: #008400 } /* Generic.Inserted */
+.cython .go { color: #717171 } /* Generic.Output */
 .cython .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
 .cython .gs { font-weight: bold } /* Generic.Strong */
 .cython .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
@@ -321,15 +321,15 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .cython .kt { color: #B00040 } /* Keyword.Type */
 .cython .m { color: #666666 } /* Literal.Number */
 .cython .s { color: #BA2121 } /* Literal.String */
-.cython .na { color: #7D9029 } /* Name.Attribute */
+.cython .na { color: #687822 } /* Name.Attribute */
 .cython .nb { color: #008000 } /* Name.Builtin */
 .cython .nc { color: #0000FF; font-weight: bold } /* Name.Class */
 .cython .no { color: #880000 } /* Name.Constant */
 .cython .nd { color: #AA22FF } /* Name.Decorator */
-.cython .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.cython .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.cython .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.cython .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
 .cython .nf { color: #0000FF } /* Name.Function */
-.cython .nl { color: #A0A000 } /* Name.Label */
+.cython .nl { color: #767600 } /* Name.Label */
 .cython .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
 .cython .nt { color: #008000; font-weight: bold } /* Name.Tag */
 .cython .nv { color: #19177C } /* Name.Variable */
@@ -346,11 +346,11 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 .cython .dl { color: #BA2121 } /* Literal.String.Delimiter */
 .cython .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
 .cython .s2 { color: #BA2121 } /* Literal.String.Double */
-.cython .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.cython .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
 .cython .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.cython .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.cython .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
 .cython .sx { color: #008000 } /* Literal.String.Other */
-.cython .sr { color: #BB6688 } /* Literal.String.Regex */
+.cython .sr { color: #A45A77 } /* Literal.String.Regex */
 .cython .s1 { color: #BA2121 } /* Literal.String.Single */
 .cython .ss { color: #19177C } /* Literal.String.Symbol */
 .cython .bp { color: #008000 } /* Name.Builtin.Pseudo */
@@ -431,7 +431,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">017</span>:   <span class="sd">&quot;&quot;&quot;Do the Log of the Sum of Exponentials.&quot;&quot;&quot;</span></pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">017</span>: <span class="w">  </span><span class="sd">&quot;&quot;&quot;Do the Log of the Sum of Exponentials.&quot;&quot;&quot;</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">018</span>:   <span class="k">cdef</span> <span class="kt">Py_ssize_t</span> <span class="nf">i</span>  <span class="c"># The iterator Variable</span></pre>
 <pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">019</span>:   <span class="k">cdef</span> <span class="kt">double</span> <span class="nf">result</span> <span class="o">=</span> <span class="mf">0.0</span></pre>
 <pre class='cython code score-0 '>  __pyx_v_result = 0.0;
@@ -516,7 +516,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">030</span>:   <span class="sd">&quot;&quot;&quot;Return Max and ArgMax&quot;&quot;&quot;</span></pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">030</span>: <span class="w">  </span><span class="sd">&quot;&quot;&quot;Return Max and ArgMax&quot;&quot;&quot;</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">031</span>:   <span class="k">cdef</span> <span class="kt">Py_ssize_t</span> <span class="nf">i</span>  <span class="c"># The iterator Variable.</span></pre>
 <pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">032</span>:   <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">m</span> <span class="o">=</span> <span class="mf">0</span>     <span class="c"># Position of the Maximum.</span></pre>
 <pre class='cython code score-0 '>  __pyx_v_m = 0;
@@ -586,7 +586,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
   <span class='refnanny'>__Pyx_RefNannyFinishContext</span>();
   return __pyx_r;
 }
-</pre><pre class="cython line score-0">&#xA0;<span class="">041</span>:     <span class="sd">&quot;&quot;&quot;Sum over array.</span></pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">041</span>: <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sum over array.</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">042</span>: <span class="sd">    vec: Array to sum</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">043</span>: <span class="sd">    n: Number of elements&quot;&quot;&quot;</span></pre>
 <pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">044</span>:     <span class="k">cdef</span> <span class="kt">double</span> <span class="nf">s</span> <span class="o">=</span> <span class="n">vec</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span></pre>
@@ -671,8 +671,8 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_print_memory_usage(CYTHON_UNUSED PyOb
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_print_memory_usage, __pyx_t_1) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 49, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_codeobj__30 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_print_memory_usage, 49, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 49, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0">&#xA0;<span class="">050</span>:     <span class="sd">&quot;&quot;&quot;Print the current Memory Usage in mB&quot;&quot;&quot;</span></pre>
+  __pyx_codeobj__30 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hapsburg_cfunc_pyx, __pyx_n_s_print_memory_usage, 49, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 49, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">050</span>: <span class="w">    </span><span class="sd">&quot;&quot;&quot;Print the current Memory Usage in mB&quot;&quot;&quot;</span></pre>
 <pre class="cython line score-41" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">051</span>:     <span class="n">process</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">())</span></pre>
 <pre class='cython code score-41 '>  <span class='pyx_c_api'>__Pyx_GetModuleGlobalName</span>(__pyx_t_2, __pyx_n_s_psutil);<span class='error_goto'> if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)</span>
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_2);
@@ -874,7 +874,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_2fwd_bkwd_fast(CYTHON_UNUSED PyObject
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_fwd_bkwd_fast, __pyx_t_1) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 58, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_codeobj__32 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(5, 0, 30, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_fwd_bkwd_fast, 58, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 58, __pyx_L1_error)</span>
+  __pyx_codeobj__32 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(5, 0, 30, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__31, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hapsburg_cfunc_pyx, __pyx_n_s_fwd_bkwd_fast, 58, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(0, 58, __pyx_L1_error)</span>
 </pre><pre class="cython line score-50" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">059</span>:                   <span class="n">double</span> <span class="n">in_val</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span></pre>
 <pre class='cython code score-50 '>    values[3] = ((PyObject *)Py_False);
     values[4] = ((PyObject *)Py_True);
@@ -961,7 +961,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_2fwd_bkwd_fast(CYTHON_UNUSED PyObject
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_8hapsburg_5cfunc_2fwd_bkwd_fast(__pyx_self, __pyx_v_e_mat, __pyx_v_t_mat, __pyx_v_in_val, __pyx_v_full, __pyx_v_output);
-</pre><pre class="cython line score-0">&#xA0;<span class="">060</span>:     <span class="sd">&quot;&quot;&quot;Takes emission and transition probabilities, and calculates posteriors.</span></pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">060</span>: <span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes emission and transition probabilities, and calculates posteriors.</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">061</span>: <span class="sd">    Uses speed-up specific for Genotype data (pooling same transition rates)</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">062</span>: <span class="sd">    Input:</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">063</span>: <span class="sd">    e_mat: Emission probabilities: [k x l]  (normal space)</span></pre>
@@ -2391,7 +2391,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_4fwd_bkwd_lowmem(CYTHON_UNUSED PyObje
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_fwd_bkwd_lowmem, __pyx_t_1) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 175, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_codeobj__34 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(5, 0, 31, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_fwd_bkwd_lowmem, 175, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 175, __pyx_L1_error)</span>
+  __pyx_codeobj__34 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(5, 0, 31, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hapsburg_cfunc_pyx, __pyx_n_s_fwd_bkwd_lowmem, 175, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 175, __pyx_L1_error)</span>
 </pre><pre class="cython line score-50" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">176</span>:                     <span class="n">double</span> <span class="n">in_val</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span></pre>
 <pre class='cython code score-50 '>    values[3] = ((PyObject *)Py_False);
     values[4] = ((PyObject *)Py_True);
@@ -2478,7 +2478,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_4fwd_bkwd_lowmem(CYTHON_UNUSED PyObje
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_8hapsburg_5cfunc_4fwd_bkwd_lowmem(__pyx_self, __pyx_v_e_mat, __pyx_v_t_mat, __pyx_v_in_val, __pyx_v_full, __pyx_v_output);
-</pre><pre class="cython line score-0">&#xA0;<span class="">177</span>:     <span class="sd">&quot;&quot;&quot;Takes emission and transition probabilities, and calculates posteriors.</span></pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">177</span>: <span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes emission and transition probabilities, and calculates posteriors.</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">178</span>: <span class="sd">    Uses speed-up specific for Genotype data (pooling same transition rates)</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">179</span>: <span class="sd">    Low-Mem: Do no save the full FWD BWD and Posterior. Use temporary</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">180</span>: <span class="sd">    Arrays for saving. Input:</span></pre>
@@ -3819,7 +3819,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_6fwd_bkwd_scaled(CYTHON_UNUSED PyObje
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_fwd_bkwd_scaled, __pyx_t_1) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 314, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_codeobj__36 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(5, 0, 28, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__35, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_fwd_bkwd_scaled, 314, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(0, 314, __pyx_L1_error)</span>
+  __pyx_codeobj__36 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(5, 0, 28, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__35, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hapsburg_cfunc_pyx, __pyx_n_s_fwd_bkwd_scaled, 314, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(0, 314, __pyx_L1_error)</span>
 </pre><pre class="cython line score-50" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">315</span>:                     <span class="n">double</span> <span class="n">in_val</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span></pre>
 <pre class='cython code score-50 '>    values[3] = ((PyObject *)Py_False);
     values[4] = ((PyObject *)Py_True);
@@ -3906,7 +3906,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_6fwd_bkwd_scaled(CYTHON_UNUSED PyObje
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_8hapsburg_5cfunc_6fwd_bkwd_scaled(__pyx_self, __pyx_v_e_mat, __pyx_v_t_mat, __pyx_v_in_val, __pyx_v_full, __pyx_v_output);
-</pre><pre class="cython line score-0">&#xA0;<span class="">316</span>:     <span class="sd">&quot;&quot;&quot;</span></pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">316</span>: <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">317</span>: <span class="sd">    Uses speed-up specific for Genotype data (pooling same transition rates)</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">318</span>: <span class="sd">    Uses rescaling of fwd and bwd calculations - NOT LOGSPACE</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">319</span>: <span class="sd">    Saves and returns full posterior (WARNING: Need 3x as much memory as low mem version)</span></pre>
@@ -5116,7 +5116,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_8fwd_bkwd_scaled_lowmem(CYTHON_UNUSED
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_fwd_bkwd_scaled_lowmem, __pyx_t_1) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 434, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_codeobj__38 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(5, 0, 31, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_fwd_bkwd_scaled_lowmem, 434, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 434, __pyx_L1_error)</span>
+  __pyx_codeobj__38 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(5, 0, 31, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hapsburg_cfunc_pyx, __pyx_n_s_fwd_bkwd_scaled_lowmem, 434, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 434, __pyx_L1_error)</span>
 </pre><pre class="cython line score-50" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">435</span>:                            <span class="n">double</span> <span class="n">in_val</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span></pre>
 <pre class='cython code score-50 '>    values[3] = ((PyObject *)Py_False);
     values[4] = ((PyObject *)Py_True);
@@ -5203,7 +5203,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_8fwd_bkwd_scaled_lowmem(CYTHON_UNUSED
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_8hapsburg_5cfunc_8fwd_bkwd_scaled_lowmem(__pyx_self, __pyx_v_e_mat, __pyx_v_t_mat, __pyx_v_in_val, __pyx_v_full, __pyx_v_output);
-</pre><pre class="cython line score-0">&#xA0;<span class="">436</span>:     <span class="sd">&quot;&quot;&quot;</span></pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">436</span>: <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">437</span>: <span class="sd">    Uses speed-up specific for Genotype data (pooling same transition rates)</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">438</span>: <span class="sd">    Uses rescaling of fwd and bwd calculations - NOT LOGSPACE</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">439</span>: <span class="sd">    Low-Mem: Do no save the full FWD BWD and Posterior but use temporary</span></pre>
@@ -6531,7 +6531,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_10fwd(CYTHON_UNUSED PyObject *__pyx_s
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_fwd, __pyx_t_1) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 567, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_codeobj__40 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(3, 0, 25, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_fwd, 567, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(0, 567, __pyx_L1_error)</span>
+  __pyx_codeobj__40 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(3, 0, 25, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hapsburg_cfunc_pyx, __pyx_n_s_fwd, 567, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(0, 567, __pyx_L1_error)</span>
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">568</span>:     <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">n_states</span> <span class="o">=</span> <span class="n">e_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span></pre>
 <pre class='cython code score-0 '>  __pyx_v_n_states = (__pyx_v_e_mat.shape[0]);
 </pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">569</span>:     <span class="k">cdef</span> <span class="kt">int</span> <span class="nf">n_loci</span> <span class="o">=</span> <span class="n">e_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span></pre>
@@ -7166,7 +7166,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_12fwd_bkwd(CYTHON_UNUSED PyObject *__
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_fwd_bkwd, __pyx_t_1) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 639, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_codeobj__42 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(6, 0, 18, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_fwd_bkwd, 639, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 639, __pyx_L1_error)</span>
+  __pyx_codeobj__42 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(6, 0, 18, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hapsburg_cfunc_pyx, __pyx_n_s_fwd_bkwd, 639, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 639, __pyx_L1_error)</span>
 </pre><pre class="cython line score-56" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">640</span>:     <span class="n">double</span><span class="p">[:,</span> <span class="p">:]</span> <span class="n">fwd</span><span class="p">,</span> <span class="n">double</span><span class="p">[:,</span> <span class="p">:]</span> <span class="n">bwd</span><span class="p">,</span> <span class="n">double</span><span class="p">[:,:,:]</span> <span class="n">t</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span></pre>
 <pre class='cython code score-56 '>    values[5] = ((PyObject *)Py_False);
     if (unlikely(__pyx_kwds)) {
@@ -7256,7 +7256,7 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_12fwd_bkwd(CYTHON_UNUSED PyObject *__
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_8hapsburg_5cfunc_12fwd_bkwd(__pyx_self, __pyx_v_e_prob0, __pyx_v_t_mat, __pyx_v_fwd, __pyx_v_bwd, __pyx_v_t, __pyx_v_full);
-</pre><pre class="cython line score-0">&#xA0;<span class="">641</span>:     <span class="sd">&quot;&quot;&quot;Takes emission and transition probabilities, and calculates posteriors.</span></pre>
+</pre><pre class="cython line score-0">&#xA0;<span class="">641</span>: <span class="w">    </span><span class="sd">&quot;&quot;&quot;Takes emission and transition probabilities, and calculates posteriors.</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">642</span>: <span class="sd">    Input: kxl matrices of emission, transition</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">643</span>: <span class="sd">    and initialized fwd and bwd probabilities. Given in log Space</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">644</span>: <span class="sd">    full: Boolean whether to return everything.</span></pre>
@@ -7879,8 +7879,8 @@ static PyObject *__pyx_pf_8hapsburg_5cfunc_14viterbi_path(CYTHON_UNUSED PyObject
   <span class='refnanny'>__Pyx_GOTREF</span>(__pyx_t_1);
   if (<span class='py_c_api'>PyDict_SetItem</span>(__pyx_d, __pyx_n_s_viterbi_path, __pyx_t_1) &lt; 0) <span class='error_goto'>__PYX_ERR(0, 691, __pyx_L1_error)</span>
   <span class='pyx_macro_api'>__Pyx_DECREF</span>(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_codeobj__44 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(3, 0, 25, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cfunc_pyx, __pyx_n_s_viterbi_path, 691, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(0, 691, __pyx_L1_error)</span>
-</pre><pre class="cython line score-0">&#xA0;<span class="">692</span>:     <span class="sd">&quot;&quot;&quot;Implementation of a Viterbi Path.</span></pre>
+  __pyx_codeobj__44 = (PyObject*)<span class='pyx_c_api'>__Pyx_PyCode_New</span>(3, 0, 25, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_hapsburg_cfunc_pyx, __pyx_n_s_viterbi_path, 691, __pyx_empty_bytes);<span class='error_goto'> if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(0, 691, __pyx_L1_error)</span>
+</pre><pre class="cython line score-0">&#xA0;<span class="">692</span>: <span class="w">    </span><span class="sd">&quot;&quot;&quot;Implementation of a Viterbi Path.</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">693</span>: <span class="sd">    e_prob0  Matrices with Emission Probabilities, [k,l] (log space)</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">694</span>: <span class="sd">    t_mat: Transition Matrix: [l x 3 x 3]  (normal space)</span></pre>
 <pre class="cython line score-0">&#xA0;<span class="">695</span>: <span class="sd">    end_p: probability to begin/end in states [k]&quot;&quot;&quot;</span></pre>

@@ -22,11 +22,11 @@ with open("README.md", "r") as fh:
 
 setup(
     name="hapROH",
-    version="0.63",  # a would mean alpha, for example 0.3a4
+    version="0.64",  # a would mean alpha, for example 0.3a4
     packages=find_packages(),
     ext_modules=extensions,
     python_requires='>=3.6',
-    install_requires=['numpy', 'pandas', 'scipy', 'h5py', 'psutil', 'numdifftools', 'cython', 'matplotlib', 'pysam'],
+    install_requires=['numpy', 'pandas', 'scipy', 'h5py', 'psutil', 'numdifftools', 'cython', 'matplotlib'], #'pysam'
     entry_points ={
             'console_scripts': [
                 'hapConX = hapsburg.hapCONX:main',

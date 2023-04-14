@@ -1,0 +1,8 @@
+This dataset includes ancient genotype data as described in Harney et al. (2018) in PACKEDANCESTRYMAP format.
+
+You may convert the data to other formats using the "convertf" utility of EIGENSOFT (https://data.broadinstitute.org/alkesgroup/EIGENSOFT/).
+
+A number of different analyses can be performed using the appliations in ADMIXTOOLS (https://github.com/DReichLab/AdmixTools).
+
+The dataset includes three files: *.geno (genotype data), *.ind (individual data), and *.snp (SNP data). Together they contain genotype information for 22 ancient individuals from Peqi'in Cave, Israel.  The suffix "_d" refers to damage restriction which was performed to reduce potential contamination. See Supplementary Table 1 for background information about each sample
+
