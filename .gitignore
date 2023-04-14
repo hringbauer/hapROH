@@ -21,7 +21,8 @@ MatthiasCode/
 Sandbox/
 output/
 Notebooks/AnalyzeData/other_work/
-
+Notebooks/Vignettes/ExampleOutput/
+Notebooks/Vignettes/ExampleData/
 cluster_runs/ES_callROH/logs/
 cluster_runs/HO_callROH/logs/
 cluster_runs/Marcus_callROH/logs/
