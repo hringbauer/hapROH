@@ -55,6 +55,7 @@ class EigenstratLoad(object):
         df_ind = pd.read_csv(path_ind, header=None,
                              sep=r"\s+", engine="python")
         df_ind.columns = ["iid", "sex", "cls"]  # Set the Columns
+        df_ind = df_ind.astype("str") # Make sure everything is string
         return df_ind
     
     def get_geno_all(self, missing_val=3):
