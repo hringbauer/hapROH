@@ -771,7 +771,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, bamTable=None, q=30, Q=30,
             err, numSitesCovered, _, path2hdf5 = mpileup2hdf5_damageAware(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
         print(f'finished reading mpileup file, takes {time.time()-t1:.3f}.')
     else:
-        err, numSitesCovered, path2hdf5 = bamTable2hdf5(bamTable, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
+        err, numSitesCovered, _, path2hdf5 = bamTable2hdf5(bamTable, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
         print(f'finished reading BamTable, takes {time.time()-t1:.3f}')
 
     print(f'number of sites covered by at least one read: {numSitesCovered}')
