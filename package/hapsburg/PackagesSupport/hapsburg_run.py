@@ -452,7 +452,9 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
                 min_len1=min_len1, min_len2=min_len2)
     
     ### hmm.calc_viterbi_path(save=save)           # Calculate the Viterbi Path.
-    hmm.calc_posterior(save=save)              # Calculate the Posterior.
+    t1 = time.time()
+    hmm.calc_posterior(save=save, full=True)              # Calculate the Posterior.
+    print(f"Posterior Calculation takes {time.time()-t1}")
     hmm.post_processing(save=save)             # Do the Post-Processing.
 
 
@@ -832,3 +834,117 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, bamTable=None, q=30, Q=30,
 ##################################################################################
 ################################### END ##########################################
 
+from memory_profiler import profile
+
+def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], 
+                e_model="EigenstratPacked", p_model="MosaicHDF5", readcounts=True, random_allele=True,
+                downsample=False, post_model="Standard", path_targets=None,
+                h5_path1000g=None, meta_path_ref=None, folder_out=None, prefix_out="",
+                c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
+                max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.05,
+                min_len1 = 0.02, min_len2 = 0.04, cutoff_post = 0.999, verbose=True, logfile=True):
+    """Run Hapsburg analysis for one chromosome on eigenstrat data
+    Wrapper for HMM Class.
+
+    Parameters
+    ----------
+    iid: str
+        IID of the Target Individual, as found in Eigenstrat.
+    ch: int
+        Which chromosomes to call ROH.
+    path_targets: str
+        Path of the target files. You need only specify one of path_targets_prefix or path_targets.
+    h5_path1000g: str
+        Path of the reference genotypes
+    meta_path_ref: str 
+        Path of the meta file for the references
+    folder_out: str
+        Path of the basis folder for output
+    prefix_out: str
+        Path to insert in output string, e.g. test/ [str]
+    e_model: str
+        Emission model to use, should be one of haploid/diploid_gt/readcount
+    p_model: str
+        Preprocessing model to use, should be one of EigenstratPacked/EigenstratUnpacked/MosaicHDF5
+    post_model: str
+        Model to post-process the data, should be one of Standard/MMR (experimental)
+    save: bool
+        Whether to save the inferred ROH
+    save_fp: bool
+        Whether to save the full posterior matrix
+    n_ref: int
+        Number of (diploid) reference Individuals to use
+    diploid: bool
+        Whether the reference panel is diploid or not (e.g., for autosome, True and for male X chromosome, False). 
+    exclude_pops: list of str
+        Which populations to exclude from reference
+    readcounts: bool
+        Whether to load readcount data
+    random_allele: bool
+        Whether to pick a random of the two target alleles per locus
+    downsample:
+        If not false (i.e. float), downsample readcounts to this target average coverage
+    c: float
+        Contamination rate. This is only applicable if the emission model is readcount_contam.
+    conPop: list of str
+        Ancestry of contamination source. Only applicable if the emission model is readcount_contam.
+    roh_in: float
+        Parater to jump into ROH state (per Morgan)
+    roh_out: float
+        Parameter to jump out of ROH state (per Morgan)
+    roh_jump: float
+        Parameter to jump (per Morgan)
+    e_rate: float
+        Sequencing error rate.
+    e_rate_ref: float
+        Haplotype miscopying rate.
+    cutoff_post: float
+        Posterior cutoff for ROH calling
+    max_gap: float
+        Maximum gap to merge two adjacent short ROH blocks (in Morgan)
+    roh_min_l_initial: float
+        Minimum length of ROH blocks to use before merging adjacent ones (in Morgan)
+    roh_min_l_final: float
+        Minimum length of ROH blcoks to output after merging (in Morgan)
+    min_len1: float
+        Minimum length of the shorter candidate block in two adjacent blocks that can be merged (in Morgan)
+    min_len2: float
+        Minimum length of the longer candidate block in two adjacent blocks that can be merged (in Morgan)
+    logfile: bool
+        Whether to use logfile
+    """
+    parameters = locals() # Gets dictionary of all local variables at this point
+    
+    ### Create Folder if needed, and pipe output if wanted
+    _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
+    hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, post_model=post_model,
+                      manual_load=True, save=save, save_fp=save_fp, output=verbose)
+
+    ### Load and prepare the pre-processing Model
+    hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
+    hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
+                         folder_out=folder_out, prefix_out_data=prefix_out, 
+                         excluded=exclude_pops, diploid_ref=diploid_ref, downsample=downsample)
+    
+    ### Set the paths to ref & target
+    hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
+                         meta_path_ref = meta_path_ref, n_ref=n_ref)
+    hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
+    hmm.load_secondary_objects(c=c)
+    
+    ### Print out the Parameters used in run:
+    print("\nParameters in hapsb_chrom:")
+    print("\n".join("{}\t{}".format(k, v) for k, v in parameters.items()))
+    print("\n")
+
+    ### Set the Parameters
+    hmm.e_obj.set_params(e_rate = e_rate, e_rate_ref = e_rate_ref)
+    hmm.t_obj.set_params(roh_in=roh_in, roh_out=roh_out, roh_jump=roh_jump)
+    hmm.post_obj.set_params(max_gap=max_gap, cutoff_post=cutoff_post,\
+                roh_min_l_initial=roh_min_l_initial, roh_min_l_final=roh_min_l_final,\
+                min_len1=min_len1, min_len2=min_len2)
+    
+    t1 = time.time()
+    hmm.calc_posterior_lowmem(save=save)              # Calculate the Posterior.
+    print(f'finished calculating posterior, takes {time.time()-t1:.3f}')
+    hmm.post_processing(save=save)             # Do the Post-Processing.

@@ -105,7 +105,7 @@ def eigenstrat_to_hdf5(path_es = "", path_hdf5="",
               compression="gzip", gt_type="int8")
     print(f"Successfully saved data: {np.shape(gt_new)}")
 
-def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="", output=True):
+def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="", output=True, maxdepth=127):
     f = h5py.File(refHDF5, 'r')
     pos = np.array(f['variants/POS'])
     ref = f['variants/REF']
@@ -150,7 +150,7 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
         for line in f:
             rc = np.zeros(4)
             contig, bp, _, coverage, readbases, baseQ = list(zip(*zip_longest(line.strip().split(), range(6))))[0]
-            if int(coverage) == 0:
+            if int(coverage) == 0 or int(coverage) > maxdepth:
                 continue
 
             insertion_index = readbases.find("+")
@@ -214,6 +214,8 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
         iid = bamFileName[:bamFileName.find(".mpileup")]
     
     with h5py.File(hdf5Name, 'w') as f0:
+        nonmiss = np.sum(ad[:,0,:], axis=1) > 0
+        l = np.sum(nonmiss)
     # Create all the Groups
         f_map = f0.create_dataset("variants/MAP", (l,), dtype='f')
         f_ad = f0.create_dataset("calldata/AD", (l, k, 2), dtype='i')
@@ -224,12 +226,12 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
         f_samples = f0.create_dataset("samples", (k,), dtype=dt)
 
         #   Save the Data
-        f_map[:] = rec
-        f_ad[:] = ad
-        f_ref[:] = ref.astype("S1")
-        f_alt[:] = alt.astype("S1")
-        f_pos[:] = pos
-        f_gt[:] = gt
+        f_map[:] = rec[nonmiss]
+        f_ad[:] = ad[nonmiss]
+        f_ref[:] = ref.astype("S1")[nonmiss]
+        f_alt[:] = alt.astype("S1")[nonmiss]
+        f_pos[:] = pos[nonmiss]
+        f_gt[:] = gt[nonmiss]
         f_samples[:] = np.array([iid]).astype("S50")
         print(f'saving sample as {iid} in {hdf5Name}')
 

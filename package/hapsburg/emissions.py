@@ -8,6 +8,7 @@ import numpy as np
 from scipy.stats import binom  # Binomial Likelihood
 import time
 import sys
+from memory_profiler import profile
 
 ###############################
 ###############################

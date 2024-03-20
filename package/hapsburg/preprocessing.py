@@ -13,7 +13,9 @@ import numpy as np
 import pandas as pd
 import os   # For creating folders
 import sys # for debugging
-
+import math
+import time
+from memory_profiler import profile
 
 #Assume hapsburg directory is in root
 from hapsburg.PackagesSupport.loadEigenstrat.loadEigenstrat import load_eigenstrat
@@ -916,6 +918,160 @@ class PreProcessingFolder(PreProcessing):
         assert(len(r_map) == nr_snps)  # Sanity Check
         return r_map
 
+class PreProcessingHDF5_lowmem(PreProcessingHDF5):
+
+    def load_data(self, iid="MA89", ch=6, start=-np.inf, end=np.inf):
+        """Return Matrix of reference [k,l], Matrix of Individual Data [2,l],
+        as well as linkage Map [l]"""
+
+        if self.output == True:
+            print(f"Loading Individual: {iid}")
+
+        # Attach Part for the right Chromosome
+        if self.h5_path1000g.endswith(".hdf5"):
+            h5_path1000g = self.h5_path1000g
+        else:
+            h5_path1000g = self.h5_path1000g + str(ch) + ".hdf5"
+
+        # Def Set the output folder:
+        out_folder = self.set_output_folder(iid, ch)
+
+        # Load and Merge the Data
+        fs = self.load_h5(self.path_targets)
+        f1000 = self.load_h5(h5_path1000g)
+        i1, i2, flipped = self.merge_2hdf(fs, f1000, start, end)
+
+        id_obs = self.get_index_iid(iid, fs, samples_field=self.samples_field)
+        ids_ref, ids_con = self.get_ref_ids(f1000)
+
+        markers = np.arange(0, len(i1))  # Which Markers to Slice out
+        markers_obs = i1[markers]
+        markers_ref = i2[markers]
+
+        ### Load Target Dataset
+        gts_ind = self.extract_snps_hdf5(
+            fs, [id_obs], markers_obs, diploid=True)
+        if self.readcounts:
+            read_counts = self.extract_rc_hdf5(fs, id_obs, markers_obs)
+        else:
+            read_counts = []
+
+        
+        ### Flip target genotypes where flipped
+        if self.flipstrand:
+            if self.output:
+                print(f"Flipping Ref/Alt Allele in target for {np.sum(flipped)} SNPs...")
+            flip_idcs = flipped & (gts_ind[0,:]>=0) # Where Flip AND Genotype Data
+            gts_ind[:,flip_idcs] = 1 - gts_ind[:,flip_idcs]
+            if self.readcounts:
+                read_counts[0,flipped], read_counts[1,flipped] = read_counts[1,flipped], read_counts[0,flipped]
+
+        ### Load Reference Dataset
+        gts, overhang = self.extract_snps_hdf5_lowmem(
+            f1000, ids_ref, markers_ref, diploid=self.diploid_ref)
+        r_map = self.extract_rmap_hdf5(f1000, markers_ref)  # Extract LD Map
+        pos = self.extract_rmap_hdf5(f1000, markers_ref, col="variants/POS")  # Extract Positions
+
+        # get pCon: allele frequency from the specified contamination population
+        gts_con = self.extract_snps_contaminationPop(f1000, ids_con, markers_ref)
+        pCon = np.mean(gts_con, axis=0)
+
+        # Do optional Processing Steps (based on boolean flags in class)
+        gts_ind, gts, r_map, pos, pCon, out_folder = self.optional_postprocessing(
+            gts_ind, gts, r_map, pos, out_folder, pCon, read_counts)
+
+        return gts_ind, gts, overhang, r_map, pos, pCon, out_folder
+
+    def optional_postprocessing(self, gts_ind, gts, r_map, pos, out_folder, pCon, read_counts=[]):
+        """Postprocessing steps of gts_ind, gts, r_map, and the folder,
+        based on boolean fields of the class."""
+
+        ### I commented out the following lines because the hdf5 file of the target individual only contains the markers with data
+        # if self.only_calls:
+        #     called = self.markers_called(gts_ind, read_counts)
+        #     gts_ind = gts_ind[:, called]
+        #     gts = gts[:, called]
+        #     r_map = r_map[called]
+        #     pos = pos[called]
+        #     pCon = pCon[called]
+            
+        #     if self.output:
+        #         print(f"Subset to markers with data: {np.shape(gts)[1]} / {len(called)}")
+        #         print(f"Fraction SNPs covered: {np.shape(gts)[1] / len(called):.4f}")
+                
+        #     if len(read_counts) > 0:
+        #         read_counts = read_counts[:, called]
+
+        if self.save == True:
+            self.save_info(out_folder, r_map, pos,
+                           gt_individual=gts_ind, read_counts=read_counts)
+
+        if (self.readcounts == True) and len(read_counts) > 0:   # Switch to Readcount
+            if self.output:
+                print(f"Loading Readcounts...")
+                print(f"Mean Readcount on markers with data: {np.mean(read_counts) * 2:.5f}")
+            
+            ### Downsample to target average coverage
+            if not self.downsample:
+                gts_ind = read_counts
+            else:
+                print('downsample readcounts data. This seems to make the emission model more robust to various sources of errors...')
+                ################## downsample to ~1x data ################################################
+                meanDepth = np.mean(np.sum(read_counts, axis=0))
+                p = (1/meanDepth) * self.downsample
+                sample_binom_ref = np.random.binomial(read_counts[0], p)
+                sample_binom_alt = np.random.binomial(read_counts[1], p)
+                gts_ind = np.zeros_like(read_counts)
+                gts_ind[0] = sample_binom_ref
+                gts_ind[1] = sample_binom_alt
+                
+                if self.output:
+                    print('print first 100 read counts after downsampling')
+                    print(gts_ind[:, :100])
+
+
+        ### Shuffle Target Allele     
+        if (self.random_allele == True) and (self.readcounts == False):     
+            if self.output:
+                print("Shuffling phase of target...")
+            gts_ind = self.destroy_phase_func(gts_ind)
+        
+        return gts_ind, gts, r_map, pos, pCon, out_folder
+
+    def extract_snps_hdf5_lowmem(self, h5, ids_ref, markers, diploid=False):
+        """Extract genotypes from h5 on ids and markers.
+        If diploid, concatenate haplotypes along 0 axis.
+        Extract indivuals first, and then subset to SNPs.
+        Return 2D array [# haplotypes, # markers]"""
+        # Important: Swap of Dimensions [loci<->individuals]
+        print(f'number of markers: {len(markers)}')
+        nblocks = math.ceil(len(markers)/8)
+        nsample = len(ids_ref)
+        ploidy = 2 if diploid else 1
+        gts = np.zeros((ploidy*nsample, nblocks), dtype=np.uint8)
+        haplotype_id_with_missing_data = set() # maintain a list of haplotype ids with missing data at any site of interest
+        t1 = time.time()
+        for i in range(nblocks):
+            j = min((i+1)*8, len(markers))
+            raw_gt = h5["calldata/GT"][markers[i*8:j], :, :ploidy] # can only indexing one dimension at a time, so need to split this into two lines of code
+            raw_gt = raw_gt[:, ids_ref, :].reshape((-1, ploidy*nsample)).T
+            #haplotype_id_with_missing_data.update(np.where(raw_gt == -1)[0])
+            gts[:, i] = np.packbits(raw_gt, axis=1).flatten()
+        print(f'extracting genotypes from hdf5 took {time.time()-t1:.2f} seconds')
+
+        ####### faster version, but consumes more memory
+        # t1 = time.time()
+        # raw_gt = h5["calldata/GT"][markers, :, :ploidy]
+        # raw_gt = raw_gt[:, ids_ref, :].reshape((-1, ploidy*nsample)).T
+        # gts = np.packbits(raw_gt, axis=1)
+        # print(f'extracting genotypes from hdf5 took {time.time()-t1:.2f} seconds')
+
+
+        if self.output:
+            print(f'{len(haplotype_id_with_missing_data)} haplotypes with missing data removed')
+            print(f"Extraction of {len(gts)} reference haplotypes at {len(markers)} sites complete")
+        return gts, len(markers)%8
+
 
 ############################################
 ############################################
@@ -943,6 +1099,8 @@ def load_preprocessing(p_model="SardHDF5", conPop=[], save=True, output=True):
     elif p_model == "EigenstratX":
         p_obj = PreProcessingEigenstratX(save=save, output=output,
                                          packed=-1, sep=r"\s+")
+    elif p_model == "HDF5_lowmem":
+        p_obj = PreProcessingHDF5_lowmem(conPop, save=save, output=output)
     else:
         raise NotImplementedError(f"Preprocessing Model string {p_model} not found.")
 
