@@ -1,6 +1,7 @@
 # cython: language_level=3, boundscheck=True, wraparound=False
 import numpy as np
 cimport numpy as np
+from scipy.stats import binom
 import psutil      # For Memory Profiling
 import os
 cimport cython
@@ -663,42 +664,88 @@ cdef inline extract_reference_allele(np.ndarray[np.uint8_t, ndim=2] refhap, int 
   offset = col % blocksize
   return refhap[row, index] >> (blocksize - 1 - offset) & 1
 
-@cython.profile(True)
-cdef emission_prob_non_ROH_state(int i, np.ndarray[np.uint8_t, ndim=2] refhap, 
-                double binom_coef, int rc_ref, int rc_alt, double e_rate_read, int blocksize):
-  """
-  Compute the emission probability for non-ROH state at marker i
-  """
-  index = i // blocksize
-  offset = i % blocksize
-  p = sum(refhap[:, index] >> (blocksize - 1 - offset) & 1)/refhap.shape[0]
-  # compute emission probability for the non-ROH state
-  prob_genotype_hw = np.empty(3, dtype=DTYPE)
-  cdef double[:] prob_genotype_hw_v = prob_genotype_hw
-  prob_genotype_hw_v[0] = (1-p)**2
-  prob_genotype_hw_v[1] = 2*p*(1-p)
-  prob_genotype_hw_v[2] = p**2
-  binom_prob = binomial_readcount_prob(prob_genotype_hw_v, binom_coef, e_rate_read, rc_ref, rc_alt) # this should be the same as e_mat[0,i]
-  return binom_prob
 
 @cython.profile(True)
-cdef emission_prob_ROH_state(int row, int col, np.ndarray[np.uint8_t, ndim=2] refhap, 
-      double binom_coef, int rc_ref, int rc_alt, double e_rate_read, double e_rate_ref, int blocksize):
+def emission_prob_non_ROH_state_vector(np.ndarray[np.uint8_t, ndim=2] refhap, 
+                np.ndarray[np.int8_t, ndim=2] rc, 
+                double e_rate_read, int blocksize, int overhang):
   """
-  Compute the emission probability for ROH state at marker col, copied from haplotype row
+  Compute the emission probability for non-ROH state at all markers
   """
-  cdef int copied_allele
-  copied_allele = extract_reference_allele(refhap, row, col, blocksize)
-  # compute emission probability for the ROH state
-  #prob_genotype_copy = np.empty(3, dtype=DTYPE)
-  #cdef double[:] prob_genotype_copy_v = prob_genotype_copy
-  cdef double prob_genotype_copy[3]
-  prob_genotype_copy[0] = (1-e_rate_ref) * (copied_allele==0) + e_rate_ref/2 * (copied_allele==1)
-  prob_genotype_copy[1] = e_rate_ref/2
-  prob_genotype_copy[2] = (1-e_rate_ref) * (copied_allele==1) + e_rate_ref/2 * (copied_allele==0)
-  cdef double binom_prob
-  binom_prob = binomial_readcount_prob(prob_genotype_copy, binom_coef, e_rate_read, rc_ref, rc_alt) # this should in theory be the same as e_mat[j,i]
-  return binom_prob
+  cdef int nloci = rc.shape[1]
+  p = calc_allelefreq_blockwise(refhap, blocksize, overhang)
+  hw_prob = np.empty((nloci, 3), dtype=DTYPE)
+  hw_prob[:,0] = (1-p)**2
+  hw_prob[:,1] = 2*p*(1-p)
+  hw_prob[:,2] = p**2
+
+  derived_read_prob = np.empty((1, 3), dtype=DTYPE)
+  derived_read_prob[0, 0] = e_rate_read
+  derived_read_prob[0, 1] = 0.5
+  derived_read_prob[0, 2] = 1 - e_rate_read
+  binom_pmf = binom.pmf(rc[1].reshape(nloci, 1), (rc[0]+rc[1]).reshape(nloci,1), derived_read_prob) # shape (nloci, 3)
+  return np.sum(hw_prob*binom_pmf, axis=1)
+
+
+@cython.profile(True)
+def emission_prob_ROH_state_vector_pooled(int col, np.ndarray[np.uint8_t, ndim=2] refhap, 
+                np.ndarray[np.int8_t, ndim=2] rc, 
+                double e_rate_read, double e_rate_ref, int blocksize):
+  """
+  Compute the emission probability for ROH state at one marker for all reference haplotypes 
+  """
+  cdef int nloci = rc.shape[1]
+  cdef int nstate = refhap.shape[0]
+  index = col // blocksize
+  offset = col % blocksize
+  copied_allele = refhap[:, index] >> (blocksize - 1 - offset) & 1
+  
+  # the first row gives the probability of the target sample having 00/01/11 probability given the copied allele is 0
+  # the second row gives the probability of the target sample having 00/01/11 probability given the copied allele is 1
+  genotype_prob = np.empty((2, 3), dtype=DTYPE)
+  genotype_prob[0,0] = 1-e_rate_ref
+  genotype_prob[0,1] = e_rate_ref/2
+  genotype_prob[0,2] = e_rate_ref/2
+  genotype_prob[1,0] = e_rate_ref/2
+  genotype_prob[1,1] = e_rate_ref/2
+  genotype_prob[1,2] = 1-e_rate_ref
+
+  derived_read_prob = np.empty((1, 3), dtype=DTYPE)
+  derived_read_prob[0, 0] = e_rate_read
+  derived_read_prob[0, 1] = 0.5
+  derived_read_prob[0, 2] = 1 - e_rate_read
+  binom_pmf = binom.pmf(rc[1, col], rc[0, col]+rc[1, col], derived_read_prob)
+
+  emission_prob_pooled = np.sum(genotype_prob*binom_pmf, axis=1)
+  emission_prob = emission_prob_pooled[copied_allele]
+  return emission_prob
+
+
+
+
+
+
+
+
+@cython.profile(True)
+def allele_freq_per_block(np.ndarray[np.uint8_t, ndim=1] gts_one_block, int blocksize):
+    """Calculate allele frequency per block.
+    Return 1D array of length blocksize"""
+    freq = np.empty(blocksize, dtype=DTYPE)
+    for i in range(blocksize):
+        freq[i] = np.mean(gts_one_block >> (blocksize -1 - i) & 1)
+    return freq
+
+@cython.profile(True)
+def calc_allelefreq_blockwise(np.ndarray[np.uint8_t, ndim=2] refhap, int blocksize, int overhang):
+  """
+  Calculate allele frequency for all markers in refhap, blockwise
+  """
+  allelefreq_blockwise = np.concatenate(np.apply_along_axis(allele_freq_per_block, 0, refhap, blocksize).T, axis=0)
+  if overhang > 0:
+    allelefreq_blockwise = allelefreq_blockwise[:-(blocksize - overhang)]
+  return allelefreq_blockwise
+  
   
 @cython.profile(True)
 def fwd_bkwd_scaled_lowmem_onTheFly_rc(double[:, :, :] t_mat, 
@@ -756,8 +803,7 @@ def fwd_bkwd_scaled_lowmem_onTheFly_rc(double[:, :, :] t_mat,
     cdef double[:] tmp = tmp0
 
     ###############################
-    ### compute/define some useful values to be used later, 
-    
+    ### compute/define some useful values to be used later
     # given the underlying (true) genotype of 00, 01, 11, what's the probability of sampling a read supporting the derived allele?
     #p_derived_read = np.empty(3, dtype=DTYPE)
     #p_derived_read[0] = e_rate_read
@@ -778,10 +824,7 @@ def fwd_bkwd_scaled_lowmem_onTheFly_rc(double[:, :, :] t_mat,
 
     # precompute emission probability for the non-ROH state at each marker
     # this is used twice, once in forward and once in backward, so we precompute it here
-    emit_nonROH = np.empty(n_loci, dtype=DTYPE)
-    cdef double[:] emit_nonROH_v = emit_nonROH
-    for i in range(n_loci):
-        emit_nonROH_v[i] = emission_prob_non_ROH_state(i, refhap, binom_coef_v[i], rc[0, i], rc[1, i], e_rate_read, blocksize)
+    emit_nonROH = emission_prob_non_ROH_state_vector(refhap, rc, e_rate_read, blocksize, overhang)
 
     e_mat_column_i_ROH = np.empty(n_states-1, dtype=DTYPE)
     cdef double[:] e_mat_column_i_ROH_v = e_mat_column_i_ROH
@@ -790,6 +833,7 @@ def fwd_bkwd_scaled_lowmem_onTheFly_rc(double[:, :, :] t_mat,
     post_view[0] = fwd[0]  # Add to 0-State Posterior
     for i in range(1, n_loci):  # Run forward recursion
         stay = t[i, 1, 1] - t[i, 1, 2]  # Do the log of the Stay term
+        e_mat_column_i_ROH = emission_prob_ROH_state_vector_pooled(i, refhap, rc, e_rate_read, e_rate_ref, blocksize)
 
         #for k in range(1, n_states): # Calculate Sum of ROH states. 
         f_l = 1 - fwd[0]  ### Assume they are normalized!!!
@@ -797,7 +841,7 @@ def fwd_bkwd_scaled_lowmem_onTheFly_rc(double[:, :, :] t_mat,
         ### Do the 0 State:
         x1 = fwd[0] * t[i, 0, 0]    # Staying in 0 State
         x2 = f_l * t[i, 1, 0]               # Going into 0 State from any other
-        temp_v[0] = emit_nonROH_v[i] * (x1 + x2) # Set the unnorm. 0 forward variable
+        temp_v[0] = emit_nonROH[i] * (x1 + x2) # Set the unnorm. 0 forward variable
         ### Do the other states
         # Preprocessing:
         x1 = fwd[0] * t[i, 0, 1]   # Coming from 0 State
@@ -806,8 +850,7 @@ def fwd_bkwd_scaled_lowmem_onTheFly_rc(double[:, :, :] t_mat,
         for j in range(1, n_states):  # Do the final run over all states
             x3 = fwd[j] *  stay # Staying in state
             # compute emission probability for the ROH state
-            binom_prob = emission_prob_ROH_state(j-1, i, refhap, binom_coef_v[i], rc[0, i], rc[1, i], e_rate_read, e_rate_ref, blocksize)
-            temp_v[j] = binom_prob * (x1 + x2 + x3)
+            temp_v[j] = e_mat_column_i_ROH[j-1] * (x1 + x2 + x3)
             
         ### Do the normalization and set up the forward array for next step
         c_view[i] = sum_array(temp_v, n_states)
@@ -822,25 +865,25 @@ def fwd_bkwd_scaled_lowmem_onTheFly_rc(double[:, :, :] t_mat,
     for i in range(n_loci-1, 0, -1):  # Run backward recursion
         stay = t[i, 1, 1] - t[i, 1, 2]
         # precompute the e_mat[:,i]
-        for j in range(1, n_states):
-            e_mat_column_i_ROH_v[j-1] = emission_prob_ROH_state(j-1, i, refhap, binom_coef_v[i], rc[0, i], rc[1, i], e_rate_read, e_rate_ref, blocksize)
+        e_mat_column_i_ROH = emission_prob_ROH_state_vector_pooled(i, refhap, rc, e_rate_read, e_rate_ref, blocksize)
+        
 
         for k in range(1, n_states): # Calculate logsum of ROH states:
-            temp1_v[k-1] = bwd[k] * e_mat_column_i_ROH_v[k-1]
+            temp1_v[k-1] = bwd[k] * e_mat_column_i_ROH[k-1]
         f_l = sum_array(temp1_v, n_states-1) # Logsum of ROH States
 
       # Do the 0 State:
-        x1 = bwd[0] * t[i, 0, 0] * emit_nonROH_v[i]   # Staying in 0 State
+        x1 = bwd[0] * t[i, 0, 0] * emit_nonROH[i]   # Staying in 0 State
         x2 = f_l * t[i, 0, 1]                         # Going into 0 State
         temp_v[0] = x1 + x2
 
       ### Do the other states
       # Preprocessing:
-        x1 = emit_nonROH_v[i] * bwd[0] * t[i, 1, 0]
+        x1 = emit_nonROH[i] * bwd[0] * t[i, 1, 0]
         x2 = f_l * t[i, 1, 2]    # Coming from other ROH State
 
         for j in range(1, n_states):  # Do the final run over all states
-            x3 = e_mat_column_i_ROH_v[j-1] * bwd[j] *  stay
+            x3 = e_mat_column_i_ROH[j-1] * bwd[j] *  stay
             temp_v[j] = x1 + x2 + x3  # Fill in the backward Probability
         
         ### Do the normalization

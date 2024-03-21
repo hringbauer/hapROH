@@ -161,7 +161,10 @@ class HMM_Analyze(object):
                 print(f'overhang: {self.overhang}')
                 print(f'len(r_map): {len(self.r_map)}')
                 print(f'ref_states.shape: {self.ref_states.shape}')
-                assert(len(self.r_map) == 8*np.shape(self.ref_states)[1] - (8 - self.overhang))
+                nloci = 8*np.shape(self.ref_states)[1]
+                if self.overhang != 0:
+                    nloci -= 8 - self.overhang
+                assert(len(self.r_map) == nloci)
             print(f'gts_ind.shape: {gts_ind.shape}')
             print(f'gts_ind: {gts_ind[:10,:]}')
             print(f'gts_ind min: {np.min(gts_ind)}')
