@@ -273,11 +273,12 @@ class HMM_Analyze(object):
         # Do the forward-backward Algorithm:
         if full == False:
             post = self.fwd_bkwd(e_mat, t_mat_full, in_val, full=False, output=self.output)
+            result = post
 
         elif full:  # If FULL Mode: Return results prematurely
             post, fwd, bwd, tot_ll = self.fwd_bkwd(
                 e_mat, t_mat_full, in_val, full=True, output=self.output)
-            return post, fwd, bwd, tot_ll
+            result = (post, fwd, bwd, tot_ll)
 
         if self.output:
             print("Finished Calculation State Posteriors")
@@ -296,6 +297,8 @@ class HMM_Analyze(object):
             np.savetxt(path, post[0, :],
                        delimiter=",",  fmt='%f')
             print(f"Saved Zero State Posterior to folder {self.folder}.")
+        
+        return result
 
     def calc_posterior_lowmem(self, save=True, full=False, in_val=1e-4):
         """

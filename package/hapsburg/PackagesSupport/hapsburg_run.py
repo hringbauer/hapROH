@@ -453,7 +453,7 @@ def hapsb_chrom(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=Tru
     
     ### hmm.calc_viterbi_path(save=save)           # Calculate the Viterbi Path.
     t1 = time.time()
-    hmm.calc_posterior(save=save, full=True)              # Calculate the Posterior.
+    hmm.calc_posterior(save=save)              # Calculate the Posterior.
     print(f"Posterior Calculation takes {time.time()-t1}")
     hmm.post_processing(save=save)             # Do the Post-Processing.
 
@@ -790,7 +790,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, bamTable=None, q=30, Q=30,
 
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
-    hmm.p_obj.set_params(readcounts = True, random_allele=False,
+    hmm.p_obj.set_params(ch='X', readcounts = True, random_allele=False,
                          folder_out=folder_out, prefix_out_data="", 
                          excluded=exclude_pops, diploid_ref=diploid_ref)
     
@@ -808,8 +808,6 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, bamTable=None, q=30, Q=30,
     ### Set the Parameters
     hmm.e_obj.set_params(e_rate = err/3, e_rate_ref = e_rate_ref)
     hmm.t_obj.set_params(roh_out=0.0, roh_jump=roh_jump)
-    #hmm.post_obj.set_params(max_gap=max_gap, cutoff_post=cutoff_post, roh_min_l = roh_min_l)
-
 
     con_mle, lower, upper = hmm.optimize_ll_contamination_BFGS(c)
     print(f'estimated contamination rate: {con_mle:.6f}({lower:.6f} - {upper:.6f})')
@@ -922,7 +920,7 @@ def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_
 
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
-    hmm.p_obj.set_params(readcounts = readcounts, random_allele=random_allele,
+    hmm.p_obj.set_params(ch=ch, readcounts = readcounts, random_allele=random_allele,
                          folder_out=folder_out, prefix_out_data=prefix_out, 
                          excluded=exclude_pops, diploid_ref=diploid_ref, downsample=downsample)
     

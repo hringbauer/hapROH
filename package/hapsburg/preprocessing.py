@@ -1038,37 +1038,29 @@ class PreProcessingHDF5_lowmem(PreProcessingHDF5):
         
         return gts_ind, gts, r_map, pos, pCon, out_folder
 
-    def extract_snps_hdf5_lowmem(self, h5, ids_ref, markers, diploid=False):
+    def extract_snps_hdf5_lowmem(self, h5, ids_ref, markers, diploid=True):
         """Extract genotypes from h5 on ids and markers.
         If diploid, concatenate haplotypes along 0 axis.
         Extract indivuals first, and then subset to SNPs.
         Return 2D array [# haplotypes, # markers]"""
         # Important: Swap of Dimensions [loci<->individuals]
-        print(f'number of markers: {len(markers)}')
-        nblocks = math.ceil(len(markers)/8)
         nsample = len(ids_ref)
         ploidy = 2 if diploid else 1
-        gts = np.zeros((ploidy*nsample, nblocks), dtype=np.uint8)
-        haplotype_id_with_missing_data = set() # maintain a list of haplotype ids with missing data at any site of interest
-        t1 = time.time()
-        for i in range(nblocks):
-            j = min((i+1)*8, len(markers))
-            raw_gt = h5["calldata/GT"][markers[i*8:j], :, :ploidy] # can only indexing one dimension at a time, so need to split this into two lines of code
-            raw_gt = raw_gt[:, ids_ref, :].reshape((-1, ploidy*nsample)).T
-            #haplotype_id_with_missing_data.update(np.where(raw_gt == -1)[0])
-            gts[:, i] = np.packbits(raw_gt, axis=1).flatten()
-        print(f'extracting genotypes from hdf5 took {time.time()-t1:.2f} seconds')
 
-        ####### faster version, but consumes more memory
-        # t1 = time.time()
-        # raw_gt = h5["calldata/GT"][markers, :, :ploidy]
-        # raw_gt = raw_gt[:, ids_ref, :].reshape((-1, ploidy*nsample)).T
-        # gts = np.packbits(raw_gt, axis=1)
-        # print(f'extracting genotypes from hdf5 took {time.time()-t1:.2f} seconds')
-
+        raw_gt = h5["calldata/GTbinary"][:, ids_ref, :ploidy]
+        indices = markers // 8
+        offset = markers % 8
+        # get the offset bit from the uint8 integer at indices
+        gts = np.packbits((raw_gt[indices, :, :] >> (7 - offset[:, None, None])) & 1, axis=0)
+        gts = gts.reshape((-1, ploidy*nsample)).T
+        # remove the second haplotype of males if ch='X'
+        if self.ch == 'X' and diploid:
+            print('remove second haplotype of males')
+            meta_df = pd.read_csv(self.meta_path_ref, sep="\t")
+            male_index = np.where(meta_df['sex'] == 'M')[0]
+            gts = gts[np.setdiff1d(np.arange(2*nsample), 2*male_index+1), :]
 
         if self.output:
-            print(f'{len(haplotype_id_with_missing_data)} haplotypes with missing data removed')
             print(f"Extraction of {len(gts)} reference haplotypes at {len(markers)} sites complete")
         return gts, len(markers)%8
 
