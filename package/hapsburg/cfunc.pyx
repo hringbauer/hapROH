@@ -797,7 +797,6 @@ def fwd_bkwd_scaled_lowmem_onTheFly_rc(double[:, :, :] t_mat,
     # precompute emission probability for the non-ROH state at each marker
     # this is used twice, once in forward and once in backward, so we precompute it here
     emit_nonROH = emission_prob_non_ROH_state_vector(refhap, rc, e_rate_read, blocksize, overhang)
-
     e_mat_column_i_ROH = np.empty(n_states-1, dtype=DTYPE)
     cdef double[:] e_mat_column_i_ROH_v = e_mat_column_i_ROH
     #############################
@@ -807,8 +806,6 @@ def fwd_bkwd_scaled_lowmem_onTheFly_rc(double[:, :, :] t_mat,
         stay = t[i, 1, 1] - t[i, 1, 2]  # Do the log of the Stay term
         e_mat_column_i_ROH_v = emission_prob_ROH_state_vector_pooled(i, refhap, 
                 emission_prob_pooled_allmarker_view[0, i], emission_prob_pooled_allmarker_view[1, i], blocksize)
-
-        #for k in range(1, n_states): # Calculate Sum of ROH states. 
         f_l = 1 - fwd[0]  ### Assume they are normalized!!!
         
         ### Do the 0 State:

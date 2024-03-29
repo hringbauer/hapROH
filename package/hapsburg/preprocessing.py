@@ -225,6 +225,7 @@ class PreProcessingHDF5(PreProcessing):
             r_map = r_map[called]
             pos = pos[called]
             pCon = pCon[called]
+
             
             if self.output:
                 print(f"Subset to markers with data: {np.shape(gts)[1]} / {len(called)}")
@@ -977,30 +978,35 @@ class PreProcessingHDF5_lowmem(PreProcessingHDF5):
         pCon = np.mean(gts_con, axis=0)
 
         # Do optional Processing Steps (based on boolean flags in class)
-        gts_ind, gts, r_map, pos, pCon, out_folder = self.optional_postprocessing(
-            gts_ind, gts, r_map, pos, out_folder, pCon, read_counts)
+        # I need to pass the overhang to the optional_postprocessing function because it might be changed due to filtering to sites with data
+        gts_ind, gts, r_map, pos, pCon, overhang, out_folder = self.optional_postprocessing(
+            gts_ind, gts, r_map, pos, out_folder, pCon, overhang, read_counts)
 
         return gts_ind, gts, overhang, r_map, pos, pCon, out_folder
 
-    def optional_postprocessing(self, gts_ind, gts, r_map, pos, out_folder, pCon, read_counts=[]):
+    def optional_postprocessing(self, gts_ind, gts, r_map, pos, out_folder, pCon, overhang, read_counts=[]):
         """Postprocessing steps of gts_ind, gts, r_map, and the folder,
         based on boolean fields of the class."""
 
         ### I commented out the following lines because the hdf5 file of the target individual only contains the markers with data
-        # if self.only_calls:
-        #     called = self.markers_called(gts_ind, read_counts)
-        #     gts_ind = gts_ind[:, called]
-        #     gts = gts[:, called]
-        #     r_map = r_map[called]
-        #     pos = pos[called]
-        #     pCon = pCon[called]
+        if self.only_calls:
+            called = self.markers_called(gts_ind, read_counts)
+            gts_ind = gts_ind[:, called]
+            r_map = r_map[called]
+            pos = pos[called]
+            pCon = pCon[called]
+            called_indices = np.where(called)[0]
+            indices = called_indices // 8
+            offset = called_indices % 8
+            gts = np.packbits((gts[:, indices] >> (7 - offset[None, :])) & 1, axis=1)
+            overhang = len(called_indices) % 8
             
-        #     if self.output:
-        #         print(f"Subset to markers with data: {np.shape(gts)[1]} / {len(called)}")
-        #         print(f"Fraction SNPs covered: {np.shape(gts)[1] / len(called):.4f}")
+            if self.output:
+                print(f"Subset to markers with data: {np.sum(called)} / {len(called)}")
+                print(f"Fraction SNPs covered: {np.sum(called) / len(called):.4f}")
                 
-        #     if len(read_counts) > 0:
-        #         read_counts = read_counts[:, called]
+            if len(read_counts) > 0:
+                read_counts = read_counts[:, called]
 
         if self.save == True:
             self.save_info(out_folder, r_map, pos,
@@ -1024,10 +1030,6 @@ class PreProcessingHDF5_lowmem(PreProcessingHDF5):
                 gts_ind = np.zeros_like(read_counts)
                 gts_ind[0] = sample_binom_ref
                 gts_ind[1] = sample_binom_alt
-                
-                if self.output:
-                    print('print first 100 read counts after downsampling')
-                    print(gts_ind[:, :100])
 
 
         ### Shuffle Target Allele     
@@ -1036,7 +1038,7 @@ class PreProcessingHDF5_lowmem(PreProcessingHDF5):
                 print("Shuffling phase of target...")
             gts_ind = self.destroy_phase_func(gts_ind)
         
-        return gts_ind, gts, r_map, pos, pCon, out_folder
+        return gts_ind, gts, r_map, pos, pCon, overhang, out_folder
 
     def extract_snps_hdf5_lowmem(self, h5, ids_ref, markers, diploid=True):
         """Extract genotypes from h5 on ids and markers.

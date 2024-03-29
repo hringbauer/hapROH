@@ -142,6 +142,7 @@ class HMM_Analyze(object):
         self.ch = ch
         self.iid = iid
         self.ref_states = gts
+        print(f'in load_data in class HMM_Analyze, ref_states.shape: {self.ref_states.shape}')
         self.r_map = r_map
         self.pos = pos
         self.ob_stat = gts_ind
@@ -166,8 +167,6 @@ class HMM_Analyze(object):
                     nloci -= 8 - self.overhang
                 assert(len(self.r_map) == nloci)
             print(f'gts_ind.shape: {gts_ind.shape}')
-            print(f'gts_ind: {gts_ind[:10,:]}')
-            print(f'gts_ind min: {np.min(gts_ind)}')
             assert(np.min(gts_ind)>=0) # No missing genotypes
             assert(np.min(gts)>=0)
 
@@ -319,14 +318,15 @@ class HMM_Analyze(object):
         # Precompute the 3x3 Transition Matrix
         t_mat_full = self.pre_compute_transition_matrix(
             t_mat, r_map, self.n_ref)
-
+        
         # Do the forward-backward Algorithm:
         if full == False:
             post = fwd_bkwd_scaled_lowmem_onTheFly_rc(t_mat_full, self.ref_states, ob_stat, self.overhang, in_val, full=False, output=self.output)
+            result = post
         elif full:  # If FULL Mode: Return results prematurely
             post, fwd, bwd, tot_ll = fwd_bkwd_scaled_lowmem_onTheFly_rc(
                 t_mat_full, self.ref_states, ob_stat, self.overhang, in_val, full=True, output=self.output)
-            return post, fwd, bwd, tot_ll
+            result = (post, fwd, bwd, tot_ll)
 
         if self.output:
             print("Finished Calculation State Posteriors")
@@ -345,6 +345,8 @@ class HMM_Analyze(object):
             np.savetxt(path, post[0, :],
                        delimiter=",",  fmt='%f')
             print(f"Saved Zero State Posterior to folder {self.folder}.")
+        
+        return result
     
     def compute_tot_neg_likelihood(self, c, in_val=1e-4):
         """Calculate the poserior for each path
