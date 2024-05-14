@@ -33,6 +33,7 @@ class Emissions(object):
             setattr(self, key, value)
 
 
+
 class Model_Emissions(Emissions):
     """Implements the haploid model Emission probabilities"""
     p = []  # Vector of alle frequencies [n_loci]

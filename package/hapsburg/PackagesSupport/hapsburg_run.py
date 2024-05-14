@@ -14,7 +14,7 @@ from scipy.optimize import minimize
 import numdifftools as ndt
 from scipy.optimize import newton
 import shutil
-
+import h5py
 
 
 from hapsburg.hmm_inference import HMM_Analyze   # The HMM core object
@@ -667,9 +667,9 @@ def hapCon_chrom_BFGS_legacy(iid="", hdf5=None,
     return con_mle, lower, upper
 
 def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, bamTable=None, q=30, Q=30,
-    n_ref=2504, diploid_ref=False, exclude_pops=["AFR"], conPop=["CEU"], 
+    n_ref=2504, diploid_ref=True, exclude_pops=["AFR"], conPop=["CEU"], 
     h5_path1000g = None, meta_path_ref = None,
-    folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, damage=False,
+    folder_out="", c=0.025, roh_jump=300, e_rate_ref=1e-3, lowmem=False,
     logfile=False, output=False, cleanup=False, prefix="hapCon"):
     """Run HapCon to estimate male X chromosome contamination.
 
@@ -766,11 +766,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, bamTable=None, q=30, Q=30,
         err, numSitesCovered, path2hdf5 = bam2hdf5(bam, h5_path1000g, ch='X', iid=iid, minMapQual=q, minBaseQual=Q, s=5000000, e=154900000, outPath=folder_out)
         print(f'finished reading bam file, takes {time.time()-t1:.3f}.')
     elif mpileup:
-        if not damage:
-            err, numSitesCovered, _, path2hdf5 = mpileup2hdf5(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
-        else:
-            print(f'Doing damage aware parsing of mpileup file.')
-            err, numSitesCovered, _, path2hdf5 = mpileup2hdf5_damageAware(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
+        err, numSitesCovered, _, path2hdf5 = mpileup2hdf5(mpileup, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
         print(f'finished reading mpileup file, takes {time.time()-t1:.3f}.')
     else:
         err, numSitesCovered, path2hdf5 = bamTable2hdf5(bamTable, h5_path1000g, iid=iid, s=5000000, e=154900000, outPath=folder_out)
@@ -784,9 +780,8 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, bamTable=None, q=30, Q=30,
     ########################## end of preprocessing ###########################
     # parameters = locals() # Gets dictionary of all local variables at this point
     
-    
-    hmm = HMM_Analyze(cython=3, p_model="SardHDF5", e_model="readcount_contam", post_model="Standard",
-                      manual_load=True, save=False, save_fp=False, output=output)
+    hmm = HMM_Analyze(cython=3, p_model="HDF5", e_model="readcount_contam", post_model="Standard",
+                      lowmem=lowmem, manual_load=True, save=False, save_fp=False, output=output)
 
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
@@ -835,7 +830,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, bamTable=None, q=30, Q=30,
 from memory_profiler import profile
 
 def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], 
-                e_model="EigenstratPacked", p_model="MosaicHDF5", readcounts=True, random_allele=True,
+                e_model="readcount", p_model="HDF5_lowmem", readcounts=True, random_allele=True,
                 downsample=False, post_model="Standard", path_targets=None,
                 h5_path1000g=None, meta_path_ref=None, folder_out=None, prefix_out="",
                 c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.0,
@@ -916,7 +911,7 @@ def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_
     ### Create Folder if needed, and pipe output if wanted
     _ = prepare_path(folder_out, iid, ch, prefix_out, logfile=logfile) # Set the logfile
     hmm = HMM_Analyze(cython=3, p_model=p_model, e_model=e_model, post_model=post_model,
-                      manual_load=True, save=save, save_fp=save_fp, output=verbose)
+                      lowmem=True, manual_load=True, save=save, save_fp=save_fp, output=verbose)
 
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
@@ -928,7 +923,8 @@ def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_
     hmm.p_obj.set_params(h5_path1000g = h5_path1000g, path_targets = path_targets, 
                          meta_path_ref = meta_path_ref, n_ref=n_ref)
     hmm.load_data(iid=iid, ch=ch)  # Load the actual Data
-    hmm.load_secondary_objects(c=c)
+    hmm.load_secondary_objects(c=c) # this "load_secondary_object" must be called after load_data
+    # because we need to know the value of overhang, which can only be known after loading the data
     
     ### Print out the Parameters used in run:
     print("\nParameters in hapsb_chrom:")
@@ -943,6 +939,134 @@ def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_
                 min_len1=min_len1, min_len2=min_len2)
     
     t1 = time.time()
-    hmm.calc_posterior_lowmem(save=save)              # Calculate the Posterior.
+    hmm.calc_posterior_lowmem(save=save)
     print(f'finished calculating posterior, takes {time.time()-t1:.3f}')
     hmm.post_processing(save=save)             # Do the Post-Processing.
+
+def hapsb_ind_lowmem(iid, chs=range(1,23),
+              path_targets_prefix="", path_targets="",
+              h5_path1000g=None, meta_path_ref=None, folder_out=None, prefix_out="",
+              e_model="haploid", p_model="Eigenstrat", post_model="Standard",
+              processes=1, delete=False, output=True, save=True, save_fp=False, 
+              n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=True, downsample=False,
+              c=0.0, conPop=["CEU"], roh_in=1, roh_out=20, roh_jump=300, e_rate=0.01, e_rate_ref=0.00, 
+              cutoff_post = 0.999, max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.04,
+                min_len1 = 0.02, min_len2 = 0.04, verbose=True, logfile=True, combine=True, file_result="_roh_full.csv"):
+    """Analyze a full single individual in a parallelized fashion. Run multiple chromosome analyses in parallel.
+    Then brings together the result ROH tables from each chromosome into one genome-wide summary ROH table.
+    This function wraps hapsb_chrom. The default Parameters are finetuned for pseudo-haploid 1240k aDNA data.
+
+    Parameters
+    ----------
+    iid: str
+        IID of the Target Individual, as found in Eigenstrat.
+    chs: list
+        Which set of chromosomes to call ROH.
+    path_targets_prefix:
+        A directory containing a hdf5 file for each chromosome. The file name should follow $iid.chr$ch.hdf5.
+    path_targets: str
+        Path of the target files. You need only specify one of path_targets_prefix or path_targets.
+    h5_path1000g: str
+        Path of the reference genotypes
+    meta_path_ref: str 
+        Path of the meta file for the references
+    folder_out: str
+        Path of the basis folder for output
+    prefix_out: str
+        Path to insert in output string, e.g. test/ [str]
+    e_model: str
+        Emission model to use, should be one of haploid/diploid_gt/readcount
+    p_model: str
+        Preprocessing model to use, should be one of EigenstratPacked/EigenstratUnpacked/MosaicHDF5
+    post_model: str
+        Model to post-process the data, should be one of Standard/MMR (experimental)
+    processes: int
+        How many Processes to use
+    delete: bool
+        Whether to delete raw posterior per locus
+    output: bool
+        Whether to print extensive output
+    save: bool
+        Whether to save the inferred ROH
+    save_fp: bool
+        Whether to save the full posterior matrix
+    n_ref: int
+        Number of (diploid) reference Individuals to use
+    diploid: bool
+        Whether the reference panel is diploid or not (e.g., for autosome, True and for male X chromosome, False). 
+    exclude_pops: list of str
+        Which populations to exclude from reference
+    readcounts: bool
+        Whether to load readcount data
+    random_allele: bool
+        Whether to pick a random of the two target alleles per locus
+    downsample:
+        If not false (i.e. float), downsample readcounts to this target average coverage
+    c: float
+        Contamination rate. This is only applicable if the emission model is readcount_contam.
+    conPop: list of str
+        Ancestry of contamination source. Only applicable if the emission model is readcount_contam.
+    roh_in: float
+        Parater to jump into ROH state (per Morgan)
+    roh_out: float
+        Parameter to jump out of ROH state (per Morgan)
+    roh_jump: float
+        Parameter to jump (per Morgan)
+    e_rate: float
+        Sequencing error rate.
+    e_rate_ref: float
+        Haplotype miscopying rate.
+    cutoff_post: float
+        Posterior cutoff for ROH calling
+    max_gap: float
+        Maximum gap to merge two adjacent short ROH blocks (in Morgan)
+    roh_min_l_initial: float
+        Minimum length of ROH blocks to use before merging adjacent ones (in Morgan)
+    roh_min_l_final: float
+        Minimum length of ROH blcoks to output after merging (in Morgan)
+    min_len1: float
+        Minimum length of the shorter candidate block in two adjacent blocks that can be merged (in Morgan)
+    min_len2: float
+        Minimum length of the longer candidate block in two adjacent blocks that can be merged (in Morgan)
+    logfile: bool
+        Whether to use logfile
+    combine: bool 
+        Wether to combine output of all chromosomes
+    file_result: str
+        Appendix to individual results
+
+    Return: If combine is true, return a pandas dataframe that contains information of all detected ROH blocks. Otherwise nothing is returned.
+    """
+                            
+    if output:
+        print(f"Doing Individual {iid}...")
+    
+    ### Prepare the Parameters for that Indivdiual
+    if len(path_targets) != 0:
+        prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
+            downsample, post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
+            c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial, 
+            roh_min_l_final, min_len1, min_len2, cutoff_post, verbose, logfile] for ch in chs]
+    elif len(path_targets_prefix) != 0:
+        prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele, downsample,
+            post_model, f'{path_targets_prefix}/{iid}.chr{ch}.hdf5', h5_path1000g, meta_path_ref, folder_out, prefix_out,
+            c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial, roh_min_l_final, 
+            min_len1, min_len2, cutoff_post, verbose, logfile] for ch in chs]
+    else:
+        print(f'You need to at least specify one of path_targets or path_targets_prefix...')
+        sys.exit()
+    assert(len(prms[0])==33)   # Sanity Check
+                            
+    ### Run the analysis in parallel
+    multi_run(hapsb_chrom_lowmem, prms, processes = processes)
+                            
+    ### Merge results for that Individual
+    if combine:
+        if output:
+            print(f"Combining Information for {len(chs)} Chromosomes...")
+        df = combine_individual_data(folder_out, iid=iid, delete=delete, chs=chs, 
+                                prefix_out=prefix_out, file_result=file_result)
+        return df
+    if output:
+        print(f"Run finished successfully!")
+        
