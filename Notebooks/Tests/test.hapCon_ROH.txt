@@ -1,4 +1,0 @@
-Method1: Fixing genotyping error rate at 0.02385
-	Number of ROH blocks found: 8
-	Total length of ROH after trimming: 57.559cM
-	MLE for contamination using BFGS: 0.053902 (0.039017 - 0.068786)

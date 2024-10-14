@@ -234,6 +234,7 @@ def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv",
     
     ### Look up Individuals in meta_df and extract relevant sub-table
     df_full = pd.read_csv(meta_path)
+    df_full["iid"] = df_full["iid"].astype("str") # Read IID as Strings
     df_meta = df_full[df_full["iid"].isin(iids)]  # Extract only relevant Indivdiuals
     
     print(f"Loaded {len(df_meta)} / {len(df_full)} Individuals from Meta")

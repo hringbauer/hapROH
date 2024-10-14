@@ -1,0 +1,84 @@
+Using Rescaled HMM.
+Loaded Pre Processing Model: EigenstratPacked
+Loading Individual: I1170
+
+Loaded 53911 variants
+Loaded 2504 individuals
+HDF5 loaded from /mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr12.hdf5
+3 Eigenstrat Files with 22 Individuals and 1233013 SNPs
+
+Intersection on Positions: 53911
+Nr of Matching Refs: 53911 / 53911
+Ref/Alt Matching: 53884 / 53911
+Flipped Ref/Alt Matching: 0
+Together: 53884 / 53911
+2504 / 2504 Individuals included in Reference
+Extracting up to 2504 Individuals
+Reduced to markers with data: 21185 / 53884
+Fraction SNPs covered: 0.3932
+Exctraction of hdf5 done. Subsetting...!
+Extraction of 5008 Haplotypes complete
+Flipping Ref/Alt Alleles in target for 0 SNPs...
+Successfully saved target individual data to: ./ExampleOutput/I1170/chr12/
+Shuffling phase of target...
+Successfully loaded Data from: ./ExampleOutput/I1170/chr12/
+Loaded Emission Model: haploid
+Loaded Transition Model: model
+Loaded Post Processing Model: Standard
+
+Parameters in hapsb_chrom:
+iid	I1170
+ch	12
+save	True
+save_fp	False
+n_ref	2504
+diploid_ref	True
+exclude_pops	[]
+e_model	haploid
+p_model	EigenstratPacked
+readcounts	False
+random_allele	True
+downsample	False
+post_model	Standard
+path_targets	./ExampleData/Levant_ChL
+h5_path1000g	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr
+meta_path_ref	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv
+folder_out	./ExampleOutput/
+prefix_out	
+c	0.0
+conPop	['CEU']
+roh_in	1
+roh_out	20
+roh_jump	300
+e_rate	0.01
+e_rate_ref	0.0
+max_gap	0.005
+roh_min_l_initial	0.02
+roh_min_l_final	0.04
+min_len1	0.02
+min_len2	0.04
+cutoff_post	0.999
+logfile	True
+
+
+Minimum Genetic Map: 0.0009 Morgan
+Maximum Genetic Map: 1.7468 Morgan
+Gaps bigger than 0.1 cM: 327
+Maximum Gap: 1.1095 cM
+Upper Gap Cutoff: 5.0000 cM
+Loaded Transition and Emission Matrix:
+(3, 3)
+(5009, 21185)
+Loaded Observations:
+(2, 21185)
+Memory Usage at end of HMM:
+Memory Usage: 1196.486656 mB
+Total Log likelihood: -8205.696
+Finished Calculation State Posteriors
+Saved Zero State Posterior to folder ./ExampleOutput/I1170/chr12/.
+Successfully loaded for PP. from ./ExampleOutput/I1170/chr12/
+Fraction Markers in ROH: 0.2072
+Called n=1 ROH Blocks > 4.0 cM
+Longest Block: 9.19 cM
+Successfully saved to ./ExampleOutput/I1170/chr12/roh.csv
+Set Output Log path: ./ExampleOutput/I1170/chr16/hmm_run_log.txt
