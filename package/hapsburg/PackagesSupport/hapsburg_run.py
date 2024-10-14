@@ -64,12 +64,12 @@ def prepare_path_general(basepath, iid, prefix, suffix, logfile):
 
 def preload(iid, ch, start, end, path_targets, h5_path1000g, meta_path_ref,
                 folder_out, conPop=["CEU"], roh_jump=300, e_rate=0.01, e_rate_ref=1e-3,
-                n_ref=2504, exclude_pops=[]):
+                n_ref=2504, exclude_pops=[], lowmem=False):
     # reference panel needed only to be loaded once for each optimization phase
     # so we preload here to reduce run time
         
-    hmm = HMM_Analyze(cython=3, p_model="SardHDF5", e_model="readcount_contam", output=False,
-                      manual_load=True, save=False, save_fp=False, start=start, end=end)
+    hmm = HMM_Analyze(cython=3, p_model="HDF5", e_model="readcount_contam", output=False,
+                      lowmem=lowmem, manual_load=True, save=False, save_fp=False, start=start, end=end)
 
     ### Load and prepare the pre-processing Model
     hmm.load_preprocessing_model(conPop)              # Load the preprocessing Model
@@ -190,7 +190,7 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
                 hdf5_path=None, folder_out=None, 
                 init_c=0.025, trim=0.005, minLen=0.05, conPop=["CEU"], roh_jump=300, 
                 e_rate=1e-2, e_rate_ref=1e-3, processes=1, n_ref=2504, 
-                exclude_pops=["AFR"], prefix=None, logfile=False, cleanup=False):
+                exclude_pops=["AFR"], prefix=None, logfile=False, cleanup=False, lowmem=False):
     """
     Estimating autosomal contamination rate from a list of ROH blocks. Need at least one ROH for inference.
 
@@ -278,7 +278,7 @@ def hapsb_femaleROHcontam_preload(iid, roh_list, h5_path1000g, meta_path_ref,
         # preload hmm models
         t1 = time.time()
         prms = [[iid, ch, start, end, hdf5_path+f"/{iid}.chr{ch}.hdf5", h5_path1000g, meta_path_ref, \
-                    folder_out, conPop, roh_jump, e_rate, e_rate_ref, n_ref, exclude_pops] for ch, start, end in chunks]
+                    folder_out, conPop, roh_jump, e_rate, e_rate_ref, n_ref, exclude_pops, lowmem] for ch, start, end in chunks]
         hmms = multi_run(preload, prms, processes=processes)
         if not type(hmms) is list:
             hmms = [hmms]
@@ -944,7 +944,7 @@ def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_
     hmm.post_processing(save=save)             # Do the Post-Processing.
 
 def hapsb_ind_lowmem(iid, chs=range(1,23),
-              path_targets_prefix="", path_targets="",
+              path_targets_prefix="",
               h5_path1000g=None, meta_path_ref=None, folder_out=None, prefix_out="",
               e_model="haploid", p_model="Eigenstrat", post_model="Standard",
               processes=1, delete=False, output=True, save=True, save_fp=False, 
@@ -1042,19 +1042,10 @@ def hapsb_ind_lowmem(iid, chs=range(1,23),
         print(f"Doing Individual {iid}...")
     
     ### Prepare the Parameters for that Indivdiual
-    if len(path_targets) != 0:
-        prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
-            downsample, post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
-            c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial, 
-            roh_min_l_final, min_len1, min_len2, cutoff_post, verbose, logfile] for ch in chs]
-    elif len(path_targets_prefix) != 0:
-        prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele, downsample,
+    prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele, downsample,
             post_model, f'{path_targets_prefix}/{iid}.chr{ch}.hdf5', h5_path1000g, meta_path_ref, folder_out, prefix_out,
             c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial, roh_min_l_final, 
             min_len1, min_len2, cutoff_post, verbose, logfile] for ch in chs]
-    else:
-        print(f'You need to at least specify one of path_targets or path_targets_prefix...')
-        sys.exit()
     assert(len(prms[0])==33)   # Sanity Check
                             
     ### Run the analysis in parallel

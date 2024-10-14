@@ -863,7 +863,7 @@ def load_preprocessing(p_model="SardHDF5", conPop=[], save=True, output=True):
     """Factory method to load the Transition Model.
     Return"""
 
-    if p_model == "HDF5":
+    if p_model == "HDF5" or "SardHDF5":
         p_obj = PreProcessingHDF5(conPop, save=save, output=output)
     elif p_model == "Folder":
         p_obj = PreProcessingFolder(save=save, output=output)

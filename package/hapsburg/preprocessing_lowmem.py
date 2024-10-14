@@ -302,7 +302,7 @@ def load_preprocessing_lowmem(p_model="Eigenstrat", conPop=[], save=True, output
     elif p_model == "EigenstratX":
         p_obj = PreProcessingEigenstratX_lowmem(save=save, output=output,
                                          packed=-1, sep=r"\s+")
-    elif p_model == "HDF5":
+    elif p_model == "HDF5" or "SardHDF5":
         p_obj = PreProcessingHDF5_lowmem(conPop, save=save, output=output)
     else:
         raise NotImplementedError(f"Preprocessing Model string {p_model} not found.")
