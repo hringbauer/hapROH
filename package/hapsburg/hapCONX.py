@@ -1,6 +1,7 @@
 import argparse
-import sys
-
+import h5py
+from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS
+import pandas as pd
 
 def main():
     parser = argparse.ArgumentParser(description='Convert bam file to hdf5 format that stores readcount info at target sites.')
@@ -35,13 +36,13 @@ def main():
                         help="Minimum mapping quality. Only applicable when you use BAM file.")
     parser.add_argument('-Q', action="store", dest="Q", type=int, required=False, default=30, 
                         help="Minimum base quality. Only applicable when you use BAM file.")
+    parser.add_argument('--lowmem', action="store_true", dest="lowmem", help="Use low memory mode.")
     parser.add_argument('-p', action="store", dest="prefix", type=str, required=False, default="hapCon")
     parser.add_argument('--log', action="store_true", dest="log",
                         help="Output a log file.")
     args = parser.parse_args()
 
     #sys.path.insert(0, "/mnt/archgen/users/yilei/tools/hapROH/package")
-    from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS
 
     if args.conpop == 'OOA':
         conpop = ['EUR', 'EAS', 'SAS', 'AMR']
@@ -55,7 +56,18 @@ def main():
     else:
         exclude_pops = [args.exHap]
 
+    if args.lowmem:
+        # check if the reference panel has binary-encoded genotypes
+        with h5py.File(args.ref, 'r') as f:
+            if not ('calldata' in f.keys() and 'GTbinary' in f['calldata'].keys()):
+                raise RuntimeError(f'The reference panel {args.r} does not have binary-encoded genotypes. Please use a reference panel with the field calldata/binaryGT.')
+        # check if the metadata of the ref panel has a column named "sex"
+        meta = pd.read_csv(args.meta, sep="\t")
+        if not "sex" in meta.columns:
+            raise RuntimeError(f'The metadata of the reference panel {args.meta} does not have sex information')
+
     hapCon_chrom_BFGS(iid=args.iid, mpileup=args.mpileup, bam=args.bam, bamTable=args.bamtable, q=args.q, Q=args.Q,
-    n_ref=2504, diploid_ref=False, exclude_pops=exclude_pops, conPop=conpop, 
-    h5_path1000g = args.ref, meta_path_ref = args.meta, folder_out="", 
-    c=args.c, roh_jump=args.jump, e_rate_ref=args.miscopy, logfile=args.log, cleanup=False, prefix=args.prefix)
+            n_ref=2504, diploid_ref=True, exclude_pops=exclude_pops, conPop=conpop, 
+            h5_path1000g = args.ref, meta_path_ref = args.meta, folder_out="", 
+            c=args.c, roh_jump=args.jump, e_rate_ref=args.miscopy, lowmem=args.lowmem, 
+            logfile=args.log, cleanup=False, prefix=args.prefix)

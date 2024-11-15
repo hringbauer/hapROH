@@ -105,7 +105,8 @@ def eigenstrat_to_hdf5(path_es = "", path_hdf5="",
               compression="gzip", gt_type="int8")
     print(f"Successfully saved data: {np.shape(gt_new)}")
 
-def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="", output=True):
+
+def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="", output=True, maxdepth=127):
     f = h5py.File(refHDF5, 'r')
     pos = np.array(f['variants/POS'])
     ref = f['variants/REF']
@@ -135,6 +136,9 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
 
     assert(len(ref) == len(pos))
     assert(len(alt) == len(pos))
+    loci_info = {}
+    for i, (bp, r, a) in enumerate(zip(pos, ref, alt)):
+        loci_info[bp] = (i, r, a)
     assert(len(rec) == len(pos))
     # 1 here means there is just one sample
     # 2 : [ref read count, alt read count]
@@ -146,11 +150,12 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
     minor_foc = 0
     l = len(pos)
     base2index = {'A':0, 'C':1, 'G':2, 'T':3}
+    t1 = time.time()
     with open(path2mpileup) as f:
         for line in f:
             rc = np.zeros(4)
             contig, bp, _, coverage, readbases, baseQ = list(zip(*zip_longest(line.strip().split(), range(6))))[0]
-            if int(coverage) == 0:
+            if int(coverage) == 0 or int(coverage) > maxdepth:
                 continue
 
             insertion_index = readbases.find("+")
@@ -171,12 +176,12 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
             rc[2] = readbases.count('G') + readbases.count('g') - insert.count('G') - insert.count('g')
             rc[3] = readbases.count('T') + readbases.count('t') - insert.count('T') - insert.count('t')
             coverage, bp = int(coverage), int(bp)
-            i = np.searchsorted(pos, bp)
-            if i < l and pos[i] == bp:
+            if bp in loci_info:
                 # target sites
                 # print(f'at target sites: {bp}, ref: {ref[i]}, alt: {alt[i]}')
-                ad[i, 0, 0] = rc[base2index[ref[i]]]
-                ad[i, 0, 1] = rc[base2index[alt[i]]]
+                i, r, a = loci_info[bp]
+                ad[i, 0, 0] = rc[base2index[r]]
+                ad[i, 0, 1] = rc[base2index[a]]
                 if coverage > 1:
                     major_foc += np.max(rc)
                     minor_foc += np.sum(rc) - np.max(rc)
@@ -185,7 +190,7 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
                 if coverage > 1:
                     major_adj += np.max(rc)
                     minor_adj += np.sum(rc) - np.max(rc)
-
+    print(f'time taken to read mpileup: {time.time() - t1:.2f} seconds')
     if output:
         print(f'number of major reads at flanking sites: {int(major_adj)}')
         print(f'number of minor reads at flanking sites: {int(minor_adj)}')
@@ -213,8 +218,11 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
     if len(iid) == 0:
         iid = bamFileName[:bamFileName.find(".mpileup")]
     
+    t1 = time.time()
     with h5py.File(hdf5Name, 'w') as f0:
-    # Create all the Groups
+        nonmiss = np.sum(ad[:,0,:], axis=1) > 0
+        l = np.sum(nonmiss)
+        # Create all the Groups
         f_map = f0.create_dataset("variants/MAP", (l,), dtype='f')
         f_ad = f0.create_dataset("calldata/AD", (l, k, 2), dtype='i')
         f_ref = f0.create_dataset("variants/REF", (l,), dtype=dt)
@@ -224,23 +232,30 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
         f_samples = f0.create_dataset("samples", (k,), dtype=dt)
 
         #   Save the Data
-        f_map[:] = rec
-        f_ad[:] = ad
-        f_ref[:] = ref.astype("S1")
-        f_alt[:] = alt.astype("S1")
-        f_pos[:] = pos
-        f_gt[:] = gt
+        f_map[:] = rec[nonmiss]
+        f_ad[:] = ad[nonmiss]
+        f_ref[:] = ref.astype("S1")[nonmiss]
+        f_alt[:] = alt.astype("S1")[nonmiss]
+        f_pos[:] = pos[nonmiss]
+        f_gt[:] = gt[nonmiss]
         f_samples[:] = np.array([iid]).astype("S50")
         print(f'saving sample as {iid} in {hdf5Name}')
+    print(f'time taken to save hdf5: {time.time() - t1:.2f} seconds')
 
     # the second return value is the number of sites covered by at least 1 read
-    err = minor_adj/(minor_adj + major_adj)
+    if minor_adj + major_adj == 0:
+        err = 1e-3
+    else:
+        err = minor_adj/(minor_adj + major_adj)
     numSitesCovered = np.sum(np.sum(np.sum(ad, axis=1), axis=1) > 0)
     if output:
         print(f'estimated genotyping error by flanking sites: {err:.6f}')
         print(f'number of sites covered by at least one read: {numSitesCovered}, fraction covered: {numSitesCovered/len(pos):.3f}')
         print(f'hdf5 file saved to {hdf5Name}')
     return err, numSitesCovered, l, hdf5Name
+
+
+
 
 def bam2hdf5(path2bam, refHDF5, ch="X", iid="", minMapQual=30, minBaseQual=20, s=-np.inf, e=np.inf, trim=0, outPath="", output=True):
     f = h5py.File(refHDF5, 'r')

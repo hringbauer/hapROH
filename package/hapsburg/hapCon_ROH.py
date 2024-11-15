@@ -7,7 +7,7 @@ import sys
 import os
 from pathlib import Path
 import shutil
-from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind
+from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind, hapsb_ind_lowmem
 from hapsburg.PackagesSupport.hapsburg_run import hapsb_femaleROHcontam_preload
 from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
 from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5, bamTable2hdf5
@@ -16,7 +16,6 @@ from multiprocessing import set_start_method
 
 def main():
     set_start_method("spawn")
-    
     parser = argparse.ArgumentParser(description='Run hapCon_ROH from either mpileup or BamTable output')
     parser.add_argument('--mpileup', action="store", dest="mpath", type=str, required=False,
                         help="Basepath to a list of mpileup file")
@@ -38,12 +37,15 @@ def main():
                         help="Stopping criterion. If the estimated contamination rates between two consecutive iterations differ less than this value, stop iteration.")
     parser.add_argument('--prefix', action="store", dest="prefix", type=str, required=False, default=None,
                         help="prefix of the output. The output will be named as $iid.$prefix.hapCon_ROH.txt")
+    parser.add_argument('--lowmem', action="store_true", dest="lowmem", required=False, default=False,
+                        help="Use low memory mode.")
     args = parser.parse_args()
 
     iid = args.iid
     p = args.processes
     mpileup_path= args.mpath
     bamTable_path = args.bamTable
+    hapsb_ind_alias = hapsb_ind_lowmem if args.lowmem else hapsb_ind
 
     if not mpileup_path and not bamTable_path:
         print('Need to at least provide one of pileup files or BamTable files.')
@@ -83,11 +85,11 @@ def main():
 
     ################################### call ROH ##################################
     ## first, run without contamination
-    df = hapsb_ind(iid, chs=range(1,23), 
+    df = hapsb_ind_alias(iid, chs=range(1,23), 
         path_targets_prefix = f"{basepath}/hdf5",
         h5_path1000g = args.r, meta_path_ref = args.meta,
         folder_out=f"{basepath}/hapRoh_iter/", prefix_out="",
-        e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
+        e_model="readcount_contam", p_model="HDF5", post_model="Standard",
         processes=args.processes, delete=False, output=True, save=True, save_fp=False, 
         n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False, downsample=downsample, 
         c=0.0, roh_min_l_final=0.04, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
@@ -98,11 +100,11 @@ def main():
     print(f'number of blocks found with null-model: {nBlocks} with total length {round(lengthSum, 3)}cM')
     # run with 5% contamiantion only if the null-model doesn't yield any ROH or total sum < 10cM
     if nBlocks == 0 or lengthSum < 10:
-        hapsb_ind(iid, chs=range(1,23), 
+        hapsb_ind_alias(iid, chs=range(1,23), 
             path_targets_prefix = f"{basepath}/hdf5",
             h5_path1000g = args.r, meta_path_ref = args.meta,
             folder_out=f"{basepath}/hapRoh_iter/", prefix_out="",
-            e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
+            e_model="readcount_contam", p_model="HDF5", post_model="Standard",
             processes=args.processes, delete=False, output=True, save=True, save_fp=False, 
             n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False, downsample=downsample, 
             c=0.05, roh_min_l_final=0.04, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
@@ -114,7 +116,7 @@ def main():
     ################## Use the called ROH region to estimate contamination ###############
     contam, se, chunks, sumROH = hapsb_femaleROHcontam_preload(iid, f"{basepath}/hapRoh_iter/{iid}_roh_full.csv",
         args.r, args.meta, hdf5_path=f"{basepath}/hdf5", minLen=args.minL/100,
-        e_rate=err, processes=p, prefix=args.prefix, logfile=False)
+        e_rate=err, processes=p, prefix=args.prefix, logfile=False, lowmem=args.lowmem)
 
     # iterate the process if necessary
     if contam >= 0.05:
@@ -125,17 +127,18 @@ def main():
         contam_prev = contam
         tol = args.tol
         while diff > tol and niter < maxIter:
-            hapsb_ind(iid, chs=range(1,23), 
+            hapsb_ind_alias(iid, chs=range(1,23), 
                 path_targets_prefix = f"{basepath}/hdf5",
                 h5_path1000g = args.r, meta_path_ref = args.meta,
                 folder_out=f"{basepath}/hapRoh_iter/", prefix_out="",
-                e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
+                e_model="readcount_contam", p_model="HDF5", post_model="Standard",
                 processes=p, delete=True, output=True, save=True, save_fp=False, 
                 n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False, downsample=downsample, 
                 c=contam_prev, roh_min_l_final=0.05, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
                 logfile=True, combine=True, file_result="_roh_full.csv")
             contam, se, chunks, sumROH = hapsb_femaleROHcontam_preload(iid, f"{basepath}/hapRoh_iter/{iid}_roh_full.csv",
-                args.r, args.meta, hdf5_path=f"{basepath}/hdf5", minLen=args.minL/100, e_rate=err, processes=p, prefix=args.prefix, logfile=False)
+                args.r, args.meta, hdf5_path=f"{basepath}/hdf5", minLen=args.minL/100, e_rate=err, 
+                processes=p, prefix=args.prefix, logfile=False, lowmem=args.lowmem)
             niter += 1
             diff = abs(contam_prev - contam)
             print(f'iteration {niter} done, prev contam: {round(contam_prev, 6)}, current contam: {round(contam, 6)}')
@@ -147,11 +150,11 @@ def main():
         else:
             print(f'contamination rate did not converge. Try increase the maxIter param.')
         # doing a final round of ROH calling using the new contam estimates
-        hapsb_ind(iid, chs=range(1,23), 
+        hapsb_ind_alias(iid, chs=range(1,23), 
                 path_targets_prefix = f"{basepath}/hdf5",
                 h5_path1000g = args.r, meta_path_ref = args.meta,
                 folder_out=f"{basepath}/hapRoh_iter/", prefix_out="",
-                e_model="readcount_contam", p_model="SardHDF5", post_model="Standard",
+                e_model="readcount_contam", p_model="HDF5", post_model="Standard",
                 processes=p, delete=False, output=True, save=True, save_fp=False, 
                 n_ref=2504, diploid_ref=True, exclude_pops=[], readcounts=True, random_allele=False, downsample=downsample,
                 c=contam_prev, roh_in=1, roh_out=20, roh_jump=300, e_rate=err, e_rate_ref=1e-3, 
@@ -172,7 +175,7 @@ def main():
 
     
     # clean up
-    shutil.rmtree(f'{basepath}/hdf5') # this is a hack
+    #shutil.rmtree(f'{basepath}/hdf5') # this is a hack
 
 
     #####################################################################################

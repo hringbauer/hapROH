@@ -1,5 +1,7 @@
 # cython: language_level=3, boundscheck=True, wraparound=False
 import numpy as np
+cimport numpy as np
+from scipy.stats import binom
 import psutil      # For Memory Profiling
 import os
 cimport cython
@@ -624,6 +626,496 @@ def fwd(double[:, :] e_mat, double[:, :, :] t_mat, double in_val = 1e-4):
             fwd[j] = temp_v[j] / c_view[i] # Rescale to prob. distribution
 
     tot_ll = np.sum(np.log(c)) # Tot Likelihood is product over all c.
+    return tot_ll
+
+@cython.profile(True)
+@cython.boundscheck(False)
+@cython.wraparound(False)
+cdef inline binomial_readcount_prob(double [:] prob_genotype, double binom_coef, double e_rate_read, int rc_ref, int rc_alt):
+  # compute binomial pmf, for each p_derived_read
+  cdef double p_binom_00, p_binom_01, p_binom_11
+  cdef double p_derived_read_00, p_derived_read_01, p_derived_read_11
+  p_derived_read_00 = e_rate_read
+  p_derived_read_01 = 0.5
+  p_derived_read_11 = 1 - e_rate_read
+  p_binom_00 = binom_coef*p_derived_read_00**rc_alt*(1 - p_derived_read_00)**(rc_ref)
+  p_binom_01 = binom_coef*p_derived_read_01**rc_alt*(1 - p_derived_read_01)**(rc_ref)
+  p_binom_11 = binom_coef*p_derived_read_11**rc_alt*(1 - p_derived_read_11)**(rc_ref)
+  return prob_genotype[0]*p_binom_00 + prob_genotype[1]*p_binom_01 + prob_genotype[2]*p_binom_11
+
+@cython.profile(True)
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.cdivision(True)
+cdef inline extract_reference_allele(np.ndarray[np.uint8_t, ndim=2] refhap, int row, int col, int blocksize):
+  """
+  Get the allele of the row^th reference haplotype at for the col^th marker
+  """
+  index = col // blocksize
+  offset = col % blocksize
+  return refhap[row, index] >> (blocksize - 1 - offset) & 1
+
+
+@cython.profile(True)
+def emission_prob_non_ROH_state_vector(np.ndarray[np.uint8_t, ndim=2] refhap, 
+                np.ndarray[np.int8_t, ndim=2] rc, 
+                double e_rate_read, int blocksize, int overhang):
+  """
+  Compute the emission probability for non-ROH state at all markers
+  """
+  cdef int nloci = rc.shape[1]
+  p = calc_allelefreq_blockwise(refhap, blocksize, overhang)
+  hw_prob = np.empty((nloci, 3), dtype=DTYPE)
+  hw_prob[:,0] = (1-p)**2
+  hw_prob[:,1] = 2*p*(1-p)
+  hw_prob[:,2] = p**2
+
+  derived_read_prob = np.empty((1, 3), dtype=DTYPE)
+  derived_read_prob[0, 0] = e_rate_read
+  derived_read_prob[0, 1] = 0.5
+  derived_read_prob[0, 2] = 1 - e_rate_read
+  binom_pmf = binom.pmf(rc[1].reshape(nloci, 1), (rc[0]+rc[1]).reshape(nloci,1), derived_read_prob) # shape (nloci, 3)
+  return np.sum(hw_prob*binom_pmf, axis=1)
+
+
+@cython.profile(True)
+def emission_prob_ROH_state_vector_pooled(int col, np.ndarray[np.uint8_t, ndim=2] refhap, 
+                double emission_prob_pooled_ref, double emission_prob_pooled_alt, int blocksize):
+  """
+  Compute the emission probability for ROH state at one marker (given by col) for all reference haplotypes
+  emission_prob_pooled_ref: emission probability if the copied allele is 0
+  emission_prob_pooled_alt: emission probability if the copied allele is 1
+  """
+  index = col // blocksize
+  offset = col % blocksize
+  copied_allele = refhap[:, index] >> (blocksize - 1 - offset) & 1
+  #print(copied_allele)
+  #print(f'emission_prob_pooled.shape: {emission_prob_pooled.shape}')
+  emission_prob = copied_allele*emission_prob_pooled_alt + (1 - copied_allele)*emission_prob_pooled_ref
+  return emission_prob
+
+
+@cython.profile(True)
+def allele_freq_per_block(np.ndarray[np.uint8_t, ndim=1] gts_one_block, int blocksize):
+    """Calculate allele frequency per block.
+    Return 1D array of length blocksize"""
+    freq = np.empty(blocksize, dtype=DTYPE)
+    for i in range(blocksize):
+        freq[i] = np.mean(gts_one_block >> (blocksize -1 - i) & 1)
+    return freq
+
+@cython.profile(True)
+def calc_allelefreq_blockwise(np.ndarray[np.uint8_t, ndim=2] refhap, int blocksize, int overhang):
+  """
+  Calculate allele frequency for all markers in refhap, blockwise
+  """
+  allelefreq_blockwise = np.concatenate(np.apply_along_axis(allele_freq_per_block, 0, refhap, blocksize).T, axis=0)
+  if overhang > 0:
+    allelefreq_blockwise = allelefreq_blockwise[:-(blocksize - overhang)]
+  return allelefreq_blockwise
+  
+  
+@cython.profile(True)
+def fwd_bkwd_scaled_lowmem_onTheFly_rc(double[:, :, :] t_mat, 
+                          np.ndarray[np.uint8_t, ndim=2] refhap, np.ndarray[np.int8_t, ndim=2] rc, int overhang, 
+                           double in_val = 1e-4, double e_rate_ref = 1e-3, double e_rate_read = 1e-2, int blocksize = 8, full=False, output=True):
+    """
+    Uses speed-up specific for Genotype data (pooling same transition rates)
+    Uses rescaling of fwd and bwd calculations - NOT LOGSPACE
+    Low-Mem: Do no save the full FWD BWD and Posterior but use temporary
+    arrays for saving only last vectors. Saves only 0-state posterior long term.
+    e_mat: Emission probabilities: [k x l]  (normal space)
+    t_mat: Transition Matrix:  [l x 3 x 3]  (normal space)
+    refhap: Reference Haplotype. 0/1 stored in groups of 8 in unsigned char (aka. one bit per allele ) [k x l/8]
+    rc: read count, stored as unsigned char (range 0-255): [2 x l]
+    in_val: Intitial probability of single symmetric state (normal space)
+    full: Boolean whether to return (post, fwd1, bwd1, tot_ll)
+    else only return post
+    output: Whether to print output useful for monitoring.
+    Otherwise only posterior mat [kxl] of post is returned
+    """
+    cdef int n_states = 1 + refhap.shape[0]
+    cdef int n_loci = t_mat.shape[0]
+    cdef Py_ssize_t i, j, k    # The Array and Iteration Indices
+    cdef double stay           # The Probablility of Staying
+    cdef double x1, x2, x3     # Place holder variables [make code readable]
+
+    # Initialize Posterior and Transition Probabilities
+    post = np.empty(n_loci, dtype=DTYPE) # Array of 0 State Posterior
+    cdef double[:] post_view = post
+    
+    temp = np.empty(n_states, dtype=DTYPE) # l Array for calculations
+    cdef double[:] temp_v = temp
+    
+    temp1 = np.empty(n_states-1, dtype=DTYPE) # l-1 Array for calculatons
+    cdef double[:] temp1_v = temp1
+
+    cdef double[:,:,:] t = t_mat   # C View of transition matrix
+    
+    c = np.empty(n_loci, dtype=DTYPE) # Array of normalization constants
+    cdef double[:] c_view = c
+    c_view[0] = 1 # Set the first normalization constant
+
+    #############################
+    ### Initialize FWD BWD Arrays
+    fwd0 = np.zeros(n_states, dtype=DTYPE)
+    fwd0[:] = in_val  # Initial Probabilities
+    fwd0[0] = 1 - (n_states - 1) * in_val
+    cdef double[:] fwd = fwd0
+
+    bwd0 = np.zeros(n_states, dtype=DTYPE)
+    bwd0[:] = 1
+    cdef double[:] bwd = bwd0
+
+    tmp0 = np.zeros(n_states, dtype=DTYPE)
+    cdef double[:] tmp = tmp0
+
+    ###############################
+    ### compute/define some useful values to be used later
+    # given the underlying (true) genotype of 00, 01, 11, what's the probability of sampling a read supporting the derived allele?
+    p_derived_read = np.empty((3,1), dtype=DTYPE)
+    p_derived_read[0] = e_rate_read
+    p_derived_read[1] = 0.5
+    p_derived_read[2] = 1 - e_rate_read
+
+    ### precompute one component of the emission probability for the ROH state
+    # aka, the binomial pmf at each marker for each of the three possible underlying genotype 00,01,11
+    genotype_prob = np.empty((2, 3), dtype=DTYPE)
+    genotype_prob[0,0] = 1-e_rate_ref
+    genotype_prob[0,1] = e_rate_ref/2
+    genotype_prob[0,2] = e_rate_ref/2
+    genotype_prob[1,0] = e_rate_ref/2
+    genotype_prob[1,1] = e_rate_ref/2
+    genotype_prob[1,2] = 1-e_rate_ref
+    binom_pmf = binom.pmf(rc[1, :], rc[0, :] + rc[1, :], p_derived_read)
+
+    emission_prob_pooled_allmarker = np.empty((2, n_loci), dtype=DTYPE)
+    cdef double[:,:] emission_prob_pooled_allmarker_view = emission_prob_pooled_allmarker
+    emission_prob_pooled_allmarker_view = genotype_prob@binom_pmf
+    #print(f'emission_prob_pooled_allmarker.shape: {emission_prob_pooled_allmarker.shape}')
+    
+
+    # precompute emission probability for the non-ROH state at each marker
+    # this is used twice, once in forward and once in backward, so we precompute it here
+    emit_nonROH = emission_prob_non_ROH_state_vector(refhap, rc, e_rate_read, blocksize, overhang)
+    e_mat_column_i_ROH = np.empty(n_states-1, dtype=DTYPE)
+    cdef double[:] e_mat_column_i_ROH_v = e_mat_column_i_ROH
+    #############################
+    ### Do the Forward Algorithm
+    post_view[0] = fwd[0]  # Add to 0-State Posterior
+    for i in range(1, n_loci):  # Run forward recursion
+        stay = t[i, 1, 1] - t[i, 1, 2]  # Do the log of the Stay term
+        e_mat_column_i_ROH_v = emission_prob_ROH_state_vector_pooled(i, refhap, 
+                emission_prob_pooled_allmarker_view[0, i], emission_prob_pooled_allmarker_view[1, i], blocksize)
+        f_l = 1 - fwd[0]  ### Assume they are normalized!!!
+        
+        ### Do the 0 State:
+        x1 = fwd[0] * t[i, 0, 0]    # Staying in 0 State
+        x2 = f_l * t[i, 1, 0]               # Going into 0 State from any other
+        temp_v[0] = emit_nonROH[i] * (x1 + x2) # Set the unnorm. 0 forward variable
+        ### Do the other states
+        # Preprocessing:
+        x1 = fwd[0] * t[i, 0, 1]   # Coming from 0 State
+        x2 = f_l * t[i, 1, 2]             # Coming from other ROH State
+
+        for j in range(1, n_states):  # Do the final run over all states
+            x3 = fwd[j] *  stay # Staying in state
+            # compute emission probability for the ROH state
+            temp_v[j] = e_mat_column_i_ROH_v[j-1] * (x1 + x2 + x3)
+            
+        ### Do the normalization and set up the forward array for next step
+        c_view[i] = sum_array(temp_v, n_states)
+        for j in range(n_states):
+            fwd[j] = temp_v[j] / c_view[i] # Rescale to prob. distribution
+        post_view[i] = fwd[0]  # Add to 0-State Posterior
+    tot_ll = np.sum(np.log(c)) # Tot Likelihood is product over all c.
+
+    #############################
+    ### Do the Backward Algorithm
+    post_view[n_loci-1] = post_view[n_loci-1] * bwd[0] # The lat one
+    for i in range(n_loci-1, 0, -1):  # Run backward recursion
+        stay = t[i, 1, 1] - t[i, 1, 2]
+        # precompute the e_mat[:,i]
+        e_mat_column_i_ROH_v = emission_prob_ROH_state_vector_pooled(i, refhap, 
+            emission_prob_pooled_allmarker_view[0, i], emission_prob_pooled_allmarker_view[1, i], blocksize)
+        
+
+        for k in range(1, n_states): # Calculate logsum of ROH states:
+            temp1_v[k-1] = bwd[k] * e_mat_column_i_ROH_v[k-1]
+        f_l = sum_array(temp1_v, n_states-1) # Logsum of ROH States
+
+      # Do the 0 State:
+        x1 = bwd[0] * t[i, 0, 0] * emit_nonROH[i]   # Staying in 0 State
+        x2 = f_l * t[i, 0, 1]                         # Going into 0 State
+        temp_v[0] = x1 + x2
+
+      ### Do the other states
+      # Preprocessing:
+        x1 = emit_nonROH[i] * bwd[0] * t[i, 1, 0]
+        x2 = f_l * t[i, 1, 2]    # Coming from other ROH State
+
+        for j in range(1, n_states):  # Do the final run over all states
+            x3 = e_mat_column_i_ROH_v[j-1] * bwd[j] *  stay
+            temp_v[j] = x1 + x2 + x3  # Fill in the backward Probability
+        
+        ### Do the normalization
+        for j in range(n_states):
+            bwd[j] = temp_v[j] / c_view[i] # Rescale to prob. distribution
+            
+        post_view[i-1] = post_view[i-1] * bwd[0]
+        
+    ### Combine the forward and backward calculations for posterior
+    #post = fwd1 * bwd1
+
+    if output:
+        print("Memory Usage at end of HMM:")
+        print_memory_usage()   ## For MEMORY_BENCH
+        tot_ll = np.sum(np.log(c)) # Tot Likelihood is product over all c.
+        print(f"Total Log likelihood: {tot_ll: .3f}")
+
+    if full:   # Return everything
+        tot_ll = np.sum(np.log(c)) # Tot Likelihood is product over all c. 
+        if output:
+            print(f"Total Log likelihood: {tot_ll: .3f}")
+        return post[None,:], fwd0, bwd0, tot_ll
+    
+    else:
+        return post[None,:]
+
+
+@cython.profile(True)
+def fwd_bkwd_scaled_lowmem_binaryRef(double[:, :, :] t_mat, 
+                          np.ndarray[np.uint8_t, ndim=2] refhap, double[:,:] e_mat, int overhang, 
+                           double in_val = 1e-4, int blocksize = 8, full=False, output=True):
+    """
+    Uses speed-up specific for Genotype data (pooling same transition rates)
+    Uses rescaling of fwd and bwd calculations - NOT LOGSPACE
+    Low-Mem: Do no save the full FWD BWD and Posterior but use temporary
+    arrays for saving only last vectors. Saves only 0-state posterior long term.
+    e_mat: Emission probabilities: [3 x l]  (normal space)
+    t_mat: Transition Matrix:  [l x 3 x 3]  (normal space)
+    refhap: Reference Haplotype. 0/1 stored in groups of 8 in unsigned char (aka. one bit per allele ) [k x l/8]
+    in_val: Intitial probability of single symmetric state (normal space)
+    full: Boolean whether to return (post, fwd1, bwd1, tot_ll)
+    else only return post
+    output: Whether to print output useful for monitoring.
+    Otherwise only posterior mat [kxl] of post is returned
+    """
+    cdef int n_states = 1 + refhap.shape[0]
+    cdef int n_loci = t_mat.shape[0]
+    cdef Py_ssize_t i, j, k    # The Array and Iteration Indices
+    cdef double stay           # The Probablility of Staying
+    cdef double x1, x2, x3     # Place holder variables [make code readable]
+
+    # Initialize Posterior and Transition Probabilities
+    post = np.empty(n_loci, dtype=DTYPE) # Array of 0 State Posterior
+    cdef double[:] post_view = post
+    
+    temp = np.empty(n_states, dtype=DTYPE) # l Array for calculations
+    cdef double[:] temp_v = temp
+    
+    temp1 = np.empty(n_states-1, dtype=DTYPE) # l-1 Array for calculatons
+    cdef double[:] temp1_v = temp1
+
+    cdef double[:,:,:] t = t_mat   # C View of transition matrix
+    
+    c = np.empty(n_loci, dtype=DTYPE) # Array of normalization constants
+    cdef double[:] c_view = c
+    c_view[0] = 1 # Set the first normalization constant
+
+    #############################
+    ### Initialize FWD BWD Arrays
+    fwd0 = np.zeros(n_states, dtype=DTYPE)
+    fwd0[:] = in_val  # Initial Probabilities
+    fwd0[0] = 1 - (n_states - 1) * in_val
+    cdef double[:] fwd = fwd0
+
+    bwd0 = np.zeros(n_states, dtype=DTYPE)
+    bwd0[:] = 1
+    cdef double[:] bwd = bwd0
+
+    tmp0 = np.zeros(n_states, dtype=DTYPE)
+    cdef double[:] tmp = tmp0
+
+    e_mat_column_i_ROH = np.empty(n_states-1, dtype=DTYPE)
+    cdef double[:] e_mat_column_i_ROH_v = e_mat_column_i_ROH
+
+    #############################
+    ### Do the Forward Algorithm
+    post_view[0] = fwd[0]  # Add to 0-State Posterior
+    for i in range(1, n_loci):  # Run forward recursion
+        stay = t[i, 1, 1] - t[i, 1, 2]  # Do the log of the Stay term
+        e_mat_column_i_ROH_v = emission_prob_ROH_state_vector_pooled(i, refhap, 
+                e_mat[1, i], e_mat[2, i], blocksize)
+        f_l = 1 - fwd[0]  ### Assume they are normalized!!!
+        
+        ### Do the 0 State:
+        x1 = fwd[0] * t[i, 0, 0]    # Staying in 0 State
+        x2 = f_l * t[i, 1, 0]               # Going into 0 State from any other
+        temp_v[0] = e_mat[0, i] * (x1 + x2) # Set the unnorm. 0 forward variable
+        ### Do the other states
+        # Preprocessing:
+        x1 = fwd[0] * t[i, 0, 1]   # Coming from 0 State
+        x2 = f_l * t[i, 1, 2]             # Coming from other ROH State
+
+        for j in range(1, n_states):  # Do the final run over all states
+            x3 = fwd[j] *  stay # Staying in state
+            # compute emission probability for the ROH state
+            temp_v[j] = e_mat_column_i_ROH_v[j-1] * (x1 + x2 + x3)
+            
+        ### Do the normalization and set up the forward array for next step
+        c_view[i] = sum_array(temp_v, n_states)
+        for j in range(n_states):
+            fwd[j] = temp_v[j] / c_view[i] # Rescale to prob. distribution
+        post_view[i] = fwd[0]  # Add to 0-State Posterior
+    tot_ll = np.sum(np.log(c)) # Tot Likelihood is product over all c.
+
+    #############################
+    ### Do the Backward Algorithm
+    post_view[n_loci-1] = post_view[n_loci-1] * bwd[0] # The lat one
+    for i in range(n_loci-1, 0, -1):  # Run backward recursion
+        stay = t[i, 1, 1] - t[i, 1, 2]
+        # precompute the e_mat[:,i]
+        e_mat_column_i_ROH_v = emission_prob_ROH_state_vector_pooled(i, refhap, 
+            e_mat[1, i], e_mat[2, i], blocksize)
+        
+
+        for k in range(1, n_states): # Calculate logsum of ROH states:
+            temp1_v[k-1] = bwd[k] * e_mat_column_i_ROH_v[k-1]
+        f_l = sum_array(temp1_v, n_states-1) # Logsum of ROH States
+
+      # Do the 0 State:
+        x1 = bwd[0] * t[i, 0, 0] * e_mat[0, i]   # Staying in 0 State
+        x2 = f_l * t[i, 0, 1]                         # Going into 0 State
+        temp_v[0] = x1 + x2
+
+      ### Do the other states
+      # Preprocessing:
+        x1 = e_mat[0, i] * bwd[0] * t[i, 1, 0]
+        x2 = f_l * t[i, 1, 2]    # Coming from other ROH State
+
+        for j in range(1, n_states):  # Do the final run over all states
+            x3 = e_mat_column_i_ROH_v[j-1] * bwd[j] *  stay
+            temp_v[j] = x1 + x2 + x3  # Fill in the backward Probability
+        
+        ### Do the normalization
+        for j in range(n_states):
+            bwd[j] = temp_v[j] / c_view[i] # Rescale to prob. distribution
+            
+        post_view[i-1] = post_view[i-1] * bwd[0]
+        
+    ### Combine the forward and backward calculations for posterior
+    #post = fwd1 * bwd1
+
+    if output:
+        print("Memory Usage at end of HMM:")
+        print_memory_usage()   ## For MEMORY_BENCH
+        tot_ll = np.sum(np.log(c)) # Tot Likelihood is product over all c.
+        print(f"Total Log likelihood: {tot_ll: .3f}")
+
+    if full:   # Return everything
+        tot_ll = np.sum(np.log(c)) # Tot Likelihood is product over all c. 
+        if output:
+            print(f"Total Log likelihood: {tot_ll: .3f}")
+        return post[None,:], fwd0, bwd0, tot_ll
+    
+    else:
+        return post[None,:]
+
+
+@cython.profile(True)
+def fwd_scaled_lowmem_binaryRef(double[:, :, :] t_mat, 
+                          np.ndarray[np.uint8_t, ndim=2] refhap, double[:,:] e_mat, int overhang, 
+                           double in_val = 1e-4, int blocksize = 8, output=True):
+    """
+    Uses speed-up specific for Genotype data (pooling same transition rates)
+    Uses rescaling of fwd and bwd calculations - NOT LOGSPACE
+    Low-Mem: Do no save the full FWD BWD and Posterior but use temporary
+    arrays for saving only last vectors. Saves only 0-state posterior long term.
+    e_mat: Emission probabilities: [3 x l]  (normal space)
+    t_mat: Transition Matrix:  [l x 3 x 3]  (normal space)
+    refhap: Reference Haplotype. 0/1 stored in groups of 8 in unsigned char (aka. one bit per allele ) [k x l/8]
+    in_val: Intitial probability of single symmetric state (normal space)
+    full: Boolean whether to return (post, fwd1, bwd1, tot_ll)
+    else only return post
+    output: Whether to print output useful for monitoring.
+    Otherwise only posterior mat [kxl] of post is returned
+    """
+    cdef int n_states = 1 + refhap.shape[0]
+    cdef int n_loci = t_mat.shape[0]
+    cdef Py_ssize_t i, j, k    # The Array and Iteration Indices
+    cdef double stay           # The Probablility of Staying
+    cdef double x1, x2, x3     # Place holder variables [make code readable]
+
+    # Initialize Posterior and Transition Probabilities
+    post = np.empty(n_loci, dtype=DTYPE) # Array of 0 State Posterior
+    cdef double[:] post_view = post
+    
+    temp = np.empty(n_states, dtype=DTYPE) # l Array for calculations
+    cdef double[:] temp_v = temp
+    
+    temp1 = np.empty(n_states-1, dtype=DTYPE) # l-1 Array for calculatons
+    cdef double[:] temp1_v = temp1
+
+    cdef double[:,:,:] t = t_mat   # C View of transition matrix
+    
+    c = np.empty(n_loci, dtype=DTYPE) # Array of normalization constants
+    cdef double[:] c_view = c
+    c_view[0] = 1 # Set the first normalization constant
+
+    #############################
+    ### Initialize FWD BWD Arrays
+    fwd0 = np.zeros(n_states, dtype=DTYPE)
+    fwd0[:] = in_val  # Initial Probabilities
+    fwd0[0] = 1 - (n_states - 1) * in_val
+    cdef double[:] fwd = fwd0
+
+    bwd0 = np.zeros(n_states, dtype=DTYPE)
+    bwd0[:] = 1
+    cdef double[:] bwd = bwd0
+
+    tmp0 = np.zeros(n_states, dtype=DTYPE)
+    cdef double[:] tmp = tmp0
+
+    e_mat_column_i_ROH = np.empty(n_states-1, dtype=DTYPE)
+    cdef double[:] e_mat_column_i_ROH_v = e_mat_column_i_ROH
+
+    #############################
+    ### Do the Forward Algorithm
+    post_view[0] = fwd[0]  # Add to 0-State Posterior
+    for i in range(1, n_loci):  # Run forward recursion
+        stay = t[i, 1, 1] - t[i, 1, 2]  # Do the log of the Stay term
+        e_mat_column_i_ROH_v = emission_prob_ROH_state_vector_pooled(i, refhap, 
+                e_mat[1, i], e_mat[2, i], blocksize)
+        f_l = 1 - fwd[0]  ### Assume they are normalized!!!
+        
+        ### Do the 0 State:
+        x1 = fwd[0] * t[i, 0, 0]    # Staying in 0 State
+        x2 = f_l * t[i, 1, 0]               # Going into 0 State from any other
+        temp_v[0] = e_mat[0, i] * (x1 + x2) # Set the unnorm. 0 forward variable
+        ### Do the other states
+        # Preprocessing:
+        x1 = fwd[0] * t[i, 0, 1]   # Coming from 0 State
+        x2 = f_l * t[i, 1, 2]             # Coming from other ROH State
+
+        for j in range(1, n_states):  # Do the final run over all states
+            x3 = fwd[j] *  stay # Staying in state
+            # compute emission probability for the ROH state
+            temp_v[j] = e_mat_column_i_ROH_v[j-1] * (x1 + x2 + x3)
+            
+        ### Do the normalization and set up the forward array for next step
+        c_view[i] = sum_array(temp_v, n_states)
+        for j in range(n_states):
+            fwd[j] = temp_v[j] / c_view[i] # Rescale to prob. distribution
+        post_view[i] = fwd[0]  # Add to 0-State Posterior
+    tot_ll = np.sum(np.log(c)) # Tot Likelihood is product over all c.
+
+    if output:
+        print("Memory Usage at end of HMM:")
+        print_memory_usage()   ## For MEMORY_BENCH
+        tot_ll = np.sum(np.log(c)) # Tot Likelihood is product over all c.
+        print(f"Total Log likelihood: {tot_ll: .3f}")
+
     return tot_ll
 
 ####################### End of Yilei ##########################
