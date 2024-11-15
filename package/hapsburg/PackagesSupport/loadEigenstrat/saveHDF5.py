@@ -239,7 +239,10 @@ def mpileup2hdf5(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPath="",
     print(f'time taken to save hdf5: {time.time() - t1:.2f} seconds')
 
     # the second return value is the number of sites covered by at least 1 read
-    err = minor_adj/(minor_adj + major_adj)
+    if minor_adj + major_adj == 0:
+        err = 1e-3
+    else:
+        err = minor_adj/(minor_adj + major_adj)
     numSitesCovered = np.sum(np.sum(np.sum(ad, axis=1), axis=1) > 0)
     if output:
         print(f'estimated genotyping error by flanking sites: {err:.6f}')
@@ -385,7 +388,10 @@ def mpileup2hdf5_fast(path2mpileup, refHDF5, iid="", s=-np.inf, e=np.inf, outPat
     print(f'time taken to save hdf5: {time.time() - t1:.2f} seconds')
 
     # the second return value is the number of sites covered by at least 1 read
-    err = minor_adj/(minor_adj + major_adj)
+    if minor_adj + major_adj == 0:
+        err = 1e-3
+    else:
+        err = minor_adj/(minor_adj + major_adj)
     numSitesCovered = np.sum(np.sum(np.sum(ad, axis=1), axis=1) > 0)
     if output:
         print(f'estimated genotyping error by flanking sites: {err:.6f}')
