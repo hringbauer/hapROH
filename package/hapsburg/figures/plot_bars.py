@@ -13,9 +13,10 @@ import sys as sys
 import pandas as pd
 
 # For nice Arial Fonts
-from matplotlib import rcParams
-rcParams['font.family'] = 'sans-serif'   # Set the default
-rcParams['font.sans-serif'] = ['Arial']  # Make sure to have the font installed (it is on cluster for Harald)
+# UPDATE: Users can do this themselves if needed and Arial available
+#from matplotlib import rcParams
+#rcParams['font.family'] = 'sans-serif'   # Set the default
+#rcParams['font.sans-serif'] = ['Arial']  # Make sure to have the font installed (it is on cluster for Harald)
 
 from hapsburg.PackagesSupport.roh_expectations import Expected_Roh
 

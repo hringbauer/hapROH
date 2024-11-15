@@ -15,7 +15,6 @@ import os   # For creating folders
 import sys # for debugging
 import math
 import time
-from memory_profiler import profile
 
 #Assume hapsburg directory is in root
 from hapsburg.PackagesSupport.loadEigenstrat.loadEigenstrat import load_eigenstrat
@@ -579,6 +578,7 @@ class PreProcessingEigenstrat(PreProcessingHDF5):
         self.ch = ch  # To remember Chromosome
         if self.output:
             print(f"Loading Individual: {iid}")
+            print("Using Eigenstrat Mode.")
 
         out_folder = self.set_output_folder(iid, ch)
 
@@ -862,12 +862,16 @@ class PreProcessingFolder(PreProcessing):
 def load_preprocessing(p_model="SardHDF5", conPop=[], save=True, output=True):
     """Factory method to load the Transition Model.
     Return"""
-
-    if p_model == "HDF5" or "SardHDF5":
+    
+    print(f"Using Pre-Processing Model fm: {p_model}")
+    
+    if (p_model == "HDF5") or (p_model== "SardHDF5"): 
+        print(f"Loading H5")
         p_obj = PreProcessingHDF5(conPop, save=save, output=output)
     elif p_model == "Folder":
         p_obj = PreProcessingFolder(save=save, output=output)
     elif p_model == "Eigenstrat":   ### Detects automatically what mode to use
+        print(f"Loading eigenstrat")
         p_obj = PreProcessingEigenstrat(save=save, output=output,
                                         packed=-1, sep=r"\s+") # -1: Unknown 
     elif p_model == "EigenstratX":

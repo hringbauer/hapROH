@@ -13,9 +13,10 @@ import sys as sys
 from scipy.stats import gaussian_kde
 
 ### For Arial Font
-from matplotlib import rcParams
-rcParams['font.family'] = 'sans-serif'   # Set the defaul
-rcParams['font.sans-serif'] = ['Arial']  # Make sure to have the font installed (it is on cluster for Harald)
+# UPDATE: Users can do this themselves if needed and Arial available
+#from matplotlib import rcParams
+#rcParams['font.family'] = 'sans-serif'   # Set the defaul
+#rcParams['font.sans-serif'] = ['Arial']  # Make sure to have the font installed (it is on cluster for Harald)
 
 from hapsburg.PackagesSupport.pp_individual_roh_csvs import merge_called_blocks, post_process_roh_df
 

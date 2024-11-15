@@ -103,7 +103,7 @@ Notebooks to run hapROH in parallel on simulated as well as empirical data are f
 
 these run Hapsburg in a parallelized fashion, assuming that the notebook is run on a cluster with enough nodes (which can be set). The general strategy is to produce lists of parameter files (with one list of parameters per run, e.g. which individual and chromosome), which are then spread out by 'pool.starmap' to nodes via a multirun function.
 
-## Also: hapROH  can be run on cluster with slurm:
+## `hapROH` can be run on cluster with slurm:
 Code can be found in ./cluster_runs/
 
 Usually the submission scripts are written as array jobs:

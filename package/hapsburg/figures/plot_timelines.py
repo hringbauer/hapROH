@@ -23,8 +23,9 @@ import multiprocessing as mp
 
 ### For Arial Font
 from matplotlib import rcParams
-rcParams['font.family'] = 'sans-serif'   # Set the defaul
-rcParams['font.sans-serif'] = ['Arial']  # Make sure to have the font installed (it is on cluster for Harald)
+# UPDATE: Users can do this themselves if needed and Arial available
+#rcParams['font.family'] = 'sans-serif'   # Set the defaul
+#rcParams['font.sans-serif'] = ['Arial']  # Make sure to have the font installed (it is on cluster for Harald)
 rcParams['axes.linewidth'] = 0.2  # Set the Default Size of the Boundary for small 2.25in width figures
 
 ### To do lowess smoothing
