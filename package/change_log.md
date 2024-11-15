@@ -1,3 +1,6 @@
+## 0.65 November 15th, 2024, Harald Ringbauer, Yilei Huang
+- Added experimental lowmem functions. Currently only works for hdf5 with read count target files. 
+
 ## 0.64 April 14th, 2023, Harald Ringbauer
 - Removed Pysam dependency as it does not install on Windows systems. Pysam is not needed in core hapROH. Only needed when running directly from .bam.
 - Fixed bug in hapsburg.PackagesSupport.fit_ne.MLE_ROH_Ne caused by Matplotlib Update - lists of lists could not np.arrayed via np.asarray anymore. A fix has been added into the fuction `load_roh_vec`

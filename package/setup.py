@@ -22,7 +22,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="hapROH",
-    version="0.64",  # a would mean alpha, for example 0.3a4
+    version="0.65",  # a would mean alpha, for example 0.3a4
     packages=find_packages(),
     ext_modules=extensions,
     python_requires='>=3.6',
