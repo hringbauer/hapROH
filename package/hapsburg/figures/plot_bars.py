@@ -33,7 +33,7 @@ def create_cousins_roh(degrees=[1,2,3],
     for i,c in enumerate(degrees):
         for j,b in enumerate(bins):
             m = c*2 + 4
-            c_roh[i,j] = e_roh.exp_roh_len_in_bin_rel(l=b, m=m, comm_anc=4, bins=10000)
+            c_roh[i,j] = e_roh.exp_roh_len_in_bin_rel(l=b, m=m, comm_anc=4, bins=bin_n)
     return c_roh
 
 #bins = [[0.04,0.08],[0.08,0.12],[0.12,3.00]]  # The bins I want to plot (eventually maybe do 12,16 as welll)

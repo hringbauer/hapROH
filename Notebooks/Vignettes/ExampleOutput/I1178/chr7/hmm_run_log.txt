@@ -1,10 +1,14 @@
 Using Rescaled HMM.
-Loaded Pre Processing Model: EigenstratPacked
+Using Pre-Processing Model fm: Eigenstrat
+Loading eigenstrat
+Loaded Pre Processing Model: Eigenstrat
 Loading Individual: I1178
+Using Eigenstrat Mode.
 
 Loaded 59890 variants
 Loaded 2504 individuals
 HDF5 loaded from /mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr7.hdf5
+Eigenstrat packed: True
 3 Eigenstrat Files with 22 Individuals and 1233013 SNPs
 
 Intersection on Positions: 59890
@@ -35,7 +39,7 @@ n_ref	2504
 diploid_ref	True
 exclude_pops	[]
 e_model	haploid
-p_model	EigenstratPacked
+p_model	Eigenstrat
 readcounts	False
 random_allele	True
 downsample	False
@@ -72,10 +76,11 @@ Loaded Transition and Emission Matrix:
 Loaded Observations:
 (2, 35365)
 Memory Usage at end of HMM:
-Memory Usage: 1788.633088 mB
+Memory Usage: 1899.405312 mB
 Total Log likelihood: -11488.712
 Finished Calculation State Posteriors
 Saved Zero State Posterior to folder ./ExampleOutput/I1178/chr7/.
+Posterior Calculation takes 16.85609221458435
 Successfully loaded for PP. from ./ExampleOutput/I1178/chr7/
 Fraction Markers in ROH: 0.3964
 Called n=2 ROH Blocks > 4.0 cM
