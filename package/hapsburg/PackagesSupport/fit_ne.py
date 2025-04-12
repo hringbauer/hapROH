@@ -41,7 +41,7 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
     density_fun = 0  # function used to calculate the block sharing density; is required to be per cM!! 
     start_params = []  # List of parameters for the starting array
     error_model = True  # Parameter whether to use error model
-    estimates = []  # The last parameter which has been fit
+    estimates = []  # The last parameter that has been fit
     summary = 0  # Full summary of the last fitted results is saved here
     output = True
     
@@ -50,7 +50,7 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
                  error_model=False, output=False, 
                  chr_lgts=[], **kwds):
         '''endog: List of n individual ROH lists [roh_list1, ..., roh_listn]
-        output: Whether to plot detailled output strings
+        output: Whether to plot detailed output strings
         start_params: Where to start the fit
         min_len, max_len: Bin edges of ROH to fit.
         '''
@@ -106,9 +106,9 @@ class MLE_ROH_Ne(GenericLikelihoodModel):
     def fit_ll_profile(self, ns=[],level=1.92,num=1000):
         """Fit Parameters via likelihood profile.
         Only works for 1D search.
-        Return lower, upper Ne supported by 
-        ns: N values to test.
-        level: loglikelihood difference to use."""
+        Return ML, lower, upper CI values
+        ns: Array of 2Ne values to test.
+        level: loglikelihood difference to use for CI values."""
 
         if len(ns)==0:
             ns = np.logspace(2,5,num=num) # Default parameters

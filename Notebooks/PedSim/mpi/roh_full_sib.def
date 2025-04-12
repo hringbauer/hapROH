@@ -1,0 +1,6 @@
+### Define Pedigree for full-sib offspring
+### Simulate its ROH
+def fs 1000 3
+1 0 1
+2 0 2
+3 1 1 1:1_2
