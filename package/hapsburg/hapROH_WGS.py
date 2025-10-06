@@ -1,9 +1,8 @@
 import argparse
 import h5py
-from hapsburg.PackagesSupport.hapsburg_run import hapCon_chrom_BFGS
 import pandas as pd
 import os
-from hapsburg.PackagesSupport.hapsburg_run import hapsb_chrom_lowmem, hapsb_ind_lowmem
+from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind_lowmem
 from hapsburg.PackagesSupport.loadEigenstrat.saveHDF5 import mpileup2hdf5
 from hapsburg.PackagesSupport.parallel_runs.helper_functions import multi_run
 from multiprocessing import set_start_method
@@ -46,9 +45,9 @@ def main():
     err = np.mean(np.array([err for err, _, _, _ in results]))
     numSitesCovered = sum([n for _, n, _, _ in results])
     totNumSites = sum([n for _, _, n, _ in results])
-    print(f'estimated genotyping error: {err}')
+    print(f'Estimated genotyping error: {err}')
     frac = numSitesCovered/totNumSites
-    print(f'fraction of sites covered by at least one read: {frac}')
+    print(f'Fraction of sites covered by >=1 read: {frac}')
     
     if frac >= 0.7:
         downsample = 1.0

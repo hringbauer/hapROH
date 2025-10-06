@@ -1,17 +1,20 @@
-## 0.65 November 15th, 2024, Harald Ringbauer, Yilei Huang
+## 0.66 October 5th, 2025, Harald Ringbauer
+- Updated to pyproject.toml for metadata description. Moved info from setup.cfg (now deleted) and setup.py (now only skeleton) there. Continue to use setuptools for Cython.
+
+## 0.65 November 15th 2024, Harald Ringbauer, Yilei Huang
 - Added experimental lowmem functions. Currently only works for hdf5 with read count target files. 
 
-## 0.64 April 14th, 2023, Harald Ringbauer
+## 0.64 April 14th 2023, Harald Ringbauer
 - Removed Pysam dependency as it does not install on Windows systems. Pysam is not needed in core hapROH. Only needed when running directly from .bam.
 - Fixed bug in hapsburg.PackagesSupport.fit_ne.MLE_ROH_Ne caused by Matplotlib Update - lists of lists could not np.arrayed via np.asarray anymore. A fix has been added into the fuction `load_roh_vec`
 
-## 0.63 January 26th, 2023, Harald Ringbauer, Yilei Huang
+## 0.63 January 26th 2023, Harald Ringbauer, Yilei Huang
 - Fixed a bug where using a newer numpy version (>=1.24) caused an error as `np.float` is not supported anymore. This update addresses gitub issue: https://github.com/hringbauer/hapROH/issues/11 
 
-## 0.62 November 19th, 2022, Harald Ringbauer, Yilei Huang
+## 0.62 November 19th 2022, Harald Ringbauer, Yilei Huang
 - Fixed a bug with spawning multiprocessing that prevented hapCon from running.
 
-## 0.61 November 18th, 2022, Harald Ringbauer, Yilei Huang 
+## 0.61 November 18th 2022, Harald Ringbauer, Yilei Huang 
 [CONTAINS CRITICAL BUG]
 - Fixed bug in gap-merging where the bp position was not merged.
 - Fixed a hapcon bug caused by a "+" in pileups also denoting deletion.

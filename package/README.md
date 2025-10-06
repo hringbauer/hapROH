@@ -1,42 +1,42 @@
 # hapROH & hapCon
-This Python package contains two softwares for ancient DNA, ***hapROH*** and ***hapCon***.
+This Python package contains two computational tools for ancient DNA, ***hapROH*** and ***hapCon***.
 
-**For detailled Instructions for Installation and Manuals, including Getting Started and Vignettes, please visit the official tutorial:
+**For detailed Instructions for Installation and Manuals, including Getting Started and Vignettes, please visit the official tutorial:
 https://haproh.readthedocs.io**
 
 1) hapROH
-This software identifies runs of homozygosity (ROH) in ancient and present-day DNA by using a panel of reference haplotypes. This package contains functions and wrappers to call ROH and functions for downstream analysis and visualization.
+This software identifies runs of homozygosity (ROH) in ancient and present-day DNA by using a panel of reference haplotypes. This package contains functions and wrappers for calling ROH, as well as functions for downstream analysis and visualization.
 
-For downward compatibility, the package uses `hapsburg` as module name. After installation you can import Python functions via
+For downward compatibility, the package uses `hapsburg` as the module name. After installation, you can import Python functions via
 `from hapsburg.XX import YY`
 
 2) hapCon
-This software estimates contamination in male X chromosome via using a panel of reference haplotypes. It has been incorporate into the hapROH package since version 0.4a1, no additional installation is needed. 
+This software estimates contamination in the male X chromosome by using a panel of reference haplotypes. It has been incorporated into the hapROH package since version 0.4a1; no additional installation is needed. 
 
 
 ## Scope
 
 ### hapROH
-Standard parameters are tuned for human 1240K capture data (ca. 1.2 million SNPs used widely in human aDNA analysis) and using 1000 Genome haplotypes as reference. The software is tested on a wide range of test applications, both 1240K data and also whole genome sequencing data downsampled to 1240K SNPs. Successful cases include 45k year old Ust Ishim man, and a wide range of American, Eurasian and Oceanian ancient DNA, showing that the method generally works for split times of reference panel and target up to a few 10k years, which includes all out-of-Africa populations (Attention: Neanderthals and Denisovans do not fall into that range, additionally some Subsaharan hunter gatherer test cases did not give satisfactory results).
+Standard parameters are tuned for human 1240K capture data (approximately 1.2 million SNPs widely used in human aDNA analysis) and utilize 1000 Genomes haplotypes as a reference. The software is tested on a wide range of test applications, including both 1240K data and whole-genome sequencing data downsampled to 1240K SNPs. Successful cases include 45k year old Ust Ishim man, and a wide range of American, Eurasian and Oceanian ancient DNA, showing that the method generally works for split times of reference panel and target up to a few 10k years, which includes all out-of-Africa populations (Attention: Neanderthals and Denisovans do not fall into that range, additionally some Subsaharan hunter gatherer test cases did not give satisfactory results).
 
-Currently, hapROH works on data for 1240K SNPs and in unpacked or packed `eigenstrat` format (which is widely used in human ancient DNA). The software assumes pseudo-haploid or diploid genotype data (the mode can be set, by default it is pseudo-haploid). The recommended coverage range is 400,000 or more 1240K SNPs covered at least once (i.e. at least ca. 0.3x coverage).
+Currently, hapROH works on data for 1240K SNPs and in unpacked or packed `eigenstrat` format (which is widely used in human ancient DNA). The software assumes pseudo-haploid or diploid genotype data (the mode can be set; by default, it is pseudo-haploid). The recommended coverage range is 400,000 or more 1240K SNPs covered at least once (i.e., at least >0.3x coverage).
 
-If you have whole genome data available, you have to downsample an create eigenstrat files for biallelic 1240k SNPs first.
+If you have whole-genome data available, you must first downsample and create eigenstrat files for the biallelic 1240k SNPs.
 
-In case you are planning applications to other kind of SNP or bigger SNP sets, or even other organisms, the method parameters have to be adjusted (the default parameters are specifically optimized for human 1240K data). You can mirror our procedure to find good parameters (described in the publication), and if you contact me for assistance - I am happy to share my own experience.
+In case you plan to apply this method to other types of SNPs, larger SNP sets, or other organisms, the method parameters must be adjusted (the default parameters are explicitly optimized for human 1240K data). You can mirror our procedure to find good parameters (described in the publication), and if you contact me for assistance, I am happy to share my own experience.
 
 ### hapCon
-This software works directly from BAM file or from samtools mpileup output. We have created two reference panels for hapCON: one for 1240k data and the other for WGS data. The standard parameters are tuned towards these two use cases.
+This software works directly from a BAM file or from samtools mpileup output. We have created two reference panels for hapCON: one for 1240k data and the other for WGS data. The standard parameters are tuned towards these two use cases.
 
 ## Updates:
-The text file`./change_log.md` describes updates in the various versions of this software
+The text file`./change_log.md` describes updates in the various versions of this software.
 
 
 ## Dependencies
-The basic requirements for calling ROH are kept minimal and only allow the core ROH calling ('numpy', 'pandas', 'scipy', 'numdifftools', 'h5py'). If you want to use extended analysis and plotting functionality: There are extra Python packages that you need to install (e.g. via `pip` or `conda`). 
+The basic requirements for calling ROH are kept minimal, allowing only the core ROH calling ('numpy', 'pandas', 'scipy', 'numdifftools', 'h5py'). If you want to use extended analysis and plotting functionality. There are extra Python packages that you need to install (e.g., via `pip` or `conda`). 
 
 1) If you want to use the advanced plotting functionality, you need `matplotlib` 
-2) For plotting of maps, you will need `basemap` (warning: installing can be tricky on some architectures as C packages are required). 
+2) For plotting maps, you will need `basemap` (warning: installing can be tricky on some architectures as C packages are required). 
 3) If you want to use the effective population size fitting functionality from ROH output, you require the package `statsmodels`.
 
 

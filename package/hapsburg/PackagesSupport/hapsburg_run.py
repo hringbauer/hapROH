@@ -1,7 +1,7 @@
 """
 Function to run HAPSBURG on a full individual and full reference Dataset,
 with all relevant keywords.
-Function for running on single chromsome, with all relevant keywords.
+Function for running on a single chromosome, with all relevant keywords.
 @Author: Harald Ringbauer, 2019
 """
 
@@ -479,9 +479,9 @@ def hapsb_ind(iid, chs=range(1,23),
     iid: str
         IID of the Target Individual, as found in Eigenstrat.
     chs: list
-        Which set of chromosomes to call ROH.
+        Set of chromosomes to call ROH on
     path_targets_prefix:
-        A directory containing a hdf5 file for each chromosome. The file name should follow $iid.chr$ch.hdf5.
+        A directory containing an HDF5 file for each chromosome. The file name should follow $iid.chr$ch.hdf5.
     path_targets: str
         Path of the target files. You need only specify one of path_targets_prefix or path_targets.
     h5_path1000g: str
@@ -554,12 +554,11 @@ def hapsb_ind(iid, chs=range(1,23),
         Appendix to individual results
 
     Return: If combine is true, return a pandas dataframe that contains information of all detected ROH blocks. Otherwise nothing is returned.
-    """
-    #print("BANANA")   # Test whether code reaches here                  
+    """               
     if output:
         print(f"Doing Individual {iid}...")
     
-    ### Prepare the Parameters for that Indivdiual
+    ### Prepare the Parameters for that Individual
     if len(path_targets) != 0:
         prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
             downsample, post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
@@ -827,7 +826,7 @@ def hapCon_chrom_BFGS(iid="", mpileup=None, bam=None, bamTable=None, q=30, Q=30,
 ##################################################################################
 ################################### END ##########################################
 
-from memory_profiler import profile
+#from memory_profiler import profile
 
 def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_ref=True, exclude_pops=[], 
                 e_model="readcount", p_model="HDF5_lowmem", readcounts=True, random_allele=True,
@@ -860,7 +859,7 @@ def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_
     p_model: str
         Preprocessing model to use, should be one of EigenstratPacked/EigenstratUnpacked/MosaicHDF5
     post_model: str
-        Model to post-process the data, should be one of Standard/MMR (experimental)
+        The model to post-process the data, should be one of Standard/MMR (experimental)
     save: bool
         Whether to save the inferred ROH
     save_fp: bool
@@ -870,7 +869,7 @@ def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_
     diploid: bool
         Whether the reference panel is diploid or not (e.g., for autosome, True and for male X chromosome, False). 
     exclude_pops: list of str
-        Which populations to exclude from reference
+        Which populations to exclude from the reference
     readcounts: bool
         Whether to load readcount data
     random_allele: bool
@@ -898,7 +897,7 @@ def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_
     roh_min_l_initial: float
         Minimum length of ROH blocks to use before merging adjacent ones (in Morgan)
     roh_min_l_final: float
-        Minimum length of ROH blcoks to output after merging (in Morgan)
+        Minimum length of ROH blocks to output after merging (in Morgan)
     min_len1: float
         Minimum length of the shorter candidate block in two adjacent blocks that can be merged (in Morgan)
     min_len2: float
@@ -940,11 +939,11 @@ def hapsb_chrom_lowmem(iid, ch=3, save=True, save_fp=False, n_ref=2504, diploid_
     
     t1 = time.time()
     hmm.calc_posterior_lowmem(save=save)
-    print(f'finished calculating posterior, takes {time.time()-t1:.3f}')
+    print(f'Finished calculating posterior, takes {time.time()-t1:.3f}')
     hmm.post_processing(save=save)             # Do the Post-Processing.
 
 def hapsb_ind_lowmem(iid, chs=range(1,23),
-              path_targets_prefix="",
+              path_targets_prefix="", path_targets="",
               h5_path1000g=None, meta_path_ref=None, folder_out=None, prefix_out="",
               e_model="haploid", p_model="Eigenstrat", post_model="Standard",
               processes=1, delete=False, output=True, save=True, save_fp=False, 
@@ -953,8 +952,8 @@ def hapsb_ind_lowmem(iid, chs=range(1,23),
               cutoff_post = 0.999, max_gap=0.005, roh_min_l_initial = 0.02, roh_min_l_final = 0.04,
                 min_len1 = 0.02, min_len2 = 0.04, verbose=True, logfile=True, combine=True, file_result="_roh_full.csv"):
     """Analyze a full single individual in a parallelized fashion. Run multiple chromosome analyses in parallel.
-    Then brings together the result ROH tables from each chromosome into one genome-wide summary ROH table.
-    This function wraps hapsb_chrom. The default Parameters are finetuned for pseudo-haploid 1240k aDNA data.
+    It then brings together the result ROH tables from each chromosome into a genome-wide summary ROH table.
+    This function wraps hapsb_chrom. The default Parameters are fine-tuned for pseudo-haploid 1240k aDNA data.
 
     Parameters
     ----------
@@ -963,7 +962,7 @@ def hapsb_ind_lowmem(iid, chs=range(1,23),
     chs: list
         Which set of chromosomes to call ROH.
     path_targets_prefix:
-        A directory containing a hdf5 file for each chromosome. The file name should follow $iid.chr$ch.hdf5.
+        A directory containing an HDF5 file for each chromosome. The file name should follow $iid.chr$ch.hdf5.
     path_targets: str
         Path of the target files. You need only specify one of path_targets_prefix or path_targets.
     h5_path1000g: str
@@ -1031,7 +1030,7 @@ def hapsb_ind_lowmem(iid, chs=range(1,23),
     logfile: bool
         Whether to use logfile
     combine: bool 
-        Wether to combine output of all chromosomes
+        Whether to combine the output of all chromosomes
     file_result: str
         Appendix to individual results
 
@@ -1041,13 +1040,30 @@ def hapsb_ind_lowmem(iid, chs=range(1,23),
     if output:
         print(f"Doing Individual {iid}...")
     
-    ### Prepare the Parameters for that Indivdiual
-    prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele, downsample,
+    ### Prepare the Parameters for that Individual
+    #prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele, downsample,
+    #        post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
+    #        c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial, roh_min_l_final, 
+    #        min_len1, min_len2, cutoff_post, verbose, logfile] for ch in chs] # f'{path_targets_prefix}/{iid}.chr{ch}.hdf5'
+    #assert(len(prms[0])==33)   # Sanity Check 
+
+    ### Prepare the Parameters for that Individual
+    if len(path_targets) != 0:
+        prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele,
+            downsample, post_model, path_targets, h5_path1000g, meta_path_ref, folder_out, prefix_out,
+            c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial, 
+            roh_min_l_final, min_len1, min_len2, cutoff_post, verbose, logfile] for ch in chs]
+    elif len(path_targets_prefix) != 0:
+        prms = [[iid, ch, save, save_fp, n_ref, diploid_ref, exclude_pops, e_model, p_model, readcounts, random_allele, downsample,
             post_model, f'{path_targets_prefix}/{iid}.chr{ch}.hdf5', h5_path1000g, meta_path_ref, folder_out, prefix_out,
             c, conPop, roh_in, roh_out, roh_jump, e_rate, e_rate_ref, max_gap, roh_min_l_initial, roh_min_l_final, 
             min_len1, min_len2, cutoff_post, verbose, logfile] for ch in chs]
+    else:
+        print(f'You need to at least specify one of path_targets or path_targets_prefix...')
+        sys.exit()
     assert(len(prms[0])==33)   # Sanity Check
-                            
+
+                           
     ### Run the analysis in parallel
     multi_run(hapsb_chrom_lowmem, prms, processes = processes)
                             

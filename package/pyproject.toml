@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools", "cython", "numpy"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hapROH"
+version = "0.66"
+requires-python = ">= 3.6"
+dependencies = ['numpy', 'pandas', 'scipy', 'h5py', 'psutil', 'numdifftools']
+description = "Identify runs of homozygosity (hapROH) and contamination (hapCon) in ancient human DNA data"
+authors = [
+  {name = "Harald Ringbauer", email = "harald_ringbauer@eva.mpg.de"},
+  {name = "Yilei Huang", email = "yilei_huang@eva.mpg.de"},
+]
+maintainers = [
+  {name = "Harald Ringbauer", email = "harald_ringbauer@eva.mpg.de"}
+]
+readme = "README.md"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE",]
+keywords = ["ROH", "ancient DNA", "runs of homozygosity", "consanguinity", "aDNA contamination"]
+classifiers = ["Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Development Status :: 5 - Production/Stable",
+    "Topic :: Scientific/Engineering :: Bio-Informatics"]   
+
+[project.optional-dependencies]
+ne = ['statsmodels']
+fig = ['matplotlib']
+
+[tool.setuptools.packages.find]
+namespaces = false
+
+[project.urls]
+Documentation = "https://haproh.readthedocs.io"
+Repository = "https://github.com/hringbauer/hapROH"
+
+[project.scripts]
+hapConX = "hapsburg.hapCONX:main"
+hapCon_ROH = "hapsburg.hapCon_ROH:main"
+hapROH_WGS = "hapsburg.hapROH_WGS:main"
+
+
+
+

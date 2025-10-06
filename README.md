@@ -10,15 +10,15 @@ Software to call ROH from ancient and present-day DNA using reference haplotypes
 Author: Harald Ringbauer, September 2020
 Code released under GNU General Public License v3.0
 
-Development Code behind python package hapROH. Please refer to our [online documentation](https://haproh.readthedocs.io/en/latest/tutorial.html) for details about the current version and installation.
+Development Code behind the Python package hapROH. Please refer to our [online documentation](https://haproh.readthedocs.io/en/latest/tutorial.html) for details about the current version and installation.
 
 This is the git repository for development, as well as code used in the [hapROH publication](https://doi.org/10.1038/s41467-021-25289-w).
 
 
 ## hapCon
-hapCon is an extension of hapROH for estimaing contamination rate for male aDNA samples.
+hapCon is an extension of hapROH for estimating contamination rate for male aDNA samples.
 
-We have prepared a detailed [online documentation](https://haproh.readthedocs.io/en/latest/hapCON.html) for hapCon. In addition, a jupyter notebook guide for using our method is availble at ./Notebooks/Vignettes/hapCon_vignette.ipynb in this repository. We also have a [preprint](https://www.biorxiv.org/content/10.1101/2021.12.20.473429v1) for hapCon if you are interested in more technical details and its usage limits.
+We have prepared a detailed [online documentation](https://haproh.readthedocs.io/en/latest/hapCON.html) for hapCon. In addition, a Jupyter notebook guide for using our method is available at ./Notebooks/Vignettes/hapCon_vignette.ipynb in this repository. We also have a [preprint](https://www.biorxiv.org/content/10.1101/2021.12.20.473429v1) for hapCon if you are interested in more technical details and its usage limits.
 
 ## hapROH with Contamination
 Joint estimation of ROH blocks and Contamination Rate

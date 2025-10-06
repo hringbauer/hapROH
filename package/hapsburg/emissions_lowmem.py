@@ -1,9 +1,9 @@
 """
-Class for calculating Emission Probabilities in a memory efficient way.
-Specifically, it computes emission probability for the non-ROH state, and the ROH state (only 2 states, 0 or 1).
+Class for calculating Emission Probabilities in a memory-efficient way.
+Specifically, it computes emission probability for the non-ROH state and the ROH state (only two states, 0 or 1).
 The original implementation computes the emission probability for all ROH states, 
 which scales linearly with the number of haplotypes in the reference panel.
-Contains Sub-Classes, as well as factory Method.
+Contains Sub-Classes, as well as a factory Method.
 @ Author: Yilei Huang, 2024, All rights reserved
 """
 
@@ -36,7 +36,7 @@ class Emissions(object):
     def allele_freq_per_block(self, gts_one_block):
         """Calculate allele frequency per block.
         Return 1D array of length blocksize"""
-        freq = np.empty(self.blocksize, dtype=np.float)
+        freq = np.empty(self.blocksize, dtype=float)
         for i in range(self.blocksize):
             freq[i] = np.mean(gts_one_block >> (self.blocksize -1 - i) & 1)
         return freq
@@ -74,7 +74,7 @@ class Model_Emissions(Emissions):
             n_loci -= (self.blocksize - self.overhang)
         ob_stat = ob_stat[0, :]  # Do ONLY first observed Haplotype
         assert(len(ob_stat) == n_loci)  # Sanity Check
-        e_mat = np.zeros((3, n_loci), dtype=np.float)
+        e_mat = np.zeros((3, n_loci), dtype=float)
 
         # Do the HW
         e_mat[0] = (ob_stat == 1) * (self.p * (1 - self.e_rate) + (1 - self.p) * self.e_rate) + \
@@ -96,12 +96,13 @@ class RC_Model_Emissions(Emissions):
         if self.overhang > 0:
             n_loci -= (self.blocksize - self.overhang)
         assert(len(ob_stat[0]) == n_loci)  # Sanity Check
-        e_mat = np.zeros((3, n_loci), dtype=np.float)
+        e_mat = np.zeros((3, n_loci), dtype=float)
         # Do the HW
-        hw_prob = np.empty((n_loci, 3), dtype=np.float)
+        hw_prob = np.empty((n_loci, 3), dtype=float)
         hw_prob[:,0] = (1-self.p)**2
         hw_prob[:,1] = 2*self.p*(1-self.p)
         hw_prob[:,2] = self.p**2
+        
         derived_read_prob = np.empty((1, 3), dtype=float)
         derived_read_prob[0, 0] = self.e_rate
         derived_read_prob[0, 1] = 0.5
@@ -111,7 +112,7 @@ class RC_Model_Emissions(Emissions):
         # Do the ROH state
         # e_mat[1,:] emission probability when copied from reference allele
         # e_mat[2,:] emission probability when copied from alternative allele
-        genotype_prob = np.empty((2, 3), dtype=np.float)
+        genotype_prob = np.empty((2, 3), dtype=float)
         genotype_prob[0,0] = 1 - self.e_rate_ref
         genotype_prob[0,1] = self.e_rate_ref/2
         genotype_prob[0,2] = self.e_rate_ref/2
@@ -133,7 +134,7 @@ class Diploid_GT_Emissions(Emissions):
         assert(len(ob_stat[0]) == n_loci)  # Sanity Check
         assert(len(derived_gt) == n_loci)  # Sanity Check
 
-        e_mat = np.zeros((3, n_loci), dtype=np.float)
+        e_mat = np.zeros((3, n_loci), dtype=float)
 
         ### HW State
         e_mat[0, :] = (1 - self.p) * (1 - self.p) * (derived_gt == 0) + \
@@ -161,25 +162,25 @@ class RC_Model_Emissions_withContamination(Emissions):
         if self.overhang > 0:
             n_loci -= (self.blocksize - self.overhang)
         assert(len(ob_stat[0]) == n_loci)  # Sanity Check
-        e_mat = np.zeros((3, n_loci), dtype=np.float)
+        e_mat = np.zeros((3, n_loci), dtype=float)
 
         c = self.c
         e_rate = self.e_rate
         pCon = self.pCon
-        p_read = np.empty((n_loci, 3), dtype=np.float) # probability of sampling a derived read if the underlying genotype is 00,01,11, for each locus
+        p_read = np.empty((n_loci, 3), dtype=float) # probability of sampling a derived read if the underlying genotype is 00,01,11, for each locus
         p_read[:,0] = (1-c)*e_rate + c*pCon*(1-e_rate) + c*(1-pCon)*e_rate
         p_read[:,1] = 0.5*(1-c) + c*pCon*(1-e_rate)
         p_read[:,2] = (1-c)*(1-e_rate) + c*pCon*(1-e_rate) + c*(1-pCon)*e_rate
         binom_pmf = binom.pmf(ob_stat[1].reshape(n_loci, 1), (ob_stat[0]+ob_stat[1]).reshape(n_loci,1), p_read) # shape: (n_loci, 3)
 
-        hw_prob = np.empty((n_loci, 3), dtype=np.float)
+        hw_prob = np.empty((n_loci, 3), dtype=float)
         hw_prob[:,0] = (1-self.p)**2
         hw_prob[:,1] = 2*self.p*(1-self.p)
         hw_prob[:,2] = self.p**2
-        e_mat = np.empty((3, n_loci), dtype=np.float)
+        e_mat = np.empty((3, n_loci), dtype=float)
         e_mat[0] = np.sum(hw_prob*binom_pmf, axis=1)
         # Do the ROH state
-        genotype_prob = np.empty((2, 3), dtype=np.float)
+        genotype_prob = np.empty((2, 3), dtype=float)
         genotype_prob[0,0] = 1 - self.e_rate_ref
         genotype_prob[0,1] = 0.0
         genotype_prob[0,2] = self.e_rate_ref

@@ -225,10 +225,11 @@ def plot_pde_individual(iid="MA89", figsize=(8,6),
     """Plot Histograms/PDEs of ROH Distribution for one Individual (iid)
     If list of k iids given, load all ROH and plot all of them, and the expected value for k individuals.
     bw_cm: Length of one Bin (in cM)
-    comm_ancs: How many common ancestors to plot [list]
+    comm_ancs: How many common ancestors to plot [list] In number of haplotypes
     ms: How many meiosis to plot [list]
     labels: what labels do they have [list]
-    cs: what colors to plot [list]"""
+    cs: what colors to plot [list]
+    kde_plot: If True fit and plot a KDE to the ROH histogram"""
 
     ### Load And Prepare Data
     if isinstance(iid, str):
@@ -250,7 +251,7 @@ def plot_pde_individual(iid="MA89", figsize=(8,6),
     fs = 16
 
     plt.figure(figsize=figsize)
-    plt.hist(df_roh["lengthM"]*100, bins=bins, ec="k", fc="dodgerblue", label="Observed ROH")
+    plt.hist(df_roh["lengthM"]*100, bins=bins, edgecolor="k", fc="dodgerblue", label="Observed ROH")
     
     # Plot the Empirical Averages
     for i in range(len(labels)):

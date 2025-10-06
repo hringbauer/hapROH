@@ -37,9 +37,9 @@ downsampled and clean 1240k data (subsampled to biallelic SNPs), and saves it to
 ## Running the HMM
 
 ### Produce C extension
-In order to run the code, you need to build the C extension that implements the forward/backward pass. 
+To run the code, you need to build the C extension that implements the forward/backward pass. 
 
-If you do not install hapROH via PIP (which automatically installs the C extensions) and use the development version (from github), you have to compile the C extension yourself. You can do this via:
+If you do not install hapROH via PIP (which automatically installs the C extensions) and use the development version (from GitHub), you have to compile the C extension yourself. You can do this via:
 
 Switch to the C folder and build the extensions via:
 
@@ -48,7 +48,7 @@ module load gcc
 module load python  
 cythonize -a -i cfunc.pyx  
   
-This compiles a C file into package/hapsburg. Manually importing `from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind` uses this functions.
+This compiles a C file into package/hapsburg. Manually importing `from hapsburg.PackagesSupport.hapsburg_run import hapsb_ind` uses these functions.
 
 Tested with gcc/6.1 and python/anaconda-2020.02.
 

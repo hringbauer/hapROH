@@ -120,7 +120,7 @@ def main():
 
     # iterate the process if necessary
     if contam >= 0.05:
-        print(f'estimated contamination rate {round(contam, 6)} greater than 0.05, start iteration.')
+        print(f'Estimated contamination rate {round(contam, 6)} >0.05 -> Start iteration.')
         diff = np.inf
         niter = 1
         maxIter = args.niter

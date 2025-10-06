@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import os                     # For Saving to Folder
 import psutil                 # For Memory Profiling
 #import cProfile               # For Profiling
+#from memory_profiler import profile # For Profiling
 # from func import fwd_bkwd    # Import the Python Function
 import time
 import sys
@@ -15,7 +16,6 @@ import numdifftools as ndt
 import math
 from scipy.optimize import minimize
 from scipy.optimize import newton
-from memory_profiler import profile
 
 
 import hapsburg

@@ -8,7 +8,7 @@ import numpy as np
 from scipy.stats import binom  # Binomial Likelihood
 import time
 import sys
-from memory_profiler import profile
+#from memory_profiler import profile
 
 DTYPE = np.float64 # Float Data Type
 
@@ -33,7 +33,6 @@ class Emissions(object):
         Takes keyworded arguments"""
         for key, value in kwargs.items():
             setattr(self, key, value)
-
 
 
 class Model_Emissions(Emissions):

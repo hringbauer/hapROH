@@ -79,7 +79,8 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
     cm_lim: What Area to Zoom In (CentiMorgan)
     m: How many reads for ref and alt
     yticks: Where to place the Y ticks
-    groundtruth: Whether to plot Ground Truth (saved as csv)
+    groundtruth: Whether to plot Ground Truth (saved as csv). 
+    Only used in simulated data with known ROH
     plot_hets: Whether to plot Heterozygote Markers
     plot_calls: Whether to plot Calls
     plot_post: Whether to plot posterior
