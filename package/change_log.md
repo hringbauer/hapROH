@@ -1,4 +1,10 @@
-## 0.66 October 5th, 2025, Harald Ringbauer
+## 0.70 October 8th 2025, Harald Ringbauer
+- Created more intuitive import path for main functions: Accessible now via hapROH.run
+- Switched to using Yilei's lowmem version as the default when calling via hapROH.run functions
+- Fixed warning when Pandas concatenates empty ROH dataframes (from some chromosomes)
+- Made the meta table optional in post-processing
+
+## 0.66 October 5th 2025 Harald Ringbauer
 - Updated to pyproject.toml for metadata description. Moved info from setup.cfg (now deleted) and setup.py (now only skeleton) there. Continue to use setuptools for Cython.
 
 ## 0.65 November 15th 2024, Harald Ringbauer, Yilei Huang

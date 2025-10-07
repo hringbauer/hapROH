@@ -53,8 +53,8 @@ def combine_ROH_df(df_rohs, iids=[], pops=[], min_cm=[4,8,12], snp_cm=100,
                    gap=0.5, min_len1=2, min_len2=4, output=True, sort=True):
     """Takes list of ROH Dataframes, and creates a single
     summary dataframe that is also post-processed. 
-    Return single combined dataframe.
-    If iids and pops given, add these to the dataframe
+    Return a single combined dataframe.
+    If iids and pops are given, add these to the dataframe
     Being wrapped around by create_combined_ROH_df
     which does the path and loading.
     df_rohs: List of individual dataframes
@@ -214,32 +214,38 @@ def individual_roh_statistic(df, output=True):
 #########################################################
 #### Main Function to post-process Individual ROH outputs
 
-def pp_individual_roh(iids, meta_path="./Data/ReichLabEigenstrat/Raw/meta.csv", 
-                      base_folder="./Empirical/Eigenstrat/Reichall/", 
+def pp_individual_roh(iids, meta_path="./meta.csv", base_folder="./output/", 
                       suffix='_roh_full.csv', save_path="", min_cm=[4,8,12], snp_cm=50, 
                       gap=0.5, min_len1=2.0, min_len2=4.0,
                       output=True, meta_info=True):
-    """Post-process Individual ROH .csv files. Combines them into one summary ROH.csv, saved in save_path.
-    Use Individuals iids, create paths and run the combining.
+    """Post-process Individual ROH .csv files. Combines them into a single summary ROH.csv file, saved in save_path.
+    Use Individuals' IDs, create paths, and run the combining.
     iids: List of target Individuals
     base_folder: Folder where to find individual results .csvs
     min_cm: Minimum post-processed Length of ROH blocks. Array (to have multiple possible values)
     snp_cm: Minimum Number of SNPs per cM
     gap: Maximum length of gaps to merge
     output: Whether to plot output per Individual.
-    meta_info: Whether to merge in Meta-Info from the original Meta File
-    save_path: If given, save resulting dataframe there
+    meta_info: Whether to merge in all columns of metadata from the meta_path 
+    save_path: If given, save the resulting dataframe there
     min_len1: Minimum Length of shorter block to merge [cM]
     min_len2: Maximum Length of longer block to merge [cM]"""
     
     ### Look up Individuals in meta_df and extract relevant sub-table
-    df_full = pd.read_csv(meta_path)
-    df_full["iid"] = df_full["iid"].astype("str") # Read IID as Strings
-    df_meta = df_full[df_full["iid"].isin(iids)]  # Extract only relevant Indivdiuals
-    
-    print(f"Loaded {len(df_meta)} / {len(df_full)} Individuals from Meta")
-    
+    if len(meta_path)>0:
+        df_full = pd.read_csv(meta_path)
+        df_full["iid"] = df_full["iid"].astype("str") # Read IID as Strings
+        df_meta = df_full[df_full["iid"].isin(iids)]  # Extract only relevant Indivdiuals
+        
+        print(f"Loaded {len(df_meta)} / {len(df_full)} Individuals from Meta")
+
+
+    else:
+        ### Create default Meta Table.
+        df_meta = pd.DataFrame({"iid":iids, "clst":"popX"})
+        
     paths = give_iid_paths(df_meta["iid"], base_folder=base_folder, suffix=suffix)
+    
     df1 = create_combined_ROH_df(paths, df_meta["iid"].values, df_meta['clst'].values, 
                                  min_cm=min_cm, snp_cm=snp_cm, gap=gap, 
                                  min_len1=min_len1, min_len2=min_len2, output=output)
@@ -264,9 +270,9 @@ def pp_X_roh(iids=[], base_folder="./Empirical/Eigenstrat/Reichall/",
              save_path="", min_cm=[4,8,12,20], snp_cm=50, 
              gap=0.5, min_len1=2.0, min_len2=4.0,
              output=True, sort=False):
-    """Post-process pairs of X Chromosomes. Return dataframe of X Chromosome IBDs.
+    """Post-process pairs of X Chromosomes. Return a dataframe of X Chromosome IBDs.
     iids: List of pairs of X Chromosomes. 
-    Use Meta Data from meta_path to set clusters (only if meta_path given)
+    Use metadata from meta_path to set clusters (only if meta_path given)
     Other parameters see pp_individual_roh"""
     ### Sanity Checks:
     assert(len(iids)>0)

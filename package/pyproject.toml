@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hapROH"
-version = "0.66"
+version = "0.70"
 requires-python = ">= 3.6"
 dependencies = ['numpy', 'pandas', 'scipy', 'h5py', 'psutil', 'numdifftools']
 description = "Identify runs of homozygosity (hapROH) and contamination (hapCon) in ancient human DNA data"
@@ -39,7 +39,3 @@ Repository = "https://github.com/hringbauer/hapROH"
 hapConX = "hapsburg.hapCONX:main"
 hapCon_ROH = "hapsburg.hapCon_ROH:main"
 hapROH_WGS = "hapsburg.hapROH_WGS:main"
-
-
-
-

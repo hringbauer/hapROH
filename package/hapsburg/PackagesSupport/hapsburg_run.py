@@ -1,5 +1,5 @@
 """
-Function to run HAPSBURG on a full individual and full reference Dataset,
+Function to run HAPSBURG on a whole individual and full reference Dataset,
 with all relevant keywords.
 Function for running on a single chromosome, with all relevant keywords.
 @Author: Harald Ringbauer, 2019

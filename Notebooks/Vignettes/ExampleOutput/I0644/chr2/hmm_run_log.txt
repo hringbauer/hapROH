@@ -1,10 +1,11 @@
 Using Rescaled HMM.
-Loaded Pre Processing Model: EigenstratPacked
+Loaded Pre Processing Model: Eigenstrat
 Loading Individual: I0644
 
 Loaded 94239 variants
 Loaded 2504 individuals
-HDF5 loaded from /mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr2.hdf5
+HDF5 loaded from /mnt/archgen/public_data/hapROH_refpanel/1240k_binary/1240k_binary_chr2.hdf5
+Eigenstrat packed: True
 3 Eigenstrat Files with 22 Individuals and 1233013 SNPs
 
 Intersection on Positions: 94239
@@ -16,8 +17,7 @@ Together: 94173 / 94239
 Extracting up to 2504 Individuals
 Reduced to markers with data: 48114 / 94173
 Fraction SNPs covered: 0.5109
-Exctraction of hdf5 done. Subsetting...!
-Extraction of 5008 Haplotypes complete
+Extraction of 5008 reference haplotypes at 48114 sites complete
 Flipping Ref/Alt Alleles in target for 0 SNPs...
 Successfully saved target individual data to: ./ExampleOutput/I0644/chr2/
 Shuffling phase of target...
@@ -35,14 +35,14 @@ n_ref	2504
 diploid_ref	True
 exclude_pops	[]
 e_model	haploid
-p_model	EigenstratPacked
+p_model	Eigenstrat
 readcounts	False
 random_allele	True
 downsample	False
 post_model	Standard
 path_targets	./ExampleData/Levant_ChL
-h5_path1000g	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr
-meta_path_ref	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv
+h5_path1000g	/mnt/archgen/public_data/hapROH_refpanel/1240k_binary/1240k_binary_chr
+meta_path_ref	/mnt/archgen/public_data/hapROH_refpanel/1240k_binary/meta_df_all.csv
 folder_out	./ExampleOutput/
 prefix_out	
 c	0.0
@@ -58,6 +58,7 @@ roh_min_l_final	0.04
 min_len1	0.02
 min_len2	0.04
 cutoff_post	0.999
+verbose	True
 logfile	True
 
 
@@ -66,19 +67,19 @@ Maximum Genetic Map: 2.6883 Morgan
 Gaps bigger than 0.1 cM: 362
 Maximum Gap: 2.1079 cM
 Upper Gap Cutoff: 5.0000 cM
-Loaded Transition and Emission Matrix:
+Loaded Transition Matrix:
 (3, 3)
-(5009, 48114)
 Loaded Observations:
 (2, 48114)
 Memory Usage at end of HMM:
-Memory Usage: 2381.43488 mB
+Memory Usage: 346.800128 mB
 Total Log likelihood: -18775.235
 Finished Calculation State Posteriors
 Saved Zero State Posterior to folder ./ExampleOutput/I0644/chr2/.
+Finished calculating posterior, takes 2.954
 Successfully loaded for PP. from ./ExampleOutput/I0644/chr2/
 Fraction Markers in ROH: 0.2093
 Called n=0 ROH Blocks > 4.0 cM
 Longest Block: nan cM
 Successfully saved to ./ExampleOutput/I0644/chr2/roh.csv
-Set Output Log path: ./ExampleOutput/I0644/chr12/hmm_run_log.txt
+Set Output Log path: ./ExampleOutput/I0644/chr11/hmm_run_log.txt

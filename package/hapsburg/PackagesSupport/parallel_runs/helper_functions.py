@@ -78,10 +78,10 @@ def get_sep_from_extension(path):
     
 def combine_individual_data(base_path, iid, delete=False, chs=range(1,23), 
                             prefix_out="", file="roh.csv", file_result="_roh_full.csv"):
-    """Function to merge data from one Individual Analysis (all Chromosome)
+    """Function to merge data from one Individual Analysis (all Chromosomes)
     chs: Which Chromosomes to combine"
     file: Which files to combine. Either roh or ibd.csv
-    delete: Whether to delete individual folder and contents after combining."""
+    delete: Whether to delete the individual folder and contents after combining."""
     if isinstance(iid, (list, np.ndarray)):
         assert(len(iid)==2) # Sanity Check
         iid = "_".join(iid) # If multiple individual names given (for X IBD)
@@ -90,12 +90,17 @@ def combine_individual_data(base_path, iid, delete=False, chs=range(1,23),
     sep = get_sep_from_extension(file) #Get right seperator
     
     ### Walk through Chromosomes and combine the Dataframes
+    df_temp = None
     for ch in chs:
         path_roh = os.path.join(base_path, str(iid), "chr"+str(ch), prefix_out, file) 
         df_temp = pd.read_csv(path_roh, sep=sep)
-        full_df_vec.append(df_temp)
-        
-    full_df = pd.concat(full_df_vec)
+        if len(df_temp)>0:
+            full_df_vec.append(df_temp)
+            
+    if len(full_df_vec)>0:  ## To only concatenate same data types
+        full_df = pd.concat(full_df_vec)
+    else:  ## Empty dataframe with right columns
+        full_df = df_temp
         
     ### Save to Path:
     path_save = os.path.join(base_path, str(iid) + file_result)

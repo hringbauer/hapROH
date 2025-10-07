@@ -1,13 +1,10 @@
 Using Rescaled HMM.
-Using Pre-Processing Model fm: Eigenstrat
-Loading eigenstrat
 Loaded Pre Processing Model: Eigenstrat
 Loading Individual: I1178
-Using Eigenstrat Mode.
 
 Loaded 61133 variants
 Loaded 2504 individuals
-HDF5 loaded from /mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr8.hdf5
+HDF5 loaded from /mnt/archgen/public_data/hapROH_refpanel/1240k_binary/1240k_binary_chr8.hdf5
 Eigenstrat packed: True
 3 Eigenstrat Files with 22 Individuals and 1233013 SNPs
 
@@ -20,8 +17,7 @@ Together: 61091 / 61133
 Extracting up to 2504 Individuals
 Reduced to markers with data: 36780 / 61091
 Fraction SNPs covered: 0.6021
-Exctraction of hdf5 done. Subsetting...!
-Extraction of 5008 Haplotypes complete
+Extraction of 5008 reference haplotypes at 36780 sites complete
 Flipping Ref/Alt Alleles in target for 0 SNPs...
 Successfully saved target individual data to: ./ExampleOutput/I1178/chr8/
 Shuffling phase of target...
@@ -45,8 +41,8 @@ random_allele	True
 downsample	False
 post_model	Standard
 path_targets	./ExampleData/Levant_ChL
-h5_path1000g	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/chr
-meta_path_ref	/mnt/archgen/users/yilei/Data/1000G/1000g1240khdf5/all1240/meta_df_all.csv
+h5_path1000g	/mnt/archgen/public_data/hapROH_refpanel/1240k_binary/1240k_binary_chr
+meta_path_ref	/mnt/archgen/public_data/hapROH_refpanel/1240k_binary/meta_df_all.csv
 folder_out	./ExampleOutput/
 prefix_out	
 c	0.0
@@ -62,6 +58,7 @@ roh_min_l_final	0.04
 min_len1	0.02
 min_len2	0.04
 cutoff_post	0.999
+verbose	True
 logfile	True
 
 
@@ -70,17 +67,16 @@ Maximum Genetic Map: 1.6800 Morgan
 Gaps bigger than 0.1 cM: 191
 Maximum Gap: 1.8932 cM
 Upper Gap Cutoff: 5.0000 cM
-Loaded Transition and Emission Matrix:
+Loaded Transition Matrix:
 (3, 3)
-(5009, 36780)
 Loaded Observations:
 (2, 36780)
 Memory Usage at end of HMM:
-Memory Usage: 1959.40352 mB
+Memory Usage: 469.057536 mB
 Total Log likelihood: -13787.760
 Finished Calculation State Posteriors
 Saved Zero State Posterior to folder ./ExampleOutput/I1178/chr8/.
-Posterior Calculation takes 18.037488222122192
+Finished calculating posterior, takes 2.238
 Successfully loaded for PP. from ./ExampleOutput/I1178/chr8/
 Fraction Markers in ROH: 0.2524
 Called n=0 ROH Blocks > 4.0 cM

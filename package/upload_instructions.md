@@ -1,5 +1,6 @@
 # Instructions on how to upload a package to PYPI
 This file is based on update and upload instructions from `https://packaging.python.org/tutorials/packaging-projects/`
+Harald keeps this file as notes and a reminder.
 October 2025: Switched from setuptools to pyproject.toml setup. 
 
 I distribute the source - and no wheels (for now). Because the Cython extension makes it not pure Python, building the wheel is not trivial.
@@ -75,7 +76,7 @@ python3 -m pip install --upgrade --no-deps --force-reinstall hapROH
 
 Add the `--user` flag on Python settings where packages need to go to the user. 
 
-# Ressources for further reading
+# Resources for further reading
 ### for packaging: 
 https://packaging.python.org/tutorials/packaging-projects/
 
