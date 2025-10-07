@@ -23,7 +23,7 @@ class EigenstratLoad(object):
         if len(base_path) > 0:
             self.base_path = base_path
         geno_file = open(self.base_path + ".geno", "rb")
-        header = geno_file.read(20)  # Ignoring hashes
+        header = geno_file.read(21)  # Ignoring hashes for geno/tgeno set to 20/21
         self.nind, self.nsnp = [int(x) for x in header.split()[1:3]]
         # assuming sizeof(char)=1 here
         self.rlen = max(48, int(np.ceil(self.nind * 2 / 8)))
