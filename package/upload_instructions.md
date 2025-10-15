@@ -42,7 +42,7 @@ Delete previous `./dist/*`:
 
 rm ./dist/*
 
-### Build package (only source no wheel)
+### Build package (only source, no wheel)
 python3 -m build --sdist
 
 %%% Legacy (<2025)
@@ -57,11 +57,12 @@ python3 -m build --sdist
 %### Run the setup file:
 %python3 setup.py sdist
 
-### Upload to PyPi
-### For full PyPi server
+### Upload to PyPI server
 python3 -m twine upload dist/* 
 
-### [Alternatively] Upload to the test server (for testing)
+
+
+### [Alternatively] Upload to the test PyPI server (for testing)
 python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* 
 
 %## To test whether extensions builds
