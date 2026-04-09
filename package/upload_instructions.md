@@ -1,9 +1,9 @@
-# Instructions on how to upload a package to PYPI
+# Instructions on how to upload the hapROH package to PYPI
 This file is based on update and upload instructions from `https://packaging.python.org/tutorials/packaging-projects/`
 Harald keeps this file as notes and a reminder.
 October 2025: Switched from setuptools to pyproject.toml setup. 
 
-I distribute the source - and no wheels (for now). Because the Cython extension makes it not pure Python, building the wheel is not trivial.
+I distribute the source - and no wheels. Because the Cython extension makes it non-Pythonic, building the wheel is nontrivial.
 
 ## First steps
 - On Leipzig HPC Cluster (primary source to create package since 2025):

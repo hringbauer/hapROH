@@ -5,8 +5,7 @@ import numpy as np
 
 ###
 # We distribute the source only,
-# to avoid trouble with platform
-
+# to avoid trouble with the specific platform
 
 ### Code for Cython / C Extension
 USE_CYTHON = True 
