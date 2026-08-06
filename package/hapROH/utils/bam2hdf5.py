@@ -27,8 +27,8 @@ def get_snp_from_h5(path_h5: str) -> pd.DataFrame:
         variants = h5_ref["variants"]
         pos = np.array(variants["POS"]).astype(int)
         map = np.array(variants["MAP"]).astype(float)
-        ref = np.array(variants["REF"]).astype(str)
-        alt = np.array(variants["ALT"]).astype(str)
+        ref = np.array(variants["REF"]).astype("U1")
+        alt = np.array(variants["ALT"]).astype("U1")
         chrom = (
             np.array(variants["CHROM"]).astype(int)
             if "CHROM" in variants
@@ -190,11 +190,11 @@ def pileup2hdf5(df_pileup:pd.DataFrame, path_outHDF5:str, sample_name:str, overw
         f_out.create_dataset("variants/MAP", data=df_pileup["map"])
         f_out.create_dataset("variants/REF", data=df_pileup["ref"].astype('S1'))
         f_out.create_dataset("variants/ALT", data=df_pileup["alt"].astype('S1'))
-        f_out.create_dataset("calldata/AD", data=df_pileup[["ref_count", "alt_count"]])
-        f_out.create_dataset("samples", data=np.array([sample_name]).astype("S50"))
+        f_out.create_dataset("calldata/AD", data=df_pileup[["ref_count", "alt_count"]].to_numpy()[:, np.newaxis, :]) # shape (nb_snp, nb_samples=1, 2)
+        f_out.create_dataset("samples", data=np.array([sample_name]).astype('S50'))
 
 def bam2hdf5(path_bam:str, path_refHDF5:str, path_outHDF5:str, sample_name:str, chrom:int|None=None, overwrite:bool=False, min_base_qual:int=30, min_map_qual:int=30, path_samtools="samtools") -> None:
-    """Convert a BAM file to an HDF5 file using a reference SNP panel.
+    """Convert a BAM file to an HDF5 file using a reference SNP panel. Final HDF5 file will have following field: samples; variants/POS,MAP,REF,ALT,[CHROM]; calldata/AD
 
     Args:
         path_bam: Path to the input BAM file.
@@ -211,17 +211,20 @@ def bam2hdf5(path_bam:str, path_refHDF5:str, path_outHDF5:str, sample_name:str, 
     Returns:
         None.
     """
+    if not overwrite and os.path.isfile(path_outHDF5):
+        print(f"File {path_outHDF5} exists already and overwrite=False. Nothing happend.")
+        return
     df_pileup = bam2pileup(path_bam, path_refHDF5, chrom, min_base_qual, min_map_qual, path_samtools)
     pileup2hdf5(df_pileup, path_outHDF5, sample_name, overwrite)
 
-def bam2hdf5s(path_bam:str, prefix_refHDF5:str, prefix_outHDF5:str, sample_name:str, overwrite:bool=False, min_base_qual:int=30, min_map_qual:int=30, path_samtools="samtools") -> None:
+def bam2hdf5s(path_bam:str, prefix_refHDF5:str, dir_outHDF5:str, sample_name:str, overwrite:bool=False, min_base_qual:int=30, min_map_qual:int=30, path_samtools="samtools") -> None:
     """Wrapper to call ``bam2hdf5`` on each chromosome from 1 to 22.
 
     Args:
         path_bam: Path to the input BAM file.
         prefix_refHDF5: Prefix of reference HDF5 paths; chromosome suffixes
             from ``1.hdf5`` through ``22.hdf5`` are appended.
-        path_outHDF5: Output directory, in which HDF5 files of format $iid.chr$ch.hdf5 will be created
+        prefix_outHDF5: Output directory, in which HDF5 files of format $iid.chr$ch.hdf5 will be created
         sample_name: Sample identifier to store in each output file.
         overwrite: Whether to overwrite or fail if the files already exist.
         min_base_qual: Minimum base quality passed to ``samtools mpileup``.
@@ -231,7 +234,7 @@ def bam2hdf5s(path_bam:str, prefix_refHDF5:str, prefix_outHDF5:str, sample_name:
     Returns:
         None.
     """
-    prefix_outHDF5 = os.path.join(prefix_outHDF5, sample_name+".chr")
+    prefix_outHDF5 = os.path.join(dir_outHDF5, sample_name+".chr")
     for chrom in range(1, 23):
         suffix = str(chrom) + ".hdf5"
         bam2hdf5(path_bam, prefix_refHDF5+suffix, prefix_outHDF5+suffix, sample_name, chrom, overwrite, min_base_qual, min_map_qual, path_samtools)
