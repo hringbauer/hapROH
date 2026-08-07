@@ -2,11 +2,13 @@
 ### 2026
 
 ### Imports
-import os, subprocess, tempfile
+import os, subprocess, tempfile, logging
 import numpy as np
 import pandas as pd
 import h5py
 import re
+
+logger = logging.getLogger(__name__)
 
 #########################
 # Utility functions to convert bam to hdf5
@@ -118,6 +120,11 @@ def bam2pileup(path_bam:str, path_refHDF5:str, chrom:int|None=None, min_base_qua
             header=None,
             names=["chrom", "pos", "ref", "depth", "read_bases", "base_qualities"],
         )
+        returncode = proc.wait()
+        stderr_output = proc.stderr.read()
+
+        if returncode != 0:
+            raise RuntimeError("Pileup command failed with return code: {returncode}", stderr_output)
 
     ### Process output from pileup
     mask = df_pileup["depth"] > 0
