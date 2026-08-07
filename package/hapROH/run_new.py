@@ -1,4 +1,4 @@
-import logging
+import logging, os
 from typing import List
 
 import numpy as np
@@ -26,6 +26,7 @@ def get_rmap(df_snp:pd.DataFrame, min_gap:float=1e-10, max_gap:float=np.inf) -> 
     return np.clip(r_map, min_gap, max_gap)
 
 def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str]=None,
+                folder_out:str="",
                 r_in:float=1, r_out:float=20, r_jump: float=300, error_rate:float=0.01,
                 e_model:None|str="haploid", downsampling:None|float=None,
                 logfile:None|str=None, loglevel:int=0
@@ -39,7 +40,9 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
     )
     logging.captureWarnings(True)
 
-    logger.info(f"Starting callROH_chr on chromosome {chrom}")
+    logger.info(f"Starting callROH_chr on chromosome {chrom} and iids {iids}")
+    logger.info(f"Sample file: {path_sample}")
+    logger.info(f"Reference file: {path_ref}")
     print_memory_usage(logger)
 
     ### Preload the files
@@ -47,7 +50,12 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
     file_ref = GenomicDataFile.load_genetic_file(path_ref)
 
     ### Filter individuals
-    idx_iids = None if iids is None else file_sample.get_idx_iids(iids)
+    if iids is None:
+        iids = file_sample.get_iids().astype(str).tolist()
+    elif isinstance(iids, str):
+        iids = [iids]
+    assert isinstance(iids, list)
+    idx_iids = file_sample.get_idx_iids(iids)
     # TODO: if wanted, filter iids in file_ref
 
     ### Load the SNPs and compute intersection
@@ -94,15 +102,29 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
     ref_panel = data_ref.data.reshape(data_ref.data.shape[0], -1)   # (nb_snp, nb_samples, 2) -> (nb_snp, 2*nb_samples)
     print_memory_usage(logger)
 
-    ### Load the actual HMM
+    ### Initialise the HMM
     logger.info("Initialising HMM")
     hmm = HMM(data_sample, ref_panel, r_map,
                     r_in, r_out, r_jump, error_rate)
     logger.debug("Done initialising HMM")
 
-    # logger.info("Computing posterior probabilities")
-    # post_pb = hmm.calc_posterior_proba()
-    # logger.info("Done computing posterior probabilities")
+    ### Compute the posterior probability
+    print_memory_usage(logger)
+    logger.info("Computing posterior probabilities")
+    post_pb = hmm.calc_posterior_proba()
+    logger.debug("Done computing posterior probabilities")
 
-    return None
+    ### TODO: postprocess the results
+
+    ### Save results
+    logger.info(f"Saving result")
+    for idx, iid in enumerate(iids):
+        folder_out_iid = os.path.join(folder_out, iid, "chr" + str(chrom), "")
+        logger.debug(f"Writing individual {iid} to {folder_out_iid}")
+        if not os.path.isdir(folder_out_iid):
+            os.makedirs(folder_out_iid)
+        np.savetxt(folder_out_iid+"posterior0.csv", post_pb[0, :, idx], delimiter=",",  fmt='%f')
+        np.savetxt(folder_out_iid+"pos.csv", df_snp["pos"], delimiter=",",  fmt='%f')
+        np.savetxt(folder_out_iid+"map.csv", df_snp["map"], delimiter=",",  fmt='%f')
+
     return post_pb

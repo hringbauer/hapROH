@@ -245,8 +245,11 @@ def load_geno_packed(path:str, idx_snp:None|npt.NDArray[np.bool_]=None, idx_iid:
 
     geno = 2-geno   # replace the nb of ref alleles by the nb of alt alleles
     geno[geno == 2-3] = MISSING_VAL
-    row_idx = slice(None) if idx_snp is None else idx_snp
-    return geno[row_idx, :, np.newaxis]  # shape (nb_snp, nb_samples, 1)
+    if idx_snp is not None:
+        geno = geno[idx_snp]
+    if idx_iid is not None:
+        geno = geno[:, idx_iid]
+    return geno[..., np.newaxis]
 
 class EigenstratFile(GenomicDataFile):
     path_prefix: str
@@ -279,7 +282,7 @@ class EigenstratFile(GenomicDataFile):
             datatype = DataType.PSEUDOHAP
             data[data == 2] = 1
 
-        logger.info(f"Loaded {data.shape} SNP")
+        logger.info(f"Loaded {data.shape} SNPs, of dtype {data.dtype}")
         return GenomicData(data, datatype)
 
 class Hdf5File(GenomicDataFile):
@@ -340,7 +343,7 @@ class Hdf5File(GenomicDataFile):
             assert self.mask_snp is not None, "self.mask_snp is set by self.get_snp(), when self.filter_bialleleic_snp is True "
             row_idx = self.mask_snp
             if idx_snp is not None:
-                row_idx &= idx_snp
+                row_idx = idx_snp & self.mask_snp
         else:
             row_idx = slice(None) if idx_snp is None else idx_snp
 
@@ -378,7 +381,7 @@ class Hdf5File(GenomicDataFile):
                     raise ValueError(f"Expected data of shape (nb_snp, nb_samples, 1|2), not {data.shape}")
             else:
                 raise ValueError(f"Expected data of shape (nb_snp, nb_samples, 1|2), not {data.shape}")
-        logger.info(f"Loaded {data.shape} SNP, of type {data.dtype}")
+        logger.info(f"Loaded {data.shape} SNPs, of dtype {data.dtype}")
         return GenomicData(data, datatype)
 
 ########################################################
