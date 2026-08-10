@@ -209,7 +209,7 @@ class GenomicDataFile(ABC):
         raise ValueError(f"File extension not recognised, nor found any matching file of known extension ({path})")
 
 ################################
-# Utils for eigenstrat loading
+# Eigenstrat implementation
 ################################
 
 def load_geno_unpacked(path:str, idx_snp:None|npt.NDArray[np.bool_]=None, idx_iid:None|npt.NDArray[np.bool_]=None) -> np.ndarray:
@@ -275,15 +275,17 @@ class EigenstratFile(GenomicDataFile):
         else:
             data = load_geno_unpacked(geno_path, idx_snp, idx_iid)
 
-        # check if pseudohaploid
-        # note: this assumes pseudo-haploid data if no heterozygous SNP is found -> might be false for small nbs of SNP
         datatype = DataType.GT_count
-        if np.all(data[:,:,0]!=1):
-            datatype = DataType.PSEUDOHAP
-            data[data == 2] = 1
+        # if np.all(data[:,:,0]!=1):            # search for heterozygotes
+        #     datatype = DataType.PSEUDOHAP
+        #     data[data == 2] = 1
 
         logger.info(f"Loaded {data.shape} SNPs, of dtype {data.dtype}")
         return GenomicData(data, datatype)
+
+################################
+# Hdf5 implementation
+################################
 
 class Hdf5File(GenomicDataFile):
     path: str
@@ -293,8 +295,6 @@ class Hdf5File(GenomicDataFile):
     def __init__(self, path:str, filter_biallelic_snp:bool=True):
         self.path = path
         self.filter_biallelic_snp = filter_biallelic_snp
-
-    # TODO: implement __close__ or similar to close hdf5 file after using ?
 
     def get_iids(self) -> npt.NDArray[np.bytes_]:
         with h5py.File(self.path, "r") as h5_file:
@@ -367,16 +367,14 @@ class Hdf5File(GenomicDataFile):
                 data = data[..., np.newaxis]
             if len(data.shape) == 3:
                 if data.shape[2] == 1:
-                    if np.all(data != 2):                # assumes pseudo-haploid data if no heterozygous SNP is found
-                        datatype = DataType.PSEUDOHAP
-                    else:
-                        datatype = DataType.GT_count
+                    datatype = DataType.GT_count
+                    # if np.all(data != 2):                   # search for heterozygotes
+                    #     datatype = DataType.PSEUDOHAP
                 elif data.shape[2] == 2:
-                    if np.all(data[:,:,0]==data[:,:,1]):  # assumes pseudo-haploid data if no heterozygous SNP is found
-                        datatype = DataType.PSEUDOHAP
-                        data = data[:,:,:1]
-                    else:
-                        datatype = DataType.GT
+                    datatype = DataType.GT
+                    # if np.all(data[:,:,0]==data[:,:,1]):    # search for heterozygotes
+                    #     datatype = DataType.PSEUDOHAP
+                    #     data = data[:,:,:1]
                 else:
                     raise ValueError(f"Expected data of shape (nb_snp, nb_samples, 1|2), not {data.shape}")
             else:
@@ -385,7 +383,7 @@ class Hdf5File(GenomicDataFile):
         return GenomicData(data, datatype)
 
 ########################################################
-# Instance methods to restict to subset of data
+# Utility methods to work with genomic data
 ########################################################
 
 def get_snp_intersection(snp_sample:pd.DataFrame, snp_ref:pd.DataFrame, chrom:None|int=None) \
@@ -438,3 +436,18 @@ def get_snp_intersection(snp_sample:pd.DataFrame, snp_ref:pd.DataFrame, chrom:No
     ref_mask[merged["_ref_idx"][~mismatching_SNP]] = True                   # boolean array, len(snp_ref
 
     return sample_mask, ref_mask, flipped_SNP[~mismatching_SNP].to_numpy()
+
+def get_rmap(df_snp:pd.DataFrame, min_gap:float=1e-10, max_gap:float=np.inf) -> np.ndarray:
+    """Return the genetic distance [in Morgan] between locci, clipping values to the desired interval"""
+    gen_pos = df_snp["map"]
+    assert gen_pos.is_monotonic_increasing, "SNP positions must be sorted in ascending order"
+    if gen_pos.max() > 20:
+        logger.debug(f"Converting from centimorgans to morgans")
+        gen_pos /= 100
+    r_map = gen_pos[1:].to_numpy() - gen_pos[:-1].to_numpy()
+    logger.info(f"Minimum Genetic Map: {gen_pos.min()} Morgan")
+    logger.info(f"Maximum Genetic Map: {gen_pos.max()} Morgan")
+    logger.info(f"Gaps bigger than 0.1 cM: {(r_map > 0.001).sum()}")
+    logger.info(f"Maximum Gap: {r_map.max() * 100:.4f} cM")
+    logger.info(f"Clipping gaps to range: {100*min_gap:.3f} - {100*max_gap:.3f} cM")
+    return np.clip(r_map, min_gap, max_gap)

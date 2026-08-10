@@ -2,7 +2,7 @@ import logging
 
 import numpy as np
 
-from .genomicData import GenomicData
+from .genomicData import GenomicData, DataType
 from .transitionProba import TransitionProba, get_transi_proba
 from .emissionProba import EmissionProba, get_emi_proba
 
@@ -29,13 +29,15 @@ class HMM():
     proba_t: TransitionProba    # shape (5, nb_snp-1, nb_samples), dtype float, contains following proba: stay_out, enter_ROH, leave_ROH, stay_ROH, jump_ROH
     proba_e: EmissionProba      # shape (3, nb_snp, nb_samples), dtype float, describe proba between the following states: ROH_REF, ROH_ALT, no_ROH
 
-    def __init__(self, sample_data: GenomicData, ref_panel:np.ndarray, r_map:np.ndarray,
+    def __init__(self, sample_data: GenomicData, ref_data:GenomicData, r_map:np.ndarray,
                     r_in:float, r_out:float, r_jump: float,
                     error_rate:float
                 ) -> None:
         """Initialize HMM by computing emission and transition probabilities"""
-        self.ref_panel = ref_panel                                                          # shape (nb_snp, nb_ref)
-
+        if ref_data.datatype != DataType.GT:
+            raise ValueError(f"Expecte reference pannel to contain GT, but contains datatype {ref_data.datatype}")
+        self.ref_panel = ref_data.data.reshape(ref_data.data.shape[0], -1)   # (nb_snp, nb_samples, 2) -> (nb_snp, 2*nb_samples)
+    
         self.r_in = r_in
         self.r_out = r_out
         self.r_jump = r_jump
@@ -44,18 +46,18 @@ class HMM():
 
         print_memory_usage(logger)
         logger.debug("Computing transition probabilities")
-        self.proba_t = get_transi_proba(r_in, r_out, r_jump, ref_panel.shape[1], r_map)     # shape (5, nb_snp-1)
+        self.proba_t = get_transi_proba(r_in, r_out, r_jump, self.ref_panel.shape[1], r_map)     # shape (5, nb_snp-1)
         print_memory_usage(logger)
 
         logger.debug("Computing emission probabilities")
-        allele_freq = ref_panel.mean(axis=1)
+        allele_freq = self.ref_panel.mean(axis=1)
         self.proba_e = get_emi_proba(sample_data, allele_freq, error_rate)                  # shape (3, nb_snp, nb_samples)
         print_memory_usage(logger)
 
     def calc_posterior_proba(self) -> np.ndarray:
         """
         Compute the posterior probability of each state at each locus.
-        Values are normalised at each step to avoid numerical issues (proba converging to 0)
+        Values are normalised at each step to avoid numerical issues (because probas converge to 0)
         Returns:
             post_pb: np.ndarray of shape (nb_ref+1, nb_snp, nb_samples)
         """
@@ -77,8 +79,6 @@ class HMM():
         term = np.empty((nb_ref, nb_samples), dtype=float)
 
         ### Forward algorithm
-        logger.debug(f"(nb_ref, nb_snp, nb_samples: {(nb_ref, nb_snp, nb_samples)}")
-        print_memory_usage(logger)
         logger.debug("Starting forward computation")
         for i in range(0, nb_snp-1):
             sum_roh = 1 - post_pb[0, i]         # = post_pb[1:].sum(axis=0) because of normalisation
