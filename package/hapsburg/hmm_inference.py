@@ -491,6 +491,7 @@ def exponentiate_r(rates, rec_v):
     rates: 2D Matrix.
     rec_v: Array of length l"""
     eva, evec = np.linalg.eig(rates)  # Do the Eigenvalue Decomposition
+    eva, evec = eva.real, evec.real   # Force real value. Depending on numeric approx, there might be a non-0 imaginary part
     # Sanity Check whether Matrix is valid rate Matrix
     assert(np.max(eva) <= 1)
     evec_r = np.linalg.inv(evec)    # Do the Inversion

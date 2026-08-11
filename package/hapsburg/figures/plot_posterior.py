@@ -5,7 +5,6 @@ Main Inference Class for HMM. Wrapper for Inerence of Posterior.
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 import matplotlib.colorbar as clb
 from matplotlib import gridspec
 import os as os
@@ -22,35 +21,35 @@ import pandas as pd
 def load_data(folder="../Simulated/Example0/", empirical=False, fullpost=False, viterbi=False, readcounts=True):
     """Load and return the Data from one Data Folder"""
     
-    ob_stat = np.loadtxt(folder + "hap.csv", dtype="int", delimiter=",")
+    ob_stat = np.genfromtxt(folder + "hap.csv", dtype="float", delimiter=",")
     
     if viterbi:
-        viterbi_path = np.loadtxt(folder + "viterbi_path.csv", dtype="int", delimiter=",")
+        viterbi_path = np.genfromtxt(folder + "viterbi_path.csv", dtype="int", delimiter=",")
     else:
         viterbi_path = []
     
     if empirical==False:
-        lats = np.loadtxt(folder + "lat.csv", dtype="int", delimiter=",")
-        ref_states = np.loadtxt(folder + "refs.csv", dtype="int", delimiter=",")
+        lats = np.genfromtxt(folder + "lat.csv", dtype="int", delimiter=",")
+        ref_states = np.genfromtxt(folder + "refs.csv", dtype="int", delimiter=",")
         roh_df = 0
         read_counts = 0
         gmap = 0
-        posterior = np.loadtxt(folder + "posterior.csv", dtype="float", delimiter=",")
+        posterior = np.genfromtxt(folder + "posterior.csv", dtype="float", delimiter=",")
         
     elif empirical:
         lats = 0
         roh_df  = pd.read_csv(folder + "roh.csv", delimiter=",")
         if readcounts==True:
-            read_counts = np.loadtxt(folder + "readcounts.csv", delimiter=",")
+            read_counts = np.genfromtxt(folder + "readcounts.csv", delimiter=",")
         else:
             read_counts= 0
             
-        gmap = np.loadtxt(folder + "map.csv", dtype="float", delimiter=",")
+        gmap = np.genfromtxt(folder + "map.csv", dtype="float", delimiter=",")
         
         if fullpost==True:
-            posterior = np.loadtxt(folder + "posterior.csv", dtype="float", delimiter=",")  # For Plot of all Posteriors   
+            posterior = np.genfromtxt(folder + "posterior.csv", dtype="float", delimiter=",")  # For Plot of all Posteriors   
         else:
-            posterior = np.loadtxt(folder + "posterior0.csv", dtype="float", delimiter=",")
+            posterior = np.genfromtxt(folder + "posterior0.csv", dtype="float", delimiter=",")
             
         ref_states = np.zeros(np.shape(posterior)) # Just some Filler for the Moment
         
@@ -85,9 +84,6 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
     plot_calls: Whether to plot Calls
     plot_post: Whether to plot posterior
     plot: Whether to show the plot in python"""
-    
-    cmap = cm.get_cmap("viridis")
-    norm = plt.Normalize(-8, 0)
 
     fs = 14  
     lw = 6   # Linewidth for ROH
@@ -172,53 +168,8 @@ def plot_posterior_cm(folder = "../Simulated/Test20r/", savepath="", empirical=T
         #plt.savefig(folder + "posterior_cm.png", bbox_inches = 'tight', pad_inches = 0, dpi=300)
     
     if plot==True:
-        plt.show()       
-        
-        
-        
-def plot_viterbi(folder = "../Simulated/Test20r/", save=True, empirical=False):
-    """Plot Viterbi Path of Haplotype copying"""
-    ref_states, ob_stat, lats, viterbi_path, _, _, _, _ = load_data(folder=folder, empirical=empirical, fullpost=True, viterbi=True)
-    ###########################
-    ###########################
+        plt.show()
 
-    fs = 16
-    plt.figure(figsize=(12,4))
-    gs = gridspec.GridSpec(2, 1, height_ratios=[10, 1])
-    gs.update(hspace=0.3) # set the spacing between axes. 
-
-    ax = plt.subplot(gs[0]) # The left subplot
-    ax1 = plt.subplot(gs[1]) # The middle one
-
-    ax.imshow(ref_states, cmap='Greys',  aspect='auto')
-    if empirical == False:
-        ax.plot(lats[:]-1.5, linewidth=2, color="yellow", label="Copying State") # Plot upper Boarder
-        ax.plot(lats[:]-0.5, linewidth=2, color="yellow") # Plot lower boarder
-
-     #   ax.plot(lats[1,:]-1.5, linewidth=2, color="red") # Plot upper Boarder
-     #   ax.plot(lats[1,:]-0.5, linewidth=2, color="red") # Plot lower boarder
-
-    ax.plot(viterbi_path-1.0, linewidth=4, color="blue", label="Viterbi Path")
-
-    ax.set_ylabel("Ref. Hapotype",fontsize=fs)
-    #ax.axhline(-.3)
-    ax.set_xticks([])
-
-    ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.35), fontsize=fs) # Do the Legend
-
-    # Do the Reference SNP:
-    ax1.imshow(ob_stat, cmap='Greys',  aspect='auto')
-    ax1.set_xlabel("SNP", fontsize=fs)
-    ax1.set_yticks([])
-    ax1.set_ylabel("Copy")
-    
-    ax.plot(viterbi_path-1.0, linewidth=4, color="blue", label="Viterbi Path")
-    
-    if save==True:
-        plt.savefig(folder + "viterbi_path.pdf", bbox_inches = 'tight', pad_inches = 0)
-    plt.show()
-    
-    
 def plot_posterior(folder = "../Simulated/Test20r/", save=True, empirical=False):
     """Plot Viterbi Path of Haplotype copying.
     save: Whether to save the results.
@@ -231,7 +182,7 @@ def plot_posterior(folder = "../Simulated/Test20r/", save=True, empirical=False)
         
     ###########################
     ###########################
-    cmap = cm.get_cmap("viridis")
+    cmap = plt.get_cmap("viridis")
     norm = plt.Normalize(-8, 0)
 
     fs = 16
