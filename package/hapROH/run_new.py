@@ -1,30 +1,81 @@
 import logging, os
-from typing import List
+from typing import List, Literal
 
 import numpy as np
 
 from hapROH.classes.genomicData import DataType, GenomicDataFile, get_snp_intersection, get_rmap
 from hapROH.classes.HMM import HMM
 from hapROH.classes.postprocessing import postproces
-from hapROH.utils.miscellanious import print_memory_usage
 
 logger = logging.getLogger(__name__)
 
 def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str]=None,
                 folder_out:str="",
                 r_in:float=1, r_out:float=20, r_jump: float=300, error_rate:float=0.01,
-                e_model:None|str="haploid", downsampling:None|float=None,
+                e_model:Literal["readcounts", "diploid_gt", "haploid"]="haploid",
+                downsampling:None|float=None,
                 cutoff_post:float=0.999,
                 logfile:None|str=None, loglevel:int=0
                 ):
+    """Call runs of homozygosity (ROH) for one chromosome using an HMM.
+
+    Loads sample and reference genotype data for a single chromosome, intersects
+    their SNP positions (flipping REF/ALT alleles where needed), builds a genetic
+    map for the intersected SNPs, optionally downsamples and/or transforms the
+    sample data according to the chosen emission model, runs the ROH HMM to
+    compute posterior state probabilities, and writes the resulting ROH calls
+    and auxiliary per-SNP data to disk for each requested individual.
+
+    Args:
+        path_sample: Path to the sample genotype file (Eigenstrat or HDF5) to call ROH on.
+        path_ref: Path to the reference panel genotype file used for allele
+            frequencies/haplotypes.
+        chrom: Chromosome number to process.
+        iids: Individual ID(s) to call ROH for. If None, all individuals in the
+            sample file are used. A single string is treated as one IID.
+        folder_out: Base output directory. Results for each individual are written
+            to ``folder_out/<iid>/chr<chrom>/``.
+        r_in: HMM transition rate into the ROH (homozygous) state.
+        r_out: HMM transition rate out of the ROH state.
+        r_jump: HMM jump rate between two distinct ROH states.
+        error_rate: Genotyping/sequencing error rate used by the emission model.
+        e_model: Model to use for computing the emission probabilities. One of:
+            - "readcounts": use raw read-count (AD) data; requires the sample
+              data to contain a 'calldata/AD' field.
+            - "diploid_gt": use diploid genotype counts computed against the
+              reference allele frequencies; not valid for haploid input data.
+            - "haploid": pseudo-haploid calls.
+        downsampling: If provided, depth to downsample the sample data
+            to before calling ROH. Only valable if input data is AD
+        cutoff_post: Cutoff used whencalling the ROH segments from the posterior probability
+        logfile: Path to a file to write log output to. If None, logs go to the default stream handler.
+        loglevel: Verbosity level for the hapROH logger (0=WARNING, 1=INFO, 2 or higher=DEBUG).
+
+    Returns:
+        np.ndarray: The posterior probability array returned by the HMM, with
+        shape (nb_state=nb_ref_haplo+1, n_snps, n_individuals).
+
+    Written files:
+        - logfile: if logfile is provided
+        For each individual in `iids`, writes the following files under
+        ``folder_out/<iid>/chr<chrom>/``:
+            - roh.csv: called ROH segments (with columns for iid and chrom).
+            - posterior0.csv: per-SNP posterior probability of the ROH state.
+            - pos.csv: physical positions of the intersected SNPs.
+            - map.csv: genetic map positions of the intersected SNPs.
+            - readcounts.csv / gt_count.csv: per-SNP genotype/read-count data,
+              depending on the sample data's datatype (not written for
+              pseudo-haploid data).
+    """
     level = {0: logging.WARNING, 1: logging.INFO, 2: logging.DEBUG}.get(loglevel, logging.DEBUG)
     logging.basicConfig(
         format="%(asctime)s.%(msecs)03d [%(levelname)s] %(name)s: %(message)s",
         datefmt="%H:%M:%S",
         filename=logfile,
-        level=level
+        level=logging.WARNING
     )
     logging.captureWarnings(True)
+    logging.getLogger("hapROH").setLevel(level)
 
     logger.info(f"Starting callROH_chr on chromosome {chrom} and iids {iids}")
     logger.info(f"Sample file: {path_sample}")
@@ -62,22 +113,26 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
 
     data_sample.flip_data(idx_flipped_sample)
 
-    ### If wanted: preprocess the data
+    ### Preprocess the data
+    data_sampl_pp = data_sample
     if downsampling is not None:
-        data_sample.downsample(downsampling)
-    if e_model is not None:
-        match e_model:
-            case "readcount":
-                if data_sample.datatype != "readcount":
-                    raise ValueError(f"Cannot use readcount model if provided data does not contain a field calldata/AD")
-            case "diploid_gt":
-                data_sample.to_GT_count(allele_freq = data_ref.data.mean(axis=(1,2)))
-            case "haploid":
-                data_sample.to_pseudo_haploid()
+        data_sampl_pp = data_sampl_pp.downsample(downsampling)
+    match e_model:
+        case "readcount":
+            if data_sampl_pp.datatype != "readcount":
+                raise ValueError(f"Cannot use e_model='readcount' if imput data does not contain a field 'calldata/AD'")
+        case "diploid_gt":
+            if data_sampl_pp.datatype == "haploid":
+                raise ValueError(f"Cannot use e_model='diploid_gt' if imput data is haploid.")
+            data_sampl_pp = data_sampl_pp.to_GT_count(allele_freq = data_ref.data.mean(axis=(1,2)))
+        case "haploid":
+            data_sampl_pp = data_sampl_pp.to_pseudo_haploid()
+        case _:
+            raise ValueError(f"Invalid option e_model='{e_model}'. Valid options are None | 'readcounts' | 'diploid_gt' | 'haploid'")
 
     ### Initialise the HMM
     logger.info("Initialising HMM")
-    hmm = HMM(data_sample, data_ref, r_map,
+    hmm = HMM(data_sampl_pp, data_ref, r_map,
                     r_in, r_out, r_jump, error_rate)
     logger.debug("Done initialising HMM")
 
@@ -94,15 +149,28 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
         if not os.path.isdir(folder_out_iid):
             os.makedirs(folder_out_iid)
 
-        # Creating ROH dataframe
+        # Create and save ROH dataframe
         df_roh_iid = postproces(post_pb[0,:,idx], df_snp, cutoff_post)
         df_roh_iid["iid"] = iid
         df_roh_iid["chrom"] = chrom
         df_roh_iid.to_csv(folder_out_iid+"roh.csv", index=False)
 
-        # Saving SNP info
+        # Save SNP info
         np.savetxt(folder_out_iid+"posterior0.csv", post_pb[0, :, idx], delimiter=",",  fmt='%f')
         np.savetxt(folder_out_iid+"pos.csv", df_snp["pos"], delimiter=",",  fmt='%f')
         np.savetxt(folder_out_iid+"map.csv", df_snp["map"], delimiter=",",  fmt='%f')
+
+        # Save GT info along results for latter plotting
+        match data_sample.datatype:
+            case DataType.AD:
+                np.savetxt(folder_out_iid+"readcounts.csv", data_sample.data[:, idx], delimiter=",",  fmt='%f')
+            case DataType.GT:
+                np.savetxt(folder_out_iid+"gt_count.csv", data_sample.data[:, idx].sum(axis=1), delimiter=",",  fmt='%f')
+            case DataType.GT_count:
+                np.savetxt(folder_out_iid+"gt_count.csv", data_sample.data[:, idx], delimiter=",",  fmt='%f')
+            case DataType.PSEUDOHAP:
+                pass
+            case _:
+                raise NotImplementedError("Case not implemented")
 
     return post_pb

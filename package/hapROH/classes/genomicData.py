@@ -13,11 +13,11 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
+MISSING_VAL = -1
+
 ################################
 # Class describing genomic data
 ################################
-
-MISSING_VAL = 3
 
 class DataType(StrEnum):
     AD = "readcount"                # two columns with read_counts
@@ -34,16 +34,18 @@ class GenomicData():
         """Flip the ref and alt allele at the given positions (in place modification)."""
         match self.datatype:
             case DataType.AD | DataType.GT:
-                self.data[idx_flipped] = self.data[idx_flipped,:,::-1]
-            case DataType.PSEUDOHAP:
-                mask_missing = self.data[idx_flipped] == MISSING_VAL
-                self.data[idx_flipped] = np.where(mask_missing, MISSING_VAL, 1 - self.data[idx_flipped])
+                self.data[idx_flipped] = self.data[idx_flipped][:,:,::-1]
             case DataType.GT_count:
                 mask_missing = self.data[idx_flipped] == MISSING_VAL
                 self.data[idx_flipped] = np.where(mask_missing, MISSING_VAL, 2 - self.data[idx_flipped])
+            case DataType.PSEUDOHAP:
+                mask_missing = self.data[idx_flipped] == MISSING_VAL
+                self.data[idx_flipped] = np.where(mask_missing, MISSING_VAL, 1 - self.data[idx_flipped])
+            case _:
+                raise NotImplementedError(f"flip_data not implemented for DataType {self.datatype}")
 
-    def to_GT_count(self, allele_freq:None|np.ndarray=None, error_rate:float=1e-3) -> None:
-        """Transform the data into (diploid) genotype counts (in place modification).
+    def to_GT_count(self, allele_freq:None|np.ndarray=None, error_rate:float=1e-3) -> GenomicData:
+        """Transform the data into (diploid) genotype counts.
 
         For DataType.AD, genotypes are called with a simple Bayesian model
         combining a Hardy-Weinberg prior derived from `allele_freq`
@@ -60,7 +62,7 @@ class GenomicData():
         """
         match self.datatype:
             case DataType.AD:
-                logger.debug(f"Calling genotypes from readcounts using bayesian model")
+                logger.warning(f"Calling genotypes from readcounts using bayesian model. This is not recommended for low coverage data. In that case, prefer e_model=haploid")
                 if allele_freq is None:
                     raise ValueError("Please provide an allele frequency to call genotype from allele depth")
                 n_ref = self.data[:, :, 0].astype(np.float64)
@@ -84,26 +86,30 @@ class GenomicData():
                 ], axis=-1)  # (nb_snp, nb_samples, 3)
 
                 log_post = log_lik + log_prior[:, np.newaxis, :]
-                new_data = np.argmax(log_post, axis=-1).astype(np.int8)
+                new_data = np.argmax(log_post, axis=-1).astype(np.int8)[..., np.newaxis]
                 new_data[is_missing] = MISSING_VAL
-                self.data = new_data[..., np.newaxis]
 
             case DataType.GT:
                 mask_missing = np.any(self.data == MISSING_VAL, axis=2)
-                new_data = np.sum(self.data, axis=2).astype(np.int8)
+                new_data = np.sum(self.data, axis=2, keepdims=True).astype(np.int8)
                 new_data[mask_missing] = MISSING_VAL
-                self.data = new_data[..., np.newaxis]
 
             case DataType.GT_count:
-                pass
+                new_data = self.data.copy()
 
             case DataType.PSEUDOHAP:
-                raise ValueError("Cannot recover diploid genotype counts from pseudo-haploid data ")
+                logger.warning("Trying to convert haploid to diploid data. ")
+                mask_missing = self.data == MISSING_VAL
+                new_data = 2 * self.data
+                new_data[mask_missing] = MISSING_VAL
+                # raise ValueError("Cannot recover diploid genotype counts from pseudo-haploid data ")
+            case _:
+                raise NotImplementedError(f"to_GT_count not implemented for DataType {self.datatype}")
 
-        self.datatype = DataType.GT_count
+        return GenomicData(new_data, DataType.GT_count)
 
-    def to_pseudo_haploid(self, seed:None|int=None) -> None:
-        """Transform the data into pseudo-haploid data (in place modification)."""
+    def to_pseudo_haploid(self, seed:None|int=None) -> GenomicData:
+        """Transform the data into pseudo-haploid data."""
         rng = np.random.default_rng(seed)
 
         match self.datatype:
@@ -111,16 +117,14 @@ class GenomicData():
                 depth = np.sum(self.data, axis=2)
                 is_missing = depth == 0
                 alt_prob = self.data[:, :, 1] / np.maximum(1, depth)    # avoid division by 0
-                new_data = rng.binomial(1, alt_prob).astype(np.int8)
+                new_data = rng.binomial(1, alt_prob).astype(np.int8)[..., np.newaxis]
                 new_data[is_missing] = MISSING_VAL
-                self.data = new_data[..., np.newaxis]
 
             case DataType.GT:
                 choice_idx = rng.integers(0, 2, size=self.data.shape[:2])
                 new_data = np.take_along_axis(
                     self.data, choice_idx[..., np.newaxis], axis=2
                 ).astype(np.int8)
-                self.data = new_data
 
             case DataType.GT_count:
                 missing = self.data == MISSING_VAL
@@ -129,19 +133,20 @@ class GenomicData():
                 random_het = rng.integers(0, 2, size=self.data.shape).astype(np.int8)
                 new_data[het_pos] = random_het[het_pos]
                 new_data[missing] = MISSING_VAL
-                self.data = new_data
 
             case DataType.PSEUDOHAP:
-                pass
+                new_data = self.data.copy()
+            case _:
+                raise NotImplementedError(f"to_pseudo_haploid not implemented for DataType {self.datatype}")
 
-        self.datatype = DataType.PSEUDOHAP
+        return GenomicData(new_data, DataType.PSEUDOHAP)
 
-    def downsample(self, target_depth:float=1, seed:None|int=None) -> None:
-        """Downsample the data to a given depth (in place modification).
+    def downsample(self, target_depth:float=1, seed:None|int=None) -> GenomicData:
+        """Downsample the data to a given depth.
         Works only if datatype is AD"""
         if not self.datatype == DataType.AD:
             raise ValueError(f"Cannot downsample datatype {self.datatype}, only AD")
-        mean_depth_per_sample = np.mean(np.sum(self.data, axis=2), axis=1)
+        mean_depth_per_sample = np.mean(np.sum(self.data, axis=2), axis=0)
         if np.any(mean_depth_per_sample <= target_depth):
             low_mask = mean_depth_per_sample <= target_depth
             low_samples = [
@@ -151,7 +156,7 @@ class GenomicData():
             raise ValueError(f"Target depth {target_depth:.3} is higher than actual mean depth for samples {low_samples}. Cannot downsample !")
         p = (target_depth/mean_depth_per_sample)
         new_data = np.random.default_rng(seed).binomial(self.data, p[np.newaxis, :, np.newaxis])
-        self.data = new_data
+        return GenomicData(new_data, DataType.AD)
 
 class GenomicDataFile(ABC):
     @abstractmethod
@@ -352,12 +357,14 @@ class Hdf5File(GenomicDataFile):
         with h5py.File(self.path, "r") as h5_file:
             calldata = h5_file["calldata"]
             if "AD" in calldata.keys():
-                data = calldata["AD"][row_idx][:, column_idx]
+                # data = calldata["AD"][row_idx][:, column_idx]     # only load a subset from the hdf5
+                data = calldata["AD"][:][row_idx][:, column_idx]    # load everything, then subset: faster in most cases, depending on chunking in hdf5
                 datatype = DataType.AD
                 if "GT" in calldata.keys():
                     logger.warning(f"{self.path} contains both fields AD and GT. Only AD is loaded, GT is ignored")
             elif "GT" in calldata.keys():
-                data = calldata["GT"][row_idx][:, column_idx]
+                # data = calldata["GT"][row_idx][:, column_idx]     # only load a subset from the hdf5
+                data = calldata["GT"][:][row_idx][:, column_idx]    # load everything, then subset: faster in most cases, depending on chunking in hdf5
                 datatype = DataType.GT
             else:
                 raise ValueError(f"Found neither AD nor GT field in the hdf5 file {self.path}")
@@ -451,3 +458,39 @@ def get_rmap(df_snp:pd.DataFrame, min_gap:float=1e-10, max_gap:float=np.inf) -> 
     logger.info(f"Maximum Gap: {r_map.max() * 100:.4f} cM")
     logger.info(f"Clipping gaps to range: {100*min_gap:.3f} - {100*max_gap:.3f} cM")
     return np.clip(r_map, min_gap, max_gap)
+
+
+if __name__ == "__main__":
+    nb_snp = 10
+    nb_iids = 3
+    read_counts = np.arange(2*nb_snp*nb_iids).reshape((nb_snp, nb_iids, 2))
+    gt = np.random.binomial(1, 0.5, 2*nb_snp*nb_iids).reshape((nb_snp, nb_iids, 2))
+
+    ad_data = GenomicData(read_counts, DataType.AD)
+    gt_data = GenomicData(gt, DataType.GT)
+
+    ### Check that conversion return expected shape
+    # AD -> downsampled AD
+    ad_data_down = ad_data.downsample(2)
+    assert ad_data_down.data.shape == (nb_snp, nb_iids, 2), f"{ad_data_down.data.shape} != {(nb_snp, nb_iids, 2)}"
+
+    # AD -> GT_count
+    allele_freq = np.full(nb_snp, 0.5)
+    gtc_data = ad_data.to_GT_count(allele_freq)
+    assert gtc_data.data.shape == (nb_snp, nb_iids, 1), f"{gtc_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+
+    # AD -> pseudo-haploid
+    hap_data = ad_data.to_pseudo_haploid()
+    assert hap_data.data.shape == (nb_snp, nb_iids, 1), f"{hap_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+
+    # GT -> GT_count
+    gtc_data = gt_data.to_GT_count(allele_freq)
+    assert gtc_data.data.shape == (nb_snp, nb_iids, 1), f"{gtc_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+
+    # GT -> pseudo-hap
+    hap_data = gt_data.to_pseudo_haploid()
+    assert hap_data.data.shape == (nb_snp, nb_iids, 1), f"{hap_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+
+    # GT_count -> pseudo-hap
+    hap_data = gtc_data.to_pseudo_haploid()
+    assert hap_data.data.shape == (nb_snp, nb_iids, 1), f"{hap_data.data.shape} != {(nb_snp, nb_iids, 1)}"

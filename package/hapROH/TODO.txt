@@ -1,0 +1,35 @@
+### TODO in hapROH:
+* = priority order
+
+Preprocessing:
+* some filtering on ref_panel ? (I removed the options `n_ref` and `meta_path_ref`)
+* does it work if the sample names contain only digits (in the sample eigenstrat file) ?
+* load GenomicData from vcf
+
+Post-procesing:
+*** filtering + merging segments, merging final dataframe
+
+Plotting:
+** ensure compatibility with plotting functions and new output
+
+Testing:
+**** compare outputs with previous version
+** check performnace (time+memory) when processing multiple individuals at the same time
+
+Handling missing values:
+- note: they are kept to allow processing multiple individuals in a vectorial manner
+* math: emission_proba(MISSING_VALUE)=1: verify in fwd+bwd formula but should be correct
+** how are they plotted  ?
+
+Vignettes:
+*** create example vignetes
+
+Not implemented yet:
+*** hapCON → see first how it is implemented in hapsburg → add amission model
+- ROH on chrom X (female only) -> specific ref_panel -> change preprocessing
+- IBD on chrom Y (male only) -> change preprocesseing
+- lowmem: adapt to use ref panel stored as a packed bit array -> would divide reference loading time by 8
+- cython ?: fwd-bwd pass uses python only. But negligeable computation time compared to ref_pannel loading time
+
+- Viterbi path: what is it ? is it still used anyway ?
+- parallelisation ? Already possible to run multiple individuals at the same time -> Not necessary

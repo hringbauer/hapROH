@@ -197,7 +197,7 @@ def pileup2hdf5(df_pileup:pd.DataFrame, path_outHDF5:str, sample_name:str, overw
         f_out.create_dataset("variants/MAP", data=df_pileup["map"])
         f_out.create_dataset("variants/REF", data=df_pileup["ref"].astype('S1'))
         f_out.create_dataset("variants/ALT", data=df_pileup["alt"].astype('S1'))
-        f_out.create_dataset("calldata/AD", data=df_pileup[["ref_count", "alt_count"]].to_numpy()[:, np.newaxis, :]) # shape (nb_snp, nb_samples=1, 2)
+        f_out.create_dataset("calldata/AD", data=df_pileup[["ref_count", "alt_count"]].to_numpy(dtype="uint16")[:, np.newaxis, :]) # shape (nb_snp, nb_samples=1, 2)
         f_out.create_dataset("samples", data=np.array([sample_name]).astype('S50'))
 
 def bam2hdf5(path_bam:str, path_refHDF5:str, path_outHDF5:str, sample_name:str, chrom:int|None=None, overwrite:bool=False, min_base_qual:int=30, min_map_qual:int=30, path_samtools="samtools") -> None:
