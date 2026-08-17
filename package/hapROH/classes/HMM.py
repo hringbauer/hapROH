@@ -5,13 +5,14 @@ import numpy as np
 from .genomicData import GenomicData, DataType
 from .transitionProba import TransitionProba, get_transi_proba
 from .emissionProba import EmissionProba, get_emi_proba
+from .fwd_bwd import _forward_backward_numba
 
 from hapROH.utils.miscellanious import print_memory_usage
 
 logger = logging.getLogger(__name__)
 
-def test():
-    pass
+# Row meaning in transition probability
+STAY_OUT, ENTER_ROH, LEAVE_ROH, STAY_ROH, JUMP_ROH = (0,1,2,3,4)
 
 class HMM():
     ### Data
@@ -26,7 +27,7 @@ class HMM():
     error_rate: float       # Sequencing error rate.
 
     ### Probabilities
-    proba_t: TransitionProba    # shape (5, nb_snp-1, nb_samples), dtype float, contains following proba: stay_out, enter_ROH, leave_ROH, stay_ROH, jump_ROH
+    proba_t: TransitionProba    # shape (5, nb_snp-1, nb_samples), dtype float, contains following proba: STAY_OUT, ENTER_ROH, LEAVE_ROH, STAY_ROH, JUMP_ROH
     proba_e: EmissionProba      # shape (3, nb_snp, nb_samples), dtype float, describe proba between the following states: ROH_REF, ROH_ALT, no_ROH
 
     def __init__(self, sample_data: GenomicData, ref_data:GenomicData, r_map:np.ndarray,
@@ -66,9 +67,6 @@ class HMM():
         _,_, nb_samples = self.proba_e.shape
         post_pb = np.empty((nb_ref+1, nb_snp, nb_samples), dtype=float)
 
-        # Row order in self.proba_t
-        stay_out, enter_ROH, leave_ROH, stay_ROH, jump_ROH = (0,1,2,3,4)
-
         ### Initialize first SNP
         post_pb[0, 0] = self.proba_e[2, 0]                      # not ROH
         post_pb[1:, 0] = self.proba_e[self.ref_panel[0], 0]     # ROH with one of the n_ref possibilities
@@ -84,20 +82,20 @@ class HMM():
             sum_roh = 1 - post_pb[0, i]         # = post_pb[1:].sum(axis=0) because of normalisation
 
             ### Non ROH state
-            post_pb[0, i+1] = self.proba_t[stay_out, i] * post_pb[0, i]
-            post_pb[0, i+1] += self.proba_t[leave_ROH, i] * sum_roh
+            post_pb[0, i+1] = self.proba_t[STAY_OUT, i] * post_pb[0, i]
+            post_pb[0, i+1] += self.proba_t[LEAVE_ROH, i] * sum_roh
             post_pb[0, i+1] *= self.proba_e[2, i]
 
             ### ROH states
             # Emission probas gathered into preallocated buffer
             np.take(self.proba_e[:, i], self.ref_panel[i], axis=0, out=emission_roh)
 
-            # (stay_ROH - jump_ROH) * post_pb[1:, i]  -> reuse preallocated buffer `term`
-            coef = self.proba_t[stay_ROH, i] - self.proba_t[jump_ROH, i]
+            # (STAY_ROH - JUMP_ROH) * post_pb[1:, i]  -> reuse preallocated buffer `term`
+            coef = self.proba_t[STAY_ROH, i] - self.proba_t[JUMP_ROH, i]
             np.multiply(post_pb[1:, i], coef, out=term)
 
-            post_pb[1:, i+1] = self.proba_t[enter_ROH, i] * post_pb[0, i]
-            post_pb[1:, i+1] += self.proba_t[jump_ROH, i] * sum_roh
+            post_pb[1:, i+1] = self.proba_t[ENTER_ROH, i] * post_pb[0, i]
+            post_pb[1:, i+1] += self.proba_t[JUMP_ROH, i] * sum_roh
             post_pb[1:, i+1] += term
             post_pb[1:, i+1] *= emission_roh
 
@@ -120,14 +118,14 @@ class HMM():
             not_roh = self.proba_e[2, i] * prev_bwd[0]
 
             ### Non ROH state
-            cur_bwd[0] = self.proba_t[stay_out, i-1] * not_roh
-            cur_bwd[0] += self.proba_t[enter_ROH, i-1] * sum_roh
+            cur_bwd[0] = self.proba_t[STAY_OUT, i-1] * not_roh
+            cur_bwd[0] += self.proba_t[ENTER_ROH, i-1] * sum_roh
 
             ### ROH states
-            coef = self.proba_t[stay_ROH, i - 1] - self.proba_t[jump_ROH, i - 1]
+            coef = self.proba_t[STAY_ROH, i - 1] - self.proba_t[JUMP_ROH, i - 1]
             np.multiply(term, coef, out=cur_bwd[1:])
-            cur_bwd[1:] += self.proba_t[leave_ROH, i-1] * not_roh
-            cur_bwd[1:] += self.proba_t[jump_ROH, i-1] * sum_roh
+            cur_bwd[1:] += self.proba_t[LEAVE_ROH, i-1] * not_roh
+            cur_bwd[1:] += self.proba_t[JUMP_ROH, i-1] * sum_roh
 
             cur_bwd /= cur_bwd.sum(axis=0)
             post_pb[:, i-1] *= cur_bwd
@@ -138,3 +136,21 @@ class HMM():
         post_pb /= post_pb.sum(axis=0, keepdims=True)
 
         return post_pb
+
+    def calc_posterior_proba_numba(self) -> np.ndarray:
+        """
+        Compute the posterior probability of each state at each locus.
+        Values are normalised at each step to avoid numerical issues (because probas converge to 0).
+        Same as `calc_posterior_proba` but with numba compilation.
+        Returns:
+            post_pb: np.ndarray of shape (nb_ref+1, nb_snp, nb_samples)
+        """
+        nb_snp, nb_ref = self.ref_panel.shape
+        _, _, nb_samples = self.proba_e.shape
+    
+        # ref_panel must be a plain int array for numba indexing
+        ref_panel = np.ascontiguousarray(self.ref_panel)
+        proba_e = np.ascontiguousarray(self.proba_e, dtype=np.float64)
+        proba_t = np.ascontiguousarray(self.proba_t, dtype=np.float64)
+    
+        return _forward_backward_numba(ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples)

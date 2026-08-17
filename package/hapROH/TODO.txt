@@ -1,5 +1,4 @@
 ### TODO in hapROH:
-* = priority order
 
 Preprocessing:
 * some filtering on ref_panel ? (I removed the options `n_ref` and `meta_path_ref`)
@@ -7,29 +6,28 @@ Preprocessing:
 * load GenomicData from vcf
 
 Post-procesing:
-*** filtering + merging segments, merging final dataframe
+*** merging final dataframes
 
 Plotting:
 ** ensure compatibility with plotting functions and new output
 
 Testing:
-**** compare outputs with previous version
-** check performnace (time+memory) when processing multiple individuals at the same time
+**** compare outputs with previous version: see hapROH/Notebooks/Tests/hapROH_test_leipzig.ipynb
+* check time+memory requirements (especially when processing multiple individuals at the same time)
+* check accuracy, especially downsampling experiments on WGS data
 
 Handling missing values:
-- note: they are kept to allow processing multiple individuals in a vectorial manner
-* math: emission_proba(MISSING_VALUE)=1: verify in fwd+bwd formula but should be correct
-** how are they plotted  ?
+* Verify behaviour for missing data (necessary when processing multiple individuals at the same time)
+* Verify math
+* How are they stored and plotted
 
 Vignettes:
 *** create example vignetes
 
 Not implemented yet:
-*** hapCON → see first how it is implemented in hapsburg → add amission model
+*** emission model diploid_gt
+*** hapCON → see first how it is implemented in hapsburg → add emission model
 - ROH on chrom X (female only) -> specific ref_panel -> change preprocessing
-- IBD on chrom Y (male only) -> change preprocesseing
 - lowmem: adapt to use ref panel stored as a packed bit array -> would divide reference loading time by 8
-- cython ?: fwd-bwd pass uses python only. But negligeable computation time compared to ref_pannel loading time
-
-- Viterbi path: what is it ? is it still used anyway ?
-- parallelisation ? Already possible to run multiple individuals at the same time -> Not necessary
+- cython ?: Negligeable time gain compared to the data loading + cumbersome to install.
+    - Other option: numba. Similar to cython, this compiles code into C, but does not require specific setup (apart pip instal numba): code is compile first time function is called, then cached into memory)

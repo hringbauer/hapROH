@@ -14,8 +14,10 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
                 r_in:float=1, r_out:float=20, r_jump: float=300, error_rate:float=0.01,
                 e_model:Literal["readcounts", "diploid_gt", "haploid"]="haploid",
                 downsampling:None|float=None,
-                cutoff_post:float=0.999,
-                logfile:None|str=None, loglevel:int=0
+                cutoff_post:float=0.999, snps_extend:int=0,
+                max_gap:float=0.005, min_len1:float=0.04, min_len2:float=0.02,
+                min_len_final:float=0.04,
+                logfile:None|str=None, loglevel:int=0, numba=False
                 ):
     """Call runs of homozygosity (ROH) for one chromosome using an HMM.
 
@@ -41,13 +43,17 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
         error_rate: Genotyping/sequencing error rate used by the emission model.
         e_model: Model to use for computing the emission probabilities. One of:
             - "readcounts": use raw read-count (AD) data; requires the sample
-              data to contain a 'calldata/AD' field.
+              data to contain an 'AD' field.
             - "diploid_gt": use diploid genotype counts computed against the
               reference allele frequencies; not valid for haploid input data.
             - "haploid": pseudo-haploid calls.
         downsampling: If provided, depth to downsample the sample data
             to before calling ROH. Only valable if input data is AD
-        cutoff_post: Cutoff used whencalling the ROH segments from the posterior probability
+        cutoff_post: Cutoff used when calling the ROH segments from the posterior probability
+        snps_extend: Number of SNPs added to elongate ROH blocks (before merging).
+        max_gap: Maximum gap (in Morgans) between two adjacent ROH for them to be merged.
+        min_len1 and min_len2: Minimum lengths (in Morgans) required for two adjacent ROH to be merged.
+        min_len_final: Minimum length (in Morgans) for segments to appear in the final dataset.
         logfile: Path to a file to write log output to. If None, logs go to the default stream handler.
         loglevel: Verbosity level for the hapROH logger (0=WARNING, 1=INFO, 2 or higher=DEBUG).
 
@@ -80,6 +86,13 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
     logger.info(f"Starting callROH_chr on chromosome {chrom} and iids {iids}")
     logger.info(f"Sample file: {path_sample}")
     logger.info(f"Reference file: {path_ref}")
+    logger.info(f"HMM parameters: r_in={r_in}, r_out={r_out}, r_jump={r_jump}")
+    logger.info(f"Emission model={e_model}, error_rate={error_rate}")
+    logger.info(f"Merging parameters: max_gap={max_gap}, (min_len1, min_len2)={(min_len1,min_len2)}")
+    logger.info(f"Filtering parameters: min_len_final={min_len_final}")
+
+    if min_len_final < min(min_len1,min_len2):
+        logger.warning(f"min_len_final < min(min_len1,min_len2). By design, all segments shorter than {min(min_len1,min_len2)} will still be removed.")
 
     ### Preload the files
     file_sample = GenomicDataFile.load_genetic_file(path_sample)
@@ -138,7 +151,7 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
 
     ### Compute the posterior probability
     logger.debug("Computing posterior probabilities")
-    post_pb = hmm.calc_posterior_proba()
+    post_pb = hmm.calc_posterior_proba_numba() if numba else hmm.calc_posterior_proba()
     logger.debug("Done computing posterior probabilities")
 
     ### Postprocess and save the results
@@ -150,7 +163,9 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
             os.makedirs(folder_out_iid)
 
         # Create and save ROH dataframe
-        df_roh_iid = postproces(post_pb[0,:,idx], df_snp, cutoff_post)
+        df_roh_iid = postproces(post_pb[0,:,idx], df_snp, cutoff_post, snps_extend,
+                                 max_gap, min_len1, min_len2)
+        df_roh_iid = df_roh_iid[df_roh_iid["lengthM"]>=min_len_final]
         df_roh_iid["iid"] = iid
         df_roh_iid["chrom"] = chrom
         df_roh_iid.to_csv(folder_out_iid+"roh.csv", index=False)

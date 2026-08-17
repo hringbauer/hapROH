@@ -55,7 +55,7 @@ def _e_proba_from_haploid(genotype_data:np.ndarray, allele_freq:np.ndarray, erro
         error_rate: float
             the genotyping error
     """
-    logger.debug("Loading emission proba from haploid data")
+    logger.debug("Computing emission proba from haploid data")
     if len(genotype_data.shape) != 2:
         raise ValueError(f"Expected genotype data of shape (nb_snp, nb_samples), got {genotype_data.shape}")
     nb_snp, nb_samples = genotype_data.shape
@@ -83,7 +83,7 @@ def _e_proba_from_GT_count(genotype_data:np.ndarray, allele_freq:np.ndarray, err
         error_rate: float
             the genotyping error
     """
-    logger.debug("Loading emission proba from GT count")
+    logger.debug("Computing emission proba from GT count")
     if len(genotype_data.shape) != 3 or genotype_data.shape[2] != 1:
         raise ValueError(f"Expected genotype data of shape (nb_snp, nb_samples, 1), got {genotype_data.shape}")
     nb_snp, nb_samples, _ = genotype_data.shape
