@@ -9,7 +9,7 @@ Post-procesing:
 *** merging final dataframes
 
 Plotting:
-** ensure compatibility with plotting functions and new output
+** compatibility with old plotting functions / new plotting fuctions
 
 Testing:
 **** compare outputs with previous version: see hapROH/Notebooks/Tests/hapROH_test_leipzig.ipynb
@@ -21,8 +21,10 @@ Handling missing values:
 * Verify math
 * How are they stored and plotted
 
-Vignettes:
+Documentation:
 *** create example vignetes
+* README_DEV with package structure
+* sphinx documentation
 
 Not implemented yet:
 *** emission model diploid_gt

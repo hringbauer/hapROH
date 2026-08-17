@@ -151,7 +151,7 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
 
     ### Compute the posterior probability
     logger.debug("Computing posterior probabilities")
-    post_pb = hmm.calc_posterior_proba_numba() if numba else hmm.calc_posterior_proba()
+    post_pb = hmm.calc_posterior_proba(numba)
     logger.debug("Done computing posterior probabilities")
 
     ### Postprocess and save the results

@@ -197,21 +197,23 @@ class GenomicDataFile(ABC):
         Load genomic data from a given file.
         File type is detected automatically (currently supported: eigenstrat, hdf5)
         """
-        path_prefix, ext = os.path.splitext(path)
         ext_hdf5 = [".hdf5", ".h5"]
         ext_eigenstrat = [".snp", ".geno", ".ind"]
-        if ext in ext_hdf5:
-            return Hdf5File(path)
-        elif ext in ext_eigenstrat:
-            return EigenstratFile(path_prefix)
+        if os.path.isfile(path):
+            path_prefix, ext = os.path.splitext(path)
+            if ext in ext_hdf5:
+                return Hdf5File(path)
+            elif ext in ext_eigenstrat:
+                return EigenstratFile(path_prefix)
+            else:
+                raise ValueError(f"File extension {ext} not recognised. File should be of type hdf5 (.hdf5|.h5) or eigenstrat")
         for ext in ext_hdf5:
             if os.path.isfile(path+ext):
                 return Hdf5File(path+ext)
         for ext in ext_eigenstrat:
             if os.path.isfile(path+ext):
                 return EigenstratFile(path)
-
-        raise ValueError(f"File extension not recognised, nor found any matching file of known extension ({path})")
+        raise FileNotFoundError(f"File {path} not found")
 
 ################################
 # Eigenstrat implementation
