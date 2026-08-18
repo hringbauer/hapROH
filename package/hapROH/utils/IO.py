@@ -63,7 +63,7 @@ def get_snp_from_h5(path_h5: str) -> pd.DataFrame:
     return df_snp[mask]
 
 def bam2pileup(path_bam:str, path_refHDF5:str, chrom:int|None=None, min_base_qual:int=30, min_map_qual:int=30, path_samtools="samtools") -> pd.DataFrame:
-    """Count reference and alternate alleles in a BAM file at reference-panel SNPs.
+    """Count reference and alternate alleles in a BAM file at positions present in the reference HDF5.
 
     Args:
         path_bam: Path to the input BAM file.
@@ -223,25 +223,3 @@ def bam2hdf5(path_bam:str, path_refHDF5:str, path_outHDF5:str, sample_name:str, 
         return
     df_pileup = bam2pileup(path_bam, path_refHDF5, chrom, min_base_qual, min_map_qual, path_samtools)
     pileup2hdf5(df_pileup, path_outHDF5, sample_name, overwrite)
-
-def bam2hdf5s(path_bam:str, prefix_refHDF5:str, dir_outHDF5:str, sample_name:str, overwrite:bool=False, min_base_qual:int=30, min_map_qual:int=30, path_samtools="samtools") -> None:
-    """Wrapper to call ``bam2hdf5`` on each chromosome from 1 to 22.
-
-    Args:
-        path_bam: Path to the input BAM file.
-        prefix_refHDF5: Prefix of reference HDF5 paths; chromosome suffixes
-            from ``1.hdf5`` through ``22.hdf5`` are appended.
-        prefix_outHDF5: Output directory, in which HDF5 files of format $iid.chr$ch.hdf5 will be created
-        sample_name: Sample identifier to store in each output file.
-        overwrite: Whether to overwrite or fail if the files already exist.
-        min_base_qual: Minimum base quality passed to ``samtools mpileup``.
-        min_map_qual: Minimum mapping quality passed to ``samtools mpileup``.
-        path_samtools: Path or command name for the ``samtools`` executable.
-
-    Returns:
-        None.
-    """
-    prefix_outHDF5 = os.path.join(dir_outHDF5, sample_name+".chr")
-    for chrom in range(1, 23):
-        suffix = str(chrom) + ".hdf5"
-        bam2hdf5(path_bam, prefix_refHDF5+suffix, prefix_outHDF5+suffix, sample_name, chrom, overwrite, min_base_qual, min_map_qual, path_samtools)

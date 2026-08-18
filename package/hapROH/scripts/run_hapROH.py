@@ -17,11 +17,11 @@ def main() -> None:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("-i", "--path-sample", required=True, type=str,
-                         help="Path to the sample(s) genotype file (Eigenstrat or HDF5) to call ROH on.")
+                         help="Path to the sample(s) file (Eigenstrat or HDF5) to call ROH on.")
     parser.add_argument("-r", "--path-ref", required=True, type=str,
-                         help="Path to the reference panel genotype. If running on all chromosomes, prefix <chrom_number>.hdf5 will be appended")
+                         help="Path to the reference panel. If running on all chromosomes, suffix <chrom_number>.hdf5 will be appended")
     parser.add_argument("-c", "--chrom", type=int, default=None,
-                         help="Chromosome number to process. If omitted, ROH is called on all 22 autosomes.")
+                         help="Chromosome number to process. If omitted, will run on all 22 autosomes.")
     parser.add_argument("--iid", dest="iids", nargs="+", default=None, metavar="IID",
                          help="Individual ID(s) to call ROH for. If omitted, all individuals in the sample file are used.")
     parser.add_argument("-o", "--folder-out", type=str, default="",
