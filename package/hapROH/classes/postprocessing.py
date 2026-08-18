@@ -62,10 +62,10 @@ def merge_blocks(df_roh:pd.DataFrame, max_gap=0.005, min_len1=0.04, min_len2=0.0
     if min_len1 < min_len2:
         min_len1, min_len2 = min_len2, min_len1
 
+    df_roh = df_roh[df_roh["lengthM"] >= min_len2]
+
     if len(df_roh) == 0:
         return df_roh.copy()
-
-    df_roh = df_roh[df_roh["lengthM"] >= min_len2]
 
     gap = df_roh["StartM"] - df_roh["EndM"].shift()
     len_1 = np.maximum(df_roh["lengthM"], df_roh["lengthM"].shift())

@@ -4,13 +4,10 @@
 Wraps `hapROH.utils.IO.bam2hdf5`.
 
 Examples:
-    python bam_to_hdf5.py --path-bam sample.bam --path-ref ref_chr3.hdf5 \\
-        --chrom 3 --path-out sample_chr3.hdf5
-
-    python bam_to_hdf5.py --path-bam sample.bam --path-ref ref_chr \\
-        --path-out sample_chr
+    python bam_to_hdf5.py -i sample.bam -o sample_chr3.hdf5 -r ref_chr3.hdf5 -c 3 -s my_sample
+    python bam_to_hdf5.py -i sample.bam -o sample_chr -r ref_chr -s my_sample
 """
-import argparse
+import argparse, subprocess
 
 from hapROH.utils.IO import bam2hdf5
 
@@ -20,12 +17,12 @@ def main() -> None:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("-i", "--path-bam", required=True, type=str,
-                         help="Path to the bam file.")
-    parser.add_argument("-r", "--path-ref", required=True, type=str,
-                         help="Path to the reference panel, defining which positions are extracted. If running on all chromosomes, suffix <chrom_number>.hdf5 will be appended")
-    parser.add_argument("-o", "--path-out", required=True, type=str,
-                         help="Path out. If running on all chromosomes, suffix <chrom_number>.hdf5 will be appended")
-    parser.add_argument("--sample-name", required=True, type=str,
+                         help="Path to the input bam file.")
+    parser.add_argument("-r", "--path-ref", dest="path_refHDF5", required=True, type=str,
+                         help="Path to the reference HDF5, defining which positions are extracted. If running on all chromosomes, suffix <chrom_number>.hdf5 will be appended")
+    parser.add_argument("-o", "--path-out", dest="path_outHDF5", required=True, type=str,
+                         help="Path to the output HDF5. If running on all chromosomes, suffix <chrom_number>.hdf5 will be appended")
+    parser.add_argument("-s", "--sample-name", required=True, type=str,
                          help="Name to use in the hdf5.")
     parser.add_argument("-c", "--chrom", type=int, default=None,
                          help="Chromosome number to process. If omitted, will run on all 22 autosomes.")
@@ -35,15 +32,15 @@ def main() -> None:
                          help="Minimum mapping quality for an alignment to be used")
     parser.add_argument("--overwrite", action="store_true",
                          help="Overwrite existing bam files.")
-    parser.add_argument("--samtools", type=str, default="samtools",
+    parser.add_argument("--samtools", dest="path_samtools", type=str, default="samtools",
                          help="Name of the command or executable path for samtools")
 
     args = parser.parse_args()
     kwargs = vars(args)
     chrom_arg = kwargs.pop("chrom")
 
-    # Verify the samtools command/executable actually works
-    samtools_cmd = kwargs["samtools"]
+    # Verify that the samtools command/executable actually works
+    samtools_cmd = kwargs["path_samtools"]
     try:
         result = subprocess.run(
             [samtools_cmd, "--version"],
@@ -60,11 +57,11 @@ def main() -> None:
     if chrom_arg is not None:
         bam2hdf5(chrom=chrom_arg, **kwargs)
     else:
-        base_path_ref = kwargs["path_ref"]
-        base_path_out = kwargs["path_out"]
+        base_path_ref = kwargs["path_refHDF5"]
+        base_path_out = kwargs["path_outHDF5"]
         for chrom in range(1, 23):
-            kwargs["path_ref"] = f"{base_path_ref}{chrom}.hdf5"
-            kwargs["path_out"] = f"{base_path_out}{chrom}.hdf5"
+            kwargs["path_refHDF5"] = f"{base_path_ref}{chrom}.hdf5"
+            kwargs["path_outHDF5"] = f"{base_path_out}{chrom}.hdf5"
             bam2hdf5(chrom=chrom, **kwargs)
 
 if __name__ == "__main__":

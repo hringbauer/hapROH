@@ -337,7 +337,7 @@ class Hdf5File(GenomicDataFile):
             mask_snp = np.isin(ref, bases) & np.isin(alt, bases)
 
             mask = mask_biallelic & mask_snp
-            logger.debug(f"Kept {np.sum(mask)}/{len(mask)} biallelic SNP sites")
+            logger.info(f"Kept {np.sum(mask)}/{len(mask)} biallelic SNP sites")
             df_snp = df_snp[mask]
             self.mask_snp = mask
         return df_snp
@@ -437,7 +437,7 @@ def get_snp_intersection(snp_sample:pd.DataFrame, snp_ref:pd.DataFrame, chrom:No
     flipped_SNP = (merged["ref_x"] == merged["alt_y"]) & (merged["alt_x"] == merged["ref_y"])       # boolean array, len(merged)
     mismatching_SNP = ~matching_SNP & ~flipped_SNP                                                  # boolean array, len(merged)
 
-    logger.debug(f"{len(merged)}/{len(snp_ref)} SNP found in intersection, of which {flipped_SNP.sum()} flipped REF/ALT and {mismatching_SNP.sum()} mismatching REF/ALT")
+    logger.info(f"{len(merged)}/{len(snp_ref)} SNP found in intersection, of which {flipped_SNP.sum()} flipped REF/ALT and {mismatching_SNP.sum()} mismatching REF/ALT")
 
     sample_mask = np.zeros(len(snp_sample), dtype=bool)
     ref_mask = np.zeros(len(snp_ref), dtype=bool)

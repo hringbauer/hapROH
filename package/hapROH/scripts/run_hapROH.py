@@ -4,8 +4,8 @@
 Wraps `hapROH.run_new.callROH_chr`.
 
 Examples:
-    python hapROH.py --path-sample sample.h5 --path-ref ref.h5 \\
-        --chrom 3 --folder-out results/
+    python hapROH.py -i sample.h5 -r ref_chr3.hdf5 -o results -c 3
+    python hapROH.py -i sample.h5 -r ref_chr -o results -c 3
 """
 import argparse
 
@@ -20,12 +20,12 @@ def main() -> None:
                          help="Path to the sample(s) file (Eigenstrat or HDF5) to call ROH on.")
     parser.add_argument("-r", "--path-ref", required=True, type=str,
                          help="Path to the reference panel. If running on all chromosomes, suffix <chrom_number>.hdf5 will be appended")
+    parser.add_argument("-o", "--folder-out", required=True, type=str,
+                         help="Base output directory. Results for each individual are written to folder_out/<iid>/chr<chrom>/.")
     parser.add_argument("-c", "--chrom", type=int, default=None,
                          help="Chromosome number to process. If omitted, will run on all 22 autosomes.")
     parser.add_argument("--iid", dest="iids", nargs="+", default=None, metavar="IID",
                          help="Individual ID(s) to call ROH for. If omitted, all individuals in the sample file are used.")
-    parser.add_argument("-o", "--folder-out", type=str, default="",
-                         help="Base output directory. Results for each individual are written to folder_out/<iid>/chr<chrom>/.")
     parser.add_argument("--r-in", type=float, default=1,
                          help="HMM transition rate into the ROH (homozygous) state. (default: %(default)s)")
     parser.add_argument("--r-out", type=float, default=20,
@@ -53,7 +53,7 @@ def main() -> None:
                          help="Minimum length (in Morgans) for segments to appear in the final dataset. (default: %(default)s)")
     parser.add_argument("--logfile", type=str, default=None,
                          help="Path to a file to write log output to. If omitted, logs go to the default stream handler.")
-    parser.add_argument("--loglevel", type=int, default=0,
+    parser.add_argument("--loglevel", type=int, default=1,
                          help="Verbosity level for the hapROH logger (0=WARNING, 1=INFO, 2 or higher=DEBUG). (default: %(default)s)")
     parser.add_argument("--numba", action="store_true",
                          help="Use the numba-accelerated implementation for computing posterior probabilities.")

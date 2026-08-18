@@ -17,7 +17,7 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
                 cutoff_post:float=0.999, snps_extend:int=0,
                 max_gap:float=0.005, min_len1:float=0.04, min_len2:float=0.02,
                 min_len_final:float=0.04,
-                logfile:None|str=None, loglevel:int=0, numba=False
+                logfile:None|str=None, loglevel:int=0, numba=True
                 ):
     """Call runs of homozygosity (ROH) for one chromosome using an HMM.
 
@@ -147,18 +147,18 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
     logger.info("Initialising HMM")
     hmm = HMM(data_sampl_pp, data_ref, r_map,
                     r_in, r_out, r_jump, error_rate)
-    logger.debug("Done initialising HMM")
+    logger.info("Done initialising HMM")
 
     ### Compute the posterior probability
-    logger.debug("Computing posterior probabilities")
+    logger.info("Computing posterior probabilities")
     post_pb = hmm.calc_posterior_proba(numba)
-    logger.debug("Done computing posterior probabilities")
+    logger.info("Done computing posterior probabilities")
 
     ### Postprocess and save the results
-    logger.debug(f"Saving result")
+    logger.info(f"Saving result")
     for idx, iid in enumerate(iids):
         folder_out_iid = os.path.join(folder_out, iid, "chr" + str(chrom), "")
-        logger.debug(f"Writing individual {iid} to {folder_out_iid}")
+        logger.info(f"Writing individual {iid} to {folder_out_iid}")
         if not os.path.isdir(folder_out_iid):
             os.makedirs(folder_out_iid)
 

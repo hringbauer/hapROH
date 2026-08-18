@@ -6,6 +6,7 @@ from numba import njit
 from .genomicData import GenomicData, DataType
 from .transitionProba import TransitionProba, get_transi_proba
 from .emissionProba import EmissionProba, get_emi_proba
+from .HMM_fwd_bwd_cy import _forward_backward_cython
 
 from hapROH.utils.miscellanious import print_memory_usage
 
@@ -249,7 +250,7 @@ class HMM():
         self.proba_e = get_emi_proba(sample_data, allele_freq, error_rate)                  # shape (3, nb_snp, nb_samples)
         print_memory_usage(logger)
 
-    def calc_posterior_proba(self, numba:bool=False) -> np.ndarray:
+    def calc_posterior_proba(self, backend:str|None="numba") -> np.ndarray:
         """
         Compute the posterior probability of each state at each locus.
         Args:
@@ -260,10 +261,14 @@ class HMM():
         logger.debug("Computing posterior probabilities")
         nb_snp, nb_ref = self.ref_panel.shape
         _, _, nb_samples = self.proba_e.shape
-        if numba:
-            # ref_panel must be a plain int array for numba indexing
-            ref_panel = np.ascontiguousarray(self.ref_panel)
-            proba_e = np.ascontiguousarray(self.proba_e, dtype=np.float64)
-            proba_t = np.ascontiguousarray(self.proba_t, dtype=np.float64)
-            return _forward_backward_numba(ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples)
-        return _forward_backward_numba(self.ref_panel, self.proba_e, self.proba_t, nb_ref, nb_snp, nb_samples)
+        ref_panel = np.ascontiguousarray(self.ref_panel, dtype=mp.uint8)
+        proba_e = np.ascontiguousarray(self.proba_e, dtype=np.float64)
+        proba_t = np.ascontiguousarray(self.proba_t, dtype=np.float64)
+        match backend:
+            case "numba":
+                return _forward_backward_numba(ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples)
+            case "cython":
+                return _forward_backward_cython(ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples)
+            case None|"default":
+                return _forward_backward(ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples)
+        raise ValueError(f"Unknown backend ({backend}). Available values are: 'numba', 'cython' or 'default'/None")
