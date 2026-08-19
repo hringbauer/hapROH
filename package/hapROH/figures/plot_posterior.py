@@ -1,8 +1,3 @@
-"""
-Main Inference Class for HMM. Wrapper for Inerence of Posterior.
-@ Author: Harald Ringbauer, 2019, All rights reserved
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colorbar as clb
@@ -16,6 +11,8 @@ import warnings
 
 logger = logging.getLogger(__name__)
 
+
+# Potential files created by hapROH
 NUMPY_FILES = ["hap",           # shape (2, nb_snp), int, for compatibility with hapsburg only
                "readcounts",    # shape (nb_snp, 2), int
                "gt_count",      # shape (nb_snp), int
@@ -46,37 +43,44 @@ def load_data(folder:str):
     logger.debug(f"Loaded following data: {data.keys()}")
     return data
 
-def plot_posterior_cm(folder:str, savepath:None|str=None,
+def plot_posterior(folder:str, savepath:None|str=None,
+                      x_lim:None|tuple=None, unit:Literal["BP", "M", "cM"]="cM",
                       plot_calls=True, min_cm:float=1,
-                      plot_hets:bool=True, plot_post:bool=True,
-                      x_lim:None|tuple=None, min_reads=1,
+                      plot_hets:bool=True, min_reads=1,
+                      plot_post:bool=True,
                       figsize=(14,4), title:None|str=None, post_c="maroon", het_c="blue") -> plt.Figure:
     """
     Args:
     folder: Path to input data
-    savepath: Path were to save resulting figure
-    plot_calls: Whether to plot ROH Calls
-    min_cm: Minimum length [centimorgans] for called ROH
+    savepath: Path where to save resulting figure
+    x_lim: What area to zoom in
+    unit: One of 'BP' [base pairs], 'M' [Morgans] or 'cM' [centimorgans]
+    plot_calls: Whether to plot ROH calls
+    min_cm: Minimum length [centimorgans] for called ROH (only used if plot_calls)
     plot_hets: Whether to plot Heterozygote Markers
+    min_reads: How many reads of each REF and ALT to be considered heterozygous
+            (only used if plot_hets and data contains AD but not GT)
     plot_post: Whether to plot posterior probability
-    x_lim: What area to zoom in (CentiMorgan)
+    """
 
-    min_reads: How many reads of each REF and ALT to be considered heterozygous (only used if plot_hets and data contains readcounts but not gt_count)
-
-    empirical: If true, do not load and plot latent states
-    cm_lim: What Area to Zoom In (CentiMorgan)
-    m: How many reads for ref and alt
-    yticks: Where to place the Y ticks
-    groundtruth: Whether to plot Ground Truth (saved as csv). 
-    Only used in simulated data with known ROH
-    plot: Whether to show the plot in python"""
-
-    fs = 14  
-    roh_lw = 6   # Linewidth for ROH
+    ### Plot settings
+    fs = 14     # fontsize
+    roh_lw = 6  # ROH line width
 
     data = load_data(folder)
 
-    pos_x = 100*data["map"]
+    match unit:
+        case "BP":
+            pos_x = data["pos"]
+            xlabel = "Physical position (BP)"
+        case "M":
+            pos_x = data["map"]
+            xlabel = "Genetic position (M)"
+        case "cM":
+            pos_x = 100*data["map"]
+            xlabel = "Genetic position (cM)"
+        case _:
+            raise ValueError(f"Unknown unit {unit}. Should be one of 'BP', 'M' or 'cM'.")
 
     fig = plt.figure(figsize=figsize)
     ax = plt.subplot()
@@ -89,9 +93,7 @@ def plot_posterior_cm(folder:str, savepath:None|str=None,
             df_roh = data["roh"]
             df_roh = df_roh[100*df_roh["lengthM"] >= min_cm]
             ax.hlines(y=np.full(len(df_roh), 1.2), xmin=100*df_roh["StartM"], xmax=100*df_roh["EndM"],
-                    colors="blue", linewidth=roh_lw)
-
-    # TODO: plot groundtruth ?
+                    colors=het_c, linewidth=roh_lw)
 
     ### Plot the posterior probability
     if plot_post:
@@ -110,7 +112,7 @@ def plot_posterior_cm(folder:str, savepath:None|str=None,
         elif "hap" in data:
             het = data["hap"][0] != data["hap"][1]
         elif "readcounts" in data:
-            ylabel = r"Both REF and ALT reads $\geq$ {min_reads}"
+            ylabel = rf"Both REF and ALT reads $\geq$ {min_reads}"
             het = (data["readcounts"][:, 0] >= min_reads) & (data["readcounts"][:, 1] >= min_reads)
         else:
             warnings.warn("No genotype found in data. Argument plot_hets is ignored")
@@ -121,17 +123,17 @@ def plot_posterior_cm(folder:str, savepath:None|str=None,
             ax2.set_ylim(ax.get_ylim())
             ax2.set_yticks(np.array([1,0]) * 1.1 - 0.05)
             ax2.set_yticklabels([])
-            ax2.set_ylabel(ylabel)
+            ax2.set_ylabel(ylabel, color=het_c)
 
     ### Customise the plot
-    ax.set_xlabel("Genetic position (cM)", fontsize=fs)
+    ax.set_xlabel(xlabel, fontsize=fs)
 
     if x_lim is not None:
         ax.set_xlim(x_lim)
 
     if title is not None:
         plt.title(title, fontsize=fs)
-        
+
     if savepath is not None:
         plt.savefig(savepath, bbox_inches='tight', pad_inches=0, dpi=300)
         print(f"Saved figure to: {savepath}")

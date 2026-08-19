@@ -17,7 +17,7 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
                 cutoff_post:float=0.999, snps_extend:int=0,
                 max_gap:float=0.005, min_len1:float=0.04, min_len2:float=0.02,
                 min_len_final:float=0.04,
-                logfile:None|str=None, loglevel:int=0, numba=True
+                logfile:None|str=None, loglevel:int=0, backend:None|str="cython"
                 ):
     """Call runs of homozygosity (ROH) for one chromosome using an HMM.
 
@@ -151,7 +151,7 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
 
     ### Compute the posterior probability
     logger.info("Computing posterior probabilities")
-    post_pb = hmm.calc_posterior_proba(numba)
+    post_pb = hmm.calc_posterior_proba(backend)
     logger.info("Done computing posterior probabilities")
 
     ### Postprocess and save the results

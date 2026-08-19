@@ -261,7 +261,7 @@ class HMM():
         logger.debug("Computing posterior probabilities")
         nb_snp, nb_ref = self.ref_panel.shape
         _, _, nb_samples = self.proba_e.shape
-        ref_panel = np.ascontiguousarray(self.ref_panel, dtype=mp.uint8)
+        ref_panel = np.ascontiguousarray(self.ref_panel, dtype=np.uint8)
         proba_e = np.ascontiguousarray(self.proba_e, dtype=np.float64)
         proba_t = np.ascontiguousarray(self.proba_t, dtype=np.float64)
         match backend:

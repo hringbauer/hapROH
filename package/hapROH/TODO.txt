@@ -13,7 +13,8 @@ Plotting:
 
 Testing:
 **** compare outputs with previous version: see hapROH/Notebooks/Tests/hapROH_test_leipzig.ipynb
-* check time+memory requirements (especially when processing multiple individuals at the same time)
+* compare time performance of python/cython/numba (on large dummy data ?)
+* check memory requirements: ~nb_snp*2*nb_ref*9*nb_samples bytes (dominated by post_pb)
 * check accuracy, especially downsampling experiments on WGS data
 
 Handling missing values:
@@ -31,7 +32,3 @@ Not implemented yet:
 *** hapCON → see first how it is implemented in hapsburg → add emission model
 - ROH on chrom X (female only) -> specific ref_panel -> change preprocessing
 - lowmem: adapt to use ref panel stored as a packed bit array -> would divide reference loading time by 8
-- cython / numba / pure python ?:
-    - pros: faster execution (especially for high coverage files)
-    - cons: (cython) cumbersome to compile; (numba) not as efficient as cython
-    - Other option: numba. Similar to cython, this compiles code into C, but does not require specific setup (apart pip instal numba): code is compile first time function is called, then cached into memory)
