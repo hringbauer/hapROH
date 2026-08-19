@@ -1,4 +1,5 @@
 import logging
+from typing import Literal
 
 import numpy as np
 from numba import njit
@@ -29,7 +30,7 @@ output:
 # Order of the states in TransitionProba
 STAY_OUT, ENTER_ROH, LEAVE_ROH, STAY_ROH, JUMP_ROH = (0,1,2,3,4)
 
-def _forward_backward(ref_panel:np.ndarray, proba_e:EmissionProba, proba_t:TransitionProba, nb_ref:int, nb_snp:int, nb_samples:int) -> np.ndarray:
+def _forward_backward(ref_panel:np.ndarray, proba_e:np.ndarray, proba_t:np.ndarray, nb_ref:int, nb_snp:int, nb_samples:int) -> np.ndarray:
     """
     Compute the posterior probability of each state at each locus,
     using the standard forward-backward algorithm.
@@ -112,7 +113,7 @@ def _forward_backward(ref_panel:np.ndarray, proba_e:EmissionProba, proba_t:Trans
     return post_pb
 
 @njit(cache=True, fastmath=True)
-def _forward_backward_numba(ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples):
+def _forward_backward_numba(ref_panel:np.ndarray, proba_e:np.ndarray, proba_t:np.ndarray, nb_ref:int, nb_snp:int, nb_samples:int):
     """Same as `_forward_backward` but with numba implementation."""
     post_pb = np.empty((nb_ref + 1, nb_snp, nb_samples))
 
