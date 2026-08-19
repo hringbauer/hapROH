@@ -250,11 +250,11 @@ class HMM():
         self.proba_e = get_emi_proba(sample_data, allele_freq, error_rate)                  # shape (3, nb_snp, nb_samples)
         print_memory_usage(logger)
 
-    def calc_posterior_proba(self, backend:str|None="numba") -> np.ndarray:
+    def calc_posterior_proba(self, backend:Literal["python", "numba", "cython"]="cython") -> np.ndarray:
         """
         Compute the posterior probability of each state at each locus.
         Args:
-            numba (bool): wether to use the numba or the pure python version (testing for speed purpose only)
+            backend: Which backend to the for the main computation algorithm.
         Returns:
             post_pb: np.ndarray of shape (nb_ref+1, nb_snp, nb_samples)
         """
@@ -269,6 +269,6 @@ class HMM():
                 return _forward_backward_numba(ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples)
             case "cython":
                 return _forward_backward_cython(ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples)
-            case None|"default":
+            case "python":
                 return _forward_backward(ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples)
-        raise ValueError(f"Unknown backend ({backend}). Available values are: 'numba', 'cython' or 'default'/None")
+        raise ValueError(f"Unknown backend ({backend}). Available implementations are: 'python', 'numba' or 'cython'")

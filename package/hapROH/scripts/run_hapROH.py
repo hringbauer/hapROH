@@ -55,8 +55,8 @@ def main() -> None:
                          help="Path to a file to write log output to. If omitted, logs go to the default stream handler.")
     parser.add_argument("--loglevel", type=int, default=1,
                          help="Verbosity level for the hapROH logger (0=WARNING, 1=INFO, 2 or higher=DEBUG). (default: %(default)s)")
-    parser.add_argument("--backend", type=str, default="cython",
-                         help="Use the numba-accelerated implementation for computing posterior probabilities.")
+    parser.add_argument("--backend", type=str, default="cython", choices=["python", "numba", "cython"],
+                         help="Which backend to the for the main computation algorithm.")
 
     args = parser.parse_args()
     kwargs = vars(args)

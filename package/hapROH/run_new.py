@@ -17,7 +17,7 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
                 cutoff_post:float=0.999, snps_extend:int=0,
                 max_gap:float=0.005, min_len1:float=0.04, min_len2:float=0.02,
                 min_len_final:float=0.04,
-                logfile:None|str=None, loglevel:int=0, backend:None|str="cython"
+                logfile:None|str=None, loglevel:int=0, backend:Literal["python", "numba", "cython"]="cython"
                 ):
     """Call runs of homozygosity (ROH) for one chromosome using an HMM.
 
@@ -56,6 +56,7 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
         min_len_final: Minimum length (in Morgans) for segments to appear in the final dataset.
         logfile: Path to a file to write log output to. If None, logs go to the default stream handler.
         loglevel: Verbosity level for the hapROH logger (0=WARNING, 1=INFO, 2 or higher=DEBUG).
+        backend: Which backend to the for the forward-backward algorithm.
 
     Returns:
         np.ndarray: The posterior probability array returned by the HMM, with
