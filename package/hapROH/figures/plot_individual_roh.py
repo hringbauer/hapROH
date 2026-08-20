@@ -1,0 +1,124 @@
+import os, glob
+from typing import Literal, List
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.patheffects as pe
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
+
+"""Comparison with hapsburg version:
+- plot_bad plots shadows on low density areas (seems like predefined areas+not very used)
+- process blocks before plotting: merging+filtering on snp density -> in my opinion, plotting and processing should be separate"""
+
+chromosome_lengthsM_human = [2.8426, 2.688187, 2.232549, 2.14201, 2.040477, 1.917145, 1.871491, 1.680018, 
+            1.661367, 1.8090949, 1.5821669, 1.745901, 1.2551429, 1.1859521, 1.413411, 
+            1.340264, 1.2849959, 1.175495, 1.0772971, 1.082123, 0.636394, 0.724438]
+
+chromosome_lengthsBP_human = [] # TODO
+
+def load_data(folder_haproh:str, iid:str) -> pd.DataFrame:
+    """Load all roh dataframes from a given folder"""
+    pattern = os.path.join(folder_haproh, iid, "*", "roh.csv")
+    file_paths = glob.glob(pattern)
+
+    dfs = []
+    for file_path in file_paths:
+        df_roh = pd.read_csv(file_path, delimiter=",")
+        dfs.append(df_roh)
+
+    df_roh = pd.concat(dfs, ignore_index=True)
+    ### columns expected by the plotting function
+    # assert "chrom" in df_roh.columns
+    # assert "StartBP" in df_roh.columns
+    # assert "EndBP" in df_roh.columns
+    # assert "StartM" in df_roh.columns
+    # assert "EndM" in df_roh.columns
+    # assert "lengthM" in df_roh.columns
+    return pd.concat(dfs, ignore_index=True)
+
+def _plot_single_chromosome(ax:Axes, pos_x:float, chrom_length:float, segments:np.ndarray):
+    """Plot a single chromosome
+    Args:
+        ax (Axes): were to plot
+        pos_x: x_location of the chromosome
+        chrom_length: length of the chromosome
+        segments: np.array of shape (2, nb_segments) with start and end positions of each segment"""
+    # Plot settings
+    width = 0.8
+    c_segments="maroon"
+
+    # Convert width in axis coordinate to linewith in figure coordinate (nb of points)
+    fig = ax.get_figure()
+    assert isinstance(fig, Figure)
+    length = fig.bbox_inches.width * ax.get_position().width * 72    # 72=nb of points/inch
+    lw = width * length / np.diff(ax.get_xlim())[0]
+
+    ### Plot chromosome outline
+    ax.plot([pos_x, pos_x], [0, chrom_length], lw = lw, color="lightgray",
+                solid_capstyle = 'round', zorder=0,
+                path_effects=[pe.Stroke(linewidth=lw+3, foreground='k'), pe.Normal()])
+
+    ### Plot the ROH
+    ax.vlines(x=np.full(segments.shape[1], pos_x), ymin=segments[0], ymax=segments[1], lw=lw, color=c_segments)
+
+def plot_all_chromosomes(df_segments:pd.DataFrame,
+                        unit:Literal['BP', 'M', 'cM']='M',
+                        chrom_lgts:None|List=None,
+                        ax:None|Axes=None, figsize=(14,4), title:None|str=None):
+    """Plot ROH in a genome. If given two dataframes, plot them side by side for comparison."""
+
+    if ax is None:
+        fig, ax = plt.subplots(figsize=figsize, layout="constrained")
+    else:
+        fig = ax.get_figure()
+        assert isinstance(fig, Figure)
+
+    match unit:
+        case "BP":
+            chr_lgts = chromosome_lengthsBP_human
+            segments = np.array([df_segments["StartBP"], df_segments["EndBP"]])
+        case "M":
+            chr_lgts = chromosome_lengthsM_human
+            segments = np.array([df_segments["StartM"], df_segments["EndM"]])
+        case "cM":
+            chr_lgts = 100 * np.array(chromosome_lengthsM_human)
+            segments = 100 * np.array([df_segments["StartM"], df_segments["EndM"]])
+        case "_":
+            raise ValueError(f"Unkown unit {unit}. Should be one of 'BP' [base pairs], 'M' [Morgan] or 'cM, [centimorgans].")
+    if chrom_lgts is not None:
+        chr_lgts = chrom_lgts
+
+    ### Set the ax limits (necessary to do this first to get the right line width in the _plot_single_chromosome function)
+    ax.set_xlim(0, len(chr_lgts) + 1)
+    ax.set_ylim(-0.05 * np.max(chr_lgts), 1.05 * np.max(chr_lgts))
+
+    ### Format the axis
+    ax.set_xticks([i for i in range(1, len(chr_lgts)+1)])
+    ax.tick_params(axis='x', which='both', bottom=False, top=False)
+    ax.set_xlabel("Chromosome")
+    ax.set_ylabel(f"Position ({unit})")
+
+    ### Plot the chromosomes
+    for ch, ch_len in enumerate(chr_lgts, start=1):
+        mask_ch = df_segments['chrom'] == ch
+        segments_ch = segments[:, mask_ch]
+        _plot_single_chromosome(ax, pos_x=ch, chrom_length=ch_len, segments=segments_ch)
+
+    if title is not None:
+        fig.suptitle(title)
+
+    return fig, ax
+
+def plot_roh_karyotype(folder:str, iid:str,
+                        savepath:None|str=None,
+                        unit:Literal["BP", "M", "cM"]="cM",
+                        min_cm:float=1,
+                        figsize=(14,4), title:None|str=None) -> Figure:
+    df_segments = load_data(folder, iid)
+    df_segments = df_segments[df_segments["lengthM"] >= 0.01*min_cm]
+    fig, ax = plot_all_chromosomes(df_segments, unit, figsize=figsize, title=title)
+    if savepath is not None:
+        fig.savefig(savepath, bbox_inches='tight', pad_inches=0, dpi=600)
+    return fig

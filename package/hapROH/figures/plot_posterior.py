@@ -1,13 +1,12 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.colorbar as clb
-from matplotlib import gridspec
-import os as os
-import sys as sys
-import pandas as pd
-
+import os
 import logging
 import warnings
+from typing import Literal
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 
 logger = logging.getLogger(__name__)
 
@@ -43,15 +42,16 @@ def load_data(folder:str):
     logger.debug(f"Loaded following data: {data.keys()}")
     return data
 
-def plot_posterior(folder:str, savepath:None|str=None,
-                      x_lim:None|tuple=None, unit:Literal["BP", "M", "cM"]="cM",
-                      plot_calls=True, min_cm:float=1,
-                      plot_hets:bool=True, min_reads=1,
-                      plot_post:bool=True,
-                      figsize=(14,4), title:None|str=None, post_c="maroon", het_c="blue") -> plt.Figure:
+def plot_posterior(folder:str, iid:str, chrom:str,
+                    savepath:None|str=None,
+                    x_lim:None|tuple=None, unit:Literal["BP", "M", "cM"]="cM",
+                    plot_calls=True, min_cm:float=1,
+                    plot_hets:bool=True, min_reads=1,
+                    plot_post:bool=True,
+                    figsize=(14,4), title:None|str=None, post_c="maroon", het_c="blue") -> Figure:
     """
     Args:
-    folder: Path to input data
+    folder: Path to hapROH output folder
     savepath: Path where to save resulting figure
     x_lim: What area to zoom in
     unit: One of 'BP' [base pairs], 'M' [Morgans] or 'cM' [centimorgans]
@@ -67,18 +67,22 @@ def plot_posterior(folder:str, savepath:None|str=None,
     fs = 14     # fontsize
     roh_lw = 6  # ROH line width
 
-    data = load_data(folder)
+    folder_data = os.path.join(folder, iid, "chr" + str(chrom), "")
+    data = load_data(folder_data)
 
     match unit:
         case "BP":
             pos_x = data["pos"]
             xlabel = "Physical position (BP)"
+            roh_start, roh_end, roh_coeff = "StartBP", "EndBP", 1
         case "M":
             pos_x = data["map"]
             xlabel = "Genetic position (M)"
+            roh_start, roh_end, roh_coeff = "StartM", "EndM", 1
         case "cM":
             pos_x = 100*data["map"]
             xlabel = "Genetic position (cM)"
+            roh_start, roh_end, roh_coeff = "StartM", "EndM", 100
         case _:
             raise ValueError(f"Unknown unit {unit}. Should be one of 'BP', 'M' or 'cM'.")
 
@@ -91,8 +95,8 @@ def plot_posterior(folder:str, savepath:None|str=None,
             warnings.warn("No roh found in data. Argument plot_calls is ignored")
         else:
             df_roh = data["roh"]
-            df_roh = df_roh[100*df_roh["lengthM"] >= min_cm]
-            ax.hlines(y=np.full(len(df_roh), 1.2), xmin=100*df_roh["StartM"], xmax=100*df_roh["EndM"],
+            df_roh = df_roh[df_roh["lengthM"] >= 0.01*min_cm]
+            ax.hlines(y=np.full(len(df_roh), 1.2), xmin=roh_coeff*df_roh[roh_start], xmax=roh_coeff*df_roh[roh_end],
                     colors=het_c, linewidth=roh_lw)
 
     ### Plot the posterior probability
@@ -131,11 +135,12 @@ def plot_posterior(folder:str, savepath:None|str=None,
     if x_lim is not None:
         ax.set_xlim(x_lim)
 
-    if title is not None:
-        plt.title(title, fontsize=fs)
+    if title is None:
+        title = f"Individual {iid} — Chromosome {chrom}"
+    plt.title(title, fontsize=fs)
 
     if savepath is not None:
-        plt.savefig(savepath, bbox_inches='tight', pad_inches=0, dpi=300)
+        plt.savefig(savepath, bbox_inches='tight', pad_inches=0, dpi=600)
         print(f"Saved figure to: {savepath}")
 
     return fig
