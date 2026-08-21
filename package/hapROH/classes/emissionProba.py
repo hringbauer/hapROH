@@ -5,12 +5,10 @@ Compute the emission probabilities, depending on the observation:
 
 import logging
 from typing import NewType
-import time
 
 import numpy as np
 
-from hapROH.classes.genomicData import GenomicData, DataType
-from hapROH.utils.miscellanious import print_memory_usage
+from hapROH.classes.genomicData import DataType, GenomicData
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +20,10 @@ The three states are as follows:
     ROH_REF, ROH_ALT, no_ROH
 """
 
-def get_emi_proba(genotype_data:GenomicData, allele_freq:np.ndarray, error_rate:float) -> EmissionProba:
+
+def get_emi_proba(
+    genotype_data: GenomicData, allele_freq: np.ndarray, error_rate: float
+) -> EmissionProba:
     """
     Build emission probabilities for haploid data
 
@@ -37,13 +38,22 @@ def get_emi_proba(genotype_data:GenomicData, allele_freq:np.ndarray, error_rate:
         case DataType.AD:
             return _e_proba_from_read_count(genotype_data.data, allele_freq, error_rate)
         case DataType.GT:
-            return _e_proba_from_GT_count(genotype_data.data.sum(axis=2), allele_freq, error_rate)
+            return _e_proba_from_GT_count(
+                genotype_data.data.sum(axis=2), allele_freq, error_rate
+            )
         case DataType.GT_count:
-            return _e_proba_from_GT_count(genotype_data.data.squeeze(axis=2), allele_freq, error_rate)
+            return _e_proba_from_GT_count(
+                genotype_data.data.squeeze(axis=2), allele_freq, error_rate
+            )
         case DataType.PSEUDOHAP:
-            return _e_proba_from_haploid(genotype_data.data.squeeze(axis=2), allele_freq, error_rate)
+            return _e_proba_from_haploid(
+                genotype_data.data.squeeze(axis=2), allele_freq, error_rate
+            )
 
-def _e_proba_from_haploid(genotype_data:np.ndarray, allele_freq:np.ndarray, error_rate:float) -> EmissionProba:
+
+def _e_proba_from_haploid(
+    genotype_data: np.ndarray, allele_freq: np.ndarray, error_rate: float
+) -> EmissionProba:
     """
     Build emission probabilities for haploid data
 
@@ -57,21 +67,31 @@ def _e_proba_from_haploid(genotype_data:np.ndarray, allele_freq:np.ndarray, erro
     """
     logger.debug("Computing emission proba from haploid data")
     if len(genotype_data.shape) != 2:
-        raise ValueError(f"Expected genotype data of shape (nb_snp, nb_samples), got {genotype_data.shape}")
+        raise ValueError(
+            f"Expected genotype data of shape (nb_snp, nb_samples), got {genotype_data.shape}"
+        )
     nb_snp, nb_samples = genotype_data.shape
     if nb_snp != len(allele_freq):
-        raise ValueError(f"`Genotype data` and `allele_freq` cobtain different number of SNPs ({nb_snp} vs {len(allele_freq)})")
-    allele_freq = allele_freq[:, None]  # broadcast to same shape (nb_snp, 1) as genotype_data
-    e_mat = np.ones((3, nb_snp, nb_samples), dtype=float)   # MISSING_VALUE -> 1
-    e_mat[0, :] = (genotype_data==0)                        # ROH with ref -> copying state
-    e_mat[1, :] = (genotype_data==1)                        # ROH with alt -> copying state
-    e_mat[2, :] = (genotype_data==0) * (1 - allele_freq) \
-                + (genotype_data==1) * allele_freq          # no ROH -> allele freq
+        raise ValueError(
+            f"`Genotype data` and `allele_freq` cobtain different number of SNPs ({nb_snp} vs {len(allele_freq)})"
+        )
+    allele_freq = allele_freq[
+        :, None
+    ]  # broadcast to same shape (nb_snp, 1) as genotype_data
+    e_mat = np.ones((3, nb_snp, nb_samples), dtype=float)  # MISSING_VALUE -> 1
+    e_mat[0, :] = genotype_data == 0  # ROH with ref -> copying state
+    e_mat[1, :] = genotype_data == 1  # ROH with alt -> copying state
+    e_mat[2, :] = (genotype_data == 0) * (1 - allele_freq) + (
+        genotype_data == 1
+    ) * allele_freq  # no ROH -> allele freq
     # add error
     e_mat = (1 - error_rate) * e_mat + error_rate * (1 - e_mat)
     return EmissionProba(e_mat)
 
-def _e_proba_from_GT_count(genotype_data:np.ndarray, allele_freq:np.ndarray, error_rate:float) -> EmissionProba:
+
+def _e_proba_from_GT_count(
+    genotype_data: np.ndarray, allele_freq: np.ndarray, error_rate: float
+) -> EmissionProba:
     """
     Build emission probabilities for diploid GT count
 
@@ -85,22 +105,33 @@ def _e_proba_from_GT_count(genotype_data:np.ndarray, allele_freq:np.ndarray, err
     """
     logger.debug("Computing emission proba from GT count")
     if len(genotype_data.shape) != 3 or genotype_data.shape[2] != 1:
-        raise ValueError(f"Expected genotype data of shape (nb_snp, nb_samples, 1), got {genotype_data.shape}")
+        raise ValueError(
+            f"Expected genotype data of shape (nb_snp, nb_samples, 1), got {genotype_data.shape}"
+        )
     nb_snp, nb_samples, _ = genotype_data.shape
     if nb_snp != len(allele_freq):
-        raise ValueError(f"`Genotype data` and `allele_freq` cobtain different number of SNPs ({nb_snp} vs {len(allele_freq)})")
-    allele_freq = allele_freq[:, None]  # broadcast to same shape (nb_snp, 1) as genotype_data
-    e_mat = np.ones((3, nb_snp, nb_samples), dtype=float)             # MISSING_VALUE -> 1
-    e_mat[0, :] = (genotype_data==0)                                  # ROH with ref -> copying state
-    e_mat[1, :] = (genotype_data==2)                                  # ROH with alt -> copying state
-    e_mat[2, :] = (genotype_data==0) * (1 - allele_freq) * (1 - allele_freq) \
-                + (genotype_data==1) * 2 * (1 - allele_freq) * allele_freq \
-                + (genotype_data==2) * allele_freq * allele_freq      # no ROH -> HW
+        raise ValueError(
+            f"`Genotype data` and `allele_freq` cobtain different number of SNPs ({nb_snp} vs {len(allele_freq)})"
+        )
+    allele_freq = allele_freq[
+        :, None
+    ]  # broadcast to same shape (nb_snp, 1) as genotype_data
+    e_mat = np.ones((3, nb_snp, nb_samples), dtype=float)  # MISSING_VALUE -> 1
+    e_mat[0, :] = genotype_data == 0  # ROH with ref -> copying state
+    e_mat[1, :] = genotype_data == 2  # ROH with alt -> copying state
+    e_mat[2, :] = (
+        (genotype_data == 0) * (1 - allele_freq) * (1 - allele_freq)
+        + (genotype_data == 1) * 2 * (1 - allele_freq) * allele_freq
+        + (genotype_data == 2) * allele_freq * allele_freq
+    )  # no ROH -> HW
     # add error
     e_mat = (1 - error_rate) * e_mat + error_rate * (1 - e_mat)
     return EmissionProba(e_mat)
 
-def _e_proba_from_read_count(genotype_data:np.ndarray, allele_freq:np.ndarray, error_rate:float) -> EmissionProba:
+
+def _e_proba_from_read_count(
+    genotype_data: np.ndarray, allele_freq: np.ndarray, error_rate: float
+) -> EmissionProba:
     """
     Build emission probabilities for read count data
 
@@ -113,6 +144,7 @@ def _e_proba_from_read_count(genotype_data:np.ndarray, allele_freq:np.ndarray, e
             the genotyping error
     """
     raise NotImplementedError("Emission for read count not implemented yet")
+
 
 if __name__ == "__main__":
     nb_snp = 10

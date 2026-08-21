@@ -1,10 +1,10 @@
 from __future__ import annotations
-import os, logging
 
-from dataclasses import dataclass
+import logging
+import os
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from enum import StrEnum
-from typing import List, Tuple
 
 import h5py
 import numpy as np
@@ -19,32 +19,44 @@ MISSING_VAL = -1
 # Class describing genomic data
 ################################
 
+
 class DataType(StrEnum):
-    AD = "readcount"                # two columns with read_counts
-    GT = "GT"                       # two columns with 0 (ref) / 1 (alt) / MISSING_VALUE
-    PSEUDOHAP = "haploid"           # one column with 0 (ref) / 1 (alt) / MISSING_VALUE
-    GT_count = "diploid_gt"         # one column with 0 / 1 / 2 / MISSING_VALUE the nb of alt alleles
+    AD = "readcount"  # two columns with read_counts
+    GT = "GT"  # two columns with 0 (ref) / 1 (alt) / MISSING_VALUE
+    PSEUDOHAP = "haploid"  # one column with 0 (ref) / 1 (alt) / MISSING_VALUE
+    GT_count = (
+        "diploid_gt"  # one column with 0 / 1 / 2 / MISSING_VALUE the nb of alt alleles
+    )
+
 
 @dataclass
-class GenomicData():
-    data: np.ndarray                # shape (nb_snp, nb_samples, 1|2), dtype int or float
+class GenomicData:
+    data: np.ndarray  # shape (nb_snp, nb_samples, 1|2), dtype int or float
     datatype: DataType
 
-    def flip_data(self, idx_flipped:npt.NDArray[np.bool_]) -> None:
+    def flip_data(self, idx_flipped: npt.NDArray[np.bool_]) -> None:
         """Flip the ref and alt allele at the given positions (in place modification)."""
         match self.datatype:
             case DataType.AD | DataType.GT:
-                self.data[idx_flipped] = self.data[idx_flipped][:,:,::-1]
+                self.data[idx_flipped] = self.data[idx_flipped][:, :, ::-1]
             case DataType.GT_count:
                 mask_missing = self.data[idx_flipped] == MISSING_VAL
-                self.data[idx_flipped] = np.where(mask_missing, MISSING_VAL, 2 - self.data[idx_flipped])
+                self.data[idx_flipped] = np.where(
+                    mask_missing, MISSING_VAL, 2 - self.data[idx_flipped]
+                )
             case DataType.PSEUDOHAP:
                 mask_missing = self.data[idx_flipped] == MISSING_VAL
-                self.data[idx_flipped] = np.where(mask_missing, MISSING_VAL, 1 - self.data[idx_flipped])
+                self.data[idx_flipped] = np.where(
+                    mask_missing, MISSING_VAL, 1 - self.data[idx_flipped]
+                )
             case _:
-                raise NotImplementedError(f"flip_data not implemented for DataType {self.datatype}")
+                raise NotImplementedError(
+                    f"flip_data not implemented for DataType {self.datatype}"
+                )
 
-    def to_GT_count(self, allele_freq:None|np.ndarray=None, error_rate:float=1e-3) -> GenomicData:
+    def to_GT_count(
+        self, allele_freq: None | np.ndarray = None, error_rate: float = 1e-3
+    ) -> GenomicData:
         """Transform the data into (diploid) genotype counts.
 
         For DataType.AD, genotypes are called with a simple Bayesian model
@@ -62,9 +74,13 @@ class GenomicData():
         """
         match self.datatype:
             case DataType.AD:
-                logger.warning(f"Calling genotypes from readcounts using bayesian model. This is not recommended for low coverage data. In that case, prefer e_model=haploid")
+                logger.warning(
+                    "Calling genotypes from readcounts using bayesian model. This is not recommended for low coverage data. In that case, prefer e_model=haploid"
+                )
                 if allele_freq is None:
-                    raise ValueError("Please provide an allele frequency to call genotype from allele depth")
+                    raise ValueError(
+                        "Please provide an allele frequency to call genotype from allele depth"
+                    )
                 n_ref = self.data[:, :, 0].astype(np.float64)
                 n_alt = self.data[:, :, 1].astype(np.float64)
                 depth = n_ref + n_alt
@@ -72,18 +88,25 @@ class GenomicData():
 
                 # prior based on HW-equilibrium using allele_freq
                 p = np.clip(allele_freq, 1e-6, 1 - 1e-6)  # shape (nb_snp,)
-                log_prior = np.stack([
-                    2 * np.log(1 - p),
-                    np.log(2) + np.log(p) + np.log(1 - p),
-                    2 * np.log(p),
-                ], axis=-1)  # (nb_snp, 3)
+                log_prior = np.stack(
+                    [
+                        2 * np.log(1 - p),
+                        np.log(2) + np.log(p) + np.log(1 - p),
+                        2 * np.log(p),
+                    ],
+                    axis=-1,
+                )  # (nb_snp, 3)
 
                 # likelihood under a binomial model to observe (n_ref, n_alt)
-                alt_frac = (error_rate, 0.5, 1 - error_rate)    # expected alt-read fraction for GT = 0, 1, 2
-                log_lik = np.stack([
-                    n_alt * np.log(f) + n_ref * np.log(1 - f)
-                    for f in alt_frac
-                ], axis=-1)  # (nb_snp, nb_samples, 3)
+                alt_frac = (
+                    error_rate,
+                    0.5,
+                    1 - error_rate,
+                )  # expected alt-read fraction for GT = 0, 1, 2
+                log_lik = np.stack(
+                    [n_alt * np.log(f) + n_ref * np.log(1 - f) for f in alt_frac],
+                    axis=-1,
+                )  # (nb_snp, nb_samples, 3)
 
                 log_post = log_lik + log_prior[:, np.newaxis, :]
                 new_data = np.argmax(log_post, axis=-1).astype(np.int8)[..., np.newaxis]
@@ -104,11 +127,13 @@ class GenomicData():
                 new_data[mask_missing] = MISSING_VAL
                 # raise ValueError("Cannot recover diploid genotype counts from pseudo-haploid data ")
             case _:
-                raise NotImplementedError(f"to_GT_count not implemented for DataType {self.datatype}")
+                raise NotImplementedError(
+                    f"to_GT_count not implemented for DataType {self.datatype}"
+                )
 
         return GenomicData(new_data, DataType.GT_count)
 
-    def to_pseudo_haploid(self, seed:None|int=None) -> GenomicData:
+    def to_pseudo_haploid(self, seed: None | int = None) -> GenomicData:
         """Transform the data into pseudo-haploid data."""
         rng = np.random.default_rng(seed)
 
@@ -116,7 +141,9 @@ class GenomicData():
             case DataType.AD:
                 depth = np.sum(self.data, axis=2)
                 is_missing = depth == 0
-                alt_prob = self.data[:, :, 1] / np.maximum(1, depth)    # avoid division by 0
+                alt_prob = self.data[:, :, 1] / np.maximum(
+                    1, depth
+                )  # avoid division by 0
                 new_data = rng.binomial(1, alt_prob).astype(np.int8)[..., np.newaxis]
                 new_data[is_missing] = MISSING_VAL
 
@@ -137,11 +164,15 @@ class GenomicData():
             case DataType.PSEUDOHAP:
                 new_data = self.data.copy()
             case _:
-                raise NotImplementedError(f"to_pseudo_haploid not implemented for DataType {self.datatype}")
+                raise NotImplementedError(
+                    f"to_pseudo_haploid not implemented for DataType {self.datatype}"
+                )
 
         return GenomicData(new_data, DataType.PSEUDOHAP)
 
-    def downsample(self, target_depth:float=1, seed:None|int=None) -> GenomicData:
+    def downsample(
+        self, target_depth: float = 1, seed: None | int = None
+    ) -> GenomicData:
         """Downsample the data to a given depth.
         Works only if datatype is AD"""
         if not self.datatype == DataType.AD:
@@ -153,16 +184,20 @@ class GenomicData():
                 f"{i} ({d:.3f}x)"
                 for i, d in zip(low_mask.nonzero(), mean_depth_per_sample[low_mask])
             ]
-            raise ValueError(f"Target depth {target_depth:.3} is higher than actual mean depth for samples {low_samples}. Cannot downsample !")
-        p = (target_depth/mean_depth_per_sample)
-        new_data = np.random.default_rng(seed).binomial(self.data, p[np.newaxis, :, np.newaxis])
+            raise ValueError(
+                f"Target depth {target_depth:.3} is higher than actual mean depth for samples {low_samples}. Cannot downsample !"
+            )
+        p = target_depth / mean_depth_per_sample
+        new_data = np.random.default_rng(seed).binomial(
+            self.data, p[np.newaxis, :, np.newaxis]
+        )
         return GenomicData(new_data, DataType.AD)
+
 
 class GenomicDataFile(ABC):
     @abstractmethod
     def get_iids(self) -> npt.NDArray[np.bytes_]:
-        """ Return a string array with the sample names present in the file"""
-        pass
+        """Return a string array with the sample names present in the file"""
 
     @abstractmethod
     def get_snp(self) -> pd.DataFrame:
@@ -170,29 +205,33 @@ class GenomicDataFile(ABC):
         Return a pandas dataframe with the following columns:
             pos (int), map (float, in Morgans), ref (U1), alt (U1), chrom (int, optional)
         """
-        pass
 
     @abstractmethod
-    def get_data(self, idx_snp:None|npt.NDArray[np.bool_]=None, idx_iid:None|npt.NDArray[np.bool_]=None) -> GenomicData:
+    def get_data(
+        self,
+        idx_snp: None | npt.NDArray[np.bool_] = None,
+        idx_iid: None | npt.NDArray[np.bool_] = None,
+    ) -> GenomicData:
         """
         Return the genomic data
         Args:
             idx_snp: if provided, boolean mask indicating which positions to keep
             idx_iid: if provided, boolean mask indicating which individuals to keep
         """
-        pass
 
-    def get_idx_iids(self, iids:str|List[str]) -> npt.NDArray[np.bool_]:
+    def get_idx_iids(self, iids: str | list[str]) -> npt.NDArray[np.bool_]:
         """Return a boolean mask corresponding to the position of given individual(s) in the dataset"""
         if isinstance(iids, str):
             iids = [iids]
         idx_iids = np.isin(self.get_iids(), iids)
         if sum(idx_iids) != len(iids):
-            raise ValueError(f"Found {sum(idx_iids)} matching individuals instead of the {len(iids)} queried ones")
+            raise ValueError(
+                f"Found {sum(idx_iids)} matching individuals instead of the {len(iids)} queried ones"
+            )
         return idx_iids
 
     @classmethod
-    def load_genetic_file(cls, path:str) -> GenomicDataFile:
+    def load_genetic_file(cls, path: str) -> GenomicDataFile:
         """
         Load genomic data from a given file.
         File type is detected automatically (currently supported: eigenstrat, hdf5)
@@ -206,29 +245,42 @@ class GenomicDataFile(ABC):
             elif ext in ext_eigenstrat:
                 return EigenstratFile(path_prefix)
             else:
-                raise ValueError(f"File extension {ext} not recognised. File should be of type hdf5 (.hdf5|.h5) or eigenstrat")
+                raise ValueError(
+                    f"File extension {ext} not recognised. File should be of type hdf5 (.hdf5|.h5) or eigenstrat"
+                )
         for ext in ext_hdf5:
-            if os.path.isfile(path+ext):
-                return Hdf5File(path+ext)
+            if os.path.isfile(path + ext):
+                return Hdf5File(path + ext)
         for ext in ext_eigenstrat:
-            if os.path.isfile(path+ext):
+            if os.path.isfile(path + ext):
                 return EigenstratFile(path)
         raise FileNotFoundError(f"File {path} not found")
+
 
 ################################
 # Eigenstrat implementation
 ################################
 
-def load_geno_unpacked(path:str, idx_snp:None|npt.NDArray[np.bool_]=None, idx_iid:None|npt.NDArray[np.bool_]=None) -> np.ndarray:
+
+def load_geno_unpacked(
+    path: str,
+    idx_snp: None | npt.NDArray[np.bool_] = None,
+    idx_iid: None | npt.NDArray[np.bool_] = None,
+) -> np.ndarray:
     """Load genotype from an unpacked eigenstrat geno file."""
     columns = None if idx_iid is None else idx_iid.nonzero()[0].tolist()
-    geno = np.genfromtxt(path, usecols=columns, dtype='i1', delimiter=1)
-    geno = 2-geno   # replace the nb of ref alleles by the nb of alt alleles
-    geno[geno==2-9] = MISSING_VAL
+    geno = np.genfromtxt(path, usecols=columns, dtype="i1", delimiter=1)
+    geno = 2 - geno  # replace the nb of ref alleles by the nb of alt alleles
+    geno[geno == 2 - 9] = MISSING_VAL
     row_idx = slice(None) if idx_snp is None else idx_snp
     return geno[row_idx, :, np.newaxis]  # shape (nb_snp, nb_samples, 1)
 
-def load_geno_packed(path:str, idx_snp:None|npt.NDArray[np.bool_]=None, idx_iid:None|npt.NDArray[np.bool_]=None)-> np.ndarray:
+
+def load_geno_packed(
+    path: str,
+    idx_snp: None | npt.NDArray[np.bool_] = None,
+    idx_iid: None | npt.NDArray[np.bool_] = None,
+) -> np.ndarray:
     """Load genotype from a packed eigenstrat geno file."""
     # read header to get number of samples and of snp
     with open(path, "rb") as f:
@@ -243,35 +295,46 @@ def load_geno_packed(path:str, idx_snp:None|npt.NDArray[np.bool_]=None, idx_iid:
 
     raw = np.fromfile(path, dtype=np.uint8)
     expected_size = rlen * (nb_snp + 1)
-    assert raw.size == expected_size, f"file size {raw.size} != expected {expected_size} based on the number of samples and SNPs"
+    assert raw.size == expected_size, (
+        f"file size {raw.size} != expected {expected_size} based on the number of samples and SNPs"
+    )
     raw = raw[rlen:].reshape(nb_snp, rlen)
 
     bits = np.unpackbits(raw, axis=1)
-    bits = bits[:, :2*nb_samples].reshape(nb_snp, nb_samples, 2)
-    geno = (2*bits[:, :, 0] + bits[:, :, 1]).astype(np.int8)    # in 0..3
+    bits = bits[:, : 2 * nb_samples].reshape(nb_snp, nb_samples, 2)
+    geno = (2 * bits[:, :, 0] + bits[:, :, 1]).astype(np.int8)  # in 0..3
 
-    geno = 2-geno   # replace the nb of ref alleles by the nb of alt alleles
-    geno[geno == 2-3] = MISSING_VAL
+    geno = 2 - geno  # replace the nb of ref alleles by the nb of alt alleles
+    geno[geno == 2 - 3] = MISSING_VAL
     if idx_snp is not None:
         geno = geno[idx_snp]
     if idx_iid is not None:
         geno = geno[:, idx_iid]
     return geno[..., np.newaxis]
 
+
 class EigenstratFile(GenomicDataFile):
     path_prefix: str
 
-    def __init__(self, path_prefix:str):
+    def __init__(self, path_prefix: str):
         self.path_prefix = path_prefix
 
     def get_iids(self) -> npt.NDArray[np.bytes_]:
         return np.loadtxt(self.path_prefix + ".ind", usecols=0, dtype="U50")
 
     def get_snp(self) -> pd.DataFrame:
-        return pd.read_csv(self.path_prefix + ".snp", header=None, sep=r"\s+",
-                            names=["SNP", "chrom", "map", "pos", "ref", "alt"])
+        return pd.read_csv(
+            self.path_prefix + ".snp",
+            header=None,
+            sep=r"\s+",
+            names=["SNP", "chrom", "map", "pos", "ref", "alt"],
+        )
 
-    def get_data(self, idx_snp:None|npt.NDArray[np.bool_]=None, idx_iid:None|npt.NDArray[np.bool_]=None) -> GenomicData:
+    def get_data(
+        self,
+        idx_snp: None | npt.NDArray[np.bool_] = None,
+        idx_iid: None | npt.NDArray[np.bool_] = None,
+    ) -> GenomicData:
         logger.info(f"Loading data from {self.path_prefix}")
         geno_path = self.path_prefix + ".geno"
         with open(geno_path, "rb") as f:
@@ -290,22 +353,26 @@ class EigenstratFile(GenomicDataFile):
         logger.info(f"Loaded {data.shape} SNPs, of dtype {data.dtype}")
         return GenomicData(data, datatype)
 
+
 ################################
 # Hdf5 implementation
 ################################
 
+
 class Hdf5File(GenomicDataFile):
     path: str
-    filter_biallelic_snp:bool
-    mask_snp:None|npt.NDArray[np.bool_]=None    # changed only if filter_biallelic_snp is True
+    filter_biallelic_snp: bool
+    mask_snp: None | npt.NDArray[np.bool_] = (
+        None  # changed only if filter_biallelic_snp is True
+    )
 
-    def __init__(self, path:str, filter_biallelic_snp:bool=True):
+    def __init__(self, path: str, filter_biallelic_snp: bool = True):
         self.path = path
         self.filter_biallelic_snp = filter_biallelic_snp
 
     def get_iids(self) -> npt.NDArray[np.bytes_]:
         with h5py.File(self.path, "r") as h5_file:
-            samples = np.array(h5_file["samples"]).astype('U50')
+            samples = np.array(h5_file["samples"]).astype("U50")
         return samples
 
     def get_snp(self) -> pd.DataFrame:
@@ -313,12 +380,10 @@ class Hdf5File(GenomicDataFile):
             variants = h5_file["variants"]
             pos = np.array(variants["POS"]).astype(int)
             map = np.array(variants["MAP"]).astype(float)
-            ref = np.array(variants["REF"]).astype('U1')
-            alt = np.array(variants["ALT"]).astype('U1')
+            ref = np.array(variants["REF"]).astype("U1")
+            alt = np.array(variants["ALT"]).astype("U1")
             chrom = (
-                np.array(variants["CHROM"]).astype(int)
-                if "CHROM" in variants
-                else None
+                np.array(variants["CHROM"]).astype(int) if "CHROM" in variants else None
             )
 
         df_snp = pd.DataFrame({"pos": pos, "map": map, "ref": ref, "alt": alt})
@@ -342,12 +407,18 @@ class Hdf5File(GenomicDataFile):
             self.mask_snp = mask
         return df_snp
 
-    def get_data(self, idx_snp:None|npt.NDArray[np.bool_]=None, idx_iid:None|npt.NDArray[np.bool_]=None) -> GenomicData:
+    def get_data(
+        self,
+        idx_snp: None | npt.NDArray[np.bool_] = None,
+        idx_iid: None | npt.NDArray[np.bool_] = None,
+    ) -> GenomicData:
         logger.info(f"Loading data from {self.path}")
         if self.filter_biallelic_snp:
             if self.mask_snp is None:
                 self.get_snp()
-            assert self.mask_snp is not None, "self.mask_snp is set by self.get_snp(), when self.filter_bialleleic_snp is True "
+            assert self.mask_snp is not None, (
+                "self.mask_snp is set by self.get_snp(), when self.filter_bialleleic_snp is True "
+            )
             row_idx = self.mask_snp
             if idx_snp is not None:
                 row_idx = idx_snp & self.mask_snp
@@ -359,17 +430,19 @@ class Hdf5File(GenomicDataFile):
         with h5py.File(self.path, "r") as h5_file:
             calldata = h5_file["calldata"]
             if "AD" in calldata.keys():
-                # data = calldata["AD"][row_idx][:, column_idx]     # only load a subset from the hdf5
-                data = calldata["AD"][:][row_idx][:, column_idx]    # load everything, then subset: faster in most cases, depending on chunking in hdf5
+                data = calldata["AD"][:][row_idx][:, column_idx]
                 datatype = DataType.AD
                 if "GT" in calldata.keys():
-                    logger.warning(f"{self.path} contains both fields AD and GT. Only AD is loaded, GT is ignored")
+                    logger.warning(
+                        f"{self.path} contains both fields AD and GT. Only AD is loaded, GT is ignored"
+                    )
             elif "GT" in calldata.keys():
-                # data = calldata["GT"][row_idx][:, column_idx]     # only load a subset from the hdf5
-                data = calldata["GT"][:][row_idx][:, column_idx]    # load everything, then subset: faster in most cases, depending on chunking in hdf5
+                data = calldata["GT"][:][row_idx][:, column_idx]
                 datatype = DataType.GT
             else:
-                raise ValueError(f"Found neither AD nor GT field in the hdf5 file {self.path}")
+                raise ValueError(
+                    f"Found neither AD nor GT field in the hdf5 file {self.path}"
+                )
         if datatype == DataType.GT:
             # check if pseudohaploid and reshape if necessary
             if len(data.shape) == 2:
@@ -385,18 +458,25 @@ class Hdf5File(GenomicDataFile):
                     #     datatype = DataType.PSEUDOHAP
                     #     data = data[:,:,:1]
                 else:
-                    raise ValueError(f"Expected data of shape (nb_snp, nb_samples, 1|2), not {data.shape}")
+                    raise ValueError(
+                        f"Expected data of shape (nb_snp, nb_samples, 1|2), not {data.shape}"
+                    )
             else:
-                raise ValueError(f"Expected data of shape (nb_snp, nb_samples, 1|2), not {data.shape}")
+                raise ValueError(
+                    f"Expected data of shape (nb_snp, nb_samples, 1|2), not {data.shape}"
+                )
         logger.info(f"Loaded {data.shape} SNPs, of dtype {data.dtype}")
         return GenomicData(data, datatype)
+
 
 ########################################################
 # Utility methods to work with genomic data
 ########################################################
 
-def get_snp_intersection(snp_sample:pd.DataFrame, snp_ref:pd.DataFrame, chrom:None|int=None) \
-        -> Tuple[npt.NDArray[np.bool_], npt.NDArray[np.bool_], npt.NDArray[np.bool_]]:
+
+def get_snp_intersection(
+    snp_sample: pd.DataFrame, snp_ref: pd.DataFrame, chrom: None | int = None
+) -> tuple[npt.NDArray[np.bool_], npt.NDArray[np.bool_], npt.NDArray[np.bool_]]:
     """Get the indices of the intersecting positions in the two SNP sets.
 
     Returns (sample_idx, ref_idx, mismatching_sample_idx) as numpy arrays.
@@ -410,15 +490,19 @@ def get_snp_intersection(snp_sample:pd.DataFrame, snp_ref:pd.DataFrame, chrom:No
         if "chrom" in snp_sample.columns:
             idx_chr_sample = snp_sample["chrom"] == chrom
             if sum(idx_chr_sample) == 0:
-                raise ValueError(f"Chromosome {chrom} not found in data (chromosomes present: {sorted(snp_sample['chrom'].unique())})")
+                raise ValueError(
+                    f"Chromosome {chrom} not found in data (chromosomes present: {sorted(snp_sample['chrom'].unique())})"
+                )
         else:
-            logger.debug(f"Field `chrom` not found in `snp_sample`")
+            logger.debug("Field `chrom` not found in `snp_sample`")
         if "chrom" in snp_ref.columns:
             idx_chr_ref = snp_ref["chrom"] == chrom
             if sum(idx_chr_ref) == 0:
-                raise ValueError(f"Chromosome {chrom} not found in data (chromosomes present: {sorted(snp_ref['chrom'].unique())})")
+                raise ValueError(
+                    f"Chromosome {chrom} not found in data (chromosomes present: {sorted(snp_ref['chrom'].unique())})"
+                )
         else:
-            logger.debug(f"Field `chrom` not found in `snp_ref`")
+            logger.debug("Field `chrom` not found in `snp_ref`")
 
     # keep track of the original row order, to know where each position came from
     new_snp_sample = snp_sample.assign(_sample_idx=np.arange(len(snp_sample)))
@@ -433,40 +517,53 @@ def get_snp_intersection(snp_sample:pd.DataFrame, snp_ref:pd.DataFrame, chrom:No
     ).sort_values("pos")
 
     # check if ref and alt are flipped
-    matching_SNP = (merged["ref_x"] == merged["ref_y"]) & (merged["alt_x"] == merged["alt_y"])      # boolean array, len(merged)
-    flipped_SNP = (merged["ref_x"] == merged["alt_y"]) & (merged["alt_x"] == merged["ref_y"])       # boolean array, len(merged)
-    mismatching_SNP = ~matching_SNP & ~flipped_SNP                                                  # boolean array, len(merged)
+    matching_SNP = (merged["ref_x"] == merged["ref_y"]) & (
+        merged["alt_x"] == merged["alt_y"]
+    )  # boolean array, len(merged)
+    flipped_SNP = (merged["ref_x"] == merged["alt_y"]) & (
+        merged["alt_x"] == merged["ref_y"]
+    )  # boolean array, len(merged)
+    mismatching_SNP = ~matching_SNP & ~flipped_SNP  # boolean array, len(merged)
 
-    logger.info(f"{len(merged)}/{len(snp_ref)} SNP found in intersection, of which {flipped_SNP.sum()} flipped REF/ALT and {mismatching_SNP.sum()} mismatching REF/ALT")
+    logger.info(
+        f"{len(merged)}/{len(snp_ref)} SNP found in intersection, of which {flipped_SNP.sum()} flipped REF/ALT and {mismatching_SNP.sum()} mismatching REF/ALT"
+    )
 
     sample_mask = np.zeros(len(snp_sample), dtype=bool)
     ref_mask = np.zeros(len(snp_ref), dtype=bool)
-    sample_mask[merged["_sample_idx"][~mismatching_SNP]] = True             # boolean array, len(snp_sample)
-    ref_mask[merged["_ref_idx"][~mismatching_SNP]] = True                   # boolean array, len(snp_ref
+    sample_mask[merged["_sample_idx"][~mismatching_SNP]] = (
+        True  # boolean array, len(snp_sample)
+    )
+    ref_mask[merged["_ref_idx"][~mismatching_SNP]] = True  # boolean array, len(snp_ref
 
     return sample_mask, ref_mask, flipped_SNP[~mismatching_SNP].to_numpy()
 
-def get_rmap(df_snp:pd.DataFrame, min_gap:float=1e-10, max_gap:float=np.inf) -> np.ndarray:
+
+def get_rmap(
+    df_snp: pd.DataFrame, min_gap: float = 1e-10, max_gap: float = np.inf
+) -> np.ndarray:
     """Return the genetic distance [in Morgan] between locci, clipping values to the desired interval"""
     gen_pos = df_snp["map"]
-    assert gen_pos.is_monotonic_increasing, "SNP positions must be sorted in ascending order"
+    assert gen_pos.is_monotonic_increasing, (
+        "SNP positions must be sorted in ascending order"
+    )
     if gen_pos.max() > 20:
-        logger.debug(f"Converting from centimorgans to morgans")
+        logger.debug("Converting from centimorgans to morgans")
         gen_pos /= 100
     r_map = gen_pos[1:].to_numpy() - gen_pos[:-1].to_numpy()
     logger.info(f"Minimum Genetic Map: {gen_pos.min()} Morgan")
     logger.info(f"Maximum Genetic Map: {gen_pos.max()} Morgan")
     logger.info(f"Gaps bigger than 0.1 cM: {(r_map > 0.001).sum()}")
     logger.info(f"Maximum Gap: {r_map.max() * 100:.4f} cM")
-    logger.info(f"Clipping gaps to range: {100*min_gap:.3f} - {100*max_gap:.3f} cM")
+    logger.info(f"Clipping gaps to range: {100 * min_gap:.3f} - {100 * max_gap:.3f} cM")
     return np.clip(r_map, min_gap, max_gap)
 
 
 if __name__ == "__main__":
     nb_snp = 10
     nb_iids = 3
-    read_counts = np.arange(2*nb_snp*nb_iids).reshape((nb_snp, nb_iids, 2))
-    gt = np.random.binomial(1, 0.5, 2*nb_snp*nb_iids).reshape((nb_snp, nb_iids, 2))
+    read_counts = np.arange(2 * nb_snp * nb_iids).reshape((nb_snp, nb_iids, 2))
+    gt = np.random.binomial(1, 0.5, 2 * nb_snp * nb_iids).reshape((nb_snp, nb_iids, 2))
 
     ad_data = GenomicData(read_counts, DataType.AD)
     gt_data = GenomicData(gt, DataType.GT)
@@ -474,25 +571,37 @@ if __name__ == "__main__":
     ### Check that conversion return expected shape
     # AD -> downsampled AD
     ad_data_down = ad_data.downsample(2)
-    assert ad_data_down.data.shape == (nb_snp, nb_iids, 2), f"{ad_data_down.data.shape} != {(nb_snp, nb_iids, 2)}"
+    assert ad_data_down.data.shape == (nb_snp, nb_iids, 2), (
+        f"{ad_data_down.data.shape} != {(nb_snp, nb_iids, 2)}"
+    )
 
     # AD -> GT_count
     allele_freq = np.full(nb_snp, 0.5)
     gtc_data = ad_data.to_GT_count(allele_freq)
-    assert gtc_data.data.shape == (nb_snp, nb_iids, 1), f"{gtc_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+    assert gtc_data.data.shape == (nb_snp, nb_iids, 1), (
+        f"{gtc_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+    )
 
     # AD -> pseudo-haploid
     hap_data = ad_data.to_pseudo_haploid()
-    assert hap_data.data.shape == (nb_snp, nb_iids, 1), f"{hap_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+    assert hap_data.data.shape == (nb_snp, nb_iids, 1), (
+        f"{hap_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+    )
 
     # GT -> GT_count
     gtc_data = gt_data.to_GT_count(allele_freq)
-    assert gtc_data.data.shape == (nb_snp, nb_iids, 1), f"{gtc_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+    assert gtc_data.data.shape == (nb_snp, nb_iids, 1), (
+        f"{gtc_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+    )
 
     # GT -> pseudo-hap
     hap_data = gt_data.to_pseudo_haploid()
-    assert hap_data.data.shape == (nb_snp, nb_iids, 1), f"{hap_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+    assert hap_data.data.shape == (nb_snp, nb_iids, 1), (
+        f"{hap_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+    )
 
     # GT_count -> pseudo-hap
     hap_data = gtc_data.to_pseudo_haploid()
-    assert hap_data.data.shape == (nb_snp, nb_iids, 1), f"{hap_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+    assert hap_data.data.shape == (nb_snp, nb_iids, 1), (
+        f"{hap_data.data.shape} != {(nb_snp, nb_iids, 1)}"
+    )

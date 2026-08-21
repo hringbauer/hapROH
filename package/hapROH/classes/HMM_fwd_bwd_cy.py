@@ -102,7 +102,9 @@ def _forward_backward_cython(
                 post_pb[r, i + 1, s] *= inv_total
 
     # ---- Backward pass, combined in-place with forward result ----
-    prev_bwd_arr = np.full((nb_ref + 1, nb_samples), 1.0 / (nb_ref + 1), dtype=np.float64)
+    prev_bwd_arr = np.full(
+        (nb_ref + 1, nb_samples), 1.0 / (nb_ref + 1), dtype=np.float64
+    )
     cur_bwd_arr = np.empty((nb_ref + 1, nb_samples), dtype=np.float64)
     terms_arr = np.empty(nb_ref, dtype=np.float64)
 
