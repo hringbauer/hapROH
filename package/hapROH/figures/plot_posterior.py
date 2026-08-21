@@ -12,9 +12,8 @@ logger = logging.getLogger(__name__)
 
 
 # Potential files created by hapROH
-NUMPY_FILES = ["hap",           # shape (2, nb_snp), int, for compatibility with hapsburg only
+NUMPY_FILES = ["hap",           # shape (2, nb_snp), int
                "readcounts",    # shape (nb_snp, 2), int
-               "gt_count",      # shape (nb_snp), int
                "pos",           # shape (nb_snp), int
                "map",           # shape (nb_snp), float
                "posterior0"     # shape (nb_snp), int
@@ -24,7 +23,6 @@ ROH_FILES = ["roh", "roh_gt"]
 
 def load_data(folder:str):
     """Load and return the Data from one Data Folder"""
-
     data = dict()
     # load numpy arrays
     for file in NUMPY_FILES:
@@ -38,6 +36,11 @@ def load_data(folder:str):
         if os.path.isfile(file_path):
             df_roh = pd.read_csv(file_path, delimiter=",")
             data[file] = df_roh
+
+            required = {"ch", "StartM", "EndM", "lengthM"}
+            # + "StartBP", "EndBP" when using unit = "BP" BUT columns not present in older version (StartPosGRCh37 instead)
+            assert required.issubset(df_roh.columns), \
+                f"Missing columns: {required - set(df_roh.columns)} in file {file_path}"
 
     logger.debug(f"Loaded following data: {data.keys()}")
     return data
@@ -111,9 +114,7 @@ def plot_posterior(folder:str, iid:str, chrom:str,
     ### Plot the heterozygotes
     if plot_hets:
         ylabel = f"Heterozygote (no/yes)"
-        if "gt_count" in data:
-            het = data["gt_count"] == 1
-        elif "hap" in data:
+        if "hap" in data:
             het = data["hap"][0] != data["hap"][1]
         elif "readcounts" in data:
             ylabel = rf"Both REF and ALT reads $\geq$ {min_reads}"

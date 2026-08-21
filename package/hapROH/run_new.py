@@ -168,25 +168,30 @@ def callROH_chr(path_sample:str, path_ref:str, chrom:int, iids:None|str|List[str
                                  max_gap, min_len1, min_len2)
         df_roh_iid = df_roh_iid[df_roh_iid["lengthM"]>=min_len_final]
         df_roh_iid["iid"] = iid
-        df_roh_iid["chrom"] = chrom
+        df_roh_iid["ch"] = chrom
         df_roh_iid.to_csv(folder_out_iid+"roh.csv", index=False)
 
         # Save SNP info
-        np.savetxt(folder_out_iid+"posterior0.csv", post_pb[0, :, idx], delimiter=",",  fmt='%f')
-        np.savetxt(folder_out_iid+"pos.csv", df_snp["pos"], delimiter=",",  fmt='%f')
-        np.savetxt(folder_out_iid+"map.csv", df_snp["map"], delimiter=",",  fmt='%f')
+        np.savetxt(folder_out_iid+"posterior0.csv", post_pb[0, :, idx], delimiter=",", fmt='%f')
+        np.savetxt(folder_out_iid+"pos.csv", df_snp["pos"], delimiter=",", fmt='%f')
+        np.savetxt(folder_out_iid+"map.csv", df_snp["map"], delimiter=",", fmt='%f')
 
         # Save GT info along results for latter plotting
         match data_sample.datatype:
             case DataType.AD:
-                np.savetxt(folder_out_iid+"readcounts.csv", data_sample.data[:, idx], delimiter=",",  fmt='%f')
+                hap = np.zeros((2, len(df_snp["map"])), dtype='uint8')  # dummy data
+                np.savetxt(folder_out_iid+"readcounts.csv", data_sample.data[:, idx], delimiter=",", fmt='%f')
             case DataType.GT:
-                np.savetxt(folder_out_iid+"gt_count.csv", data_sample.data[:, idx].sum(axis=1), delimiter=",",  fmt='%f')
+                hap = data_sample.data[:, idx].T
             case DataType.GT_count:
-                np.savetxt(folder_out_iid+"gt_count.csv", data_sample.data[:, idx], delimiter=",",  fmt='%f')
+                hap = np.empty((2, len(df_snp["map"])), dtype='uint8')
+                hap[0] = np.where(data_sample.data[:, idx]==2, 1, 0)
+                hap[1] = np.where(data_sample.data[:, idx]!=0, 1, 0)
             case DataType.PSEUDOHAP:
-                pass
+                hap = np.tile(data_sample.data[:, idx], (2, 1))
             case _:
                 raise NotImplementedError("Case not implemented")
+        np.savetxt(folder_out_iid+"hap.csv", hap, delimiter=",", fmt='%f')
+
 
     return post_pb
