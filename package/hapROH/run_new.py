@@ -238,8 +238,8 @@ def callROH_chr(
                 hap = data_sample.data[:, idx].T
             case DataType.GT_count:
                 hap = np.empty((2, len(df_snp["map"])), dtype="uint8")
-                hap[0] = np.where(data_sample.data[:, idx] == 2, 1, 0)
-                hap[1] = np.where(data_sample.data[:, idx] != 0, 1, 0)
+                hap[0] = np.where(data_sample.data[:, idx].squeeze(axis=-1) == 2, 1, 0)
+                hap[1] = np.where(data_sample.data[:, idx].squeeze(axis=-1) != 0, 1, 0)
             case DataType.PSEUDOHAP:
                 hap = np.tile(data_sample.data[:, idx], (2, 1))
             case _:

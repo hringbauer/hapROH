@@ -23,7 +23,7 @@ NUMPY_FILES = [
 ROH_FILES = ["roh", "roh_gt"]
 
 
-def load_data(folder: str):
+def _load_data(folder: str):
     """Load and return the Data from one Data Folder"""
     data = {}
     # load numpy arrays
@@ -85,7 +85,7 @@ def plot_posterior(
     roh_lw = 6  # ROH line width
 
     folder_data = os.path.join(folder, iid, "chr" + str(chrom), "")
-    data = load_data(folder_data)
+    data = _load_data(folder_data)
 
     match unit:
         case "BP":
