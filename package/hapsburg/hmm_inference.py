@@ -490,16 +490,23 @@ def exponentiate_r(rates, rec_v):
     """Calculates exponentiation of the rates matrix with rec_v
     rates: 2D Matrix.
     rec_v: Array of length l"""
-    eva, evec = np.linalg.eig(rates)  # Do the Eigenvalue Decomposition
-    # Sanity Check whether Matrix is valid rate Matrix
-    assert(np.max(eva) <= 1)
-    evec_r = np.linalg.inv(evec)    # Do the Inversion
-    # Create vector of the exponentiated diagonals
-    d = np.exp(rec_v[:, None] * eva)
-    # Use some Einstein Sum Convention Fun (C Speed):
-    res = np.einsum('...ik, ...k, ...kj ->...ij', evec, d, evec_r)
-    # Make sure that all transition rates are valuable
-    assert(0 <= np.min(res))
+    eva, evec = np.linalg.eig(rates)    # eigenvalue decomposition
+    evec_r = np.linalg.inv(evec)        # inversion
+    d = np.exp(rec_v[:, None] * eva)    # vector of exponentiated diagonals
+    res = np.einsum('...ik, ...k, ...kj ->...ij', evec, d, evec_r)  # Einstein Sum Convention Fun (C Speed)
+
+    # Strip numerical-noise imaginary parts from eig on non-symmetric matrix
+    if np.iscomplexobj(res):
+        max_imag = np.max(np.abs(res.imag))
+        if max_imag > 1e-10:
+            raise ValueError(f"Transition matrix has non-negligible imaginary part: {max_imag:.3e}")
+        res = res.real
+        eva = eva.real
+
+    # Sanity checks:
+    assert np.max(eva) <= 1, "Invalid rate matrix: eigenvalue > 1"
+    assert np.min(res) >= -1e-12, f"Negative transition probability: {np.min(res):.3e}"
+    res = np.clip(res, 0, None)  # Clean up tiny negative roundoff
     return res
 
 
