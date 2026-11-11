@@ -269,7 +269,7 @@ def load_geno_unpacked(
 ) -> np.ndarray:
     """Load genotype from an unpacked eigenstrat geno file."""
     columns = None if idx_iid is None else idx_iid.nonzero()[0].tolist()
-    geno = np.genfromtxt(path, usecols=columns, dtype="i1", delimiter=1)
+    geno = np.genfromtxt(path, usecols=columns, dtype="i1", delimiter=1, ndmin=2)
     geno = 2 - geno  # replace the nb of ref alleles by the nb of alt alleles
     geno[geno == 2 - 9] = MISSING_VAL
     row_idx = slice(None) if idx_snp is None else idx_snp
@@ -319,8 +319,8 @@ class EigenstratFile(GenomicDataFile):
     def __init__(self, path_prefix: str):
         self.path_prefix = path_prefix
 
-    def get_iids(self) -> npt.NDArray[np.bytes_]:
-        return np.loadtxt(self.path_prefix + ".ind", usecols=0, dtype="U50")
+    def get_iids(self) -> npt.NDArray[np.str]:
+        return np.loadtxt(self.path_prefix + ".ind", usecols=0, dtype="U50", ndmin=1)
 
     def get_snp(self) -> pd.DataFrame:
         return pd.read_csv(
@@ -385,6 +385,10 @@ class Hdf5File(GenomicDataFile):
             chrom = (
                 np.array(variants["CHROM"]).astype(int) if "CHROM" in variants else None
             )
+
+        if len(alt.shape) > 1:
+            assert np.all(alt[:, 1:]==""), "Found SNP with more than one ALT in reference. Please restrict to biallelic SNP only"
+            alt = alt[:, 0]
 
         df_snp = pd.DataFrame({"pos": pos, "map": map, "ref": ref, "alt": alt})
         if chrom is not None:
