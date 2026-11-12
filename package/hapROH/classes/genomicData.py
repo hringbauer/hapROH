@@ -387,7 +387,9 @@ class Hdf5File(GenomicDataFile):
             )
 
         if len(alt.shape) > 1:
-            assert np.all(alt[:, 1:]==""), "Found SNP with more than one ALT in reference. Please restrict to biallelic SNP only"
+            assert np.all(alt[:, 1:] == ""), (
+                "Found SNP with more than one ALT in reference. Please restrict to biallelic SNP only"
+            )
             alt = alt[:, 0]
 
         df_snp = pd.DataFrame({"pos": pos, "map": map, "ref": ref, "alt": alt})
@@ -544,7 +546,7 @@ def get_snp_intersection(
 
 
 def get_rmap(
-    df_snp: pd.DataFrame, min_gap: float = 1e-10, max_gap: float = np.inf
+    df_snp: pd.DataFrame, min_gap: float = 1e-10, max_gap: float = 0.05
 ) -> np.ndarray:
     """Return the genetic distance [in Morgan] between locci, clipping values to the desired interval"""
     gen_pos = df_snp["map"]

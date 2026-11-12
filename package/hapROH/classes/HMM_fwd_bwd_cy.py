@@ -86,13 +86,13 @@ def _forward_backward_cython(
             p0 = post_pb[0, i, s]
             sum_roh = 1.0 - p0
 
-            val0 = (pt_stay_out * p0 + pt_leave * sum_roh) * proba_e[2, i, s]
+            val0 = (pt_stay_out * p0 + pt_leave * sum_roh) * proba_e[2, i + 1, s]
             post_pb[0, i + 1, s] = val0
             total = val0
 
             base = pt_enter * p0 + pt_jump * sum_roh
             for r in range(nb_ref):
-                emis = proba_e[ref_panel[i, r], i, s]
+                emis = proba_e[ref_panel[i + 1, r], i + 1, s]
                 v = (base + coef * post_pb[r + 1, i, s]) * emis
                 post_pb[r + 1, i + 1, s] = v
                 total += v

@@ -78,12 +78,14 @@ def _e_proba_from_haploid(
     allele_freq = allele_freq[
         :, None
     ]  # broadcast to same shape (nb_snp, 1) as genotype_data
-    e_mat = np.ones((3, nb_snp, nb_samples), dtype=float)  # MISSING_VALUE -> 1
+
+    e_mat = np.empty((3, nb_snp, nb_samples), dtype=float)
     e_mat[0, :] = genotype_data == 0  # ROH with ref -> copying state
     e_mat[1, :] = genotype_data == 1  # ROH with alt -> copying state
     e_mat[2, :] = (genotype_data == 0) * (1 - allele_freq) + (
         genotype_data == 1
     ) * allele_freq  # no ROH -> allele freq
+
     # add error
     e_mat = (1 - error_rate) * e_mat + error_rate * (1 - e_mat)
     return EmissionProba(e_mat)

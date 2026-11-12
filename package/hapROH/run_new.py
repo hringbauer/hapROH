@@ -221,8 +221,8 @@ def callROH_chr(
             delimiter=",",
             fmt="%f",
         )
-        np.savetxt(folder_out_iid + "pos.csv", df_snp["pos"], delimiter=",", fmt="%f")
-        np.savetxt(folder_out_iid + "map.csv", df_snp["map"], delimiter=",", fmt="%f")
+        df_snp["pos"].to_csv(folder_out_iid + "pos.csv", index=False, header=False)
+        df_snp["map"].to_csv(folder_out_iid + "map.csv", index=False, header=False)
 
         # Save GT info along results for latter plotting
         match data_sample.datatype:

@@ -69,11 +69,11 @@ def _forward_backward(
         ### Non ROH state
         post_pb[0, i + 1] = proba_t[STAY_OUT, i] * post_pb[0, i]
         post_pb[0, i + 1] += proba_t[LEAVE_ROH, i] * sum_roh
-        post_pb[0, i + 1] *= proba_e[2, i]
+        post_pb[0, i + 1] *= proba_e[2, i + 1]
 
         ### ROH states
         # Emission probas gathered into preallocated buffer
-        np.take(proba_e[:, i], ref_panel[i], axis=0, out=emission_roh)
+        np.take(proba_e[:, i + 1], ref_panel[i + 1], axis=0, out=emission_roh)
 
         # (STAY_ROH - JUMP_ROH) * post_pb[1:, i]  -> reuse preallocated buffer `term`
         coef = proba_t[STAY_ROH, i] - proba_t[JUMP_ROH, i]
@@ -159,13 +159,13 @@ def _forward_backward_numba(
             p0 = post_pb[0, i, s]
             sum_roh = 1.0 - p0
 
-            val0 = (pt_stay_out * p0 + pt_leave * sum_roh) * proba_e[2, i, s]
+            val0 = (pt_stay_out * p0 + pt_leave * sum_roh) * proba_e[2, i + 1, s]
             post_pb[0, i + 1, s] = val0
             total = val0
 
             base = pt_enter * p0 + pt_jump * sum_roh
             for r in range(nb_ref):
-                emis = proba_e[ref_panel[i, r], i, s]
+                emis = proba_e[ref_panel[i + 1, r], i + 1, s]
                 v = (base + coef * post_pb[r + 1, i, s]) * emis
                 post_pb[r + 1, i + 1, s] = v
                 total += v
