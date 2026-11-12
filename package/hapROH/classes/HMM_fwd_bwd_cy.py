@@ -25,6 +25,7 @@ def _forward_backward_cython(
     ref_panel: cython.uchar[:, :],
     proba_e: cython.double[:, :, :],
     proba_t: cython.double[:, :],
+    pi_out: cython.double,
     nb_ref: cython.int,
     nb_snp: cython.int,
     nb_samples: cython.int,
@@ -35,6 +36,7 @@ def _forward_backward_cython(
         ref_panel: (nb_snp, nb_ref) uint8 memoryview, 0 (REF) or 1 (ALT)
         proba_e:   (3, nb_snp, nb_samples) float64 memoryview
         proba_t:   (5, nb_snp-1) float64 memoryview
+        pi_out:    prior probability of the non-ROH state at the first SNP
     Returns:
         post_pb: np.ndarray of shape (nb_ref+1, nb_snp, nb_samples)
     """
@@ -61,13 +63,15 @@ def _forward_backward_cython(
     not_roh: cython.double
     c0: cython.double
     t: cython.double
+    pi_roh: cython.double
 
-    # ---- Init first SNP ----
+    # ---- Init first SNP: prior * emission ----
+    pi_roh = (1.0 - pi_out) / nb_ref
     for s in range(nb_samples):
-        total = proba_e[2, 0, s]
+        total = pi_out * proba_e[2, 0, s]
         post_pb[0, 0, s] = total
         for r in range(nb_ref):
-            v = proba_e[ref_panel[0, r], 0, s]
+            v = pi_roh * proba_e[ref_panel[0, r], 0, s]
             post_pb[r + 1, 0, s] = v
             total += v
         inv_total = 1.0 / total

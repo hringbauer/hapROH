@@ -35,6 +35,7 @@ def _forward_backward(
     ref_panel: np.ndarray,
     proba_e: np.ndarray,
     proba_t: np.ndarray,
+    pi_out: float,
     nb_ref: int,
     nb_snp: int,
     nb_samples: int,
@@ -43,6 +44,9 @@ def _forward_backward(
     Compute the posterior probability of each state at each locus,
     using the standard forward-backward algorithm.
     Values are normalised at each step to avoid numerical issues (because probas converge to 0)
+    Args:
+        pi_out: prior probability of the non-ROH state at the first SNP
+            (each ROH state gets (1 - pi_out) / nb_ref)
     Returns:
         post_pb: np.ndarray of shape (nb_ref+1, nb_snp, nb_samples)
     """
@@ -50,9 +54,10 @@ def _forward_backward(
     _, _, nb_samples = proba_e.shape
     post_pb = np.empty((nb_ref + 1, nb_snp, nb_samples), dtype=float)
 
-    ### Initialize first SNP
-    post_pb[0, 0] = proba_e[2, 0]  # not ROH
-    post_pb[1:, 0] = proba_e[ref_panel[0], 0]  # ROH with one of the n_ref possibilities
+    ### Initialize first SNP: prior * emission
+    pi_roh = (1 - pi_out) / nb_ref  # prior of each single ROH state
+    post_pb[0, 0] = pi_out * proba_e[2, 0]  # not ROH
+    post_pb[1:, 0] = pi_roh * proba_e[ref_panel[0], 0]  # ROH with one of the n_ref possibilities
     post_pb[:, 0] /= post_pb[:, 0].sum(axis=0)  # rescale to 1
 
     ### Preallocated scratch buffers, reused every iteration
@@ -128,6 +133,7 @@ def _forward_backward_numba(
     ref_panel: np.ndarray,
     proba_e: np.ndarray,
     proba_t: np.ndarray,
+    pi_out: float,
     nb_ref: int,
     nb_snp: int,
     nb_samples: int,
@@ -135,12 +141,13 @@ def _forward_backward_numba(
     """Same as `_forward_backward` but with numba implementation."""
     post_pb = np.empty((nb_ref + 1, nb_snp, nb_samples))
 
-    # Init first SNP
+    # Init first SNP: prior * emission
+    pi_roh = (1.0 - pi_out) / nb_ref  # prior of each single ROH state
     for s in range(nb_samples):
-        total = proba_e[2, 0, s]
+        total = pi_out * proba_e[2, 0, s]
         post_pb[0, 0, s] = total
         for r in range(nb_ref):
-            v = proba_e[ref_panel[0, r], 0, s]
+            v = pi_roh * proba_e[ref_panel[0, r], 0, s]
             post_pb[r + 1, 0, s] = v
             total += v
         inv_total = 1.0 / total
@@ -285,6 +292,18 @@ class HMM:
         )  # shape (3, nb_snp, nb_samples)
         print_memory_usage(logger)
 
+    def get_stationary_prior(self) -> float:
+        """
+        Stationary distribution of the transition rate matrix, used as prior at the first SNP:
+            P(no ROH) = r_out / (r_in + r_out)
+            P(ROH, copying haplotype k) = r_in / (nb_ref * (r_in + r_out))   for each k
+        With this prior, the marginal prior is the same at every SNP, and since
+        the chain is reversible, both chromosome ends are treated symmetrically.
+        Returns:
+            pi_out = P(no ROH). Each ROH state gets (1 - pi_out) / nb_ref.
+        """
+        return self.r_out / (self.r_in + self.r_out)
+
     def calc_posterior_proba(
         self, backend: Literal["python", "numba", "cython"] = "cython"
     ) -> np.ndarray:
@@ -301,18 +320,19 @@ class HMM:
         ref_panel = np.ascontiguousarray(self.ref_panel, dtype=np.uint8)
         proba_e = np.ascontiguousarray(self.proba_e, dtype=np.float64)
         proba_t = np.ascontiguousarray(self.proba_t, dtype=np.float64)
+        pi_out = self.get_stationary_prior()
         match backend:
             case "numba":
                 return _forward_backward_numba(
-                    ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples
+                    ref_panel, proba_e, proba_t, pi_out, nb_ref, nb_snp, nb_samples
                 )
             case "cython":
                 return _forward_backward_cython(
-                    ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples
+                    ref_panel, proba_e, proba_t, pi_out, nb_ref, nb_snp, nb_samples
                 )
             case "python":
                 return _forward_backward(
-                    ref_panel, proba_e, proba_t, nb_ref, nb_snp, nb_samples
+                    ref_panel, proba_e, proba_t, pi_out, nb_ref, nb_snp, nb_samples
                 )
         raise ValueError(
             f"Unknown backend ({backend}). Available implementations are: 'python', 'numba' or 'cython'"
