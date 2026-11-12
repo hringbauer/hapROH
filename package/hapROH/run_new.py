@@ -232,7 +232,7 @@ def callROH_chr(
                     folder_out_iid + "readcounts.csv",
                     data_sample.data[:, idx],
                     delimiter=",",
-                    fmt="%f",
+                    fmt="%d",
                 )
             case DataType.GT:
                 hap = data_sample.data[:, idx].T
@@ -244,6 +244,6 @@ def callROH_chr(
                 hap = np.tile(data_sample.data[:, idx], (2, 1))
             case _:
                 raise NotImplementedError("Case not implemented")
-        np.savetxt(folder_out_iid + "hap.csv", hap, delimiter=",", fmt="%f")
+        np.savetxt(folder_out_iid + "hap.csv", hap, delimiter=",", fmt="%d")
 
     return post_pb
