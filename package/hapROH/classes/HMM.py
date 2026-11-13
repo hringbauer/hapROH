@@ -57,7 +57,9 @@ def _forward_backward(
     ### Initialize first SNP: prior * emission
     pi_roh = (1 - pi_out) / nb_ref  # prior of each single ROH state
     post_pb[0, 0] = pi_out * proba_e[2, 0]  # not ROH
-    post_pb[1:, 0] = pi_roh * proba_e[ref_panel[0], 0]  # ROH with one of the n_ref possibilities
+    post_pb[1:, 0] = (
+        pi_roh * proba_e[ref_panel[0], 0]
+    )  # ROH with one of the n_ref possibilities
     post_pb[:, 0] /= post_pb[:, 0].sum(axis=0)  # rescale to 1
 
     ### Preallocated scratch buffers, reused every iteration
@@ -248,6 +250,7 @@ class HMM:
 
     ### Emission parameters
     error_rate: float  # Sequencing error rate.
+    error_rate_ref: float  # Error rate in the reference
 
     ### Probabilities
     proba_t: TransitionProba  # shape (5, nb_snp-1, nb_samples), dtype float, contains following proba: STAY_OUT, ENTER_ROH, LEAVE_ROH, STAY_ROH, JUMP_ROH
@@ -262,6 +265,7 @@ class HMM:
         r_out: float,
         r_jump: float,
         error_rate: float,
+        error_rate_ref: float,
     ) -> None:
         """Initialize HMM by computing emission and transition probabilities"""
         if ref_data.datatype != DataType.GT:
@@ -277,6 +281,7 @@ class HMM:
         self.r_jump = r_jump
 
         self.error_rate = error_rate
+        self.error_rate_ref = error_rate_ref
 
         print_memory_usage(logger)
         logger.debug("Computing transition probabilities")
@@ -296,7 +301,6 @@ class HMM:
         """
         Stationary distribution of the transition rate matrix, used as prior at the first SNP:
             P(no ROH) = r_out / (r_in + r_out)
-            P(ROH, copying haplotype k) = r_in / (nb_ref * (r_in + r_out))   for each k
         With this prior, the marginal prior is the same at every SNP, and since
         the chain is reversible, both chromosome ends are treated symmetrically.
         Returns:

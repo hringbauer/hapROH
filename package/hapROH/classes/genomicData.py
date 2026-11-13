@@ -13,15 +13,13 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
-MISSING_VAL = -1
-
 ################################
 # Class describing genomic data
 ################################
 
 
 class DataType(StrEnum):
-    AD = "readcount"  # two columns with read_counts
+    AD = "readcount"  # two columns with read_counts (REF, ALT)
     GT = "GT"  # two columns with 0 (ref) / 1 (alt) / MISSING_VALUE
     PSEUDOHAP = "haploid"  # one column with 0 (ref) / 1 (alt) / MISSING_VALUE
     GT_count = (
@@ -29,10 +27,40 @@ class DataType(StrEnum):
     )
 
 
+_NB_COLUMNS = {
+    DataType.AD: 2,
+    DataType.GT: 2,
+    DataType.GT_count: 1,
+    DataType.PSEUDOHAP: 1,
+}
+
+MISSING_VAL = -1
+
+
 @dataclass
 class GenomicData:
     data: np.ndarray  # shape (nb_snp, nb_samples, 1|2), dtype int or float
     datatype: DataType
+
+    def __post_init__(self):
+        expected = _NB_COLUMNS[self.datatype]
+        assert self.data.ndim == 3 and self.data.shape[2] == expected, (
+            f"{self.datatype} data should be of shape (nb_snp, nb_samples, {expected}), not {self.data.shape}"
+        )
+
+    def get_missing(self) -> npt.NDArray[np.bool_]:
+        """Returns a boolean mask of shape (nb_snp, nb_samples) with the position of missing data"""
+        match self.datatype:
+            case DataType.AD:
+                return np.sum(self.data, axis=2) == 0
+            case DataType.GT:
+                return np.any(self.data == MISSING_VAL, axis=2)
+            case DataType.PSEUDOHAP | DataType.GT_count:
+                return self.data[:, :, 0] == MISSING_VAL
+            case _:
+                raise NotImplementedError(
+                    f"`get_missing` not implemented for DataType {self.datatype}"
+                )
 
     def flip_data(self, idx_flipped: npt.NDArray[np.bool_]) -> None:
         """Flip the ref and alt allele at the given positions (in place modification)."""
@@ -40,12 +68,12 @@ class GenomicData:
             case DataType.AD | DataType.GT:
                 self.data[idx_flipped] = self.data[idx_flipped][:, :, ::-1]
             case DataType.GT_count:
-                mask_missing = self.data[idx_flipped] == MISSING_VAL
+                mask_missing = self.get_missing()
                 self.data[idx_flipped] = np.where(
                     mask_missing, MISSING_VAL, 2 - self.data[idx_flipped]
                 )
             case DataType.PSEUDOHAP:
-                mask_missing = self.data[idx_flipped] == MISSING_VAL
+                mask_missing = self.get_missing()
                 self.data[idx_flipped] = np.where(
                     mask_missing, MISSING_VAL, 1 - self.data[idx_flipped]
                 )
@@ -128,7 +156,7 @@ class GenomicData:
                 # raise ValueError("Cannot recover diploid genotype counts from pseudo-haploid data ")
             case _:
                 raise NotImplementedError(
-                    f"to_GT_count not implemented for DataType {self.datatype}"
+                    f"`to_GT_count` not implemented for DataType {self.datatype}"
                 )
 
         return GenomicData(new_data, DataType.GT_count)
@@ -196,7 +224,7 @@ class GenomicData:
 
 class GenomicDataFile(ABC):
     @abstractmethod
-    def get_iids(self) -> npt.NDArray[np.bytes_]:
+    def get_iids(self) -> npt.NDArray[np.str_]:
         """Return a string array with the sample names present in the file"""
 
     @abstractmethod
@@ -319,7 +347,7 @@ class EigenstratFile(GenomicDataFile):
     def __init__(self, path_prefix: str):
         self.path_prefix = path_prefix
 
-    def get_iids(self) -> npt.NDArray[np.str]:
+    def get_iids(self) -> npt.NDArray[np.str_]:
         return np.loadtxt(self.path_prefix + ".ind", usecols=0, dtype="U50", ndmin=1)
 
     def get_snp(self) -> pd.DataFrame:
@@ -346,9 +374,9 @@ class EigenstratFile(GenomicDataFile):
             data = load_geno_unpacked(geno_path, idx_snp, idx_iid)
 
         datatype = DataType.GT_count
-        # if np.all(data[:,:,0]!=1):            # search for heterozygotes
-        #     datatype = DataType.PSEUDOHAP
-        #     data[data == 2] = 1
+        if np.all(data[:, :, 0] != 1):  # search for heterozygotes
+            datatype = DataType.PSEUDOHAP
+            data[data == 2] = 1
 
         logger.info(f"Loaded {data.shape} SNPs, of dtype {data.dtype}")
         return GenomicData(data, datatype)
@@ -361,16 +389,12 @@ class EigenstratFile(GenomicDataFile):
 
 class Hdf5File(GenomicDataFile):
     path: str
-    filter_biallelic_snp: bool
-    mask_snp: None | npt.NDArray[np.bool_] = (
-        None  # changed only if filter_biallelic_snp is True
-    )
+    mask_snp: npt.NDArray[np.bool_]
 
-    def __init__(self, path: str, filter_biallelic_snp: bool = True):
+    def __init__(self, path: str):
         self.path = path
-        self.filter_biallelic_snp = filter_biallelic_snp
 
-    def get_iids(self) -> npt.NDArray[np.bytes_]:
+    def get_iids(self) -> npt.NDArray[np.str_]:
         with h5py.File(self.path, "r") as h5_file:
             samples = np.array(h5_file["samples"]).astype("U50")
         return samples
@@ -380,37 +404,34 @@ class Hdf5File(GenomicDataFile):
             variants = h5_file["variants"]
             pos = np.array(variants["POS"]).astype(int)
             map = np.array(variants["MAP"]).astype(float)
-            ref = np.array(variants["REF"]).astype("U1")
-            alt = np.array(variants["ALT"]).astype("U1")
+            ref = np.array(variants["REF"])
+            alt = np.array(variants["ALT"])
             chrom = (
                 np.array(variants["CHROM"]).astype(int) if "CHROM" in variants else None
             )
 
-        if len(alt.shape) > 1:
-            assert np.all(alt[:, 1:] == ""), (
-                "Found SNP with more than one ALT in reference. Please restrict to biallelic SNP only"
-            )
+        # filter only biallelic variants and reshape alt into a 1d-array if needed
+        mask_biallelic = np.ones(len(alt), dtype=bool)
+        if alt.ndim == 2:
+            mask_biallelic = np.all(alt[:, 1:] == b"", axis=1)
             alt = alt[:, 0]
 
-        df_snp = pd.DataFrame({"pos": pos, "map": map, "ref": ref, "alt": alt})
+        # filter only SNP
+        bases = np.array([b"A", b"T", b"G", b"C"])
+        mask_snp = np.isin(ref, bases) & np.isin(alt, bases)
+
+        mask = mask_biallelic & mask_snp
+        logger.info(f"Kept {np.sum(mask)}/{len(mask)} biallelic SNP sites")
+
+        df_snp = pd.DataFrame(
+            {"pos": pos, "map": map, "ref": ref.astype("U1"), "alt": alt.astype("U1")}
+        )
         if chrom is not None:
             df_snp["chrom"] = chrom
 
-        if self.filter_biallelic_snp:
-            # filter only biallelic variants and reshape alt into a 1d-array if needed
-            mask_biallelic = np.ones(len(alt), dtype=bool)
-            if alt.ndim == 2:
-                mask_biallelic = np.all(alt[:, 1:] == "", axis=1)
-                alt = alt[:, 0]
+        df_snp = df_snp[mask]
+        self.mask_snp = mask
 
-            # filter only SNP
-            bases = np.array(["A", "T", "G", "C"])
-            mask_snp = np.isin(ref, bases) & np.isin(alt, bases)
-
-            mask = mask_biallelic & mask_snp
-            logger.info(f"Kept {np.sum(mask)}/{len(mask)} biallelic SNP sites")
-            df_snp = df_snp[mask]
-            self.mask_snp = mask
         return df_snp
 
     def get_data(
@@ -419,30 +440,26 @@ class Hdf5File(GenomicDataFile):
         idx_iid: None | npt.NDArray[np.bool_] = None,
     ) -> GenomicData:
         logger.info(f"Loading data from {self.path}")
-        if self.filter_biallelic_snp:
-            if self.mask_snp is None:
-                self.get_snp()
-            assert self.mask_snp is not None, (
-                "self.mask_snp is set by self.get_snp(), when self.filter_bialleleic_snp is True "
-            )
-            row_idx = self.mask_snp
-            if idx_snp is not None:
-                row_idx = idx_snp & self.mask_snp
-        else:
-            row_idx = slice(None) if idx_snp is None else idx_snp
+        if not hasattr(self, "mask_snp"):
+            self.get_snp()
+        row_idx = self.mask_snp
+        if idx_snp is not None:
+            row_idx = self.mask_snp.copy()
+            row_idx[self.mask_snp] = idx_snp
 
         column_idx = slice(None) if idx_iid is None else idx_iid
 
         with h5py.File(self.path, "r") as h5_file:
             calldata = h5_file["calldata"]
-            if "AD" in calldata.keys():
-                data = calldata["AD"][:][row_idx][:, column_idx]
+            if "AD" in calldata:
+                data = calldata["AD"][:][row_idx][:, column_idx, :2]
+                data = np.clip(data, 0, None)
                 datatype = DataType.AD
-                if "GT" in calldata.keys():
+                if "GT" in calldata:
                     logger.warning(
                         f"{self.path} contains both fields AD and GT. Only AD is loaded, GT is ignored"
                     )
-            elif "GT" in calldata.keys():
+            elif "GT" in calldata:
                 data = calldata["GT"][:][row_idx][:, column_idx]
                 datatype = DataType.GT
             else:
@@ -453,11 +470,10 @@ class Hdf5File(GenomicDataFile):
             # check if pseudohaploid and reshape if necessary
             if len(data.shape) == 2:
                 data = data[..., np.newaxis]
-            if len(data.shape) == 3:
+                datatype = DataType.PSEUDOHAP
+            elif len(data.shape) == 3:
                 if data.shape[2] == 1:
-                    datatype = DataType.GT_count
-                    # if np.all(data != 2):                   # search for heterozygotes
-                    #     datatype = DataType.PSEUDOHAP
+                    datatype = DataType.PSEUDOHAP
                 elif data.shape[2] == 2:
                     datatype = DataType.GT
                     # if np.all(data[:,:,0]==data[:,:,1]):    # search for heterozygotes

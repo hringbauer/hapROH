@@ -26,7 +26,8 @@ def callROH_chr(
     r_out: float = 20,
     r_jump: float = 300,
     error_rate: float = 0.01,
-    e_model: Literal["readcounts", "diploid_gt", "haploid"] = "haploid",
+    error_rate_ref: float = 0,
+    e_model: Literal["readcount", "diploid_gt", "haploid"] = "haploid",
     downsampling: None | float = None,
     cutoff_post: float = 0.999,
     snps_extend: int = 0,
@@ -60,8 +61,9 @@ def callROH_chr(
         r_out: HMM transition rate out of the ROH state.
         r_jump: HMM jump rate between two distinct ROH states.
         error_rate: Genotyping/sequencing error rate used by the emission model.
+        error_rate_ref: Error rate in the reference pannel.
         e_model: Model to use for computing the emission probabilities. One of:
-            - "readcounts": use raw read-count (AD) data; requires the sample
+            - "readcount": use raw read-count (AD) data; requires the sample
               data to contain an 'AD' field.
             - "diploid_gt": use diploid genotype counts computed against the
               reference allele frequencies; not valid for haploid input data.
@@ -178,12 +180,14 @@ def callROH_chr(
             data_sampl_pp = data_sampl_pp.to_pseudo_haploid()
         case _:
             raise ValueError(
-                f"Invalid option e_model='{e_model}'. Valid options are None | 'readcounts' | 'diploid_gt' | 'haploid'"
+                f"Invalid option e_model='{e_model}'. Valid options are None | 'readcount' | 'diploid_gt' | 'haploid'"
             )
 
     ### Initialise the HMM
     logger.info("Initialising HMM")
-    hmm = HMM(data_sampl_pp, data_ref, r_map, r_in, r_out, r_jump, error_rate)
+    hmm = HMM(
+        data_sampl_pp, data_ref, r_map, r_in, r_out, r_jump, error_rate, error_rate_ref
+    )
     logger.info("Done initialising HMM")
 
     ### Compute the posterior probability
